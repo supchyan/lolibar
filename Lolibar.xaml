@@ -29,7 +29,7 @@
         
         IsTabStop="False">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Rectangle Name="Bar" Fill="{DynamicResource BarColor}" RadiusX="{DynamicResource BarBorderRadius}" RadiusY="{DynamicResource BarBorderRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" />
+        <Rectangle Stroke="{DynamicResource ElementColor}" StrokeThickness="{DynamicResource BarStrokeThickness}" Name="Bar" Fill="{DynamicResource BarColor}" RadiusX="{DynamicResource BarBorderRadius}" RadiusY="{DynamicResource BarBorderRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" />
 
         <StackPanel Name="BarContentLeft"  Margin="{DynamicResource ElementMargin}" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Left">
 

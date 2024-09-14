@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -14,7 +12,6 @@ namespace lolibar
     public partial class Lolibar : Window
     {
         // Misc
-        ProcMonitor procMonitor = new();
         MouseHook MouseHandler = new();
         NotifyIcon notifyIcon;
 
@@ -37,7 +34,12 @@ namespace lolibar
         };
 
         // Trigger to prevent different job before... window rendered
-        bool IsRendered; 
+        bool IsRendered;
+
+        // Properties for animations
+        Duration duration = new Duration(TimeSpan.FromSeconds(0.3));
+        Duration el_duration = new Duration(TimeSpan.FromSeconds(0.1));
+        CubicEase easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
 
         public Lolibar()
         {
@@ -48,6 +50,24 @@ namespace lolibar
             Owner = GetWindow(nullWin);
 
             ContentRendered += Lolibar_ContentRendered;
+
+            BarUserContainer.MouseEnter += BarUserContainer_MouseEnter;
+            BarUserContainer.MouseLeave += BarUserContainer_MouseLeave;
+
+            BarCurProcContainer.MouseEnter += BarCurProcContainer_MouseEnter;
+            BarCurProcContainer.MouseLeave += BarCurProcContainer_MouseLeave;
+
+            BarRamContainer.MouseEnter += BarRamContainer_MouseEnter;
+            BarRamContainer.MouseLeave += BarRamContainer_MouseLeave;
+
+            BarCpuContainer.MouseEnter += BarCpuContainer_MouseEnter;
+            BarCpuContainer.MouseLeave += BarCpuContainer_MouseLeave;
+
+            BarPowerContainer.MouseEnter += BarPowerContainer_MouseEnter;
+            BarPowerContainer.MouseLeave += BarPowerContainer_MouseLeave;
+
+            BarTimeContainer.MouseEnter += BarTimeContainer_MouseEnter;
+            BarTimeContainer.MouseLeave += BarTimeContainer_MouseLeave;
 
             _Awake();
             _Update();
@@ -71,48 +91,60 @@ namespace lolibar
             };
         }
 
-        // Misc
-        void SetOptimalBarSize()
+        void BarUserContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Resources["BarMargin"] = Resources["BarMargin"] == null ? 8 : Resources["BarMargin"];
-            Resources["BarHeight"] = Resources["BarHeight"] == null ? 40 : Resources["BarHeight"];
-            Resources["BarWidth"] = Inch_ScreenWidth - 2 * (double)Resources["BarMargin"];
+            UseIncOpacityAnimation(BarUserContainer);
+        }
+        void BarUserContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseDecOpacityAnimation(BarUserContainer);
         }
 
-        // Config Methods Calls
-        void _Awake()
+        void BarCurProcContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            // Sets in Config.cs
-            Awake();
-
-            SetOptimalBarSize();
+            UseIncOpacityAnimation(BarCurProcContainer);
         }
-        async void _Update()
+        void BarCurProcContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            while (true)
-            {
-                await Task.Delay(1000);
-
-                // Sets in Config.cs
-                Update();
-            }
+            UseDecOpacityAnimation(BarCurProcContainer);
         }
 
-        // Tray Content
-        void GitHubRef(object sender, EventArgs e)
+        void BarRamContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Process.Start("explorer", "https://github.com/supchyan/lolibar");
+            UseIncOpacityAnimation(BarRamContainer);
         }
-        void ExitRef(object sender, EventArgs e)
+        void BarRamContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            notifyIcon.Visible = false;
-            
-            // Close container and the lolibar
-            nullWin.Close();
-            Close();
+            UseDecOpacityAnimation(BarRamContainer);
         }
 
-        // Events
+        void BarTimeContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseIncOpacityAnimation(BarTimeContainer);
+        }
+        void BarTimeContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseDecOpacityAnimation(BarTimeContainer);
+        }
+
+        void BarPowerContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseIncOpacityAnimation(BarPowerContainer);
+        }
+        void BarPowerContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseDecOpacityAnimation(BarPowerContainer);
+        }
+
+        void BarCpuContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseDecOpacityAnimation(BarCpuContainer);
+        }
+        void BarCpuContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            UseIncOpacityAnimation(BarCpuContainer);
+        }
+
         void Lolibar_ContentRendered(object? sender, EventArgs e)
         {
             transformToDevice = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
@@ -133,9 +165,6 @@ namespace lolibar
 
             Storyboard SB_Show = new();
             Storyboard SB_Hide = new();
-
-            var duration = new Duration(TimeSpan.FromSeconds(0.3));
-            var easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
 
             var ShowAnimation = new DoubleAnimation
             {
@@ -205,6 +234,79 @@ namespace lolibar
                 }
                 oldIsHidden = IsHidden;
             }
+        }
+
+        // Misc
+        void SetOptimalBarSize()
+        {
+            Resources["BarMargin"] = Resources["BarMargin"] == null ? 8 : Resources["BarMargin"];
+            Resources["BarHeight"] = Resources["BarHeight"] == null ? 40 : Resources["BarHeight"];
+            Resources["BarWidth"] = Inch_ScreenWidth - 2 * (double)Resources["BarMargin"];
+        }
+        void UseDecOpacityAnimation(UIElement _)
+        {
+            Storyboard SB = new();
+            var Animation = new DoubleAnimation
+            {
+                From = _.Opacity,
+                To = 0.5,
+                Duration = el_duration,
+                EasingFunction = easing
+            };
+            SB.Children.Add(Animation);
+            Storyboard.SetTarget(Animation, _);
+            Storyboard.SetTargetProperty(Animation, new PropertyPath(OpacityProperty));
+            SB.Begin((FrameworkElement)_);
+        }
+        void UseIncOpacityAnimation(UIElement _)
+        {
+            Storyboard SB = new();
+            var Animation = new DoubleAnimation
+            {
+                From = _.Opacity,
+                To = 1,
+                Duration = el_duration,
+                EasingFunction = easing
+            };
+            SB.Children.Add(Animation);
+            Storyboard.SetTarget(Animation, _);
+            Storyboard.SetTargetProperty(Animation, new PropertyPath(OpacityProperty));
+            SB.Begin((FrameworkElement)_);
+        }
+
+        // Config Methods Calls
+        void _Awake()
+        {
+            // Sets in Config.cs
+            Awake();
+
+            SetOptimalBarSize();
+        }
+        async void _Update()
+        {
+            while (true)
+            {
+                await Task.Delay((int)Resources["UpdateDelay"]);
+
+                LolibarDefaults.Listen();
+
+                // Sets in Config.cs
+                Update();
+            }
+        }
+
+        // Tray Content
+        void GitHubRef(object? sender, EventArgs e)
+        {
+            Process.Start("explorer", "https://github.com/supchyan/lolibar");
+        }
+        void ExitRef(object? sender, EventArgs e)
+        {
+            notifyIcon.Visible = false;
+
+            // Close container and the lolibar
+            nullWin.Close();
+            Close();
         }
     }
 }

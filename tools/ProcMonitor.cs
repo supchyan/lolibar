@@ -23,8 +23,6 @@ namespace lolibar.tools
         {
             nint hwnd = GetForegroundWindow();
 
-            if (hwnd == null) return new string[3];
-
             GetWindowThreadProcessId(hwnd, out uint pid);
 
             foreach (var p in Process.GetProcesses())
