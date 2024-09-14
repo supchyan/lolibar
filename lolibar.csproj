@@ -4,7 +4,9 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWindowsForms>true</UseWindowsForms>
 		<UseWPF>true</UseWPF>
+		<ApplicationIcon>appicon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
