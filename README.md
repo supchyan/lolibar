@@ -24,6 +24,7 @@ int SomeTimer;
 
 void Awake()
 {
+  // Remember, ALL resources are pre-included into a project. You just customize it for your sake.
   Resources["IconSize"] = 16.0;
 }
 void Update()
@@ -31,8 +32,6 @@ void Update()
   SomeTimer++; // Updates every second. Keep it in mind.
   Resources["IconSize"] = 16.0 * Math.Abs(Math.Sin(SomeTimer));
 }
-
-// Remember, ALL resources are pre-included into a project. You just customize it for you sake.
 ```
 </br>
 
