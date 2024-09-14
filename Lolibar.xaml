@@ -11,33 +11,42 @@
         
         ResizeMode="NoResize"
         Topmost="True"
-        ShowInTaskbar="false"
+        ShowInTaskbar="False"
         
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         
         Opacity="{DynamicResource BarOpacity}"
+        FontSize="{DynamicResource FontSize}"
         
         Height="{DynamicResource BarHeight}"
         Width="{DynamicResource BarWidth}"
         
         d:DesignHeight="41.56"
         d:DesignWidth="1000.026"
-        FontFamily="{DynamicResource mononoki}">
+        FontFamily="{DynamicResource mononoki}"
+        
+        IsTabStop="False">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Rectangle Name="Bar" Fill="#FF1A1A1A" RadiusX="{DynamicResource BarBorderRadius}" RadiusY="{DynamicResource BarBorderRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" />
+        <Rectangle Name="Bar" Fill="{DynamicResource BarColor}" RadiusX="{DynamicResource BarBorderRadius}" RadiusY="{DynamicResource BarBorderRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" />
 
         <StackPanel Name="BarContentLeft"  Margin="{DynamicResource ElementMargin}" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Left">
 
-            <TextBlock Margin="{DynamicResource ElementMargin}" Foreground="{DynamicResource TextColor}" Text="{DynamicResource BarUser}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <StackPanel Name="BarUserContainer" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                <Path Name="BarUserIcon" Stretch="Uniform" Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Fill="{DynamicResource ElementColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"
+                    Data="{DynamicResource BarUser_Icon}" />
+                <TextBlock Name="BarUserText" Foreground="{DynamicResource ElementColor}" Text="{DynamicResource BarUser_Text}" HorizontalAlignment="Center" VerticalAlignment="Center" d:Text="username" d:Foreground="White" />
+            </StackPanel>
 
         </StackPanel>
        
         <StackPanel Name="BarContentCenter" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
 
             <StackPanel Name="BarCurProcContainer" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                <TextBlock Margin="{DynamicResource ElementMargin}" Foreground="{DynamicResource TextColor}" Text="{DynamicResource BarCurProc}" d:Text="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Path Name="BarCurProcIcon" Stretch="Uniform" Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Fill="{DynamicResource ElementColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"
+                    Data="{DynamicResource BarCurProc_Icon}" />
+                <TextBlock Name="BarCurProcText" Foreground="{DynamicResource ElementColor}" Text="{DynamicResource BarCurProc_Text}" HorizontalAlignment="Center" VerticalAlignment="Center" d:Text="process" d:Foreground="White" />
             </StackPanel>
         
         </StackPanel>
@@ -45,25 +54,29 @@
         <StackPanel Name="BarContentRight" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
             
             <StackPanel Name="BarRamContainer" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                <Path Stretch="Uniform" Width="16" Height="16" Fill="{DynamicResource TextColor}" VerticalAlignment="Center" Margin="0,0,10,0"
-                    Data="M3 0H2V1H1V2H0V3H1V5H0V6H1V7H2V8H3V7H5V8H6V7H7V6H8V5H7V3H8V2H7V1H6V0H5V1H3V0ZM6 2H2V6H6V2Z" />
-                <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource BarRAM}" d:Text="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Path Name="BarRamIcon" Stretch="Uniform" Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Fill="{DynamicResource ElementColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"
+                    Data="{DynamicResource BarRam_Icon}" />
+                <TextBlock Name="BarRamText" Foreground="{DynamicResource ElementColor}" Text="{DynamicResource BarRam_Text}"  HorizontalAlignment="Center" VerticalAlignment="Center" d:Text="ram" d:Foreground="White" />
             </StackPanel>
             
             <StackPanel Name="BarCpuContainer" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                <Path Stretch="Uniform" Width="16" Height="16" Fill="{DynamicResource TextColor}" VerticalAlignment="Center" Margin="0,0,10,0"
-                    Data="M3 0H2V1H1V2H0V3H1V5H0V6H1V7H2V8H3V7H5V8H6V7H7V6H8V5H7V3H8V2H7V1H6V0H5V1H3V0ZM6 2H2V6H6V2Z" />
-                <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource BarCPU}" d:Text="1" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                <Path Name="BarCpuIcon" Stretch="Uniform" Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Fill="{DynamicResource ElementColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"
+                    Data="{DynamicResource BarCpu_Icon}" />
+                <TextBlock Name="BarCpuText" Foreground="{DynamicResource ElementColor}" Text="{DynamicResource BarCpu_Text}" VerticalAlignment="Center" HorizontalAlignment="Right" d:Text="cpu" d:Foreground="White" />
             </StackPanel>
 
             <StackPanel Name="BarPowerContainer" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                <Path Stretch="Uniform" Width="16" Height="16" Fill="{DynamicResource TextColor}" VerticalAlignment="Center" Margin="0,0,10,0"
-                    Data="M3 0H2V1H1V2H0V3H1V5H0V6H1V7H2V8H3V7H5V8H6V7H7V6H8V5H7V3H8V2H7V1H6V0H5V1H3V0ZM6 2H2V6H6V2Z" />
-                <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource BarPower}" d:Text="2" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                <Path Name="BarPowerIcon" Stretch="Uniform" Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Fill="{DynamicResource ElementColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"
+                    Data="{DynamicResource BarPower_Icon}" />
+                <TextBlock Name="BarPowerText" Foreground="{DynamicResource ElementColor}" Text="{DynamicResource BarPower_Text}" VerticalAlignment="Center" HorizontalAlignment="Right" d:Text="power" d:Foreground="White" />
             </StackPanel>
 
-            <TextBlock Margin="{DynamicResource ElementMargin}" Foreground="{DynamicResource TextColor}" Text="{DynamicResource BarTime}" d:Text="2" VerticalAlignment="Center" HorizontalAlignment="Right" />
-        
+            <StackPanel Name="BarTimeContainer" Margin="{DynamicResource ElementMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <Path Name="BarTimeIcon" Stretch="Uniform" Width="{DynamicResource IconSize}" Height="{DynamicResource IconSize}" Fill="{DynamicResource ElementColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"
+                    Data="{DynamicResource BarTime_Icon}" />
+                <TextBlock Name="BarTimeText" Foreground="{DynamicResource ElementColor}" Text="{DynamicResource BarTime_Text}" VerticalAlignment="Center" HorizontalAlignment="Right" d:Text="time" d:Foreground="White" />
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </Window>

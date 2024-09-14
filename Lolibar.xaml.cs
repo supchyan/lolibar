@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System.Security.Principal;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Windows;
-using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Ikst.MouseHook;
@@ -10,51 +10,50 @@ using lolibar.tools;
 
 namespace lolibar
 {
+
     public partial class Lolibar : Window
     {
         // Misc
+        ProcMonitor procMonitor = new();
         MouseHook MouseHandler = new();
-        Info _Info = new();
-        Styles _Styles = new();
         NotifyIcon notifyIcon;
 
-        // Screen coordinates
+        // For screen coordinates calculation
         Matrix transformToDevice;
         System.Windows.Size screenSize;
-
         readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;
         readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
 
         // Drawing conditions
         bool IsHidden, oldIsHidden;
 
+        // Null window to prevent lolibar's appearing inside alt+tab menu
+        Window nullWin = new()
+        {
+            Visibility = Visibility.Hidden,
+            WindowStyle = WindowStyle.ToolWindow,
+            ShowInTaskbar = false,
+            Width = 0, Height = 0,
+        };
+
+        // Trigger to prevent different job before... window rendered
+        bool IsRendered; 
+
         public Lolibar()
         {
             InitializeComponent();
 
-            SetBarSizeRelatedToWindow();
+            // Move lolibar into null window
+            nullWin.Show();
+            Owner = GetWindow(nullWin);
 
             ContentRendered += Lolibar_ContentRendered;
 
-            Resources.Add("BarWidth",        _Styles.BarWidth);
-            Resources.Add("BarHeight",       _Styles.BarHeight);
-            Resources.Add("BarBorderRadius", _Styles.BarBorderRadius);
-            Resources.Add("BarOpacity",      _Styles.BarOpacity);
-            Resources.Add("ElementMargin",   _Styles.ElementMargin);
-            Resources.Add("TextColor",       _Styles.TextColor);
-
-            Resources.Add("BarUser",         _Info.BarUser);
-            Resources.Add("BarTime",         _Info.BarTime);
-            Resources.Add("BarCPU",          _Info.BarCPU);
-            Resources.Add("BarRAM",          _Info.BarRAM);
-            Resources.Add("BarCurProcName",  _Info.BarCurProcName);
-            Resources.Add("BarCurProcID",    _Info.BarCurProcID);
-            Resources.Add("BarCurProc",      _Info.BarCurProc);
+            _Awake();
+            _Update();
 
             MouseHandler.MouseMove += MouseHandler_MouseMove;
             MouseHandler.Start();
-
-            Update();
 
             notifyIcon = new NotifyIcon
             {
@@ -64,38 +63,56 @@ namespace lolibar
                 ContextMenuStrip = new()
                 {
                     Items = 
-                    { 
-                        new ToolStripMenuItem("Exit", null, Exit)
+                    {
+                        new ToolStripMenuItem("GitHub", null, GitHubRef),
+                        new ToolStripMenuItem("Exit", null, ExitRef)
                     }
                 }
             };
         }
-        void Exit(object sender, EventArgs e)
+
+        // Misc
+        void SetOptimalBarSize()
         {
-            notifyIcon.Visible = false;
-            Close();
+            Resources["BarMargin"] = Resources["BarMargin"] == null ? 8 : Resources["BarMargin"];
+            Resources["BarHeight"] = Resources["BarHeight"] == null ? 40 : Resources["BarHeight"];
+            Resources["BarWidth"] = Inch_ScreenWidth - 2 * (double)Resources["BarMargin"];
         }
 
-        async void Update()
+        // Config Methods Calls
+        void _Awake()
+        {
+            // Sets in Config.cs
+            Awake();
+
+            SetOptimalBarSize();
+        }
+        async void _Update()
         {
             while (true)
             {
                 await Task.Delay(1000);
 
-                _Info.GetForegroundProcessInfo();
-
-                Resources["BarUser"]        = $"{WindowsIdentity.GetCurrent().Name.Split('\\')[1]}";
-                Resources["BarTime"]        = $"{DateTime.Now}";
-                Resources["BarCPU"]         = $"{Math.Round(Info.CPU_Counter.NextValue(), 2)}%";
-                Resources["BarRAM"]         = $"{Math.Round(Info.RAM_Counter.NextValue() / 1024.0, 2)}GB";
-                Resources["BarPower"]       = $"{SystemInformation.PowerStatus.BatteryLifePercent * 100.0}%";
-                
-                Resources["BarCurProcName"] = _Info.BarCurProcName;
-                Resources["BarCurProcID"]   = _Info.BarCurProcID;
-                Resources["BarCurProc"]     = _Info.BarCurProc;
+                // Sets in Config.cs
+                Update();
             }
         }
 
+        // Tray Content
+        void GitHubRef(object sender, EventArgs e)
+        {
+            Process.Start("explorer", "https://github.com/supchyan/lolibar");
+        }
+        void ExitRef(object sender, EventArgs e)
+        {
+            notifyIcon.Visible = false;
+            
+            // Close container and the lolibar
+            nullWin.Close();
+            Close();
+        }
+
+        // Events
         void Lolibar_ContentRendered(object? sender, EventArgs e)
         {
             transformToDevice = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
@@ -103,73 +120,91 @@ namespace lolibar
 
             Left = (Inch_ScreenWidth - Width) / 2;
             Top = Inch_ScreenHeight;
+
+            IsRendered = true;
         }
 
         void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)
         {
-            var Show_Trigger = screenSize.Height;
-            var Hide_Trigger = screenSize.Height - Height - 4 * _Styles.BarMargin;
+            if (!IsRendered) return;
 
-            var StartPosition = Inch_ScreenHeight - Height - _Styles.BarMargin;
-            var EndPosition = Inch_ScreenHeight;
+            var Show_Trigger = mouseStruct.pt.y >= screenSize.Height && (mouseStruct.pt.x <= 0 || mouseStruct.pt.x >= screenSize.Width);
+            var Hide_Trigger = mouseStruct.pt.y < screenSize.Height - Height - 4 * (double)Resources["BarMargin"];
+
+            Storyboard SB_Show = new();
+            Storyboard SB_Hide = new();
+
+            var duration = new Duration(TimeSpan.FromSeconds(0.3));
+            var easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
 
             var ShowAnimation = new DoubleAnimation
             {
-                From = EndPosition,
-                To = StartPosition,
-                Duration = new Duration(TimeSpan.FromSeconds(0.3)),
-                EasingFunction = new CubicEase
-                {
-                    EasingMode = EasingMode.EaseInOut
-                }
+                From = Top,
+                To = Inch_ScreenHeight - Height - (double)Resources["BarMargin"],
+                Duration = duration,
+                EasingFunction = easing
             };
             var HideAnimation = new DoubleAnimation
             {
-                From = StartPosition,
-                To = EndPosition,
-                Duration = new Duration(TimeSpan.FromSeconds(0.3)),
-                EasingFunction = new CubicEase
-                {
-                    EasingMode = EasingMode.EaseInOut
-                }
+                From = Top,
+                To = Inch_ScreenHeight,
+                Duration = duration,
+                EasingFunction = easing
+            };
+            var OpacityOnAnimation = new DoubleAnimation
+            {
+                From = Opacity,
+                To = 1,
+                Duration = duration,
+                EasingFunction = easing
+            };
+            var OpacityOffAnimation = new DoubleAnimation
+            {
+                From = Opacity,
+                To = 0,
+                Duration = duration,
+                EasingFunction = easing
             };
 
-            Storyboard SB_Show = new();
             SB_Show.Children.Add(ShowAnimation);
+            SB_Show.Children.Add(OpacityOnAnimation);
 
-            Storyboard SB_Hide = new();
             SB_Hide.Children.Add(HideAnimation);
+            SB_Hide.Children.Add(OpacityOffAnimation);
 
-            if (mouseStruct.pt.y >= Show_Trigger)
-            {
-                IsHidden = true;
-            }
-            else if (mouseStruct.pt.y < Hide_Trigger)
+            if (Show_Trigger)
             {
                 IsHidden = false;
+            }
+            else if (Hide_Trigger)
+            {
+                IsHidden = true;
             }
 
             if (oldIsHidden != IsHidden)
             {
-                if (IsHidden)
+                if (!IsHidden)
                 {
                     Storyboard.SetTarget(ShowAnimation, this);
                     Storyboard.SetTargetProperty(ShowAnimation, new PropertyPath(TopProperty));
+
+                    Storyboard.SetTarget(OpacityOnAnimation, this);
+                    Storyboard.SetTargetProperty(OpacityOnAnimation, new PropertyPath(OpacityProperty));
+
                     SB_Show.Begin(this);
                 }
                 else
                 {
                     Storyboard.SetTarget(HideAnimation, this);
                     Storyboard.SetTargetProperty(HideAnimation, new PropertyPath(TopProperty));
+
+                    Storyboard.SetTarget(OpacityOffAnimation, this);
+                    Storyboard.SetTargetProperty(OpacityOffAnimation, new PropertyPath(OpacityProperty));
+
                     SB_Hide.Begin(this);
                 }
                 oldIsHidden = IsHidden;
             }
-        }
-
-        void SetBarSizeRelatedToWindow()
-        {
-            _Styles.BarWidth = Inch_ScreenWidth - 2 * _Styles.BarMargin;
         }
     }
 }

@@ -2,18 +2,8 @@
 
 namespace lolibar.tools
 {
-    public class Info
+    public class ProcMonitor
     {
-        // Info
-        public string BarUser        = "wait";
-        public string BarTime        = "wait";
-        public string BarCPU         = "wait";
-        public string BarRAM         = "wait";
-        public string BarPower       = "wait";
-        public string BarCurProcName = "wait";
-        public string BarCurProcID   = "wait";
-        public string BarCurProc     = "wait";
-
         // Counters
         public static readonly PerformanceCounter CPU_Counter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         public static readonly PerformanceCounter RAM_Counter = new PerformanceCounter("Memory", "Available MBytes");
@@ -25,11 +15,15 @@ namespace lolibar.tools
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         static extern int GetWindowThreadProcessId(nint hwnd, out uint lpdwProcessId);
 
-        public void GetForegroundProcessInfo()
+        /// <summary>
+        /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetForegroundProcessInfo()
         {
             nint hwnd = GetForegroundWindow();
 
-            if (hwnd == null) return;
+            if (hwnd == null) return new string[3];
 
             GetWindowThreadProcessId(hwnd, out uint pid);
 
@@ -37,11 +31,16 @@ namespace lolibar.tools
             {
                 if (p.Id == pid)
                 {
-                    BarCurProcID    = pid.ToString();
-                    BarCurProcName  = p.ProcessName;
-                    BarCurProc = $"{BarCurProcName}: {BarCurProcID}";
+                    return
+                        [
+                            $"{pid}",
+                            $"{p.ProcessName}",
+                            $"{p.ProcessName}: {pid}"
+                        ];
                 }
             }
+
+            return new string[3];
         }
     }
 }
