@@ -1,7 +1,7 @@
 #### lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#
 </br>
 
-> How is this work? Also, see [Lolibar_Config.cs]([https://github.com/supchyan/lolibar/blob/master/Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs))
+> How is this work? Also, see [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
 ```csharp
 // [Lolibar_Config.cs]
 
