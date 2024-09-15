@@ -20,7 +20,7 @@ namespace lolibar
             // Resources["BarHeight"]       = 48.0;
 
             Resources["BarBorderRadius"]    = 6.0;
-            Resources["BarOpacity"]         = 1;
+            Resources["BarOpacity"]         = 1.0;
             Resources["BarStrokeThickness"] = 0.0;
             Resources["BarColor"]           = new SolidColorBrush(System.Windows.Media.Color.FromRgb(3, 7, 33));
             
