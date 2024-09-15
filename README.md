@@ -1,9 +1,10 @@
-#### lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#
+#### <div align=center>this is lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
+<div align=center><img src="https://github.com/user-attachments/assets/57c47ef0-c5c7-41b4-87a1-e0b568479a17" /></div>
 </br>
 
-> How is this work? Also, see [Config.cs](https://github.com/supchyan/lolibar/blob/master/Config.cs)
+> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
 ```csharp
-// [Config.cs]
+// [Lolibar_Config.cs]
 
 void Initialize()
 {
@@ -18,7 +19,7 @@ void Update()
 
 > Example
 ```csharp
-// [Config.cs]
+// [Lolibar_Config.cs]
 
 int SomeTimer;
 
@@ -36,7 +37,6 @@ void Update()
 }
 ```
 </br>
+<div align=center><img src="https://github.com/user-attachments/assets/863863d6-946c-4cc7-b7c3-aa322448fdaf" /></div>
 
-![image](https://github.com/user-attachments/assets/0a3ff146-8898-4a8c-9f07-a9eeaae76c90)
-</br>
 *<div align=center>Only started development, so it's just a WIP, but look at this! ✨</div>*
