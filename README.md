@@ -1,4 +1,7 @@
-#### <div align=center>lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | wpf .net 8 | c#</div>
+
+<div align=center><img src="https://github.com/user-attachments/assets/c06b6922-fef5-4739-b707-e59e7763b7d5" width=240px /></div>
+
+#### <div align=center>windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
 </br>
 
 > How is this work? Also, see [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
