@@ -1,13 +1,13 @@
 ﻿using lolibar.tools;
-using System.Security.Principal;
 using System.Windows;
 using System.Windows.Media;
 
-// This is config part of the Lolibar Class. You can freely customize statusbar appearance here
+// This is config part of the Lolibar Class. You can handle statusbar's content logic here
 namespace lolibar
 {
     partial class Lolibar : Window
     {
+        #region Config
         // Runs once after launch
         void Initialize()
         {
@@ -28,23 +28,23 @@ namespace lolibar
             Resources["IconSize"]           = 16.0;
             Resources["FontSize"]           = 12.0;
 
-            Resources["BarUser_Text"]       = "";
-            Resources["BarUser_Icon"]       = LolibarDefaults.UserIcon;
+            Resources["BarUserText"]       = "";
+            Resources["BarUserIcon"]       = LolibarDefaults.UserIcon;
 
-            Resources["BarCurProc_Text"]    = "";
-            Resources["BarCurProc_Icon"]    = LolibarDefaults.CurrentProcessIcon;
+            Resources["BarCurProcText"]    = "";
+            Resources["BarCurProcIcon"]    = LolibarDefaults.CurrentProcessIcon;
 
-            Resources["BarRam_Text"]        = "";
-            Resources["BarRam_Icon"]        = LolibarDefaults.RamIcon;
+            Resources["BarRamText"]        = "";
+            Resources["BarRamIcon"]        = LolibarDefaults.RamIcon;
 
-            Resources["BarCpu_Text"]        = "";
-            Resources["BarCpu_Icon"]        = LolibarDefaults.CpuIcon;
+            Resources["BarCpuText"]        = "";
+            Resources["BarCpuIcon"]        = LolibarDefaults.CpuIcon;
 
-            Resources["BarPower_Text"]      = "";
-            Resources["BarPower_Icon"]      = LolibarDefaults.PowerIcon;
+            Resources["BarPowerText"]      = "";
+            Resources["BarPowerIcon"]      = LolibarDefaults.PowerIcon;
 
-            Resources["BarTime_Text"]       = "";
-            Resources["BarTime_Icon"]       = LolibarDefaults.TimeIcon;
+            Resources["BarTimeText"]       = "";
+            Resources["BarUserIcon"]       = LolibarDefaults.TimeIcon;
 
 
             BarTimeIcon.Visibility          = Visibility.Collapsed;
@@ -55,19 +55,19 @@ namespace lolibar
         // Updates every "UpdateDelay".
         void Update()
         {
-            Resources["BarUser_Text"]       = LolibarDefaults.UserInfo;
+            Resources["BarUserText"]       = LolibarDefaults.UserInfo;
 
-            Resources["BarCurProc_Text"]    = LolibarDefaults.CurrentProcessInfo;
+            Resources["BarCurProcText"]    = LolibarDefaults.CurrentProcessInfo;
 
-            Resources["BarRam_Text"]        = LolibarDefaults.RamInfo;
+            Resources["BarRamText"]        = LolibarDefaults.RamInfo;
 
-            Resources["BarCpu_Text"]        = LolibarDefaults.CpuInfo;
+            Resources["BarCpuText"]        = LolibarDefaults.CpuInfo;
 
-            Resources["BarPower_Text"]      = LolibarDefaults.PowerInfo;
-            Resources["BarPower_Icon"]      = LolibarDefaults.PowerIcon;
+            Resources["BarPowerText"]      = LolibarDefaults.PowerInfo;
+            Resources["BarPowerIcon"]      = LolibarDefaults.PowerIcon;
 
-            Resources["BarTime_Text"]       = LolibarDefaults.TimeInfo;
-
+            Resources["BarTimeText"]       = LolibarDefaults.TimeInfo;
         }
+        #endregion
     }
 }
