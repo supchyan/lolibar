@@ -69,7 +69,11 @@ namespace lolibar
             BarTimeContainer.MouseEnter += BarTimeContainer_MouseEnter;
             BarTimeContainer.MouseLeave += BarTimeContainer_MouseLeave;
 
-            _Awake();
+            _PreInitialize();
+            _Initialize();
+            _PostInitialize();
+
+            _PreUpdate();
             _Update();
 
             MouseHandler.MouseMove += MouseHandler_MouseMove;
@@ -239,9 +243,9 @@ namespace lolibar
         // Misc
         void SetOptimalBarSize()
         {
-            Resources["BarMargin"] = Resources["BarMargin"] == null ? 8 : Resources["BarMargin"];
-            Resources["BarHeight"] = Resources["BarHeight"] == null ? 40 : Resources["BarHeight"];
-            Resources["BarWidth"] = Inch_ScreenWidth - 2 * (double)Resources["BarMargin"];
+            Resources["BarMargin"] = Resources["BarMargin"] != null ? Resources["BarMargin"] : 8.0;
+            Resources["BarHeight"] = Resources["BarHeight"] != null ? Resources["BarHeight"] : 48.0;
+            Resources["BarWidth"]  = Resources["BarWidth"]  != null ? Resources["BarWidth"]  : Inch_ScreenWidth - 2 * (double)Resources["BarMargin"];
         }
         void UseDecOpacityAnimation(UIElement _)
         {
@@ -275,20 +279,32 @@ namespace lolibar
         }
 
         // Config Methods Calls
-        void _Awake()
+        void _PreInitialize()
+        {
+            LolibarDefaults.Initialize();
+        }
+        void _Initialize()
         {
             // Sets in Config.cs
-            Awake();
-
+            Initialize();
+        }
+        void _PostInitialize()
+        {
             SetOptimalBarSize();
+        }
+        async void _PreUpdate()
+        {
+            while (true)
+            {
+                await Task.Delay(1000);
+                LolibarDefaults.Update();
+            }
         }
         async void _Update()
         {
             while (true)
             {
                 await Task.Delay((int)Resources["UpdateDelay"]);
-
-                LolibarDefaults.Listen();
 
                 // Sets in Config.cs
                 Update();

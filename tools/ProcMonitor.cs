@@ -1,12 +1,15 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace lolibar.tools
 {
     public class ProcMonitor
     {
         // Counters
-        public static readonly PerformanceCounter CPU_Counter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        public static readonly PerformanceCounter RAM_Counter = new PerformanceCounter("Memory", "Available MBytes");
+        public static readonly PerformanceCounter CPU_Time_Total = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        public static readonly PerformanceCounter CPU_Time_Process = new PerformanceCounter("Process", "% Processor Time", Process.GetCurrentProcess().ProcessName);
+        public static readonly PerformanceCounter RAM_Left_MB = new PerformanceCounter("Memory", "Available MBytes");
+        public static readonly PerformanceCounter RAM_Commited_B = new PerformanceCounter("Memory", "Committed Bytes");
 
         // https://stackoverflow.com/questions/97283/how-can-i-determine-the-name-of-the-currently-focused-process-in-c-sharp
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -30,11 +33,11 @@ namespace lolibar.tools
                 if (p.Id == pid)
                 {
                     return
-                        [
-                            $"{pid}",
-                            $"{p.ProcessName}",
-                            $"{p.ProcessName}: {pid}"
-                        ];
+                    [
+                        $"{pid}",
+                        $"{p.ProcessName}",
+                        $"{p.ProcessName} | {pid}"
+                    ];
                 }
             }
 
