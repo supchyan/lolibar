@@ -1,10 +1,8 @@
-
-<div align=center><img src="https://github.com/user-attachments/assets/54ebf77c-c07b-4444-abee-34e1d0efa3e0" width=240px /></div>
-
-#### <div align=center>windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
+#### <div align=center>this is lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
+<div align=center><img src="https://github.com/user-attachments/assets/83e14fa1-1afc-4966-a583-5de564953f8a" /></div>
 </br>
 
-> How is this work? Also, see [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
+> How does it work? Also, see [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
 ```csharp
 // [Lolibar_Config.cs]
 
@@ -39,7 +37,6 @@ void Update()
 }
 ```
 </br>
+<div align=center><img src="https://github.com/user-attachments/assets/863863d6-946c-4cc7-b7c3-aa322448fdaf" /></div>
 
-![image](https://github.com/user-attachments/assets/0a3ff146-8898-4a8c-9f07-a9eeaae76c90)
-</br>
 *<div align=center>Only started development, so it's just a WIP, but look at this! ✨</div>*
