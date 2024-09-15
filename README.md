@@ -1,5 +1,5 @@
 
-<div align=center><img src="https://github.com/user-attachments/assets/c06b6922-fef5-4739-b707-e59e7763b7d5" width=240px /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/54ebf77c-c07b-4444-abee-34e1d0efa3e0" width=240px /></div>
 
 #### <div align=center>windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
 </br>
