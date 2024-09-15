@@ -38,7 +38,9 @@ void Update()
 ```
 
 </br>
+
 ##### Have an idea for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!
+
 </br>
 
 <div align=center><img src="https://github.com/user-attachments/assets/863863d6-946c-4cc7-b7c3-aa322448fdaf" /></div>
