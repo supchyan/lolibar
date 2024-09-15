@@ -1,8 +1,8 @@
 #### <div align=center>this is lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
-<div align=center><img src="https://github.com/user-attachments/assets/83e14fa1-1afc-4966-a583-5de564953f8a" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/57c47ef0-c5c7-41b4-87a1-e0b568479a17" /></div>
 </br>
 
-> How does it work? Also, see [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
+> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
 ```csharp
 // [Lolibar_Config.cs]
 
