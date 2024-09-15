@@ -16,7 +16,6 @@ namespace lolibar.tools
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         static extern int GetWindowThreadProcessId(nint hwnd, out uint lpdwProcessId);
-
         /// <summary>
         /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
         /// </summary>

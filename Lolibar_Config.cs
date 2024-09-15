@@ -1,6 +1,5 @@
 ﻿using lolibar.tools;
 using System.Windows;
-using System.Windows.Media;
 
 // This is config part of the Lolibar Class. You can handle statusbar's content logic here
 namespace lolibar
@@ -21,53 +20,74 @@ namespace lolibar
 
             Resources["BarBorderRadius"]    = 6.0;
             Resources["BarOpacity"]         = 1.0;
-            Resources["BarStrokeThickness"] = 0.0;
-            Resources["BarColor"]           = new SolidColorBrush(System.Windows.Media.Color.FromRgb(3, 7, 33));
-            
+            Resources["BarStroke"]          = 0.0;
+            Resources["BarColor"]           = LolibarHelper.SetColor("#121e46");
+
+            Resources["ElementPadding"]     = new Thickness(8.0,  8.0, 8.0,  8.0); // Gaps inside containers [ such as statistics container ]
             Resources["ElementMargin"]      = new Thickness(16.0, 0.0, 16.0, 0.0);
-            Resources["ElementColor"]       = new SolidColorBrush(System.Windows.Media.Color.FromRgb(122, 169, 180));
+            Resources["ElementColor"]       = LolibarHelper.SetColor("#8981bd");
             Resources["IconSize"]           = 16.0;
             Resources["FontSize"]           = 12.0;
 
-            Resources["BarUserText"]       = "";
-            Resources["BarUserIcon"]       = LolibarDefaults.UserIcon;
+            Resources["BarUserText"]        = "";
+            Resources["BarUserIcon"]        = LolibarDefaults.UserIcon;
 
-            Resources["BarCurProcText"]    = "";
-            Resources["BarCurProcIcon"]    = LolibarDefaults.CurProcIcon;
+            Resources["BarCurProcText"]     = "";
+            Resources["BarCurProcIcon"]     = LolibarDefaults.CurProcIcon;
 
-            Resources["BarRamText"]        = "";
-            Resources["BarRamIcon"]        = LolibarDefaults.RamIcon;
+            Resources["BarRamText"]         = "";
+            Resources["BarRamIcon"]         = LolibarDefaults.RamIcon;
 
-            Resources["BarCpuText"]        = "";
-            Resources["BarCpuIcon"]        = LolibarDefaults.CpuIcon;
+            Resources["BarVRamText"]        = "";
+            Resources["BarVRamIcon"]        = LolibarDefaults.VRamIcon;
 
-            Resources["BarPowerText"]      = "";
-            Resources["BarPowerIcon"]      = LolibarDefaults.PowerIcon;
+            Resources["BarCpuText"]         = "";
+            Resources["BarCpuIcon"]         = LolibarDefaults.CpuIcon;
 
-            Resources["BarTimeText"]       = "";
-            Resources["BarUserIcon"]       = LolibarDefaults.TimeIcon;
+            Resources["BarDiskText"]        = "";
+            Resources["BarDiskIcon"]        = LolibarDefaults.DiskIcon;
+
+            Resources["BarNetworkText"]     = "";
+            Resources["BarNetworkIcon"]     = LolibarDefaults.NetworkIcon;
+
+            Resources["BarSoundText"]       = "";
+            Resources["BarSoundIcon"]       = LolibarDefaults.SoundIcon;
+
+            Resources["BarPowerText"]       = "";
+            Resources["BarPowerIcon"]       = LolibarDefaults.PowerIcon;
+
+            Resources["BarTimeText"]        = "";
+            Resources["BarTimeIcon"]        = LolibarDefaults.TimeIcon;
 
 
             BarTimeIcon.Visibility          = Visibility.Collapsed;
             BarCurProcIcon.Visibility       = Visibility.Collapsed;
-            BarUserIcon.Visibility          = Visibility.Collapsed;
+            BarUserContainer.Visibility     = Visibility.Collapsed;
         }
 
         // Updates every "UpdateDelay".
         void Update()
         {
-            Resources["BarUserText"]       = LolibarDefaults.UserInfo;
+            Resources["BarUserText"]        = LolibarDefaults.UserInfo;
 
-            Resources["BarCurProcText"]    = LolibarDefaults.CurProcInfo;
+            Resources["BarCurProcText"]     = LolibarDefaults.CurProcInfo;
 
-            Resources["BarRamText"]        = LolibarDefaults.RamInfo;
+            Resources["BarRamText"]         = LolibarDefaults.RamInfo;
 
-            Resources["BarCpuText"]        = LolibarDefaults.CpuInfo;
+            Resources["BarVRamText"]        = LolibarDefaults.VRamInfo;
 
-            Resources["BarPowerText"]      = LolibarDefaults.PowerInfo;
-            Resources["BarPowerIcon"]      = LolibarDefaults.PowerIcon;
+            Resources["BarCpuText"]         = LolibarDefaults.CpuInfo;
 
-            Resources["BarTimeText"]       = LolibarDefaults.TimeInfo;
+            Resources["BarDiskText"]        = LolibarDefaults.DiskInfo;
+
+            Resources["BarNetworkText"]     = LolibarDefaults.NetworkInfo;
+
+            Resources["BarSoundText"]       = LolibarDefaults.SoundInfo;
+
+            Resources["BarPowerText"]       = LolibarDefaults.PowerInfo;
+            Resources["BarPowerIcon"]       = LolibarDefaults.PowerIcon;
+
+            Resources["BarTimeText"]        = LolibarDefaults.TimeInfo;
         }
         #endregion
     }

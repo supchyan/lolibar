@@ -1,4 +1,5 @@
 ﻿using Ikst.MouseHook;
+using System.Diagnostics;
 using System.Windows;
 
 namespace lolibar
@@ -6,58 +7,85 @@ namespace lolibar
     partial class Lolibar : Window
     {
         #region Events
-        void BarUserContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            BeginIncOpacityAnimation(BarUserContainer);
-        }
         void BarUserContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            Cursor = System.Windows.Input.Cursors.Hand;
             BeginDecOpacityAnimation(BarUserContainer);
         }
-
-        void BarCurProcContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        void BarUserContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            BeginIncOpacityAnimation(BarCurProcContainer);
+            Cursor = System.Windows.Input.Cursors.Arrow;
+            BeginIncOpacityAnimation(BarUserContainer);
         }
+
         void BarCurProcContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            Cursor = System.Windows.Input.Cursors.Hand;
             BeginDecOpacityAnimation(BarCurProcContainer);
         }
-
-        void BarRamContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        void BarCurProcContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            BeginIncOpacityAnimation(BarRamContainer);
+            Cursor = System.Windows.Input.Cursors.Arrow;
+            BeginIncOpacityAnimation(BarCurProcContainer);
         }
+
         void BarRamContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            BeginDecOpacityAnimation(BarRamContainer);
+            // Cursor = System.Windows.Input.Cursors.Hand;
+            // BeginDecOpacityAnimation(BarRamContainer);
         }
-
-        void BarTimeContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        void BarRamContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            BeginIncOpacityAnimation(BarTimeContainer);
-        }
-        void BarTimeContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            BeginDecOpacityAnimation(BarTimeContainer);
-        }
-
-        void BarPowerContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            BeginIncOpacityAnimation(BarPowerContainer);
-        }
-        void BarPowerContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            BeginDecOpacityAnimation(BarPowerContainer);
+            // Cursor = System.Windows.Input.Cursors.Arrow;
+            // BeginIncOpacityAnimation(BarRamContainer);
         }
 
         void BarCpuContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            BeginDecOpacityAnimation(BarCpuContainer);
+            // Cursor = System.Windows.Input.Cursors.Hand;
+            // BeginDecOpacityAnimation(BarCpuContainer);
         }
         void BarCpuContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            BeginIncOpacityAnimation(BarCpuContainer);
+            // Cursor = System.Windows.Input.Cursors.Arrow;
+            // BeginIncOpacityAnimation(BarCpuContainer);
+        }
+
+        void BarPowerContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Cursor = System.Windows.Input.Cursors.Hand;
+            BeginDecOpacityAnimation(BarPowerContainer);
+        }
+        void BarPowerContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Cursor = System.Windows.Input.Cursors.Arrow;
+            BeginIncOpacityAnimation(BarPowerContainer);
+        }
+
+        void BarSoundContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Cursor = System.Windows.Input.Cursors.Hand;
+            BeginDecOpacityAnimation(BarSoundContainer);
+        }
+        void BarSoundContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Cursor = System.Windows.Input.Cursors.Arrow;
+            BeginIncOpacityAnimation(BarSoundContainer);
+        }
+        void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Process.Start("Rundll32.exe","shell32.dll,Control_RunDLL Mmsys.cpl,,0");
+        }
+
+        void BarTimeContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Cursor = System.Windows.Input.Cursors.Hand;
+            BeginDecOpacityAnimation(BarTimeContainer);
+        }
+        void BarTimeContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Cursor = System.Windows.Input.Cursors.Arrow;
+            BeginIncOpacityAnimation(BarTimeContainer);
         }
 
         void Lolibar_ContentRendered(object? sender, EventArgs e)

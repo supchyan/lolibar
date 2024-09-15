@@ -59,6 +59,10 @@ namespace lolibar
             BarPowerContainer.MouseEnter += BarPowerContainer_MouseEnter;
             BarPowerContainer.MouseLeave += BarPowerContainer_MouseLeave;
 
+            BarSoundContainer.MouseEnter += BarSoundContainer_MouseEnter;
+            BarSoundContainer.MouseLeave += BarSoundContainer_MouseLeave;
+            BarSoundContainer.MouseLeftButtonUp += BarSoundContainer_MouseLeftButtonUp;
+
             BarTimeContainer.MouseEnter += BarTimeContainer_MouseEnter;
             BarTimeContainer.MouseLeave += BarTimeContainer_MouseLeave;
 
