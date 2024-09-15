@@ -1,9 +1,9 @@
 #### lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#
 </br>
 
-> How is this work? Also, see [Config.cs](https://github.com/supchyan/lolibar/blob/master/Config.cs)
+> How is this work? Also, see [Lolibar_Config.cs]([https://github.com/supchyan/lolibar/blob/master/Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs))
 ```csharp
-// [Config.cs]
+// [Lolibar_Config.cs]
 
 void Initialize()
 {
@@ -18,7 +18,7 @@ void Update()
 
 > Example
 ```csharp
-// [Config.cs]
+// [Lolibar_Config.cs]
 
 int SomeTimer;
 
