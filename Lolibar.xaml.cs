@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Ikst.MouseHook;
@@ -19,6 +17,7 @@ namespace lolibar
         System.Windows.Size screenSize;
         readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;
         readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
+        double StatusBarVisiblePosY, StatusBarHidePosY;
 
         // Drawing conditions
         bool IsHidden, oldIsHidden;
@@ -34,11 +33,6 @@ namespace lolibar
 
         // Trigger to prevent different job before... window rendered
         bool IsRendered;
-
-        // Properties for animations
-        Duration duration = new Duration(TimeSpan.FromSeconds(0.3));
-        Duration el_duration = new Duration(TimeSpan.FromSeconds(0.1));
-        CubicEase easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
 
         public Lolibar()
         {
@@ -86,7 +80,7 @@ namespace lolibar
         void SetOptimalBarSize()
         {
             Resources["BarMargin"] = Resources["BarMargin"] != null ? Resources["BarMargin"] : 8.0;
-            Resources["BarHeight"] = Resources["BarHeight"] != null ? Resources["BarHeight"] : 48.0;
+            Resources["BarHeight"] = Resources["BarHeight"] != null ? Resources["BarHeight"] : 42.0;
             Resources["BarWidth"]  = Resources["BarWidth"]  != null ? Resources["BarWidth"]  : Inch_ScreenWidth - 2 * (double)Resources["BarMargin"];
         }
 
@@ -111,6 +105,16 @@ namespace lolibar
             {
                 await Task.Delay(1000);
                 LolibarDefaults.Update();
+                if (!(bool)Resources["SnapToTop"])
+                {
+                    StatusBarVisiblePosY = Inch_ScreenHeight - Height - (double)Resources["BarMargin"];
+                    StatusBarHidePosY = Inch_ScreenHeight;
+                }
+                else
+                {
+                    StatusBarVisiblePosY = (double)Resources["BarMargin"];
+                    StatusBarHidePosY = - Height - (double)Resources["BarMargin"];
+                }
             }
         }
         async void _Update()

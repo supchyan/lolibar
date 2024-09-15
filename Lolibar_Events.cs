@@ -1,8 +1,5 @@
 ﻿using Ikst.MouseHook;
-using lolibar.tools;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace lolibar
 {
@@ -78,46 +75,26 @@ namespace lolibar
         {
             if (!IsRendered) return;
 
-            var Show_Trigger = mouseStruct.pt.y >= screenSize.Height && (mouseStruct.pt.x <= 0 || mouseStruct.pt.x >= screenSize.Width);
-            var Hide_Trigger = mouseStruct.pt.y < screenSize.Height - Height - 4 * (double)Resources["BarMargin"];
+            bool Show_Trigger, Hide_Trigger;
+            
+            bool MouseMinY = mouseStruct.pt.y <= 0;
+            bool MouseMaxY = mouseStruct.pt.y >= screenSize.Height;
 
-            Storyboard SB_Show = new();
-            Storyboard SB_Hide = new();
+            bool MouseMinX = mouseStruct.pt.x <= 0;
+            bool MouseMaxX = mouseStruct.pt.x >= screenSize.Width;
 
-            var ShowAnimation = new DoubleAnimation
-            {
-                From = Top,
-                To = Inch_ScreenHeight - Height - (double)Resources["BarMargin"],
-                Duration = duration,
-                EasingFunction = easing
-            };
-            var HideAnimation = new DoubleAnimation
-            {
-                From = Top,
-                To = Inch_ScreenHeight,
-                Duration = duration,
-                EasingFunction = easing
-            };
-            var OpacityOnAnimation = new DoubleAnimation
-            {
-                From = Opacity,
-                To = 1,
-                Duration = duration,
-                EasingFunction = easing
-            };
-            var OpacityOffAnimation = new DoubleAnimation
-            {
-                From = Opacity,
-                To = 0,
-                Duration = duration,
-                EasingFunction = easing
-            };
+            var BarSizeY = Height + 4 * (double)Resources["BarMargin"];
 
-            SB_Show.Children.Add(ShowAnimation);
-            SB_Show.Children.Add(OpacityOnAnimation);
-
-            SB_Hide.Children.Add(HideAnimation);
-            SB_Hide.Children.Add(OpacityOffAnimation);
+            if (!(bool)Resources["SnapToTop"])
+            {
+                Show_Trigger = MouseMaxY && (MouseMinX || MouseMaxX);
+                Hide_Trigger = mouseStruct.pt.y < screenSize.Height - BarSizeY;
+            }
+            else
+            {
+                Show_Trigger = MouseMinY && (MouseMinX || MouseMaxX);
+                Hide_Trigger = mouseStruct.pt.y > BarSizeY;
+            }
 
             if (Show_Trigger)
             {
@@ -132,23 +109,11 @@ namespace lolibar
             {
                 if (!IsHidden)
                 {
-                    Storyboard.SetTarget(ShowAnimation, this);
-                    Storyboard.SetTargetProperty(ShowAnimation, new PropertyPath(TopProperty));
-
-                    Storyboard.SetTarget(OpacityOnAnimation, this);
-                    Storyboard.SetTargetProperty(OpacityOnAnimation, new PropertyPath(OpacityProperty));
-
-                    SB_Show.Begin(this);
+                    BeginStatusBarShowAnimation(this);
                 }
                 else
                 {
-                    Storyboard.SetTarget(HideAnimation, this);
-                    Storyboard.SetTargetProperty(HideAnimation, new PropertyPath(TopProperty));
-
-                    Storyboard.SetTarget(OpacityOffAnimation, this);
-                    Storyboard.SetTargetProperty(OpacityOffAnimation, new PropertyPath(OpacityProperty));
-
-                    SB_Hide.Begin(this);
+                    BeginStatusBarHideAnimation(this);
                 }
                 oldIsHidden = IsHidden;
             }

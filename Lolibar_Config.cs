@@ -11,6 +11,7 @@ namespace lolibar
         // Runs once after launch
         void Initialize()
         {
+            Resources["SnapToTop"]          = false; // If true, snaps Lolibar to top of the screen
             Resources["UpdateDelay"]        = 1000; // Delay for Update() method. Low delay affects performance!
 
             // If it's not set, lolibar's size and margin will be automatically initialized.
@@ -19,7 +20,7 @@ namespace lolibar
             // Resources["BarHeight"]       = 48.0;
 
             Resources["BarBorderRadius"]    = 6.0;
-            Resources["BarOpacity"]         = 1.0;
+            Resources["BarOpacity"]         = 1;
             Resources["BarStrokeThickness"] = 0.0;
             Resources["BarColor"]           = new SolidColorBrush(System.Windows.Media.Color.FromRgb(3, 7, 33));
             
@@ -32,7 +33,7 @@ namespace lolibar
             Resources["BarUserIcon"]       = LolibarDefaults.UserIcon;
 
             Resources["BarCurProcText"]    = "";
-            Resources["BarCurProcIcon"]    = LolibarDefaults.CurrentProcessIcon;
+            Resources["BarCurProcIcon"]    = LolibarDefaults.CurProcIcon;
 
             Resources["BarRamText"]        = "";
             Resources["BarRamIcon"]        = LolibarDefaults.RamIcon;
@@ -57,7 +58,7 @@ namespace lolibar
         {
             Resources["BarUserText"]       = LolibarDefaults.UserInfo;
 
-            Resources["BarCurProcText"]    = LolibarDefaults.CurrentProcessInfo;
+            Resources["BarCurProcText"]    = LolibarDefaults.CurProcInfo;
 
             Resources["BarRamText"]        = LolibarDefaults.RamInfo;
 
