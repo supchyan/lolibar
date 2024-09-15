@@ -1,4 +1,4 @@
-#### lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#
+#### <div align=center>lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | wpf .net 8 | c#</div>
 </br>
 
 > How is this work? Also, see [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
