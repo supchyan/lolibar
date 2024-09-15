@@ -28,6 +28,19 @@ namespace lolibar
             Cursor = System.Windows.Input.Cursors.Arrow;
             BeginIncOpacityAnimation(BarCurProcContainer);
         }
+        void BarCurProcContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            new Process
+            {
+                StartInfo = new()
+                {
+                    FileName        = "powershell.exe",
+                    Arguments       = "taskmgr.exe",
+                    UseShellExecute = false,
+                    CreateNoWindow  = true,
+                }
+            }.Start();
+        }
 
         void BarRamContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {

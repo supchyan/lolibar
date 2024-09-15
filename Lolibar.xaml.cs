@@ -49,6 +49,7 @@ namespace lolibar
 
             BarCurProcContainer.MouseEnter += BarCurProcContainer_MouseEnter;
             BarCurProcContainer.MouseLeave += BarCurProcContainer_MouseLeave;
+            BarCurProcContainer.MouseLeftButtonUp += BarCurProcContainer_MouseLeftButtonUp;
 
             BarRamContainer.MouseEnter += BarRamContainer_MouseEnter;
             BarRamContainer.MouseLeave += BarRamContainer_MouseLeave;
