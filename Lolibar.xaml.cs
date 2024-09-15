@@ -44,28 +44,23 @@ namespace lolibar
 
             ContentRendered += Lolibar_ContentRendered;
 
-            BarUserContainer.MouseEnter += BarUserContainer_MouseEnter;
-            BarUserContainer.MouseLeave += BarUserContainer_MouseLeave;
+            BarCurProcIdContainer.MouseEnter += Container_MouseEnter;
+            BarCurProcIdContainer.MouseLeave += Container_MouseLeave;
+            BarCurProcIdContainer.MouseLeftButtonUp += BarCurProcContainer_MouseLeftButtonUp;
 
-            BarCurProcContainer.MouseEnter += BarCurProcContainer_MouseEnter;
-            BarCurProcContainer.MouseLeave += BarCurProcContainer_MouseLeave;
-            BarCurProcContainer.MouseLeftButtonUp += BarCurProcContainer_MouseLeftButtonUp;
+            BarCurProcNameContainer.MouseEnter += Container_MouseEnter;
+            BarCurProcNameContainer.MouseLeave += Container_MouseLeave;
+            BarCurProcNameContainer.MouseLeftButtonUp += BarCurProcContainer_MouseLeftButtonUp;
 
-            BarRamContainer.MouseEnter += BarRamContainer_MouseEnter;
-            BarRamContainer.MouseLeave += BarRamContainer_MouseLeave;
+            BarPowerContainer.MouseEnter += Container_MouseEnter;
+            BarPowerContainer.MouseLeave += Container_MouseLeave;
 
-            BarCpuContainer.MouseEnter += BarCpuContainer_MouseEnter;
-            BarCpuContainer.MouseLeave += BarCpuContainer_MouseLeave;
-
-            BarPowerContainer.MouseEnter += BarPowerContainer_MouseEnter;
-            BarPowerContainer.MouseLeave += BarPowerContainer_MouseLeave;
-
-            BarSoundContainer.MouseEnter += BarSoundContainer_MouseEnter;
-            BarSoundContainer.MouseLeave += BarSoundContainer_MouseLeave;
+            BarSoundContainer.MouseEnter += Container_MouseEnter;
+            BarSoundContainer.MouseLeave += Container_MouseLeave;
             BarSoundContainer.MouseLeftButtonUp += BarSoundContainer_MouseLeftButtonUp;
 
-            BarTimeContainer.MouseEnter += BarTimeContainer_MouseEnter;
-            BarTimeContainer.MouseLeave += BarTimeContainer_MouseLeave;
+            BarTimeContainer.MouseEnter += Container_MouseEnter;
+            BarTimeContainer.MouseLeave += Container_MouseLeave;
 
             _PreInitialize();
             _Initialize();
@@ -102,13 +97,19 @@ namespace lolibar
         void _PostInitialize()
         {
             SetOptimalBarSize();
+            SetOptimalSeparatorBorderRadius();
+        }
+
+        private void SetOptimalSeparatorBorderRadius()
+        {
+            Resources["SeparatorBorderRadius"] = (double)Resources["SeparatorWidth"] / 2.0;
         }
 
         async void _PreUpdate()
         {
             while (true)
             {
-                await Task.Delay(1000);
+                await Task.Delay(1000); // Don't touch it, affects performance!
                 LolibarDefaults.Update();
                 if (!(bool)Resources["SnapToTop"])
                 {
@@ -136,7 +137,7 @@ namespace lolibar
         {
             while (true)
             {
-                await Task.Delay(1000);
+                await Task.Delay((int)Resources["UpdateDelay"]);
             }
         }
         #endregion

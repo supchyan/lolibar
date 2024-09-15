@@ -7,27 +7,17 @@ namespace lolibar
     partial class Lolibar : Window
     {
         #region Events
-        void BarUserContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        void Container_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Cursor = System.Windows.Input.Cursors.Hand;
-            BeginDecOpacityAnimation(BarUserContainer);
+            BeginDecOpacityAnimation((UIElement)sender);
         }
-        void BarUserContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        void Container_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Cursor = System.Windows.Input.Cursors.Arrow;
-            BeginIncOpacityAnimation(BarUserContainer);
+            BeginIncOpacityAnimation((UIElement)sender);
         }
 
-        void BarCurProcContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Hand;
-            BeginDecOpacityAnimation(BarCurProcContainer);
-        }
-        void BarCurProcContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Arrow;
-            BeginIncOpacityAnimation(BarCurProcContainer);
-        }
         void BarCurProcContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process
@@ -42,63 +32,9 @@ namespace lolibar
             }.Start();
         }
 
-        void BarRamContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // Cursor = System.Windows.Input.Cursors.Hand;
-            // BeginDecOpacityAnimation(BarRamContainer);
-        }
-        void BarRamContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // Cursor = System.Windows.Input.Cursors.Arrow;
-            // BeginIncOpacityAnimation(BarRamContainer);
-        }
-
-        void BarCpuContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // Cursor = System.Windows.Input.Cursors.Hand;
-            // BeginDecOpacityAnimation(BarCpuContainer);
-        }
-        void BarCpuContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // Cursor = System.Windows.Input.Cursors.Arrow;
-            // BeginIncOpacityAnimation(BarCpuContainer);
-        }
-
-        void BarPowerContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Hand;
-            BeginDecOpacityAnimation(BarPowerContainer);
-        }
-        void BarPowerContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Arrow;
-            BeginIncOpacityAnimation(BarPowerContainer);
-        }
-
-        void BarSoundContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Hand;
-            BeginDecOpacityAnimation(BarSoundContainer);
-        }
-        void BarSoundContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Arrow;
-            BeginIncOpacityAnimation(BarSoundContainer);
-        }
         void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Process.Start("Rundll32.exe","shell32.dll,Control_RunDLL Mmsys.cpl,,0");
-        }
-
-        void BarTimeContainer_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Hand;
-            BeginDecOpacityAnimation(BarTimeContainer);
-        }
-        void BarTimeContainer_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Arrow;
-            BeginIncOpacityAnimation(BarTimeContainer);
         }
 
         void Lolibar_ContentRendered(object? sender, EventArgs e)

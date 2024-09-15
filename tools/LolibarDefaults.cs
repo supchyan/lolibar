@@ -8,9 +8,8 @@ namespace lolibar.tools
     {
         static ProcMonitor      procMonitor         = new();
 
-        public static string?   UserInfo            { get; private set; }
-
-        public static string?   CurProcInfo         { get; private set; }
+        public static string?   CurProcIdInfo       { get; private set; }
+        public static string?   CurProcNameInfo     { get; private set; }
 
         public static string?   RamInfo             { get; private set; }
         public static string?   VRamInfo            { get; private set; }
@@ -22,7 +21,6 @@ namespace lolibar.tools
         public static string?   PowerInfo           { get; private set; }
         public static string?   TimeInfo            { get; private set; }
 
-        public static Geometry? UserIcon            { get; private set; }
         public static Geometry? CurProcIcon         { get; private set; }
 
         public static Geometry? RamIcon             { get; private set; }
@@ -38,7 +36,6 @@ namespace lolibar.tools
         // Instantiate Method
         public static void Initialize()
         {
-            UserIcon            = UserIcon_Reference;
             CurProcIcon         = CurProcIcon_Reference;
 
             RamIcon             = RamIcon_Reference;
@@ -56,15 +53,14 @@ namespace lolibar.tools
         {
             var computerInfo = new ComputerInfo();
 
-            UserInfo            = $"{WindowsIdentity.GetCurrent().Name.Split('\\')[1]}";
-
-            CurProcInfo         = $"{procMonitor.GetForegroundProcessInfo()[2]}";
+            CurProcIdInfo       = $"{procMonitor.GetForegroundProcessInfo()[0]}";
+            CurProcNameInfo     = $"{procMonitor.GetForegroundProcessInfo()[1]}";
 
             RamInfo             = $"{Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 2)}%";
-            VRamInfo            = $"No Info";
+            VRamInfo            = $"No Data";
             CpuInfo             = $"{Math.Round(100.0 * ProcMonitor.CPU_Time_Total.NextValue() / Environment.ProcessorCount, 2)}%";
-            DiskInfo            = $"No Info";
-            NetworkInfo         = $"No Info";
+            DiskInfo            = $"No Data";
+            NetworkInfo         = $"No Data";
 
             SoundInfo           = $"Sound Properties";
             PowerInfo           = $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent, 2)}%";

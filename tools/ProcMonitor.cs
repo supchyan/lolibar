@@ -34,12 +34,11 @@ namespace lolibar.tools
                     [
                         $"{pid}",
                         $"{p.ProcessName}",
-                        $"{p.ProcessName} | {pid}"
                     ];
                 }
             }
 
-            return new string[3];
+            return new string[2];
         }
     }
 }

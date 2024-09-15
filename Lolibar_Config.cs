@@ -29,11 +29,11 @@ namespace lolibar
             Resources["IconSize"]           = 16.0;
             Resources["FontSize"]           = 12.0;
 
-            Resources["BarUserText"]        = "";
-            Resources["BarUserIcon"]        = LolibarDefaults.UserIcon;
+            Resources["SeparatorWidth"]     = 4.0;
 
-            Resources["BarCurProcText"]     = "";
-            Resources["BarCurProcIcon"]     = LolibarDefaults.CurProcIcon;
+            Resources["BarCurProcIdText"]   = ""; // No icon slot for this
+
+            Resources["BarCurProcNameText"] = ""; // No icon slot for this
 
             Resources["BarRamText"]         = "";
             Resources["BarRamIcon"]         = LolibarDefaults.RamIcon;
@@ -59,18 +59,16 @@ namespace lolibar
             Resources["BarTimeText"]        = "";
             Resources["BarTimeIcon"]        = LolibarDefaults.TimeIcon;
 
-
             BarTimeIcon.Visibility          = Visibility.Collapsed;
-            BarCurProcIcon.Visibility       = Visibility.Collapsed;
-            BarUserContainer.Visibility     = Visibility.Collapsed;
+
+            BarCenterContainer.Visibility  = Visibility.Collapsed;
         }
 
         // Updates every "UpdateDelay".
         void Update()
         {
-            Resources["BarUserText"]        = LolibarDefaults.UserInfo;
-
-            Resources["BarCurProcText"]     = LolibarDefaults.CurProcInfo;
+            Resources["BarCurProcIdText"]   = LolibarDefaults.CurProcIdInfo;
+            Resources["BarCurProcNameText"] = LolibarDefaults.CurProcNameInfo;
 
             Resources["BarRamText"]         = LolibarDefaults.RamInfo;
 
