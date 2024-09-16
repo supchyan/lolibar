@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System.Diagnostics;
+using System.Security.Principal;
 using System.Windows.Media;
 using Microsoft.VisualBasic.Devices;
 
@@ -6,14 +7,17 @@ namespace lolibar.tools
 {
     public partial class LolibarDefaults
     {
-        static ProcMonitor      procMonitor         = new();
+        static bool             ShowRamInPercent    = true;
 
         public static string?   CurProcIdInfo       { get; private set; }
         public static string?   CurProcNameInfo     { get; private set; }
 
-        public static string?   RamInfo             { get; private set; }
-        public static string?   VRamInfo            { get; private set; }
         public static string?   CpuInfo             { get; private set; }
+
+        public static string?   RamInfoUsedPercent  { get; private set; }
+        public static string?   RamInfoUsedGB       { get; private set; }
+
+        public static string?   GpuInfo             { get; private set; }
         public static string?   DiskInfo            { get; private set; }
         public static string?   NetworkInfo         { get; private set; }
 
@@ -21,49 +25,60 @@ namespace lolibar.tools
         public static string?   PowerInfo           { get; private set; }
         public static string?   TimeInfo            { get; private set; }
 
-        public static Geometry? CurProcIcon         { get; private set; }
-
-        public static Geometry? RamIcon             { get; private set; }
-        public static Geometry? VRamIcon            { get; private set; }
         public static Geometry? CpuIcon             { get; private set; }
+        public static Geometry? RamIcon             { get; private set; }
+        public static Geometry? GpuIcon             { get; private set; }
         public static Geometry? DiskIcon            { get; private set; }
         public static Geometry? NetworkIcon         { get; private set; }
 
         public static Geometry? SoundIcon           { get; private set; }
         public static Geometry? PowerIcon           { get; private set; }
-        public static Geometry? TimeIcon            { get; private set; }
+
+
+        public static void ChangeRamInfo()
+        {
+            ShowRamInPercent = !ShowRamInPercent;
+        }
+        public static string RamInfo()
+        {
+            if (ShowRamInPercent)
+            {
+                return RamInfoUsedPercent;
+            }
+            else return RamInfoUsedGB;
+        }
 
         // Instantiate Method
         public static void Initialize()
         {
-            CurProcIcon         = CurProcIcon_Reference;
-
-            RamIcon             = RamIcon_Reference;
-            VRamIcon            = VRamIcon_Reference;
             CpuIcon             = CpuIcon_Reference;
+            RamIcon             = RamIcon_Reference;
+            GpuIcon             = GpuIcon_Reference;
             DiskIcon            = DiskIcon_Reference;
             NetworkIcon         = NetworkIcon_Reference;
 
             SoundIcon           = SoundIcon_Reference;
             PowerIcon           = PowerIconEmpty_Reference;
-            TimeIcon            = TimeIcon_Reference;
         }
         // Update Method
         public static void Update()
         {
             var computerInfo = new ComputerInfo();
 
-            CurProcIdInfo       = $"{procMonitor.GetForegroundProcessInfo()[0]}";
-            CurProcNameInfo     = $"{procMonitor.GetForegroundProcessInfo()[1]}";
-
-            RamInfo             = $"{Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 2)}%";
-            VRamInfo            = $"No Data";
-            CpuInfo             = $"{Math.Round(100.0 * ProcMonitor.CPU_Time_Total.NextValue() / Environment.ProcessorCount, 2)}%";
+            CurProcIdInfo       = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
+            CurProcNameInfo     = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
+            
+            CpuInfo             = $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.CPU_Total.NextValue(), 1))}%";
+            
+            RamInfoUsedPercent  = $"{String.Format("{0:0.0}", Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 1))}%";
+            RamInfoUsedGB       = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}GB";
+            
+            GpuInfo             = $"No Data";
             DiskInfo            = $"No Data";
             NetworkInfo         = $"No Data";
 
             SoundInfo           = $"Sound Properties";
-            PowerInfo           = $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent, 2)}%";
+            PowerInfo           = $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent)}%"; 
             TimeInfo            = $"{DateTime.Now}";
 
             // Power Icon handling

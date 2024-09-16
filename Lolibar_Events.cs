@@ -1,4 +1,5 @@
 ﻿using Ikst.MouseHook;
+using lolibar.tools;
 using System.Diagnostics;
 using System.Windows;
 
@@ -25,16 +26,58 @@ namespace lolibar
                 StartInfo = new()
                 {
                     FileName        = "powershell.exe",
-                    Arguments       = "taskmgr.exe",
+                    Arguments       = "Start-Process taskmgr.exe",
                     UseShellExecute = false,
                     CreateNoWindow  = true,
                 }
             }.Start();
         }
 
+        void BarRamContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeRamInfo();
+        }
+
         void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Process.Start("Rundll32.exe","shell32.dll,Control_RunDLL Mmsys.cpl,,0");
+            new Process
+            {
+                StartInfo = new()
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "Start-Process ms-settings:sound",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            }.Start();
+        }
+
+        void BarPowerContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            new Process
+            {
+                StartInfo = new()
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "Start-Process ms-settings:batterysaver",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            }.Start();
+        }
+
+        void BarTimeContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            new Process
+            {
+                StartInfo = new()
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "Start-Process ms-settings:dateandtime",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            }.Start();
         }
 
         void Lolibar_ContentRendered(object? sender, EventArgs e)
