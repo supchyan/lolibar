@@ -216,6 +216,7 @@ namespace lolibar
         }
         void RestartApplicationGently()
         {
+            CanBeClosed = true;
             System.Windows.Forms.Application.Restart();
             System.Windows.Application.Current.Shutdown();
         }
