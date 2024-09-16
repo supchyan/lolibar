@@ -28,8 +28,7 @@ namespace lolibar
         // Tray Content
         void OnRestartSelected(object? sender, EventArgs e)
         {
-            System.Windows.Forms.Application.Restart();
-            CloseApplicationGently();
+            RestartApplicationGently();
         }
         void OnGitHubSelected(object? sender, EventArgs e)
         {

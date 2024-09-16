@@ -142,8 +142,7 @@ namespace lolibar
         {
             if (!CanBeClosed)
             {
-                System.Windows.Forms.Application.Restart();
-                System.Windows.Application.Current.Shutdown();
+                RestartApplicationGently();
             }
         }
         #endregion

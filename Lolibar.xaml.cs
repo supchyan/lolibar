@@ -208,11 +208,18 @@ namespace lolibar
             }
         }
 
+        #region App status Methods
         void CloseApplicationGently()
         {
             CanBeClosed = true;
-            if (CanBeClosed) System.Windows.Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
         }
+        void RestartApplicationGently()
+        {
+            System.Windows.Forms.Application.Restart();
+            System.Windows.Application.Current.Shutdown();
+        }
+        #endregion
 
         #region Lifecycle Methods
         void _Initialize()
