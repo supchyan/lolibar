@@ -7,10 +7,9 @@ namespace lolibar
     partial class Lolibar : Window
     {
         #region Tray [ Notify Icon ]
-        NotifyIcon notifyIcon;
         void GenerateTrayMenu()
         {
-            notifyIcon = new NotifyIcon
+            new NotifyIcon
             {
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
                 Text = "lolibar",

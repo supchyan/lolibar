@@ -16,7 +16,7 @@ namespace lolibar
         // For screen coordinates calculation
         Matrix transformToDevice;
         System.Windows.Size screenSize;
-        readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;
+        readonly double Inch_ScreenWidth  = SystemParameters.PrimaryScreenWidth;
         readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
         double StatusBarVisiblePosY, StatusBarHidePosY;
 
@@ -42,36 +42,36 @@ namespace lolibar
             nullWin.Show();
             Owner = GetWindow(nullWin);
 
-            ContentRendered += Lolibar_ContentRendered;
+            ContentRendered                             += Lolibar_ContentRendered;
 
-            BarCurProcIdContainer.MouseEnter += Container_MouseEnter;
-            BarCurProcIdContainer.MouseLeave += Container_MouseLeave;
-            BarCurProcIdContainer.MouseLeftButtonUp += BarCurProcContainer_MouseLeftButtonUp;
+            BarCurProcIdContainer.MouseEnter            += Container_MouseEnter;
+            BarCurProcIdContainer.MouseLeave            += Container_MouseLeave;
+            BarCurProcIdContainer.MouseLeftButtonUp     += BarCurProcContainer_MouseLeftButtonUp;
 
-            BarCurProcNameContainer.MouseEnter += Container_MouseEnter;
-            BarCurProcNameContainer.MouseLeave += Container_MouseLeave;
-            BarCurProcNameContainer.MouseLeftButtonUp += BarCurProcContainer_MouseLeftButtonUp;
+            BarCurProcNameContainer.MouseEnter          += Container_MouseEnter;
+            BarCurProcNameContainer.MouseLeave          += Container_MouseLeave;
+            BarCurProcNameContainer.MouseLeftButtonUp   += BarCurProcContainer_MouseLeftButtonUp;
 
-            BarRamContainer.MouseEnter += Container_MouseEnter;
-            BarRamContainer.MouseLeave += Container_MouseLeave;
-            BarRamContainer.MouseLeftButtonUp += BarRamContainer_MouseLeftButtonUp;
+            BarRamContainer.MouseEnter                  += Container_MouseEnter;
+            BarRamContainer.MouseLeave                  += Container_MouseLeave;
+            BarRamContainer.MouseLeftButtonUp           += BarRamContainer_MouseLeftButtonUp;
 
-            BarPowerContainer.MouseEnter += Container_MouseEnter;
-            BarPowerContainer.MouseLeave += Container_MouseLeave;
-            BarPowerContainer.MouseLeftButtonUp += BarPowerContainer_MouseLeftButtonUp;
+            BarPowerContainer.MouseEnter                += Container_MouseEnter;
+            BarPowerContainer.MouseLeave                += Container_MouseLeave;
+            BarPowerContainer.MouseLeftButtonUp         += BarPowerContainer_MouseLeftButtonUp;
 
-            BarSoundContainer.MouseEnter += Container_MouseEnter;
-            BarSoundContainer.MouseLeave += Container_MouseLeave;
-            BarSoundContainer.MouseLeftButtonUp += BarSoundContainer_MouseLeftButtonUp;
+            BarSoundContainer.MouseEnter                += Container_MouseEnter;
+            BarSoundContainer.MouseLeave                += Container_MouseLeave;
+            BarSoundContainer.MouseLeftButtonUp         += BarSoundContainer_MouseLeftButtonUp;
 
-            BarTimeContainer.MouseEnter += Container_MouseEnter;
-            BarTimeContainer.MouseLeave += Container_MouseLeave;
-            BarTimeContainer.MouseLeftButtonUp += BarTimeContainer_MouseLeftButtonUp;
+            BarTimeContainer.MouseEnter                 += Container_MouseEnter;
+            BarTimeContainer.MouseLeave                 += Container_MouseLeave;
+            BarTimeContainer.MouseLeftButtonUp          += BarTimeContainer_MouseLeftButtonUp;
 
             _Initialize();
             _Update();
 
-            MouseHandler.MouseMove += MouseHandler_MouseMove;
+            MouseHandler.MouseMove                      += MouseHandler_MouseMove;
             MouseHandler.Start();
 
             GenerateTrayMenu();
@@ -173,12 +173,12 @@ namespace lolibar
             if (!(bool)Resources["SnapToTop"])
             {
                 StatusBarVisiblePosY = Inch_ScreenHeight - Height - (double)Resources["BarMargin"];
-                StatusBarHidePosY = Inch_ScreenHeight;
+                StatusBarHidePosY    = Inch_ScreenHeight;
             }
             else
             {
                 StatusBarVisiblePosY = (double)Resources["BarMargin"];
-                StatusBarHidePosY = -Height - (double)Resources["BarMargin"];
+                StatusBarHidePosY    = -Height - (double)Resources["BarMargin"];
             }
         }
 

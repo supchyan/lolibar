@@ -43,9 +43,9 @@ namespace lolibar.tools
         {
             if (ShowRamInPercent)
             {
-                return RamInfoUsedPercent;
+                return RamInfoUsedPercent == null ? "" : RamInfoUsedPercent;
             }
-            else return RamInfoUsedGB;
+            else return RamInfoUsedGB == null ? "" : RamInfoUsedGB;
         }
 
         // Instantiate Method
@@ -64,6 +64,7 @@ namespace lolibar.tools
         public static void Update()
         {
             var computerInfo = new ComputerInfo();
+            var powerStatus = SystemInformation.PowerStatus;
 
             CurProcIdInfo       = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
             CurProcNameInfo     = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
@@ -82,25 +83,24 @@ namespace lolibar.tools
             TimeInfo            = $"{DateTime.Now}";
 
             // Power Icon handling
-            PowerStatus PowerStat = SystemInformation.PowerStatus;
-            if (PowerStat.BatteryChargeStatus.HasFlag(BatteryChargeStatus.High))
+            if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.High))
             {
                 // High Power Icon
-                PowerIcon = PowerStat.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
+                PowerIcon = powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
                     PowerIconCharging_Reference :
                     PowerIconHigh_Reference;
             }
-            else if (PowerStat.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
+            else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
             {
                 // Low Power Icon
-                PowerIcon = PowerStat.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
+                PowerIcon = powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
                     PowerIconCharging_Reference :
                     PowerIconLow_Reference;
             }
-            else if (PowerStat.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
+            else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
             {
                 // Critical Power Icon
-                PowerIcon = PowerStat.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
+                PowerIcon = powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
                     PowerIconCharging_Reference :
                     PowerIconCritical_Reference ;
             }
