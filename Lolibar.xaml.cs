@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using Ikst.MouseHook;
 using lolibar.tools;
 
@@ -16,8 +14,8 @@ namespace lolibar
         // For screen coordinates calculation
         Matrix transformToDevice;
         System.Windows.Size screenSize;
-        readonly double Inch_ScreenWidth  = SystemParameters.PrimaryScreenWidth;
-        readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
+        static readonly double Inch_ScreenWidth  = SystemParameters.PrimaryScreenWidth;
+        static readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
         double StatusBarVisiblePosY, StatusBarHidePosY;
 
         // Drawing conditions
@@ -30,10 +28,12 @@ namespace lolibar
             WindowStyle = WindowStyle.ToolWindow,
             ShowInTaskbar = false,
             Width = 0, Height = 0,
+            Top = Inch_ScreenWidth // to move it outside the screen 
         };
 
-        // Trigger to prevent different job before... window rendered
+        // A trigger to prevent different app's job before... it's window actually rendered
         bool IsRendered;
+
         public Lolibar()
         {
             InitializeComponent();
@@ -69,8 +69,11 @@ namespace lolibar
             BarTimeContainer.MouseLeftButtonUp          += BarTimeContainer_MouseLeftButtonUp;
 
             _Initialize();
+            _PostInitialize();
+
             _Update();
 
+            // Should be below Initialize and Update calls, because it has Resources[] dependency
             MouseHandler.MouseMove                      += MouseHandler_MouseMove;
             MouseHandler.Start();
 
@@ -85,6 +88,8 @@ namespace lolibar
             Resources["SnapToTop"]              = false;    // If true, snaps Lolibar to top of the screen
             Resources["UpdateDelay"]            = 500;      // Delay for Update() method. Low delay affects performance!
 
+            //
+
             // --- Global UI properties ---
 
             Resources["BarMargin"]              = 8.0;
@@ -94,10 +99,10 @@ namespace lolibar
             Resources["BarBorderRadius"]        = 6.0;
             Resources["BarOpacity"]             = 1.0;
             Resources["BarStroke"]              = 0.0;
-            Resources["BarColor"]               = LolibarHelper.SetColor("#121e46");
+            Resources["BarColor"]               = LolibarHelper.SetColor("#eeeeee");
 
             Resources["ElementMargin"]          = new Thickness(16.0, 0.0, 16.0, 0.0);
-            Resources["ElementColor"]           = LolibarHelper.SetColor("#8981bd");
+            Resources["ElementColor"]           = LolibarHelper.SetColor("#111111");
             Resources["IconSize"]               = 16.0;
             Resources["FontSize"]               = 12.0;
 
@@ -137,6 +142,14 @@ namespace lolibar
 
             //
 
+            // --- Hiding triggers ---
+
+            Resources["BarLeftContainerIsVisible"]   = true;
+            Resources["BarCenterContainerIsVisible"] = true;
+            Resources["BarRightContainerIsVisible"]  = true;
+
+            //
+
         }
         void UpdateDefaults()
         {
@@ -168,7 +181,15 @@ namespace lolibar
 
             Resources["BarTimeText"]            = LolibarDefaults.TimeInfo;
         }
-        void UpdateSnapping()
+
+        void PostInitializeContainersVisibility()
+        {
+            if (!(bool)Resources["BarLeftContainerIsVisible"])    BarLeftContainer.Visibility     = Visibility.Collapsed;
+            if (!(bool)Resources["BarCenterContainerIsVisible"])  BarCenterContainer.Visibility   = Visibility.Collapsed;
+            if (!(bool)Resources["BarRightContainerIsVisible"])   BarRightContainer.Visibility    = Visibility.Collapsed;
+        }
+
+        void PostInitializeSnapping()
         {
             if (!(bool)Resources["SnapToTop"])
             {
@@ -195,6 +216,11 @@ namespace lolibar
             // From Lolibar_Config.cs
             Initialize();
         }
+        void _PostInitialize()
+        {
+            PostInitializeContainersVisibility();
+            PostInitializeSnapping();
+        }
         async void _Update()
         {
             while (true)
@@ -205,7 +231,6 @@ namespace lolibar
 
                 LolibarDefaults.Update();
                 UpdateDefaults();
-                UpdateSnapping();
 
                 //
 
