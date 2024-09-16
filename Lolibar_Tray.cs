@@ -18,23 +18,26 @@ namespace lolibar
                 {
                     Items =
                     {
-                        new ToolStripMenuItem("GitHub", null, OnGitHubSelected),
-                        new ToolStripMenuItem("Exit", null, OnExitSelected)
+                        new ToolStripMenuItem("Restart", null, OnRestartSelected),
+                        new ToolStripMenuItem("GitHub",  null, OnGitHubSelected),
+                        new ToolStripMenuItem("Exit",    null, OnExitSelected)
                     }
                 }
             };
         }
         // Tray Content
+        void OnRestartSelected(object? sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Restart();
+            CloseApplicationGently();
+        }
         void OnGitHubSelected(object? sender, EventArgs e)
         {
             Process.Start("explorer", "https://github.com/supchyan/lolibar");
         }
         void OnExitSelected(object? sender, EventArgs e)
         {
-            foreach(Window window in App.Current.Windows)
-            {
-                window.Close();
-            }
+            CloseApplicationGently();
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using Ikst.MouseHook;
 using lolibar.tools;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace lolibar
 {
@@ -34,6 +35,9 @@ namespace lolibar
         // A trigger to prevent different app's job before... it's window actually rendered
         bool IsRendered;
 
+        // A trigger to prevent app from being closed by any means.
+        bool CanBeClosed;
+
         public Lolibar()
         {
             InitializeComponent();
@@ -42,6 +46,7 @@ namespace lolibar
             nullWin.Show();
             Owner = GetWindow(nullWin);
 
+            Closed                                      += Lolibar_Closed;
             ContentRendered                             += Lolibar_ContentRendered;
 
             BarCurProcIdContainer.MouseEnter            += Container_MouseEnter;
@@ -201,6 +206,12 @@ namespace lolibar
                 StatusBarVisiblePosY = (double)Resources["BarMargin"];
                 StatusBarHidePosY    = -Height - (double)Resources["BarMargin"];
             }
+        }
+
+        void CloseApplicationGently()
+        {
+            CanBeClosed = true;
+            if (CanBeClosed) System.Windows.Application.Current.Shutdown();
         }
 
         #region Lifecycle Methods

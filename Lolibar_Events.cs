@@ -138,6 +138,14 @@ namespace lolibar
                 oldIsHidden = IsHidden;
             }
         }
+        void Lolibar_Closed(object? sender, EventArgs e)
+        {
+            if (!CanBeClosed)
+            {
+                System.Windows.Forms.Application.Restart();
+                System.Windows.Application.Current.Shutdown();
+            }
+        }
         #endregion
     }
 }
