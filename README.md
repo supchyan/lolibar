@@ -40,7 +40,7 @@ void Update()
 
   // So, that means, "IconSize" will be updated every 10 milliseconds here!
   SomeTimer++;
-  Resources["IconSize"] *= Math.Abs(Math.Sin(someTimer));
+  Resources["IconSize"] *= 16.0 * Math.Abs(Math.Sin(someTimer));
 }
 
 // Simple enough, isn't it?
