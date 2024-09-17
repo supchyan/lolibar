@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace LolibarApp.Tools
+namespace LolibarApp.Source.Tools
 {
     public partial class LolibarDefaults
     {

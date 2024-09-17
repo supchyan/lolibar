@@ -2,12 +2,12 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace LolibarApp.Tools
+namespace LolibarApp.Source.Tools
 {
     public static class LolibarHelper
     {
-        public static bool CanBeClosed                  {  get; private set; }
-        public static readonly double Inch_ScreenWidth  = SystemParameters.PrimaryScreenWidth;
+        public static bool CanBeClosed { get; private set; }
+        public static readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;
         public static readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
 
         /// <summary>
@@ -15,7 +15,7 @@ namespace LolibarApp.Tools
         /// </summary>
         public static SolidColorBrush? SetColor(string color)
         {
-            return (SolidColorBrush?) new BrushConverter().ConvertFrom(color);
+            return (SolidColorBrush?)new BrushConverter().ConvertFrom(color);
         }
 
         public static void CloseApplicationGently()

@@ -1,10 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Media;
-using Ikst.MouseHook;
-using LolibarApp.Tools;
+﻿using System.Windows;
+using LolibarApp.Source.Tools;
 
-namespace LolibarApp
+namespace LolibarApp.Source
 {
     partial class Lolibar : Window
     {

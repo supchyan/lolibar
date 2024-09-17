@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualBasic.Devices;
+﻿using LolibarApp.Source.Tools;
+using Microsoft.VisualBasic.Devices;
 
-namespace LolibarApp.Tools
+namespace LolibarApp.Source.Tools
 {
     public partial class LolibarDefaults
     {

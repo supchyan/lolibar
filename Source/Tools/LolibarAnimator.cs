@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace LolibarApp.Tools
+namespace LolibarApp.Source.Tools
 {
     partial class LolibarAnimator : Window
     {
-        static Duration duration    = new Duration  (TimeSpan.FromSeconds(0.3));
-        static Duration el_duration = new Duration  (TimeSpan.FromSeconds(0.1));
-        static CubicEase easing     = new CubicEase { EasingMode = EasingMode.EaseInOut };
+        static Duration duration = new Duration(TimeSpan.FromSeconds(0.3));
+        static Duration el_duration = new Duration(TimeSpan.FromSeconds(0.1));
+        static CubicEase easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
 
         public static void BeginStatusBarShowAnimation(Window _)
         {

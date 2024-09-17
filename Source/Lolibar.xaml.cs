@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Media;
 using Ikst.MouseHook;
-using LolibarApp.Tools;
+using LolibarApp.Source.Tools;
 
-namespace LolibarApp
+namespace LolibarApp.Source
 {
 
     public partial class Lolibar : Window

@@ -1,8 +1,9 @@
 ﻿using System.Windows;
-using LolibarApp.Tools;
+using LolibarApp.Source.Tools;
+
 
 // This is config part of the Lolibar Class. You can handle statusbar's content logic here
-namespace LolibarApp
+namespace LolibarApp.Source
 {
     partial class Lolibar : Window
     {

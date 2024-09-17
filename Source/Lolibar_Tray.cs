@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
-using LolibarApp.Tools;
+using LolibarApp.Source.Tools;
 
-namespace LolibarApp
+namespace LolibarApp.Source
 {
     partial class Lolibar : Window
     {

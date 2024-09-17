@@ -1,9 +1,9 @@
 ﻿using Ikst.MouseHook;
-using LolibarApp.Tools;
+using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows;
 
-namespace LolibarApp
+namespace LolibarApp.Source
 {
     partial class Lolibar : Window
     {
