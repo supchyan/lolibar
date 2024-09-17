@@ -21,7 +21,7 @@ void Update()
 }
 ```
 </br>
-<div align=center><img src="https://github.com/user-attachments/assets/36a2f2ba-6138-4e4e-8357-86954fd91ce5" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/059d87a6-2116-4ab0-a757-0f3a313ccb8e" /></div>
 </br>
 
 > Example
