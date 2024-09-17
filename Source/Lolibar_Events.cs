@@ -19,6 +19,20 @@ namespace LolibarApp.Source
             LolibarAnimator.BeginIncOpacityAnimation((UIElement)sender);
         }
 
+        void BarUserContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            new Process
+            {
+                StartInfo = new()
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "Start-Process ms-settings:accounts",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            }.Start();
+        }
+
         void BarCurProcContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process
@@ -31,6 +45,10 @@ namespace LolibarApp.Source
                     CreateNoWindow  = true,
                 }
             }.Start();
+        }
+        void BarCurProcContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeCurProcInfo();
         }
 
         void BarRamContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

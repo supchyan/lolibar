@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Ikst.MouseHook;
 using LolibarApp.Source.Tools;
 
@@ -49,13 +50,14 @@ namespace LolibarApp.Source
             Closed                                      += Lolibar_Closed;
             ContentRendered                             += Lolibar_ContentRendered;
 
-            BarCurProcIdContainer.MouseEnter            += Container_MouseEnter;
-            BarCurProcIdContainer.MouseLeave            += Container_MouseLeave;
-            BarCurProcIdContainer.MouseLeftButtonUp     += BarCurProcContainer_MouseLeftButtonUp;
+            BarUserContainer.MouseEnter                 += Container_MouseEnter;
+            BarUserContainer.MouseLeave                 += Container_MouseLeave;
+            BarUserContainer.MouseLeftButtonUp          += BarUserContainer_MouseLeftButtonUp;
 
-            BarCurProcNameContainer.MouseEnter          += Container_MouseEnter;
-            BarCurProcNameContainer.MouseLeave          += Container_MouseLeave;
-            BarCurProcNameContainer.MouseLeftButtonUp   += BarCurProcContainer_MouseLeftButtonUp;
+            BarCurProcContainer.MouseEnter              += Container_MouseEnter;
+            BarCurProcContainer.MouseLeave              += Container_MouseLeave;
+            BarCurProcContainer.MouseLeftButtonUp       += BarCurProcContainer_MouseLeftButtonUp;
+            BarCurProcContainer.MouseRightButtonUp      += BarCurProcContainer_MouseRightButtonUp;
 
             BarRamContainer.MouseEnter                  += Container_MouseEnter;
             BarRamContainer.MouseLeave                  += Container_MouseLeave;
@@ -117,9 +119,10 @@ namespace LolibarApp.Source
 
             // --- Containers initialization ---
 
-            Resources["BarCurProcIdText"]       = ""; // No icon slot for this
+            Resources["BarCurProcText"]         = "";
+            Resources["BarCurProcIcon"]         = LolibarDefaults.CurProcIcon;
 
-            Resources["BarCurProcNameText"]     = ""; // No icon slot for this
+            Resources["BarUserText"]            = "";
 
             Resources["BarCpuText"]             = "";
             Resources["BarCpuIcon"]             = LolibarDefaults.CpuIcon;
@@ -163,16 +166,19 @@ namespace LolibarApp.Source
 
             //
 
-            // Current process container
+            // Left Container
 
-            Resources["BarCurProcIdText"]       = LolibarDefaults.CurProcIdInfo;
-            Resources["BarCurProcNameText"]     = LolibarDefaults.CurProcNameInfo;
+            Resources["BarUserText"]            = LolibarDefaults.UserInfo;
+
+            Resources["BarCurProcText"]         = LolibarDefaults.GetCurProcInfo();
 
             //
 
+            // Center Container
+
             Resources["BarCpuText"]             = LolibarDefaults.CpuInfo;
 
-            Resources["BarRamText"]             = LolibarDefaults.RamInfo();
+            Resources["BarRamText"]             = LolibarDefaults.GetRamInfo();
 
             Resources["BarGpuText"]             = LolibarDefaults.GpuInfo;
 
@@ -182,14 +188,16 @@ namespace LolibarApp.Source
 
             Resources["BarSoundText"]           = LolibarDefaults.SoundInfo;
 
-            // Power container
+            //
+
+            // Right Container
 
             Resources["BarPowerText"]           = LolibarDefaults.PowerInfo;
             Resources["BarPowerIcon"]           = LolibarDefaults.PowerIcon; // Dynamically update power icon
 
-            //
-
             Resources["BarTimeText"]            = LolibarDefaults.TimeInfo;
+        
+            //
         }
 
         void ListenForSystemThemeUsage()

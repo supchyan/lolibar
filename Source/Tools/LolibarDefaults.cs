@@ -1,11 +1,13 @@
 ﻿using LolibarApp.Source.Tools;
 using Microsoft.VisualBasic.Devices;
+using System.Security.Principal;
 
 namespace LolibarApp.Source.Tools
 {
     public partial class LolibarDefaults
     {
         static bool             ShowRamInPercent        = true;
+        static int              CurProcInfoState        = 0;
 
         public static string?   CurProcIdInfo           { get; private set; }
         public static string?   CurProcNameInfo         { get; private set; }
@@ -21,6 +23,7 @@ namespace LolibarApp.Source.Tools
 
         public static string?   SoundInfo               { get; private set; }
         public static string?   PowerInfo               { get; private set; }
+        public static string?   UserInfo                { get; private set; }
         public static string?   TimeInfo                { get; private set; }
 
 
@@ -28,13 +31,57 @@ namespace LolibarApp.Source.Tools
         {
             ShowRamInPercent = !ShowRamInPercent;
         }
-        public static string RamInfo()
+        public static string GetRamInfo()
         {
             if (ShowRamInPercent)
             {
                  return RamUsedInPercentInfo == null ? "" : RamUsedInPercentInfo;
             }
             else return RamUsedInGbInfo      == null ? "" : RamUsedInGbInfo;
+        }
+
+        public static void ChangeCurProcInfo()
+        {
+            if (CurProcInfoState < 2)
+            {
+                CurProcInfoState++;
+            }
+            else
+            {
+                CurProcInfoState = 0;
+            }
+        }
+        public static string? GetCurProcInfo()
+        {
+            switch (CurProcInfoState)
+            {
+                case 0:
+
+                    var nameAndId = "";
+
+                    if (CurProcNameInfo != null)
+                    {
+                        nameAndId += $"{CurProcNameInfo} : ";
+                    }
+
+                    if (CurProcIdInfo != null)
+                    {
+                        nameAndId += $"{CurProcIdInfo}";
+                    }
+
+                    return nameAndId;
+
+                case 1:
+
+                    return CurProcNameInfo == null ? "" : CurProcNameInfo;
+
+
+                case 2:
+
+                    return CurProcIdInfo == null ? "" : CurProcIdInfo;
+
+            }
+            return null;
         }
 
         // Instantiate Method
@@ -61,7 +108,8 @@ namespace LolibarApp.Source.Tools
             NetworkInfo         = $"No Data";
 
             SoundInfo           = $"Sound Properties";
-            PowerInfo           = $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent)}%"; 
+            PowerInfo           = $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent)}%";
+            UserInfo            = $"{WindowsIdentity.GetCurrent().Name.Split('\\')[1]}";
             TimeInfo            = $"{DateTime.Now}";
 
             // Power Icon handling
