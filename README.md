@@ -53,7 +53,7 @@ void Update()
 // Simple enough, isn't it?
 ```
 
-##### <div align=center> ☕Have an idea for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
+##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
 <div align=center><img src="https://github.com/user-attachments/assets/69208a59-6092-4855-b165-44a277779592" /></div>
 
 ##### <div align=center>showcase ✨ [ work in progress tho ]</div>
