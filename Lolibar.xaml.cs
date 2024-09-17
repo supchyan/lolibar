@@ -74,8 +74,6 @@ namespace lolibar
             BarTimeContainer.MouseLeftButtonUp          += BarTimeContainer_MouseLeftButtonUp;
 
             _Initialize();
-            _PostInitialize();
-
             _Update();
 
             // Should be below Initialize and Update calls, because it has Resources[] dependency
@@ -214,6 +212,7 @@ namespace lolibar
             CanBeClosed = true;
             System.Windows.Application.Current.Shutdown();
         }
+        // https://stackoverflow.com/questions/3895188/restart-application-using-c-sharp
         void RestartApplicationGently()
         {
             CanBeClosed = true;
@@ -223,22 +222,29 @@ namespace lolibar
         #endregion
 
         #region Lifecycle Methods
-        void _Initialize()
+        void __PreInitialize()
         {
-            // PreInitialize
-
             LolibarDefaults.Initialize();
             SetDefaults();
-
-            //
-
-            // From Lolibar_Config.cs
-            Initialize();
         }
-        void _PostInitialize()
+        void __PostInitialize()
         {
             PostInitializeContainersVisibility();
             PostInitializeSnapping();
+        }
+        void _Initialize()
+        {
+            __PreInitialize();
+
+            Initialize(); // From Lolibar_Config.cs
+
+            __PostInitialize();
+        }
+
+        void __PreUpdate()
+        {
+            LolibarDefaults.Update();
+            UpdateDefaults();
         }
         async void _Update()
         {
@@ -246,15 +252,9 @@ namespace lolibar
             {
                 await Task.Delay((int)Resources["UpdateDelay"]);
 
-                // PreUpdate
+                __PreUpdate();
 
-                LolibarDefaults.Update();
-                UpdateDefaults();
-
-                //
-
-                // From Lolibar_Config.cs
-                Update();
+                Update(); // From Lolibar_Config.cs
             }
         }
         #endregion

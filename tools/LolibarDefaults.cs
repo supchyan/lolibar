@@ -7,32 +7,23 @@ namespace lolibar.tools
 {
     public partial class LolibarDefaults
     {
-        static bool             ShowRamInPercent    = true;
+        static bool             ShowRamInPercent        = true;
 
-        public static string?   CurProcIdInfo       { get; private set; }
-        public static string?   CurProcNameInfo     { get; private set; }
+        public static string?   CurProcIdInfo           { get; private set; }
+        public static string?   CurProcNameInfo         { get; private set; }
 
-        public static string?   CpuInfo             { get; private set; }
+        public static string?   CpuInfo                 { get; private set; }
 
-        public static string?   RamInfoUsedPercent  { get; private set; }
-        public static string?   RamInfoUsedGB       { get; private set; }
+        public static string?   RamUsedInPercentInfo    { get; private set; }
+        public static string?   RamUsedInGbInfo         { get; private set; }
 
-        public static string?   GpuInfo             { get; private set; }
-        public static string?   DiskInfo            { get; private set; }
-        public static string?   NetworkInfo         { get; private set; }
+        public static string?   GpuInfo                 { get; private set; }
+        public static string?   DiskInfo                { get; private set; }
+        public static string?   NetworkInfo             { get; private set; }
 
-        public static string?   SoundInfo           { get; private set; }
-        public static string?   PowerInfo           { get; private set; }
-        public static string?   TimeInfo            { get; private set; }
-
-        public static Geometry? CpuIcon             { get; private set; }
-        public static Geometry? RamIcon             { get; private set; }
-        public static Geometry? GpuIcon             { get; private set; }
-        public static Geometry? DiskIcon            { get; private set; }
-        public static Geometry? NetworkIcon         { get; private set; }
-
-        public static Geometry? SoundIcon           { get; private set; }
-        public static Geometry? PowerIcon           { get; private set; }
+        public static string?   SoundInfo               { get; private set; }
+        public static string?   PowerInfo               { get; private set; }
+        public static string?   TimeInfo                { get; private set; }
 
 
         public static void ChangeRamInfo()
@@ -43,22 +34,15 @@ namespace lolibar.tools
         {
             if (ShowRamInPercent)
             {
-                return RamInfoUsedPercent == null ? "" : RamInfoUsedPercent;
+                 return RamUsedInPercentInfo == null ? "" : RamUsedInPercentInfo;
             }
-            else return RamInfoUsedGB == null ? "" : RamInfoUsedGB;
+            else return RamUsedInGbInfo      == null ? "" : RamUsedInGbInfo;
         }
 
         // Instantiate Method
         public static void Initialize()
         {
-            CpuIcon             = CpuIcon_Reference;
-            RamIcon             = RamIcon_Reference;
-            GpuIcon             = GpuIcon_Reference;
-            DiskIcon            = DiskIcon_Reference;
-            NetworkIcon         = NetworkIcon_Reference;
 
-            SoundIcon           = SoundIcon_Reference;
-            PowerIcon           = PowerIconEmpty_Reference;
         }
         // Update Method
         public static void Update()
@@ -71,8 +55,8 @@ namespace lolibar.tools
             
             CpuInfo             = $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.CPU_Total.NextValue(), 1))}%";
             
-            RamInfoUsedPercent  = $"{String.Format("{0:0.0}", Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 1))}%";
-            RamInfoUsedGB       = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}GB";
+            RamUsedInPercentInfo  = $"{String.Format("{0:0.0}", Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 1))}%";
+            RamUsedInGbInfo       = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}GB";
             
             GpuInfo             = $"No Data";
             DiskInfo            = $"No Data";
@@ -87,27 +71,27 @@ namespace lolibar.tools
             {
                 // High Power Icon
                 PowerIcon = powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                    PowerIconCharging_Reference :
-                    PowerIconHigh_Reference;
+                    PowerIconCharging :
+                    PowerIconHigh;
             }
             else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
             {
                 // Low Power Icon
                 PowerIcon = powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                    PowerIconCharging_Reference :
-                    PowerIconLow_Reference;
+                    PowerIconCharging :
+                    PowerIconLow;
             }
             else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
             {
                 // Critical Power Icon
                 PowerIcon = powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                    PowerIconCharging_Reference :
-                    PowerIconCritical_Reference ;
+                    PowerIconCharging :
+                    PowerIconCritical ;
             }
             else
             {
                 // Empty Power Icon
-                PowerIcon = PowerIconEmpty_Reference;
+                PowerIcon = PowerIconEmpty;
             }
         }
     }
