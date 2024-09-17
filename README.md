@@ -3,6 +3,9 @@
 #### <div align=center>lolibar | customizable windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
 </br>
 
+> [!WARNING]  
+> This project is under development process, so there is no `ready-to-use` version on [Releases](https://github.com/supchyan/lolibar/releases) page. But you can get it, building it by yourself. All you need to build this project is `Visual Studio 2022+` with `.NET SDK 8.0+`. This project is for Windows Platform only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.
+
 > How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
 ```csharp
 // [Lolibar_Config.cs]
