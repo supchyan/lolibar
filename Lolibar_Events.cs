@@ -1,9 +1,9 @@
 ﻿using Ikst.MouseHook;
-using lolibar.tools;
+using LolibarApp.Tools;
 using System.Diagnostics;
 using System.Windows;
 
-namespace lolibar
+namespace LolibarApp
 {
     partial class Lolibar : Window
     {
@@ -11,12 +11,12 @@ namespace lolibar
         void Container_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Cursor = System.Windows.Input.Cursors.Hand;
-            BeginDecOpacityAnimation((UIElement)sender);
+            LolibarAnimator.BeginDecOpacityAnimation((UIElement)sender);
         }
         void Container_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Cursor = System.Windows.Input.Cursors.Arrow;
-            BeginIncOpacityAnimation((UIElement)sender);
+            LolibarAnimator.BeginIncOpacityAnimation((UIElement)sender);
         }
 
         void BarCurProcContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -83,10 +83,10 @@ namespace lolibar
         void Lolibar_ContentRendered(object? sender, EventArgs e)
         {
             transformToDevice = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-            screenSize = (System.Windows.Size)transformToDevice.Transform(new System.Windows.Point((float)Inch_ScreenWidth, (float)Inch_ScreenHeight));
+            screenSize = (System.Windows.Size)transformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
 
-            Left = (Inch_ScreenWidth - Width) / 2;
-            Top = Inch_ScreenHeight;
+            Left = (LolibarHelper.Inch_ScreenWidth - Width) / 2;
+            Top  = LolibarHelper.Inch_ScreenHeight;
 
             IsRendered = true;
         }
@@ -129,20 +129,20 @@ namespace lolibar
             {
                 if (!IsHidden)
                 {
-                    BeginStatusBarShowAnimation(this);
+                    LolibarAnimator.BeginStatusBarShowAnimation(this);
                 }
                 else
                 {
-                    BeginStatusBarHideAnimation(this);
+                    LolibarAnimator.BeginStatusBarHideAnimation(this);
                 }
                 oldIsHidden = IsHidden;
             }
         }
         void Lolibar_Closed(object? sender, EventArgs e)
         {
-            if (!CanBeClosed)
+            if (!LolibarHelper.CanBeClosed)
             {
-                RestartApplicationGently();
+                LolibarHelper.RestartApplicationGently();
             }
         }
         #endregion

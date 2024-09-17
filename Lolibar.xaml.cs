@@ -1,10 +1,10 @@
-﻿using System.Windows;
+﻿using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Media;
 using Ikst.MouseHook;
-using lolibar.tools;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using LolibarApp.Tools;
 
-namespace lolibar
+namespace LolibarApp
 {
 
     public partial class Lolibar : Window
@@ -15,9 +15,8 @@ namespace lolibar
         // For screen coordinates calculation
         Matrix transformToDevice;
         System.Windows.Size screenSize;
-        static readonly double Inch_ScreenWidth  = SystemParameters.PrimaryScreenWidth;
-        static readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
-        double StatusBarVisiblePosY, StatusBarHidePosY;
+        public static double StatusBarVisiblePosY   { get; private set; }
+        public static double StatusBarHidePosY      { get; private set; }
 
         // Drawing conditions
         bool IsHidden, oldIsHidden;
@@ -29,14 +28,15 @@ namespace lolibar
             WindowStyle = WindowStyle.ToolWindow,
             ShowInTaskbar = false,
             Width = 0, Height = 0,
-            Top = Inch_ScreenWidth // to move it outside the screen 
+            Top = LolibarHelper.Inch_ScreenWidth // to move it outside the screen 
         };
 
         // A trigger to prevent different app's job before... it's window actually rendered
         bool IsRendered;
 
-        // A trigger to prevent app from being closed by any means.
-        bool CanBeClosed;
+        // System theme check
+        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
+        public static extern bool ShouldSystemUseDarkMode();
 
         public Lolibar()
         {
@@ -88,6 +88,7 @@ namespace lolibar
         {
             // --- Setup properties ---
 
+            Resources["UseSystemTheme"]         = true;     // If true, statusbar's default colors will be affected by system's current theme
             Resources["SnapToTop"]              = false;    // If true, snaps Lolibar to top of the screen
             Resources["UpdateDelay"]            = 500;      // Delay for Update() method. Low delay affects performance!
 
@@ -97,15 +98,15 @@ namespace lolibar
 
             Resources["BarMargin"]              = 8.0;
             Resources["BarHeight"]              = 42.0;
-            Resources["BarWidth"]               = Inch_ScreenWidth - 2 * (double)Resources["BarMargin"]; // Fit to screen width
+            Resources["BarWidth"]               = LolibarHelper.Inch_ScreenWidth - 2 * (double)Resources["BarMargin"]; // Fit to screen width as default
 
+            Resources["BarColor"]               = LolibarHelper.SetColor("#2d2d2d");
             Resources["BarBorderRadius"]        = 6.0;
             Resources["BarOpacity"]             = 1.0;
             Resources["BarStroke"]              = 0.0;
-            Resources["BarColor"]               = LolibarHelper.SetColor("#eeeeee");
 
+            Resources["ElementColor"]           = LolibarHelper.SetColor("#eeeeee");
             Resources["ElementMargin"]          = new Thickness(16.0, 0.0, 16.0, 0.0);
-            Resources["ElementColor"]           = LolibarHelper.SetColor("#111111");
             Resources["IconSize"]               = 16.0;
             Resources["FontSize"]               = 12.0;
 
@@ -156,6 +157,12 @@ namespace lolibar
         }
         void UpdateDefaults()
         {
+            // System theme affects lolibar's colors
+
+            ListenForSystemThemeUsage();
+
+            //
+
             // Current process container
 
             Resources["BarCurProcIdText"]       = LolibarDefaults.CurProcIdInfo;
@@ -185,6 +192,16 @@ namespace lolibar
             Resources["BarTimeText"]            = LolibarDefaults.TimeInfo;
         }
 
+        void ListenForSystemThemeUsage()
+        {
+            if ((bool)Resources["UseSystemTheme"])
+            {
+                Resources["BarColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#2d2d2d") : LolibarHelper.SetColor("#eeeeee");
+                Resources["ElementColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#eeeeee") : LolibarHelper.SetColor("#2d2d2d");
+
+            }
+        }
+
         void PostInitializeContainersVisibility()
         {
             if (!(bool)Resources["BarLeftContainerIsVisible"])    BarLeftContainer.Visibility     = Visibility.Collapsed;
@@ -196,8 +213,8 @@ namespace lolibar
         {
             if (!(bool)Resources["SnapToTop"])
             {
-                StatusBarVisiblePosY = Inch_ScreenHeight - Height - (double)Resources["BarMargin"];
-                StatusBarHidePosY    = Inch_ScreenHeight;
+                StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Height - (double)Resources["BarMargin"];
+                StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
             }
             else
             {
@@ -206,57 +223,8 @@ namespace lolibar
             }
         }
 
-        #region App status Methods
-        void CloseApplicationGently()
-        {
-            CanBeClosed = true;
-            System.Windows.Application.Current.Shutdown();
-        }
-        // https://stackoverflow.com/questions/3895188/restart-application-using-c-sharp
-        void RestartApplicationGently()
-        {
-            CanBeClosed = true;
-            System.Windows.Forms.Application.Restart();
-            System.Windows.Application.Current.Shutdown();
-        }
-        #endregion
-
-        #region Lifecycle Methods
-        void __PreInitialize()
-        {
-            LolibarDefaults.Initialize();
-            SetDefaults();
-        }
-        void __PostInitialize()
-        {
-            PostInitializeContainersVisibility();
-            PostInitializeSnapping();
-        }
-        void _Initialize()
-        {
-            __PreInitialize();
-
-            Initialize(); // From Lolibar_Config.cs
-
-            __PostInitialize();
-        }
-
-        void __PreUpdate()
-        {
-            LolibarDefaults.Update();
-            UpdateDefaults();
-        }
-        async void _Update()
-        {
-            while (true)
-            {
-                await Task.Delay((int)Resources["UpdateDelay"]);
-
-                __PreUpdate();
-
-                Update(); // From Lolibar_Config.cs
-            }
-        }
+        #region Statusbar State handling
+        
         #endregion
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using LolibarApp.Tools;
 
-namespace lolibar
+namespace LolibarApp
 {
     partial class Lolibar : Window
     {
@@ -12,7 +13,7 @@ namespace lolibar
             new NotifyIcon
             {
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
-                Text = "lolibar",
+                Text = "Lolibar Menu",
                 Visible = true,
                 ContextMenuStrip = new()
                 {
@@ -28,7 +29,7 @@ namespace lolibar
         // Tray Content
         void OnRestartSelected(object? sender, EventArgs e)
         {
-            RestartApplicationGently();
+            LolibarHelper.RestartApplicationGently();
         }
         void OnGitHubSelected(object? sender, EventArgs e)
         {
@@ -36,7 +37,7 @@ namespace lolibar
         }
         void OnExitSelected(object? sender, EventArgs e)
         {
-            CloseApplicationGently();
+            LolibarHelper.CloseApplicationGently();
         }
         #endregion
     }

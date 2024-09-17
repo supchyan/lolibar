@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace lolibar.tools
+namespace LolibarApp.Tools
 {
     public class PerfMonitor
     {

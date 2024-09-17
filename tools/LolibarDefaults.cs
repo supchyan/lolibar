@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Security.Principal;
-using System.Windows.Media;
-using Microsoft.VisualBasic.Devices;
+﻿using Microsoft.VisualBasic.Devices;
 
-namespace lolibar.tools
+namespace LolibarApp.Tools
 {
     public partial class LolibarDefaults
     {

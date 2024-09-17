@@ -1,11 +1,11 @@
-﻿ <Application x:Class="lolibar.App"
+﻿<Application x:Class="LolibarApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:lolibar"
+             xmlns:local="clr-namespace:LolibarApp"
              StartupUri="Lolibar.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="mononoki">pack://application:,,,/fonts/#mononoki</FontFamily>
+            <FontFamily x:Key="mononoki">pack://application:,,,/Fonts/#mononoki</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
