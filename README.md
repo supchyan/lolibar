@@ -1,5 +1,6 @@
-#### <div align=center>lolibar | windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
-<div align=center><img src="https://github.com/user-attachments/assets/b235a712-dd60-46f8-92f8-d436f10c7a7f" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/453c304f-2082-481a-9c32-7b4fdff2afef" width=300/></div>
+
+#### <div align=center>lolibar | customizable windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
 </br>
 
 > How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
@@ -15,6 +16,8 @@ void Update()
   // ...Then update it here if you supposed to
 }
 ```
+</br>
+<div align=center><img src="https://github.com/user-attachments/assets/36a2f2ba-6138-4e4e-8357-86954fd91ce5" /></div>
 </br>
 
 > Example
@@ -39,14 +42,14 @@ void Update()
   // This method updates every "UpdateDelay"
 
   // So, that means, "IconSize" will be updated every 10 milliseconds here!
-  SomeTimer++;
+  someTimer++;
   Resources["IconSize"] *= 16.0 * Math.Abs(Math.Sin(someTimer));
 }
 
 // Simple enough, isn't it?
 ```
 
-##### <div align=center>Have an idea for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
+##### <div align=center> ☕Have an idea for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
 <div align=center><img src="https://github.com/user-attachments/assets/69208a59-6092-4855-b165-44a277779592" /></div>
 
 ##### <div align=center>showcase ✨ [ work in progress tho ]</div>
