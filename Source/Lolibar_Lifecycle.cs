@@ -8,7 +8,6 @@ namespace LolibarApp.Source
         #region Lifecycle
         void __PreInitialize()
         {
-            LolibarDefaults.Initialize();
             SetDefaults();
         }
         void __PostInitialize()
@@ -27,7 +26,6 @@ namespace LolibarApp.Source
 
         void __PreUpdate()
         {
-            LolibarDefaults.Update();
             UpdateDefaults();
         }
         async void _Update()

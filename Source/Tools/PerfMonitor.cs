@@ -5,9 +5,12 @@ namespace LolibarApp.Source.Tools
     public class PerfMonitor
     {
         // Counters
-        public static readonly PerformanceCounter CPU_Total = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        public static readonly PerformanceCounter RAM_Left_MB = new PerformanceCounter("Memory", "Available MBytes");
+        public static readonly PerformanceCounter CPU_Total         = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        public static readonly PerformanceCounter RAM_Left_MB       = new PerformanceCounter("Memory", "Available MBytes");
         //public static readonly PerformanceCounter GPU_Usage = new PerformanceCounter("GPU Engine", "Utilization Percentage", "_Total");
+        public static readonly PerformanceCounter Disk_Total        = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
+        public static readonly PerformanceCounter Disk_Read_Total   = new PerformanceCounter("PhysicalDisk", "% Disk Read Time", "_Total");
+        public static readonly PerformanceCounter Disk_Write_Total  = new PerformanceCounter("PhysicalDisk", "% Disk Write Time", "_Total");
 
         // https://stackoverflow.com/questions/97283/how-can-i-determine-the-name-of-the-currently-focused-process-in-c-sharp
         [System.Runtime.InteropServices.DllImport("user32.dll")]

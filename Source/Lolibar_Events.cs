@@ -51,9 +51,14 @@ namespace LolibarApp.Source
             LolibarDefaults.ChangeCurProcInfo();
         }
 
-        void BarRamContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        void BarRamContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             LolibarDefaults.ChangeRamInfo();
+        }
+
+        void BarDiskContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeDiskInfo();
         }
 
         void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

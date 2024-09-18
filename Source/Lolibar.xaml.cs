@@ -47,33 +47,57 @@ namespace LolibarApp.Source
             nullWin.Show();
             Owner = GetWindow(nullWin);
 
-            Closed                                      += Lolibar_Closed;
-            ContentRendered                             += Lolibar_ContentRendered;
+            Closed          += Lolibar_Closed;
+            ContentRendered += Lolibar_ContentRendered;
 
-            BarUserContainer.MouseEnter                 += Container_MouseEnter;
-            BarUserContainer.MouseLeave                 += Container_MouseLeave;
-            BarUserContainer.MouseLeftButtonUp          += BarUserContainer_MouseLeftButtonUp;
+            BarUserContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                BarUserContainer_MouseLeftButtonUp,
+                null
+            );
 
-            BarCurProcContainer.MouseEnter              += Container_MouseEnter;
-            BarCurProcContainer.MouseLeave              += Container_MouseLeave;
-            BarCurProcContainer.MouseLeftButtonUp       += BarCurProcContainer_MouseLeftButtonUp;
-            BarCurProcContainer.MouseRightButtonUp      += BarCurProcContainer_MouseRightButtonUp;
+            BarCurProcContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                BarCurProcContainer_MouseLeftButtonUp,
+                BarCurProcContainer_MouseRightButtonUp
+            );
 
-            BarRamContainer.MouseEnter                  += Container_MouseEnter;
-            BarRamContainer.MouseLeave                  += Container_MouseLeave;
-            BarRamContainer.MouseLeftButtonUp           += BarRamContainer_MouseLeftButtonUp;
+            BarRamContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                null,
+                BarRamContainer_MouseRightButtonUp
+            );
 
-            BarPowerContainer.MouseEnter                += Container_MouseEnter;
-            BarPowerContainer.MouseLeave                += Container_MouseLeave;
-            BarPowerContainer.MouseLeftButtonUp         += BarPowerContainer_MouseLeftButtonUp;
+            BarDiskContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                null,
+                BarDiskContainer_MouseRightButtonUp
+            );
 
-            BarSoundContainer.MouseEnter                += Container_MouseEnter;
-            BarSoundContainer.MouseLeave                += Container_MouseLeave;
-            BarSoundContainer.MouseLeftButtonUp         += BarSoundContainer_MouseLeftButtonUp;
+            BarPowerContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                BarPowerContainer_MouseLeftButtonUp,
+                null
+            );
 
-            BarTimeContainer.MouseEnter                 += Container_MouseEnter;
-            BarTimeContainer.MouseLeave                 += Container_MouseLeave;
-            BarTimeContainer.MouseLeftButtonUp          += BarTimeContainer_MouseLeftButtonUp;
+            BarSoundContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                BarSoundContainer_MouseLeftButtonUp,
+                null
+            );
+
+            BarTimeContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                BarTimeContainer_MouseLeftButtonUp,
+                null
+            );
 
             _Initialize();
             _Update();
@@ -134,7 +158,7 @@ namespace LolibarApp.Source
             Resources["BarGpuIcon"]             = LolibarDefaults.GpuIcon;
 
             Resources["BarDiskText"]            = "";
-            Resources["BarDiskIcon"]            = LolibarDefaults.DiskIcon;
+            Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon();
 
             Resources["BarNetworkText"]         = "";
             Resources["BarNetworkIcon"]         = LolibarDefaults.NetworkIcon;
@@ -143,7 +167,7 @@ namespace LolibarApp.Source
             Resources["BarSoundIcon"]           = LolibarDefaults.SoundIcon;
 
             Resources["BarPowerText"]           = "";
-            Resources["BarPowerIcon"]           = LolibarDefaults.PowerIcon;
+            Resources["BarPowerIcon"]           = LolibarDefaults.GetPowerIcon();
 
             Resources["BarTimeText"]            = ""; // No icon slot for this
 
@@ -168,7 +192,7 @@ namespace LolibarApp.Source
 
             // Left Container
 
-            Resources["BarUserText"]            = LolibarDefaults.UserInfo;
+            Resources["BarUserText"]            = LolibarDefaults.GetUserInfo();
 
             Resources["BarCurProcText"]         = LolibarDefaults.GetCurProcInfo();
 
@@ -176,26 +200,27 @@ namespace LolibarApp.Source
 
             // Center Container
 
-            Resources["BarCpuText"]             = LolibarDefaults.CpuInfo;
+            Resources["BarCpuText"]             = LolibarDefaults.GetCpuInfo();
 
             Resources["BarRamText"]             = LolibarDefaults.GetRamInfo();
 
-            Resources["BarGpuText"]             = LolibarDefaults.GpuInfo;
+            Resources["BarGpuText"]             = LolibarDefaults.GetGpuInfo();
 
-            Resources["BarDiskText"]            = LolibarDefaults.DiskInfo;
+            Resources["BarDiskText"]            = LolibarDefaults.GetDiskInfo();
+            Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon(); // Dynamically update disk icon
 
-            Resources["BarNetworkText"]         = LolibarDefaults.NetworkInfo;
+            Resources["BarNetworkText"]         = LolibarDefaults.GetNetworkInfo();
 
-            Resources["BarSoundText"]           = LolibarDefaults.SoundInfo;
+            Resources["BarSoundText"]           = LolibarDefaults.GetSoundInfo();
 
             //
 
             // Right Container
 
-            Resources["BarPowerText"]           = LolibarDefaults.PowerInfo;
-            Resources["BarPowerIcon"]           = LolibarDefaults.PowerIcon; // Dynamically update power icon
+            Resources["BarPowerText"]           = LolibarDefaults.GetPowerInfo();
+            Resources["BarPowerIcon"]           = LolibarDefaults.GetPowerIcon(); // Dynamically update power icon
 
-            Resources["BarTimeText"]            = LolibarDefaults.TimeInfo;
+            Resources["BarTimeText"]            = LolibarDefaults.GetTimeInfo();
         
             //
         }
