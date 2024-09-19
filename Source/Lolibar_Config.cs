@@ -15,7 +15,7 @@ namespace LolibarApp.Source
             Resources["BarColor"]                       = LolibarHelper.SetColor("#121e46");
             Resources["ElementColor"]                   = LolibarHelper.SetColor("#8981bd");
             Resources["UseSystemTheme"]                 = false;
-            //Resources["BarCenterContainerIsVisible"]    = false;
+            //Resources["IsBarCenterContainerVisible"]    = false;
         }
 
         // Updates every "UpdateDelay".
