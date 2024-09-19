@@ -235,9 +235,9 @@ namespace LolibarApp.Source
 
         void PostInitializeContainersVisibility()
         {
-            if (!(bool)Resources["BarLeftContainerIsVisible"])    BarLeftContainer.Visibility     = Visibility.Collapsed;
-            if (!(bool)Resources["BarCenterContainerIsVisible"])  BarCenterContainer.Visibility   = Visibility.Collapsed;
-            if (!(bool)Resources["BarRightContainerIsVisible"])   BarRightContainer.Visibility    = Visibility.Collapsed;
+            if (!(bool)Resources["IsBarLeftContainerVisible"])    BarLeftContainer.Visibility     = Visibility.Collapsed;
+            if (!(bool)Resources["IsBarCenterContainerVisible"])  BarCenterContainer.Visibility   = Visibility.Collapsed;
+            if (!(bool)Resources["IsBarRightContainerVisible"])   BarRightContainer.Visibility    = Visibility.Collapsed;
         }
 
         void PostInitializeSnapping()
