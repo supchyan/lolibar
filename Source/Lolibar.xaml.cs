@@ -175,9 +175,9 @@ namespace LolibarApp.Source
 
             // --- Hiding triggers ---
 
-            Resources["BarLeftContainerIsVisible"]   = true;
-            Resources["BarCenterContainerIsVisible"] = true;
-            Resources["BarRightContainerIsVisible"]  = true;
+            Resources["IsBarLeftContainerVisible"]   = true;
+            Resources["IsBarCenterContainerVisible"] = true;
+            Resources["IsBarRightContainerVisible"]  = true;
 
             //
 
@@ -227,12 +227,10 @@ namespace LolibarApp.Source
 
         void ListenForSystemThemeUsage()
         {
-            if ((bool)Resources["UseSystemTheme"])
-            {
-                Resources["BarColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#2d2d2d") : LolibarHelper.SetColor("#eeeeee");
-                Resources["ElementColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#eeeeee") : LolibarHelper.SetColor("#2d2d2d");
-
-            }
+            if (!(bool)Resources["UseSystemTheme"]) return;
+            
+            Resources["BarColor"]     = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#2d2d2d") : LolibarHelper.SetColor("#eeeeee");
+            Resources["ElementColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#eeeeee") : LolibarHelper.SetColor("#2d2d2d");
         }
 
         void PostInitializeContainersVisibility()
