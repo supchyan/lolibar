@@ -33,7 +33,7 @@ int someTimer;
 void Initialize()
 {
   // Keep it in mind, that Resources[]* are pre-included and initialized in the project.
-  // Also, resources has self-update on every "UpdateDelay" value elapsed (brings to default, if nothing overwritting it),
+  // Also, resources has self-update on every "UpdateDelay" value elapsed (i.e. brings to default, if nothing overwritting it),
   // so you can override it for your sake.
   // ---
   // * List with all definitions about every resource in Resources[], about it's type and capability - I'll be able to add later.
