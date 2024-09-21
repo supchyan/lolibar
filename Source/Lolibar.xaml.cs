@@ -78,6 +78,13 @@ namespace LolibarApp.Source
                 BarDiskContainer_MouseRightButtonUp
             );
 
+            BarNetworkContainer.SetContainerEvents(
+                Container_MouseEnter,
+                Container_MouseLeave,
+                null,
+                BarNetworkContainer_MouseRightButtonUp
+            );
+
             BarPowerContainer.SetContainerEvents(
                 Container_MouseEnter,
                 Container_MouseLeave,
@@ -154,14 +161,11 @@ namespace LolibarApp.Source
             Resources["BarRamText"]             = "";
             Resources["BarRamIcon"]             = LolibarDefaults.RamIcon;
 
-            Resources["BarGpuText"]             = "";
-            Resources["BarGpuIcon"]             = LolibarDefaults.GpuIcon;
-
             Resources["BarDiskText"]            = "";
             Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon();
 
             Resources["BarNetworkText"]         = "";
-            Resources["BarNetworkIcon"]         = LolibarDefaults.NetworkIcon;
+            Resources["BarNetworkIcon"]         = LolibarDefaults.GetNetworkIcon();
 
             Resources["BarSoundText"]           = "";
             Resources["BarSoundIcon"]           = LolibarDefaults.SoundIcon;
@@ -204,12 +208,11 @@ namespace LolibarApp.Source
 
             Resources["BarRamText"]             = LolibarDefaults.GetRamInfo();
 
-            Resources["BarGpuText"]             = LolibarDefaults.GetGpuInfo();
-
             Resources["BarDiskText"]            = LolibarDefaults.GetDiskInfo();
-            Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon(); // Dynamically update disk icon
+            Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon();    // Dynamically update disk icon
 
             Resources["BarNetworkText"]         = LolibarDefaults.GetNetworkInfo();
+            Resources["BarNetworkIcon"]         = LolibarDefaults.GetNetworkIcon(); // Dynamically update network icon
 
             Resources["BarSoundText"]           = LolibarDefaults.GetSoundInfo();
 

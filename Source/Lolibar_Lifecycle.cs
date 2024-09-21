@@ -9,6 +9,7 @@ namespace LolibarApp.Source
         void __PreInitialize()
         {
             SetDefaults();
+            PerfMonitor.InitializeNetworkCounters();
         }
         void __PostInitialize()
         {

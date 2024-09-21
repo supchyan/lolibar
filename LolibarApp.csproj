@@ -6,7 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWPF>true</UseWPF>
-		<ApplicationIcon>appicon.ico</ApplicationIcon>
+		<ApplicationIcon>app_icon.ico</ApplicationIcon>
 		<AssemblyName>lolibar</AssemblyName>
 	</PropertyGroup>
 

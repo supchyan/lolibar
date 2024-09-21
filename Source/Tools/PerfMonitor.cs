@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace LolibarApp.Source.Tools
 {
@@ -6,11 +8,16 @@ namespace LolibarApp.Source.Tools
     {
         // Counters
         public static readonly PerformanceCounter CPU_Total         = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        
         public static readonly PerformanceCounter RAM_Left_MB       = new PerformanceCounter("Memory", "Available MBytes");
-        //public static readonly PerformanceCounter GPU_Usage = new PerformanceCounter("GPU Engine", "Utilization Percentage", "_Total");
+
         public static readonly PerformanceCounter Disk_Total        = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
         public static readonly PerformanceCounter Disk_Read_Total   = new PerformanceCounter("PhysicalDisk", "% Disk Read Time", "_Total");
         public static readonly PerformanceCounter Disk_Write_Total  = new PerformanceCounter("PhysicalDisk", "% Disk Write Time", "_Total");
+
+        public static PerformanceCounter? Network_Bytes_Total       { get; private set; }
+        public static PerformanceCounter? Network_Bytes_Sent        { get; private set; }
+        public static PerformanceCounter? Network_Bytes_Received    { get; private set; }
 
         // https://stackoverflow.com/questions/97283/how-can-i-determine-the-name-of-the-currently-focused-process-in-c-sharp
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -41,6 +48,20 @@ namespace LolibarApp.Source.Tools
             }
 
             return new string[2];
+        }
+        public static void InitializeNetworkCounters()
+        {
+            var category = new PerformanceCounterCategory("Network Interface");
+            foreach (var instance in category.GetInstanceNames())
+            {
+                if (instance.Contains("802.11ac"))
+                {
+                    Network_Bytes_Total     = new PerformanceCounter($"Network Interface", "Bytes Total/sec", instance);
+                    Network_Bytes_Sent      = new PerformanceCounter($"Network Interface", "Bytes Sent/sec", instance);
+                    Network_Bytes_Received  = new PerformanceCounter($"Network Interface", "Bytes Received/sec", instance);
+                    return;
+                }
+            }
         }
     }
 }

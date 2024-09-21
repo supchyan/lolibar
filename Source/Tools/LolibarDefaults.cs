@@ -9,6 +9,7 @@ namespace LolibarApp.Source.Tools
         static bool ShowRamInPercent    = true;
         static int  CurProcInfoState    = 0;
         static int  DiskInfoState       = 0;
+        static int  NetworkInfoState    = 0;
 
         #region Ram
         public static void ChangeRamInfo()
@@ -19,7 +20,7 @@ namespace LolibarApp.Source.Tools
         {
             var computerInfo            = new ComputerInfo();
             var RamUsedInPercentInfo    = $"{String.Format("{0:0.0}", Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 1))}%";
-            var RamUsedInGbInfo         = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}GB";
+            var RamUsedInGbInfo         = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}Gb";
 
             if (ShowRamInPercent)   return RamUsedInPercentInfo ?? "";
             else                    return RamUsedInGbInfo ?? "";
@@ -158,17 +159,37 @@ namespace LolibarApp.Source.Tools
         }
         #endregion
 
-        #region Gpu
-        public static string? GetGpuInfo()
-        {
-            return "NoData";
-        }
-        #endregion
-
         #region Network
+        public static void ChangeNetworkInfo()
+        {
+            if (NetworkInfoState < 2) NetworkInfoState++;
+            else NetworkInfoState = 0;
+        }
         public static string? GetNetworkInfo()
         {
-            return "NoData";
+            switch (NetworkInfoState)
+            {
+                case 0: // total kbps usage
+                    return $"{Math.Round(PerfMonitor.Network_Bytes_Total.NextValue()    / 1024)}Kbps";
+
+                case 1: // sent kbps usage
+                    return $"{Math.Round(PerfMonitor.Network_Bytes_Sent.NextValue()     / 1024)}Kbps";
+
+                case 2: // received kbps usage
+                    return $"{Math.Round(PerfMonitor.Network_Bytes_Received.NextValue() / 1024)}Kbps";
+
+            }
+            return null;
+        }
+        public static Geometry? GetNetworkIcon()
+        {
+            switch (NetworkInfoState)
+            {
+                case 0: return NetworkNormalIcon;       // total kbps usage
+                case 1: return NetworkSentIcon;         // sent kbps usage
+                case 2: return NetworkReceivedIcon;     // received kbps usage
+            }
+            return null;
         }
         #endregion
     }

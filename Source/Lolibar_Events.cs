@@ -61,6 +61,11 @@ namespace LolibarApp.Source
             LolibarDefaults.ChangeDiskInfo();
         }
 
+        void BarNetworkContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeNetworkInfo();
+        }
+
         void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process
