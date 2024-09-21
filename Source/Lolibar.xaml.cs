@@ -133,12 +133,12 @@ namespace LolibarApp.Source
             Resources["BarHeight"]              = 42.0;
             Resources["BarWidth"]               = LolibarHelper.Inch_ScreenWidth - 2 * (double)Resources["BarMargin"]; // Fit to screen width as default
 
-            Resources["BarColor"]               = LolibarHelper.SetColor("#2d2d2d");
+            Resources["BarColor"]               = LolibarHelper.SetColor("#eeeeee");
             Resources["BarBorderRadius"]        = 6.0;
             Resources["BarOpacity"]             = 1.0;
             Resources["BarStroke"]              = 0.0;
 
-            Resources["ElementColor"]           = LolibarHelper.SetColor("#eeeeee");
+            Resources["ElementColor"]           = LolibarHelper.SetColor("#2d2d2d");
             Resources["ElementMargin"]          = new Thickness(16.0, 0.0, 16.0, 0.0);
             Resources["IconSize"]               = 16.0;
             Resources["FontSize"]               = 12.0;
@@ -232,8 +232,8 @@ namespace LolibarApp.Source
         {
             if (!(bool)Resources["UseSystemTheme"]) return;
             
-            Resources["BarColor"]     = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#2d2d2d") : LolibarHelper.SetColor("#eeeeee");
-            Resources["ElementColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#eeeeee") : LolibarHelper.SetColor("#2d2d2d");
+            Resources["BarColor"]     = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
+            Resources["ElementColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
         }
 
         void PostInitializeContainersVisibility()
