@@ -11,7 +11,7 @@
 <div align=center><img src="https://github.com/user-attachments/assets/dacf73b1-3529-4538-9359-02895769c2dd" /></div>
 </br>
 
-> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
+> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Lolibar_Config.cs)
 ```csharp
 // [Lolibar_Config.cs]
 
