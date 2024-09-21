@@ -4,6 +4,11 @@
 
 > [!WARNING]  
 > This project is under development process, so there is no `ready-to-use` version on [Releases](https://github.com/supchyan/lolibar/releases) page. But you can get it, building it by yourself. All you need to build this project is `Visual Studio 2022+` with `.NET SDK 8.0+`. This project is for Windows Platform only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.
+
+</br>
+<div align=center><img src="https://github.com/user-attachments/assets/69a80246-5d95-44d2-aa35-3967ca262d6f" /></div>
+</br>
+<div align=center><img src="https://github.com/user-attachments/assets/dacf73b1-3529-4538-9359-02895769c2dd" /></div>
 </br>
 
 > How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
@@ -19,9 +24,6 @@ void Update()
   // ...Then update it here if you supposed to
 }
 ```
-</br>
-<div align=center><img src="https://github.com/user-attachments/assets/059d87a6-2116-4ab0-a757-0f3a313ccb8e" /></div>
-</br>
 
 > Example
 ```csharp
