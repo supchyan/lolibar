@@ -43,6 +43,7 @@ class Config : ModLolibar
     {
         UpdateDelay = 500;
         UseSystemTheme = false;
+        BarStrokeSize = 2;
         BarColor = LolibarHelper.SetColor("#05202d");
         ElementColor = LolibarHelper.SetColor("#e2968b");
     }
@@ -56,6 +57,7 @@ class Config : ModLolibar
 }
 // Simple enough, isn't it?
 ```
-<div align=center><img src="https://github.com/user-attachments/assets/34ca84e4-a3b7-4e7d-9b80-55a5a0608b02" /></div>
+
+<div align=center><img src="https://github.com/user-attachments/assets/cac83864-8692-4200-bebf-43072cb8c15a" /></div>
 
 ##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
