@@ -56,6 +56,6 @@ class Config : ModLolibar
 }
 // Simple enough, isn't it?
 ```
-<div align=center><img src="https://github.com/user-attachments/assets/e32ee508-a3ad-4067-b9eb-11901ee2e966" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/34ca84e4-a3b7-4e7d-9b80-55a5a0608b02" /></div>
 
 ##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
