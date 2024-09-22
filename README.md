@@ -1,9 +1,13 @@
 <div align=center><img src="https://github.com/user-attachments/assets/7e5daeb0-ee0c-4e9c-b584-21164433649d" height=80 /></div>
 
-#### <div align=center>lolibar | customizable windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
+#### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
 
-> [!WARNING]  
-> This project is under development process, so there is no `ready-to-use` version on [Releases](https://github.com/supchyan/lolibar/releases) page. But you can get it, building it by yourself. All you need to build this project is `Visual Studio 2022+` with `.NET SDK 8.0+`. This project is for Windows Platform only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.
+> [!IMPORTANT]  
+> This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on [Releases](https://github.com/supchyan/lolibar/releases) page.
+>
+> If you want one, you can build it by yourself. All you need to run this project and create instant executable - just get `Visual Studio 2022` with `.NET SDK 8.0`. Then run solution and enjoy!
+> 
+> This project is for **Windows Platform** only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.
 
 </br>
 <div align=center><img src="https://github.com/user-attachments/assets/69a80246-5d95-44d2-aa35-3967ca262d6f" /></div>
@@ -11,46 +15,46 @@
 <div align=center><img src="https://github.com/user-attachments/assets/dacf73b1-3529-4538-9359-02895769c2dd" /></div>
 </br>
 
-> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Lolibar_Config.cs)
+> How does it work? Also, check this → [Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Mods/Config.cs)
 ```csharp
-// [Lolibar_Config.cs]
+// [Config.cs]
 
-void Initialize()
+class Config : ModLolibar
 {
-  // Define resources...
-}
-void Update()
-{
-  // ...Then update it here if you supposed to
+    // Runs once after launch
+    public override void Initialize()
+    {
+        
+    }
+
+    // Updates every "UpdateDelay".
+    public override void Update()
+    {
+
+    }
 }
 ```
 
 > Example
 ```csharp
-// [Lolibar_Config.cs]
-
-int someTimer;
-
-void Initialize()
+// [Config.cs]
+class Config : ModLolibar
 {
-  // Keep it in mind, that Resources[]* are pre-included and initialized in the project.
-  // Also, resources has self-update on every "UpdateDelay" value elapsed (i.e. brings to default, if nothing overwritting it),
-  // so you can override it for your sake.
-  // ---
-  // * List with all definitions about every resource in Resources[], about it's type and capability - I'll be able to add later.
+    int someTimer;
+    public override void Initialize()
+    {
+        // Let's override "UpdateDelay". Now it's 10 milliseconds.
+        UpdateDelay = 10;
+    }
 
-  // Let's override "UpdateDelay". Now it's 10 milliseconds.
-  Resources["UpdateDelay"]  = 10;
+    public override void Update()
+    {
+        // This method updates every "UpdateDelay"
+        // So, that means, "IconSize" will be updated every 10 milliseconds here!
+        someTimer++;
+        IconSize = 16.0 * Math.Abs(Math.Sin(someTimer));
+    }
 }
-void Update()
-{
-  // This method updates every "UpdateDelay"
-
-  // So, that means, "IconSize" will be updated every 10 milliseconds here!
-  someTimer++;
-  Resources["IconSize"] *= 16.0 * Math.Abs(Math.Sin(someTimer));
-}
-
 // Simple enough, isn't it?
 ```
 
