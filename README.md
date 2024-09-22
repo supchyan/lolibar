@@ -60,4 +60,4 @@ class Config : ModLolibar
 
 <div align=center><img src="https://github.com/user-attachments/assets/cac83864-8692-4200-bebf-43072cb8c15a" /></div>
 
-##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
+##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
