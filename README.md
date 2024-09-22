@@ -35,7 +35,7 @@ class Config : ModLolibar
 
 > Example
 ```csharp
-// [Config.cs] - My personal setup, which fits my wallpaper
+// [Config.cs] - My personal setup, which fits my needs
 class Config : ModLolibar
 {
    // Runs once after launch
