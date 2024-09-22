@@ -35,6 +35,16 @@ namespace LolibarApp.Source.Tools
 
             GetWindowThreadProcessId(hwnd, out uint pid);
 
+            if (pid == Process.GetCurrentProcess().Id)
+            {
+                return
+                [
+                    LolibarDefaults.CurProcIdInfo,
+                    LolibarDefaults.CurProcNameInfo
+                ];
+            }
+                
+
             foreach (var p in Process.GetProcesses())
             {
                 if (p.Id == pid)

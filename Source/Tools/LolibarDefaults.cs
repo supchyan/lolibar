@@ -12,6 +12,9 @@ namespace LolibarApp.Source.Tools
         static int  DiskInfoState       = 0;
         static int  NetworkInfoState    = 0;
 
+        public static string? CurProcIdInfo      { get; private set; }
+        public static string? CurProcNameInfo    { get; private set; }
+
         #region User
         public static string? GetUserInfo()
         {
@@ -27,16 +30,16 @@ namespace LolibarApp.Source.Tools
         }
         public static string? GetCurProcInfo()
         {
-            var CurProcIdInfo = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
-            var CurProcNameInfo = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
+            CurProcIdInfo   = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
+            CurProcNameInfo = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
 
             switch (CurProcInfoState)
             {
                 case 0: // name + id
                     var nameAndId = "";
 
-                    if (CurProcNameInfo != null) nameAndId += $"{CurProcNameInfo} : ";
-                    if (CurProcIdInfo != null) nameAndId += $"{CurProcIdInfo}";
+                    if (CurProcNameInfo != "") nameAndId += $"{CurProcNameInfo} : ";
+                    if (CurProcIdInfo   != "") nameAndId += $"{CurProcIdInfo}";
 
                     return nameAndId;
 
