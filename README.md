@@ -3,17 +3,17 @@
 #### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
 
 > [!IMPORTANT]  
-> This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on [Releases](https://github.com/supchyan/lolibar/releases) page.
+> This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page.
 >
-> If you want one, you can build it by yourself. All you need to run this project and create instant executable - just get `Visual Studio 2022` with `.NET SDK 8.0`. Then run solution and enjoy!
+> If you want one, you can build it by yourself. All you need to start modding this project are getting `Visual Studio 2022` with `.NET SDK 8.0`. Run the solution and enjoy!
 > 
-> This project is for **Windows Platform** only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.
+> This project is for **Windows Platform** only! Please, check **[polybar](https://github.com/polybar/polybar)** repo, if you're looking for the Linux one.
 
 </br>
 <div align=center><img src="https://github.com/user-attachments/assets/59b2e841-52fe-4484-80f2-38672efd701a" /></div>
 </br>
 
-> How does it work? Also, check this → [Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Mods/Config.cs)
+> How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Mods/Config.cs)**
 ```csharp
 // [Config.cs]
 
