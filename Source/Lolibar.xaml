@@ -29,7 +29,7 @@
         IsTabStop="False"
         UseLayoutRounding="True" Background="{x:Null}" Foreground="{x:Null}">
     <Grid Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="{DynamicResource BarOpacity}">
-        <Rectangle Focusable="False" Stroke="{DynamicResource ElementColor}" StrokeThickness="{DynamicResource BarStroke}" Name="Bar" Fill="{DynamicResource BarColor}" RadiusX="{DynamicResource BarBorderRadius}" RadiusY="{DynamicResource BarBorderRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" />
+        <Rectangle Focusable="False" Stroke="{DynamicResource ElementColor}" StrokeThickness="{DynamicResource BarStrokeSize}" Name="Bar" Fill="{DynamicResource BarColor}" RadiusX="{DynamicResource BarBorderRadius}" RadiusY="{DynamicResource BarBorderRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>

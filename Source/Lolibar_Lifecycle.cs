@@ -26,7 +26,7 @@ namespace LolibarApp.Source
             Config.BarColor                = LolibarHelper.SetColor("#2f2f2f");
             Config.BarBorderRadius         = 6.0;
             Config.BarOpacity              = 1.0;
-            Config.BarStroke               = 0.0;
+            Config.BarStrokeSize           = 0.0;
 
             Config.ElementColor            = LolibarHelper.SetColor("#55b456");
             Config.ElementMargin           = new Thickness(16.0, 0.0, 16.0, 0.0);

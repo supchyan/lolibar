@@ -203,7 +203,7 @@ namespace LolibarApp.Source
             Resources["BarColor"] = Config.BarColor;
             Resources["BarBorderRadius"] = Config.BarBorderRadius;
             Resources["BarOpacity"] = Config.BarOpacity;
-            Resources["BarStroke"] = Config.BarStroke;
+            Resources["BarStrokeSize"] = Config.BarStrokeSize;
 
             Resources["ElementColor"] = Config.ElementColor;
             Resources["ElementMargin"] = Config.ElementMargin;

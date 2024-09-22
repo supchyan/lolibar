@@ -11,8 +11,9 @@ namespace LolibarApp.Source.Mods
         {
             UpdateDelay = 500;
             UseSystemTheme = false;
-            BarColor = LolibarHelper.SetColor("#08121b");
-            ElementColor = LolibarHelper.SetColor("#429ec3");
+            BarColor = LolibarHelper.SetColor("#05202d");
+            ElementColor = LolibarHelper.SetColor("#e2968b");
+            BarStrokeSize = 2;
         }
 
         // Updates every "UpdateDelay".
