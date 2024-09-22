@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using LolibarApp.Source.Tools;
-using LolibarApp.Source.Mods;
+using LolibarApp.Mods;
 namespace LolibarApp.Source
 {
     partial class Lolibar

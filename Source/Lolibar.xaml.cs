@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using Ikst.MouseHook;
 using LolibarApp.Source.Tools;
-using LolibarApp.Source.Mods;
+using LolibarApp.Mods;
 
 namespace LolibarApp.Source
 {

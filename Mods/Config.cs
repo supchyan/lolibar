@@ -2,7 +2,7 @@
 
 // Handle statusbar's content logic here.
 // As for an example, you can see my personal setup, which fits my needs.
-namespace LolibarApp.Source.Mods
+namespace LolibarApp.Mods
 {
     class Config : ModLolibar
     {

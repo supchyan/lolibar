@@ -2,7 +2,7 @@
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows;
-using LolibarApp.Source.Mods;
+using LolibarApp.Mods;
 
 namespace LolibarApp.Source
 {

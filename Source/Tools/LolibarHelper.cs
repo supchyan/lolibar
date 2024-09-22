@@ -1,7 +1,5 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using LolibarApp;
 
 namespace LolibarApp.Source.Tools
 {
