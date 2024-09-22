@@ -1,6 +1,7 @@
 ﻿using LolibarApp.Source.Tools;
 
-// You can handle statusbar's content logic here
+// Handle statusbar's content logic here.
+// As for an example, you can see my personal setup, which fits my needs.
 namespace LolibarApp.Source.Mods
 {
     class Config : ModLolibar
@@ -8,7 +9,6 @@ namespace LolibarApp.Source.Mods
         // Runs once after launch
         public override void Initialize()
         {
-            // My personal setup, which fits my wallpaper
             UpdateDelay = 500;
             UseSystemTheme = false;
             BarColor = LolibarHelper.SetColor("#08121b");
