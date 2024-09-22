@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows;
 
 namespace LolibarApp.Source.Tools
@@ -13,6 +8,9 @@ namespace LolibarApp.Source.Tools
         // UI
         public static bool UseSystemTheme { get; set; }
         public static bool SnapToTop { get; set; }
+        public static bool HideLeftContainers { get; set; }
+        public static bool HideCenterContainers { get; set; }
+        public static bool HideRightContainers { get; set; }
 
         public static int UpdateDelay { get; set; }
 

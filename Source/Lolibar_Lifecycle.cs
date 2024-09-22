@@ -13,7 +13,7 @@ namespace LolibarApp.Source
 
             Config.UseSystemTheme           = true;     // If true, statusbar's default colors will be affected by system's current theme
             Config.SnapToTop                = false;    // If true, snaps Lolibar to top of the screen
-            Config.UpdateDelay              = 500;      // Delay for Update() method. Low delay affects performance!
+            Config.UpdateDelay              = 1000;      // Delay for Update() method. Low delay affects performance!
 
             //
 
@@ -23,12 +23,12 @@ namespace LolibarApp.Source
             Config.BarHeight               = 42.0;
             Config.BarWidth                = LolibarHelper.Inch_ScreenWidth - 2 * Config.BarMargin; // Fit to screen width as default
 
-            Config.BarColor                = LolibarHelper.SetColor("#eeeeee");
+            Config.BarColor                = LolibarHelper.SetColor("#2f2f2f");
             Config.BarBorderRadius         = 6.0;
             Config.BarOpacity              = 1.0;
             Config.BarStroke               = 0.0;
 
-            Config.ElementColor            = LolibarHelper.SetColor("#2d2d2d");
+            Config.ElementColor            = LolibarHelper.SetColor("#55b456");
             Config.ElementMargin           = new Thickness(16.0, 0.0, 16.0, 0.0);
             Config.IconSize                = 16.0;
             Config.FontSize                = 12.0;
@@ -81,6 +81,7 @@ namespace LolibarApp.Source
             config.Initialize();
 
             // -- PostInitialize ---
+            PostInitializeContainersVisibility();
             PostInitializeSnapping();
             UpdateResources();
         }

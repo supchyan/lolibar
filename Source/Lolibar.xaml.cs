@@ -132,7 +132,12 @@ namespace LolibarApp.Source
             Config.BarColor        = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
             Config.ElementColor    = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
         }
-
+        void PostInitializeContainersVisibility()
+        {
+            if (Config.HideLeftContainers) BarLeftContainer.Visibility      = Visibility.Collapsed;
+            if (Config.HideCenterContainers) BarCenterContainer.Visibility  = Visibility.Collapsed;
+            if (Config.HideRightContainers) BarRightContainer.Visibility    = Visibility.Collapsed;
+        }
         void PostInitializeSnapping()
         {
             if (!Config.SnapToTop)
@@ -149,45 +154,44 @@ namespace LolibarApp.Source
 
         void UpdateDefaultInfo()
         {
-            // System theme affects lolibar's colors
-
+            // Check if system theme affects lolibar's colors
             ListenForSystemThemeUsage();
 
-            //
+            // Left Containers
+            if(!Config.HideLeftContainers)
+            {
+                Config.BarUserText = LolibarDefaults.GetUserInfo();
 
-            // Left Container
+                Config.BarCurProcText = LolibarDefaults.GetCurProcInfo();
+            }
 
-            Config.BarUserText = LolibarDefaults.GetUserInfo();
+            // Center Containers
+            if (!Config.HideCenterContainers)
+            {
+                Config.BarCpuText = LolibarDefaults.GetCpuInfo();
 
-            Config.BarCurProcText = LolibarDefaults.GetCurProcInfo();
+                Config.BarRamText = LolibarDefaults.GetRamInfo();
 
-            //
+                Config.BarDiskText = LolibarDefaults.GetDiskInfo();
+                Config.BarDiskIcon = LolibarDefaults.GetDiskIcon();         // Dynamically updates disk icon
 
-            // Center Container
+                Config.BarNetworkText = LolibarDefaults.GetNetworkInfo();
+                Config.BarNetworkIcon = LolibarDefaults.GetNetworkIcon();   // Dynamically updates network icon
 
-            Config.BarCpuText = LolibarDefaults.GetCpuInfo();
+            }
 
-            Config.BarRamText = LolibarDefaults.GetRamInfo();
+            // Right Containers
+            if (!Config.HideRightContainers)
+            {
+                Config.BarPowerText = LolibarDefaults.GetPowerInfo();
+                Config.BarPowerIcon = LolibarDefaults.GetPowerIcon();       // Dynamically updates power icon
 
-            Config.BarDiskText = LolibarDefaults.GetDiskInfo();
-            Config.BarDiskIcon = LolibarDefaults.GetDiskIcon();    // Dynamically update disk icon
+                Config.BarSoundText = LolibarDefaults.GetSoundInfo();
 
-            Config.BarNetworkText = LolibarDefaults.GetNetworkInfo();
-            Config.BarNetworkIcon = LolibarDefaults.GetNetworkIcon(); // Dynamically update network icon
-
-            Config.BarSoundText = LolibarDefaults.GetSoundInfo();
-
-            //
-
-            // Right Container
-
-            Config.BarPowerText = LolibarDefaults.GetPowerInfo();
-            Config.BarPowerIcon = LolibarDefaults.GetPowerIcon(); // Dynamically update power icon
-
-            Config.BarTimeText = LolibarDefaults.GetTimeInfo();
-
-            //
+                Config.BarTimeText = LolibarDefaults.GetTimeInfo();
+            }
         }
+
         void UpdateResources()
         {
             // --- Global UI properties ---
@@ -209,14 +213,14 @@ namespace LolibarApp.Source
             Resources["SeparatorWidth"] = Config.SeparatorWidth;
             Resources["SeparatorBorderRadius"] = Config.SeparatorBorderRadius;
 
-            // --- Containers ---
+            // --- Left Containers ---
 
             Resources["BarUserText"] = Config.BarUserText;
 
             Resources["BarCurProcText"] = Config.BarCurProcText;
             Resources["BarCurProcIcon"] = Config.BarCurProcIcon;
 
-            // ---
+            // --- Center Containers ---
 
             Resources["BarCpuText"] = Config.BarCpuText;
             Resources["BarCpuIcon"] = Config.BarCpuIcon;
@@ -230,7 +234,7 @@ namespace LolibarApp.Source
             Resources["BarNetworkText"] = Config.BarNetworkText;
             Resources["BarNetworkIcon"] = Config.BarNetworkIcon;
 
-            // ---
+            // --- Right Containers ---
 
             Resources["BarSoundText"] = Config.BarSoundText;
             Resources["BarSoundIcon"] = Config.BarSoundIcon;
@@ -239,8 +243,6 @@ namespace LolibarApp.Source
             Resources["BarPowerIcon"] = Config.BarPowerIcon;
 
             Resources["BarTimeText"] = Config.BarTimeText;
-
-            //
         }
     }
 }

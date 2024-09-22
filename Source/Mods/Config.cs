@@ -1,29 +1,25 @@
 ﻿using LolibarApp.Source.Tools;
-using System.Windows;
-using System.Diagnostics;
-using System.Windows.Input;
-using LolibarApp.Source;
 
 // You can handle statusbar's content logic here
 namespace LolibarApp.Source.Mods
 {
-    partial class Config : ModLolibar
+    class Config : ModLolibar
     {
         // Runs once after launch
         public override void Initialize()
         {
-            //BarCenterContainer.Visibility = Visibility.Collapsed;
-            // My personal setup, that fits with my UI surrounding [ remove it later ]
-            UseSystemTheme = false;
+            // My personal setup, which fits my wallpaper
             UpdateDelay = 500;
-            BarColor = LolibarHelper.SetColor("#c2b99e");
-            ElementColor = LolibarHelper.SetColor("#47464c");
+            UseSystemTheme = false;
+            BarColor = LolibarHelper.SetColor("#08121b");
+            ElementColor = LolibarHelper.SetColor("#429ec3");
         }
 
         // Updates every "UpdateDelay".
         public override void Update()
         {
-
+            BarUserText = "🐳";
+            BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
         }
     }
 }
