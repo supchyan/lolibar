@@ -13,7 +13,7 @@
 <div align=center><img src="https://github.com/user-attachments/assets/59b2e841-52fe-4484-80f2-38672efd701a" /></div>
 </br>
 
-> How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Mods/Config.cs)**
+> How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
 ```csharp
 // [Config.cs]
 
