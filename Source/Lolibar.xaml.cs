@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Ikst.MouseHook;
 using LolibarApp.Source.Tools;
+using LolibarApp.Source.Mods;
 
 namespace LolibarApp.Source
 {
@@ -11,7 +11,8 @@ namespace LolibarApp.Source
     public partial class Lolibar : Window
     {
         // Misc
-        MouseHook MouseHandler = new();
+        MouseHook MouseHandler  = new();
+        Config config = new(); // Object, to invoke initialize and update methods
 
         // For screen coordinates calculation
         Matrix transformToDevice;
@@ -50,6 +51,8 @@ namespace LolibarApp.Source
             Closed          += Lolibar_Closed;
             ContentRendered += Lolibar_ContentRendered;
 
+            // ---
+
             BarUserContainer.SetContainerEvents(
                 Container_MouseEnter,
                 Container_MouseLeave,
@@ -63,6 +66,8 @@ namespace LolibarApp.Source
                 BarCurProcContainer_MouseLeftButtonUp,
                 BarCurProcContainer_MouseRightButtonUp
             );
+
+            // ---
 
             BarRamContainer.SetContainerEvents(
                 Container_MouseEnter,
@@ -85,6 +90,8 @@ namespace LolibarApp.Source
                 BarNetworkContainer_MouseRightButtonUp
             );
 
+            // ---
+
             BarPowerContainer.SetContainerEvents(
                 Container_MouseEnter,
                 Container_MouseLeave,
@@ -99,6 +106,8 @@ namespace LolibarApp.Source
                 null
             );
 
+            // ---
+
             BarTimeContainer.SetContainerEvents(
                 Container_MouseEnter,
                 Container_MouseLeave,
@@ -106,87 +115,39 @@ namespace LolibarApp.Source
                 null
             );
 
-            _Initialize();
-            _Update();
+            InitializeCycle();
+            UpdateCycle();
 
             // Should be below Initialize and Update calls, because it has Resources[] dependency
-            MouseHandler.MouseMove                      += MouseHandler_MouseMove;
+            MouseHandler.MouseMove += MouseHandler_MouseMove;
             MouseHandler.Start();
 
             GenerateTrayMenu();
         }
 
-        // Setup
-        void SetDefaults()
+        void ListenForSystemThemeUsage()
         {
-            // --- Setup properties ---
+            if (!Config.UseSystemTheme) return;
 
-            Resources["UseSystemTheme"]         = true;     // If true, statusbar's default colors will be affected by system's current theme
-            Resources["SnapToTop"]              = false;    // If true, snaps Lolibar to top of the screen
-            Resources["UpdateDelay"]            = 500;      // Delay for Update() method. Low delay affects performance!
-
-            //
-
-            // --- Global UI properties ---
-
-            Resources["BarMargin"]              = 8.0;
-            Resources["BarHeight"]              = 42.0;
-            Resources["BarWidth"]               = LolibarHelper.Inch_ScreenWidth - 2 * (double)Resources["BarMargin"]; // Fit to screen width as default
-
-            Resources["BarColor"]               = LolibarHelper.SetColor("#eeeeee");
-            Resources["BarBorderRadius"]        = 6.0;
-            Resources["BarOpacity"]             = 1.0;
-            Resources["BarStroke"]              = 0.0;
-
-            Resources["ElementColor"]           = LolibarHelper.SetColor("#2d2d2d");
-            Resources["ElementMargin"]          = new Thickness(16.0, 0.0, 16.0, 0.0);
-            Resources["IconSize"]               = 16.0;
-            Resources["FontSize"]               = 12.0;
-
-            Resources["SeparatorWidth"]         = 4.0;
-            Resources["SeparatorBorderRadius"]  = (double)Resources["SeparatorWidth"] / 2.0;
-
-            //
-
-            // --- Containers initialization ---
-
-            Resources["BarCurProcText"]         = "";
-            Resources["BarCurProcIcon"]         = LolibarDefaults.CurProcIcon;
-
-            Resources["BarUserText"]            = "";
-
-            Resources["BarCpuText"]             = "";
-            Resources["BarCpuIcon"]             = LolibarDefaults.CpuIcon;
-
-            Resources["BarRamText"]             = "";
-            Resources["BarRamIcon"]             = LolibarDefaults.RamIcon;
-
-            Resources["BarDiskText"]            = "";
-            Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon();
-
-            Resources["BarNetworkText"]         = "";
-            Resources["BarNetworkIcon"]         = LolibarDefaults.GetNetworkIcon();
-
-            Resources["BarSoundText"]           = "";
-            Resources["BarSoundIcon"]           = LolibarDefaults.SoundIcon;
-
-            Resources["BarPowerText"]           = "";
-            Resources["BarPowerIcon"]           = LolibarDefaults.GetPowerIcon();
-
-            Resources["BarTimeText"]            = ""; // No icon slot for this
-
-            //
-
-            // --- Hiding triggers ---
-
-            Resources["IsBarLeftContainerVisible"]   = true;
-            Resources["IsBarCenterContainerVisible"] = true;
-            Resources["IsBarRightContainerVisible"]  = true;
-
-            //
-
+            Config.BarColor        = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
+            Config.ElementColor    = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
         }
-        void UpdateDefaults()
+
+        void PostInitializeSnapping()
+        {
+            if (!Config.SnapToTop)
+            {
+                StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Config.BarHeight - Config.BarMargin;
+                StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
+            }
+            else
+            {
+                StatusBarVisiblePosY = Config.BarMargin;
+                StatusBarHidePosY    = -Config.BarHeight - Config.BarMargin;
+            }
+        }
+
+        void UpdateDefaultInfo()
         {
             // System theme affects lolibar's colors
 
@@ -196,69 +157,90 @@ namespace LolibarApp.Source
 
             // Left Container
 
-            Resources["BarUserText"]            = LolibarDefaults.GetUserInfo();
+            Config.BarUserText = LolibarDefaults.GetUserInfo();
 
-            Resources["BarCurProcText"]         = LolibarDefaults.GetCurProcInfo();
+            Config.BarCurProcText = LolibarDefaults.GetCurProcInfo();
 
             //
 
             // Center Container
 
-            Resources["BarCpuText"]             = LolibarDefaults.GetCpuInfo();
+            Config.BarCpuText = LolibarDefaults.GetCpuInfo();
 
-            Resources["BarRamText"]             = LolibarDefaults.GetRamInfo();
+            Config.BarRamText = LolibarDefaults.GetRamInfo();
 
-            Resources["BarDiskText"]            = LolibarDefaults.GetDiskInfo();
-            Resources["BarDiskIcon"]            = LolibarDefaults.GetDiskIcon();    // Dynamically update disk icon
+            Config.BarDiskText = LolibarDefaults.GetDiskInfo();
+            Config.BarDiskIcon = LolibarDefaults.GetDiskIcon();    // Dynamically update disk icon
 
-            Resources["BarNetworkText"]         = LolibarDefaults.GetNetworkInfo();
-            Resources["BarNetworkIcon"]         = LolibarDefaults.GetNetworkIcon(); // Dynamically update network icon
+            Config.BarNetworkText = LolibarDefaults.GetNetworkInfo();
+            Config.BarNetworkIcon = LolibarDefaults.GetNetworkIcon(); // Dynamically update network icon
 
-            Resources["BarSoundText"]           = LolibarDefaults.GetSoundInfo();
+            Config.BarSoundText = LolibarDefaults.GetSoundInfo();
 
             //
 
             // Right Container
 
-            Resources["BarPowerText"]           = LolibarDefaults.GetPowerInfo();
-            Resources["BarPowerIcon"]           = LolibarDefaults.GetPowerIcon(); // Dynamically update power icon
+            Config.BarPowerText = LolibarDefaults.GetPowerInfo();
+            Config.BarPowerIcon = LolibarDefaults.GetPowerIcon(); // Dynamically update power icon
 
-            Resources["BarTimeText"]            = LolibarDefaults.GetTimeInfo();
-        
+            Config.BarTimeText = LolibarDefaults.GetTimeInfo();
+
             //
         }
-
-        void ListenForSystemThemeUsage()
+        void UpdateResources()
         {
-            if (!(bool)Resources["UseSystemTheme"]) return;
-            
-            Resources["BarColor"]     = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
-            Resources["ElementColor"] = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
-        }
+            // --- Global UI properties ---
 
-        void PostInitializeContainersVisibility()
-        {
-            if (!(bool)Resources["IsBarLeftContainerVisible"])    BarLeftContainer.Visibility     = Visibility.Collapsed;
-            if (!(bool)Resources["IsBarCenterContainerVisible"])  BarCenterContainer.Visibility   = Visibility.Collapsed;
-            if (!(bool)Resources["IsBarRightContainerVisible"])   BarRightContainer.Visibility    = Visibility.Collapsed;
-        }
+            Resources["BarMargin"] = Config.BarMargin;
+            Resources["BarHeight"] = Config.BarHeight;
+            Resources["BarWidth"] = Config.BarWidth;
 
-        void PostInitializeSnapping()
-        {
-            if (!(bool)Resources["SnapToTop"])
-            {
-                StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Height - (double)Resources["BarMargin"];
-                StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
-            }
-            else
-            {
-                StatusBarVisiblePosY = (double)Resources["BarMargin"];
-                StatusBarHidePosY    = -Height - (double)Resources["BarMargin"];
-            }
-        }
+            Resources["BarColor"] = Config.BarColor;
+            Resources["BarBorderRadius"] = Config.BarBorderRadius;
+            Resources["BarOpacity"] = Config.BarOpacity;
+            Resources["BarStroke"] = Config.BarStroke;
 
-        #region Statusbar State handling
-        
-        #endregion
+            Resources["ElementColor"] = Config.ElementColor;
+            Resources["ElementMargin"] = Config.ElementMargin;
+            Resources["IconSize"] = Config.IconSize;
+            Resources["FontSize"] = Config.FontSize;
+
+            Resources["SeparatorWidth"] = Config.SeparatorWidth;
+            Resources["SeparatorBorderRadius"] = Config.SeparatorBorderRadius;
+
+            // --- Containers ---
+
+            Resources["BarUserText"] = Config.BarUserText;
+
+            Resources["BarCurProcText"] = Config.BarCurProcText;
+            Resources["BarCurProcIcon"] = Config.BarCurProcIcon;
+
+            // ---
+
+            Resources["BarCpuText"] = Config.BarCpuText;
+            Resources["BarCpuIcon"] = Config.BarCpuIcon;
+
+            Resources["BarRamText"] = Config.BarRamText;
+            Resources["BarRamIcon"] = Config.BarRamIcon;
+
+            Resources["BarDiskText"] = Config.BarDiskText;
+            Resources["BarDiskIcon"] = Config.BarDiskIcon;
+
+            Resources["BarNetworkText"] = Config.BarNetworkText;
+            Resources["BarNetworkIcon"] = Config.BarNetworkIcon;
+
+            // ---
+
+            Resources["BarSoundText"] = Config.BarSoundText;
+            Resources["BarSoundIcon"] = Config.BarSoundIcon;
+
+            Resources["BarPowerText"] = Config.BarPowerText;
+            Resources["BarPowerIcon"] = Config.BarPowerIcon;
+
+            Resources["BarTimeText"] = Config.BarTimeText;
+
+            //
+        }
     }
 }

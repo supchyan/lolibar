@@ -2,6 +2,7 @@
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows;
+using LolibarApp.Source.Mods;
 
 namespace LolibarApp.Source
 {
@@ -131,9 +132,9 @@ namespace LolibarApp.Source
             bool MouseMinX = mouseStruct.pt.x <= 0;
             bool MouseMaxX = mouseStruct.pt.x >= screenSize.Width;
 
-            var BarSizeY = Height + 4 * (double)Resources["BarMargin"];
+            var BarSizeY = Height + 4 * Config.BarMargin;
 
-            if (!(bool)Resources["SnapToTop"])
+            if (!Config.SnapToTop)
             {
                 Show_Trigger = MouseMaxY && (MouseMinX || MouseMaxX);
                 Hide_Trigger = mouseStruct.pt.y < screenSize.Height - BarSizeY;

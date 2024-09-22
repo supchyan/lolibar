@@ -14,9 +14,9 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// Generates `SolidColorBrush` object, by getting HEX Color value.
         /// </summary>
-        public static SolidColorBrush? SetColor(string color)
+        public static SolidColorBrush SetColor(string color)
         {
-            return (SolidColorBrush?)new BrushConverter().ConvertFrom(color);
+            return (SolidColorBrush)new BrushConverter().ConvertFrom(color);
         }
 
         public static void CloseApplicationGently()

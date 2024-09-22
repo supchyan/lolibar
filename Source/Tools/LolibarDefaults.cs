@@ -23,7 +23,7 @@ namespace LolibarApp.Source.Tools
             var RamUsedInGbInfo         = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}Gb";
 
             if (ShowRamInPercent)   return RamUsedInPercentInfo ?? "";
-            else                    return RamUsedInGbInfo ?? "";
+            else                    return RamUsedInGbInfo      ?? "";
         }
         #endregion
 
@@ -52,7 +52,7 @@ namespace LolibarApp.Source.Tools
                     return CurProcNameInfo ?? "";
 
                 case 2: // only id  // TODO Replace this by more useful info about proc
-                    return CurProcIdInfo ?? "";
+                    return CurProcIdInfo   ?? "";
 
             }
             return null;
@@ -106,27 +106,27 @@ namespace LolibarApp.Source.Tools
             {
                 // High Power Icon
                 return powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                    PowerIconCharging :
-                    PowerIconHigh;
+                    PowerChargingIcon :
+                    PowerHighIcon;
             }
             else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
             {
                 // Low Power Icon
                 return powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                    PowerIconCharging :
-                    PowerIconLow;
+                    PowerChargingIcon :
+                    PowerLowIcon;
             }
             else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
             {
                 // Critical Power Icon
                 return powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                    PowerIconCharging :
-                    PowerIconCritical;
+                    PowerChargingIcon :
+                    PowerCriticalIcon;
             }
             else
             {
                 // Empty Power Icon
-                return PowerIconEmpty;
+                return PowerEmptyIcon;
             }
         }
         #endregion
