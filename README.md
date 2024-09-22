@@ -10,9 +10,7 @@
 > This project is for **Windows Platform** only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.
 
 </br>
-<div align=center><img src="https://github.com/user-attachments/assets/69a80246-5d95-44d2-aa35-3967ca262d6f" /></div>
-</br>
-<div align=center><img src="https://github.com/user-attachments/assets/dacf73b1-3529-4538-9359-02895769c2dd" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/59b2e841-52fe-4484-80f2-38672efd701a" /></div>
 </br>
 
 > How does it work? Also, check this → [Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Mods/Config.cs)
@@ -37,26 +35,28 @@ class Config : ModLolibar
 
 > Example
 ```csharp
-// [Config.cs]
+// [Config.cs] - My personal setup, which fits my wallpaper
 class Config : ModLolibar
 {
-    int someTimer;
+   // Runs once after launch
     public override void Initialize()
     {
-        // Let's override "UpdateDelay". Now it's 10 milliseconds.
-        UpdateDelay = 10;
+        UpdateDelay = 500;
+        UseSystemTheme = false;
+        BarColor = LolibarHelper.SetColor("#08121b");
+        ElementColor = LolibarHelper.SetColor("#429ec3");
     }
-
+    
+    // Updates every "UpdateDelay".
     public override void Update()
     {
-        // This method updates every "UpdateDelay"
-        // So, that means, "IconSize" will be updated every 10 milliseconds here!
-        someTimer++;
-        IconSize = 16.0 * Math.Abs(Math.Sin(someTimer));
+        BarUserText = "🐳";
+        BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
     }
 }
 // Simple enough, isn't it?
 ```
+<div align=center><img src="https://github.com/user-attachments/assets/e32ee508-a3ad-4067-b9eb-11901ee2e966" /></div>
 
 ##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
 <div align=center><img src="https://github.com/user-attachments/assets/69208a59-6092-4855-b165-44a277779592" /></div>
