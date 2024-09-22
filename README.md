@@ -1,4 +1,4 @@
-<div align=center><img src="https://github.com/user-attachments/assets/34a1edc8-1972-4523-a5ed-5344d29c3d05" height=83 /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/7e5daeb0-ee0c-4e9c-b584-21164433649d" height=80 /></div>
 
 #### <div align=center>lolibar | customizable windows [polybar](https://github.com/polybar/polybar) alternative | c#</div>
 
@@ -11,7 +11,7 @@
 <div align=center><img src="https://github.com/user-attachments/assets/dacf73b1-3529-4538-9359-02895769c2dd" /></div>
 </br>
 
-> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Lolibar_Config.cs)
+> How does it work? Also, check this → [Lolibar_Config.cs](https://github.com/supchyan/lolibar/blob/master/Source/Lolibar_Config.cs)
 ```csharp
 // [Lolibar_Config.cs]
 
