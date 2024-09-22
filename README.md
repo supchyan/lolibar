@@ -35,7 +35,7 @@ class Config : ModLolibar
 
 > Example
 ```csharp
-// [Config.cs] - My personal setup, which fits my wallpaper
+// [Config.cs] - My personal setup, which fits my needs
 class Config : ModLolibar
 {
    // Runs once after launch
@@ -43,8 +43,8 @@ class Config : ModLolibar
     {
         UpdateDelay = 500;
         UseSystemTheme = false;
-        BarColor = LolibarHelper.SetColor("#08121b");
-        ElementColor = LolibarHelper.SetColor("#429ec3");
+        BarColor = LolibarHelper.SetColor("#05202d");
+        ElementColor = LolibarHelper.SetColor("#e2968b");
     }
     
     // Updates every "UpdateDelay".
@@ -56,9 +56,6 @@ class Config : ModLolibar
 }
 // Simple enough, isn't it?
 ```
-<div align=center><img src="https://github.com/user-attachments/assets/e32ee508-a3ad-4067-b9eb-11901ee2e966" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/34ca84e4-a3b7-4e7d-9b80-55a5a0608b02" /></div>
 
 ##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div> </br>
-<div align=center><img src="https://github.com/user-attachments/assets/69208a59-6092-4855-b165-44a277779592" /></div>
-
-##### <div align=center>showcase ✨ [ work in progress tho ]</div>
