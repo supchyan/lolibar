@@ -10,7 +10,7 @@
 > This project is for **Windows Platform** only! Please, check **[polybar](https://github.com/polybar/polybar)** repo, if you're looking for the Linux one.
 
 </br>
-<div align=center><img src="https://github.com/user-attachments/assets/3068bc49-405f-43d8-b112-bdabc770dcf4" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/0933f6ed-1ba8-479a-be8a-465b8a4f71f5" /></div>
 </br>
 
 > How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
@@ -43,21 +43,49 @@ class Config : ModLolibar
     {
         UpdateDelay                 = 500;
         UseSystemTheme              = false;
-        BarColor                    = LolibarHelper.SetColor("#6e6168");
-        BarContainersContentColor   = LolibarHelper.SetColor("#1c1b19");
+
         BarHeight                   = 36;
+
+        BarColor                    = LolibarHelper.SetColor("#452a25");
+        BarContainersContentColor   = LolibarHelper.SetColor("#b56e5c");
+
+        HideBarInfoContainer        = true;
+
+        // Let's add a clickable container!
+        ContainerGenerator.CreateContainer(
+            Lolibar.barRightContainer, // parent container
+            LolibarDefaults.SoundIcon, // icon content
+            "Sound",                   // text content
+            OpenSoundSettings,         // onleftclick event
+            default                    // onrightclick event [ which is null here ]
+        );
     }
 
     // Updates every "UpdateDelay".
     public override void Update()
     {
-        BarUserText     = "🐳";
-        BarTimeText     = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
+        BarUserText = $"🐳";
+        BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
+    }
+
+    // My custom event...
+    void OpenSoundSettings(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        new Process
+        {
+            StartInfo = new()
+            {
+                FileName = "powershell.exe",
+                Arguments = "Start-Process ms-settings:sound",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            }
+        }.Start();
     }
 }
 // Simple enough, isn't it?
 ```
 
-<div align=center><img src="https://github.com/user-attachments/assets/8bb13052-a373-4089-9178-19e0d28e1463" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/000354cc-e5c5-4de5-9d7e-3e9a123e91e9" /></div>
 
 ##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
