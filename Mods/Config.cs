@@ -14,7 +14,6 @@ namespace LolibarApp.Mods
             BarColor                    = LolibarHelper.SetColor("#05202d");
             BarContainersContentColor   = LolibarHelper.SetColor("#e2968b");
             BarHeight                   = 36;
-            //BarContainerColor           = LolibarHelper.SetColor("#30e2968b");
         }
 
         // Updates every "UpdateDelay".

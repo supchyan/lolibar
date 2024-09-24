@@ -54,8 +54,8 @@ namespace LolibarApp.Source.Tools
         {
             if (mouseEnterEvent != null)        element.MouseEnter          += mouseEnterEvent;
             if (mouseLeaveEvent != null)        element.MouseLeave          += mouseLeaveEvent;
-            if (leftMouseClickEvent != null)    element.MouseLeftButtonUp   += leftMouseClickEvent;
-            if (rightMouseClickEvent != null)   element.MouseRightButtonUp  += rightMouseClickEvent;
+            if (leftMouseClickEvent != null)    element.PreviewMouseLeftButtonUp   += leftMouseClickEvent;
+            if (rightMouseClickEvent != null)   element.PreviewMouseRightButtonUp += rightMouseClickEvent;
         }
     }
 }

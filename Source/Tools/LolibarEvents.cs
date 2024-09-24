@@ -7,12 +7,12 @@ namespace LolibarApp.Source.Tools
     {
         public static void UI_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Cursor.Current = Cursors.Hand;
+            sender.GetType().GetProperty("Cursor")?.SetValue(sender, System.Windows.Input.Cursors.Hand);
+
             LolibarAnimator.BeginDecOpacityAnimation((UIElement)sender);
         }
         public static void UI_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Cursor.Current = Cursors.Arrow;
             LolibarAnimator.BeginIncOpacityAnimation((UIElement)sender);
         }
         public static void BarUserContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -88,6 +88,8 @@ namespace LolibarApp.Source.Tools
 
         public static void BarTimeContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            // probable fix #9, so shouldn't be overlooked. seems, `sender` here is application itself...
+            //if (e.OriginalSource == sender) System.Windows.MessageBox.Show("show");
             new Process
             {
                 StartInfo = new()
