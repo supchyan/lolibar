@@ -1,11 +1,6 @@
 ﻿using LolibarApp.Mods;
-using System;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LolibarApp.Source.Tools
 {

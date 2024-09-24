@@ -1,5 +1,4 @@
-﻿using LolibarApp.Mods;
-using Microsoft.VisualBasic.Devices;
+﻿using Microsoft.VisualBasic.Devices;
 using System.Security.Principal;
 using System.Windows.Media;
 
