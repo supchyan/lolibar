@@ -5,7 +5,7 @@
 > [!IMPORTANT]  
 > This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page.
 >
-> If you want one, you can build it by yourself. All you need to start modding this project are getting `Visual Studio 2022` with `.NET SDK 8.0`. Run the solution and enjoy!
+> If you want one, you can build it by yourself. All you need to start modding this project get `Visual Studio 2022` with `.NET SDK 8.0`. Run the solution and enjoy!
 > 
 > This project is for **Windows Platform** only! Please, check **[polybar](https://github.com/polybar/polybar)** repo, if you're looking for the Linux one.
 
