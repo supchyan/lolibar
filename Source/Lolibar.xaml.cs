@@ -49,8 +49,8 @@ namespace LolibarApp.Source
             nullWin.Show();
             Owner = GetWindow(nullWin);
 
-            Closed          += Lolibar_Closed;
             ContentRendered += Lolibar_ContentRendered;
+            Closing         += Lolibar_Closing;
 
             // ---
 

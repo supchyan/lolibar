@@ -26,12 +26,17 @@ namespace LolibarApp.Source.Tools
             return $"#{Convert.ToHexString([brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B]).Replace("-", "")}";
         }
 
+        /// <summary>
+        /// Gently closes application.
+        /// </summary>
         public static void CloseApplicationGently()
         {
-            CanBeClosed = true;
             System.Windows.Application.Current.Shutdown();
         }
         // https://stackoverflow.com/questions/3895188/restart-application-using-c-sharp
+        /// <summary>
+        /// Gently restarts application.
+        /// </summary>
         public static void RestartApplicationGently()
         {
             CanBeClosed = true;

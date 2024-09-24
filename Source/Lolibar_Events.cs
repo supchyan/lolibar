@@ -68,11 +68,11 @@ namespace LolibarApp.Source
                 oldIsHidden = IsHidden;
             }
         }
-        void Lolibar_Closed(object? sender, EventArgs e)
+        void Lolibar_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!LolibarHelper.CanBeClosed)
+            if (Control.ModifierKeys.HasFlag(Keys.Alt))
             {
-                LolibarHelper.RestartApplicationGently();
+                e.Cancel = true;
             }
         }
         #endregion
