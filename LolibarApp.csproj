@@ -17,4 +17,5 @@
 	<ItemGroup>
 		<Resource Include="Fonts\mononoki.ttf"></Resource>
 	</ItemGroup>
+
 </Project>

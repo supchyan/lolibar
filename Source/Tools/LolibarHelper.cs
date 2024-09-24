@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using LolibarApp.Mods;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace LolibarApp.Source.Tools
 {
-    public static class LolibarHelper
+    public static partial class LolibarHelper
     {
         public static bool CanBeClosed { get; private set; }
         public static readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;

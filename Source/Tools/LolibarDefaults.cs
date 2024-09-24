@@ -8,12 +8,18 @@ namespace LolibarApp.Source.Tools
     public partial class LolibarDefaults
     {
         static bool ShowRamInPercent    = true;
-        static int  CurProcInfoState    = 0;
         static int  DiskInfoState       = 0;
         static int  NetworkInfoState    = 0;
 
         public static string? CurProcIdInfo      { get; private set; }
         public static string? CurProcNameInfo    { get; private set; }
+
+        #region AddTab
+        public static string? GetAddTabInfo()
+        {
+            return "Add Workspace";
+        }
+        #endregion
 
         #region User
         public static string? GetUserInfo()
@@ -23,34 +29,18 @@ namespace LolibarApp.Source.Tools
         #endregion
 
         #region CurProc
-        public static void ChangeCurProcInfo()
-        {
-            if (CurProcInfoState < 2) CurProcInfoState++;
-            else CurProcInfoState = 0;
-        }
         public static string? GetCurProcInfo()
         {
             CurProcIdInfo   = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
             CurProcNameInfo = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
 
-            switch (CurProcInfoState)
-            {
-                case 0: // name + id
-                    var nameAndId = "";
+            var nameAndId = "";
 
-                    if (CurProcNameInfo != "") nameAndId += $"{CurProcNameInfo} : ";
-                    if (CurProcIdInfo   != "") nameAndId += $"{CurProcIdInfo}";
+            if (CurProcNameInfo != "") nameAndId += $"{CurProcNameInfo} : ";
+            if (CurProcIdInfo   != "") nameAndId += $"{CurProcIdInfo  }";
 
-                    return nameAndId;
+            return nameAndId;
 
-                case 1: // only name // TODO Replace this by more useful info about proc
-                    return CurProcNameInfo ?? "";
-
-                case 2: // only id  // TODO Replace this by more useful info about proc
-                    return CurProcIdInfo ?? "";
-
-            }
-            return null;
         }
         #endregion
 
@@ -135,8 +125,6 @@ namespace LolibarApp.Source.Tools
         }
         public static Geometry? GetNetworkIcon()
         {
-            if (Config.HideCenterContainers) return null;
-
             switch (NetworkInfoState)
             {
                 case 0: return NetworkNormalIcon;       // total kbps usage

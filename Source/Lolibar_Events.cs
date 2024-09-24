@@ -6,109 +6,10 @@ using LolibarApp.Mods;
 
 namespace LolibarApp.Source
 {
-    partial class Lolibar : Window
+    partial class Lolibar
     {
         #region Events
-        void Container_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Hand;
-            LolibarAnimator.BeginDecOpacityAnimation((UIElement)sender);
-        }
-        void Container_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Cursor = System.Windows.Input.Cursors.Arrow;
-            LolibarAnimator.BeginIncOpacityAnimation((UIElement)sender);
-        }
-
-        void BarUserContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new Process
-            {
-                StartInfo = new()
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "Start-Process ms-settings:accounts",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            }.Start();
-        }
-
-        void BarCurProcContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new Process
-            {
-                StartInfo = new()
-                {
-                    FileName        = "powershell.exe",
-                    Arguments       = "Start-Process taskmgr.exe",
-                    UseShellExecute = false,
-                    CreateNoWindow  = true,
-                }
-            }.Start();
-        }
-        void BarCurProcContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeCurProcInfo();
-        }
-
-        void BarRamContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeRamInfo();
-        }
-
-        void BarDiskContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeDiskInfo();
-        }
-
-        void BarNetworkContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeNetworkInfo();
-        }
-
-        void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new Process
-            {
-                StartInfo = new()
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "Start-Process ms-settings:sound",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            }.Start();
-        }
-
-        void BarPowerContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new Process
-            {
-                StartInfo = new()
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "Start-Process ms-settings:batterysaver",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            }.Start();
-        }
-
-        void BarTimeContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new Process
-            {
-                StartInfo = new()
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "Start-Process ms-settings:dateandtime",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            }.Start();
-        }
-
+        
         void Lolibar_ContentRendered(object? sender, EventArgs e)
         {
             transformToDevice = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
@@ -134,7 +35,7 @@ namespace LolibarApp.Source
 
             var BarSizeY = Height + 4 * Config.BarMargin;
 
-            if (!Config.SnapToTop)
+            if (!Config.SnapBarToTop)
             {
                 Show_Trigger = MouseMaxY && (MouseMinX || MouseMaxX);
                 Hide_Trigger = mouseStruct.pt.y < screenSize.Height - BarSizeY;

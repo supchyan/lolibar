@@ -12,7 +12,8 @@ namespace LolibarApp.Source
     {
         // Misc
         MouseHook MouseHandler  = new();
-        Config config = new(); // Object, to invoke initialize and update methods
+        Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
+        LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
         // For screen coordinates calculation
         Matrix transformToDevice;
@@ -54,64 +55,64 @@ namespace LolibarApp.Source
             // ---
 
             BarUserContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
-                BarUserContainer_MouseLeftButtonUp,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
+                LolibarEvents.BarUserContainer_MouseLeftButtonUp,
                 null
             );
 
             BarCurProcContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
-                BarCurProcContainer_MouseLeftButtonUp,
-                BarCurProcContainer_MouseRightButtonUp
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
+                LolibarEvents.BarCurProcContainer_MouseLeftButtonUp,
+                null
             );
 
             // ---
 
             BarRamContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
                 null,
-                BarRamContainer_MouseRightButtonUp
+                LolibarEvents.BarRamContainer_MouseRightButtonUp
             );
 
             BarDiskContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
                 null,
-                BarDiskContainer_MouseRightButtonUp
+                LolibarEvents.BarDiskContainer_MouseRightButtonUp
             );
 
             BarNetworkContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
                 null,
-                BarNetworkContainer_MouseRightButtonUp
+                LolibarEvents.BarNetworkContainer_MouseRightButtonUp
             );
 
             // ---
 
             BarPowerContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
-                BarPowerContainer_MouseLeftButtonUp,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
+                LolibarEvents.BarPowerContainer_MouseLeftButtonUp,
                 null
             );
 
             BarSoundContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
-                BarSoundContainer_MouseLeftButtonUp,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
+                LolibarEvents.BarSoundContainer_MouseLeftButtonUp,
                 null
             );
 
             // ---
 
             BarTimeContainer.SetContainerEvents(
-                Container_MouseEnter,
-                Container_MouseLeave,
-                BarTimeContainer_MouseLeftButtonUp,
+                LolibarEvents.UI_MouseEnter,
+                LolibarEvents.UI_MouseLeave,
+                LolibarEvents.BarTimeContainer_MouseLeftButtonUp,
                 null
             );
 
@@ -130,17 +131,19 @@ namespace LolibarApp.Source
             if (!Config.UseSystemTheme) return;
 
             Config.BarColor        = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
-            Config.ElementColor    = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
+            Config.BarElementColor = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
         }
         void PostInitializeContainersVisibility()
         {
-            if (Config.HideLeftContainers) BarLeftContainer.Visibility      = Visibility.Collapsed;
-            if (Config.HideCenterContainers) BarCenterContainer.Visibility  = Visibility.Collapsed;
-            if (Config.HideRightContainers) BarRightContainer.Visibility    = Visibility.Collapsed;
+            if (Config.HideBarLeftContainers)       BarLeftContainer.Visibility         = Visibility.Collapsed;
+            if (Config.HideBarCenterContainers)     BarCenterContainer.Visibility       = Visibility.Collapsed;
+            if (Config.HideBarRightContainers)      BarRightContainer.Visibility        = Visibility.Collapsed;
+            if (Config.HideBarInfoContainer)        BarInfoContainer.Visibility         = Visibility.Collapsed;
+            if (Config.HideBarWorkspacesContainer)  BarWorkspacesContainer.Visibility   = Visibility.Collapsed;
         }
         void PostInitializeSnapping()
         {
-            if (!Config.SnapToTop)
+            if (!Config.SnapBarToTop)
             {
                 StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Config.BarHeight - Config.BarMargin;
                 StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
@@ -158,7 +161,7 @@ namespace LolibarApp.Source
             ListenForSystemThemeUsage();
 
             // Left Containers
-            if(!Config.HideLeftContainers)
+            if(!Config.HideBarLeftContainers)
             {
                 Config.BarUserText = LolibarDefaults.GetUserInfo();
 
@@ -166,7 +169,7 @@ namespace LolibarApp.Source
             }
 
             // Center Containers
-            if (!Config.HideCenterContainers)
+            if (!Config.HideBarCenterContainers)
             {
                 Config.BarCpuText = LolibarDefaults.GetCpuInfo();
 
@@ -178,10 +181,11 @@ namespace LolibarApp.Source
                 Config.BarNetworkText = LolibarDefaults.GetNetworkInfo();
                 Config.BarNetworkIcon = LolibarDefaults.GetNetworkIcon();   // Dynamically updates network icon
 
+                Config.BarAddTabText = LolibarDefaults.GetAddTabInfo();
             }
 
             // Right Containers
-            if (!Config.HideRightContainers)
+            if (!Config.HideBarRightContainers)
             {
                 Config.BarPowerText = LolibarDefaults.GetPowerInfo();
                 Config.BarPowerIcon = LolibarDefaults.GetPowerIcon();       // Dynamically updates power icon
@@ -205,15 +209,26 @@ namespace LolibarApp.Source
             Resources["BarOpacity"] = Config.BarOpacity;
             Resources["BarStrokeSize"] = Config.BarStrokeSize;
 
-            Resources["ElementColor"] = Config.ElementColor;
-            Resources["ElementMargin"] = Config.ElementMargin;
-            Resources["IconSize"] = Config.IconSize;
-            Resources["FontSize"] = Config.FontSize;
+            Resources["BarElementColor"] = Config.BarElementColor;
 
-            Resources["SeparatorWidth"] = Config.SeparatorWidth;
-            Resources["SeparatorBorderRadius"] = Config.SeparatorBorderRadius;
+            Resources["BarElementMargin"] = Config.BarElementMargin;
+            Resources["BarWorkspacesMargin"] = Config.BarWorkspacesMargin;
+            Resources["BarWorkspacesInnerMargin"] = Config.BarWorkspacesInnerMargin;
+
+            Resources["BarIconSize"] = Config.BarIconSize;
+            Resources["BarIconSizeSmall"] = Config.BarIconSizeSmall;
+
+            Resources["BarFontSize"] = Config.BarFontSize;
+
+            Resources["BarSeparatorWidth"] = Config.BarSeparatorWidth;
+            Resources["BarSeparatorHeight"] = Config.BarSeparatorHeight;
+
+            Resources["BarSeparatorBorderRadius"] = Config.BarSeparatorBorderRadius;
+
 
             // --- Left Containers ---
+
+            Resources["BarAddTabText"] = Config.BarAddTabText;
 
             Resources["BarUserText"] = Config.BarUserText;
 

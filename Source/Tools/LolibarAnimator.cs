@@ -6,7 +6,7 @@ namespace LolibarApp.Source.Tools
     partial class LolibarAnimator : Window
     {
         static Duration duration = new Duration(TimeSpan.FromSeconds(0.3));
-        static Duration el_duration = new Duration(TimeSpan.FromSeconds(0.1));
+        static Duration el_duration = new Duration(TimeSpan.FromSeconds(0.2));
         static CubicEase easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
 
         public static void BeginStatusBarShowAnimation(Window _)

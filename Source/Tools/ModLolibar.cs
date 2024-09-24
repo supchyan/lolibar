@@ -13,19 +13,27 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// When Lolibar should be snapped to top of the screen. (False by default)
         /// </summary>
-        public static bool SnapToTop { get; set; }
+        public static bool SnapBarToTop { get; set; }
         /// <summary>
         /// Hides lolibar's left side content. (False by default)
         /// </summary>
-        public static bool HideLeftContainers { get; set; }
+        public static bool HideBarLeftContainers { get; set; }
         /// <summary>
         /// Hides lolibar's center content. (False by default)
         /// </summary>
-        public static bool HideCenterContainers { get; set; }
+        public static bool HideBarCenterContainers { get; set; }
+        /// <summary>
+        /// Hides lolibar's info container. (False by default)
+        /// </summary>
+        public static bool HideBarInfoContainer { get; set; }
+        /// <summary>
+        /// Hides lolibar's workspaces container. (False by default)
+        /// </summary>
+        public static bool HideBarWorkspacesContainer { get; set; }
         /// <summary>
         /// Hides lolibar's right side content. (False by default)
         /// </summary>
-        public static bool HideRightContainers { get; set; }
+        public static bool HideBarRightContainers { get; set; }
 
         /// <summary>
         /// Time between update loop iterations in milliseconds. (1000ms by default)
@@ -59,23 +67,43 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// Lolibar's font size property.
         /// </summary>
-        public static double FontSize { get; set; }
+        public static double BarFontSize { get; set; }
         /// <summary>
         /// Lolibar's icon size property.
         /// </summary>
-        public static double IconSize { get; set; }
+        public static double BarIconSize { get; set; }
         /// <summary>
-        /// Separator - that bar between elements in lolibar's containers.
+        /// Lolibar's small icon size property.
         /// </summary>
-        public static double SeparatorWidth { get; set; }
+        public static double BarIconSizeSmall { get; set; }
         /// <summary>
-        /// Separator - that bar between elements in lolibar's containers.
+        /// Separator - that bar between elements in lolibar's containers. This is it's width property.
         /// </summary>
-        public static double SeparatorBorderRadius { get; set; }
+        public static double BarSeparatorWidth { get; set; }
+        /// <summary>
+        /// Separator - that bar between elements in lolibar's containers. This is it's height property.
+        /// </summary>
+        public static double BarSeparatorHeight { get; set; }
+        /// <summary>
+        /// Separator - that bar between elements in lolibar's containers. This is it's border radius property.
+        /// </summary>
+        public static double BarSeparatorBorderRadius { get; set; }
+        /// <summary>
+        /// Lolibar's selected workspace tab border radius property.
+        /// </summary>
+        public static double BarWorkspacesBorderRadius { get; set; }
+        /// <summary>
+        /// Gap between border and it's content inside. ( Padding of the text inside it's container )
+        /// </summary>
+        public static Thickness BarWorkspacesInnerMargin { get; set; }
+        /// <summary>
+        /// Gap between workspaces.
+        /// </summary>
+        public static Thickness BarWorkspacesMargin { get; set; }
         /// <summary>
         /// Margin between elements in lolibar's containers.
         /// </summary>
-        public static Thickness ElementMargin { get; set; }
+        public static Thickness BarElementMargin { get; set; }
         /// <summary>
         /// Lolibar's main color.
         /// </summary>
@@ -83,7 +111,12 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// Lolibar's elements color. (Icons / Text / etc.)
         /// </summary>
-        public static SolidColorBrush ElementColor { get; set; }
+        public static SolidColorBrush BarElementColor { get; set; }
+
+        /// <summary>
+        /// Add Tab text near Workspaces Container
+        /// </summary>
+        public static string BarAddTabText { get; set; }
         /// <summary>
         /// Content of the User Container.
         /// </summary>
