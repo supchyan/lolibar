@@ -7,7 +7,6 @@ namespace LolibarApp.Source.Tools
 {
     public static partial class LolibarHelper
     {
-        public static bool CanBeClosed { get; private set; }
         public static readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;
         public static readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
 
@@ -39,7 +38,6 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static void RestartApplicationGently()
         {
-            CanBeClosed = true;
             System.Windows.Forms.Application.Restart();
             System.Windows.Application.Current.Shutdown();
         }
