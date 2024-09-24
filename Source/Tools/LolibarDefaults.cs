@@ -173,13 +173,6 @@ namespace LolibarApp.Source.Tools
         }
         #endregion
 
-        #region Sound
-        public static string? GetSoundInfo()
-        {
-            return "Sound";
-        }
-        #endregion
-
         #region Time
         public static string? GetTimeInfo()
         {
