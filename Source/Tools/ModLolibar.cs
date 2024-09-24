@@ -53,17 +53,9 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static double BarHeight { get; set; }
         /// <summary>
-        /// Lolibar's border radius property.
-        /// </summary>
-        public static double BarBorderRadius { get; set; }
-        /// <summary>
         /// Lolibar's opacity property. (From 0 to 1)
         /// </summary>
         public static double BarOpacity { get; set; }
-        /// <summary>
-        /// Lolibar's stroke size property.
-        /// </summary>
-        public static double BarStrokeSize { get; set; }
         /// <summary>
         /// Lolibar's font size property.
         /// </summary>
@@ -87,23 +79,29 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// Separator - that bar between elements in lolibar's containers. This is it's border radius property.
         /// </summary>
-        public static double BarSeparatorBorderRadius { get; set; }
+        public static double BarSeparatorRadius { get; set; }
+
         /// <summary>
-        /// Lolibar's selected workspace tab border radius property.
+        /// Lolibar's stroke size property.
         /// </summary>
-        public static double BarWorkspacesBorderRadius { get; set; }
+        public static Thickness BarStrokeThickness { get; set; }
         /// <summary>
-        /// Gap between border and it's content inside. ( Padding of the text inside it's container )
+        /// Gap between Border and it's content inside. ( Padding of the text inside it's box, if it's more accurate )
         /// </summary>
-        public static Thickness BarWorkspacesInnerMargin { get; set; }
+        public static Thickness BarContainerInnerMargin { get; set; }
         /// <summary>
         /// Gap between workspaces.
         /// </summary>
         public static Thickness BarWorkspacesMargin { get; set; }
         /// <summary>
-        /// Margin between elements in lolibar's containers.
+        /// Margin between containers in lolibar's containers.
         /// </summary>
-        public static Thickness BarElementMargin { get; set; }
+        public static Thickness BarContainerMargin { get; set; }
+
+        /// <summary>
+        /// Lolibar's containers color. ( That boxes, where sort of content draws )
+        /// </summary>
+        public static SolidColorBrush BarContainerColor { get; set; }
         /// <summary>
         /// Lolibar's main color.
         /// </summary>
@@ -111,12 +109,21 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// Lolibar's elements color. (Icons / Text / etc.)
         /// </summary>
-        public static SolidColorBrush BarElementColor { get; set; }
+        public static SolidColorBrush BarContainersContentColor { get; set; }
 
         /// <summary>
-        /// Add Tab text near Workspaces Container
+        /// Lolibar's border radius property.
         /// </summary>
-        public static string BarAddTabText { get; set; }
+        public static CornerRadius BarCornerRadius { get; set; }
+        /// <summary>
+        /// Cornder radius of the elements containers.
+        /// </summary>
+        public static CornerRadius BarContainersCornerRadius { get; set; }
+
+        /// <summary>
+        /// 'Add Workspace' text near Workspaces Container
+        /// </summary>
+        public static string BarAddWorkspaceText { get; set; }
         /// <summary>
         /// Content of the User Container.
         /// </summary>
@@ -157,31 +164,31 @@ namespace LolibarApp.Source.Tools
         /// <summary>
         /// Icon of the Sound Container.
         /// </summary>
-        public static Geometry? BarSoundIcon { get; set; }
+        public static Geometry BarSoundIcon { get; set; }
         /// <summary>
         /// Icon of the Network Container.
         /// </summary>
-        public static Geometry? BarNetworkIcon { get; set; }
+        public static Geometry BarNetworkIcon { get; set; }
         /// <summary>
         /// Icon of the CPU Container.
         /// </summary>
-        public static Geometry? BarCpuIcon { get; set; }
+        public static Geometry BarCpuIcon { get; set; }
         /// <summary>
         /// Icon of the Current Process Container.
         /// </summary>
-        public static Geometry? BarCurProcIcon { get; set; }
+        public static Geometry BarCurProcIcon { get; set; }
         /// <summary>
         /// Icon of the Disk Container.
         /// </summary>
-        public static Geometry? BarDiskIcon { get; set; }
+        public static Geometry BarDiskIcon { get; set; }
         /// <summary>
         /// Icon of the RAM Container.
         /// </summary>
-        public static Geometry? BarRamIcon { get; set; }
+        public static Geometry BarRamIcon { get; set; }
         /// <summary>
         /// Icon of the Power Container.
         /// </summary>
-        public static Geometry? BarPowerIcon { get; set; }
+        public static Geometry BarPowerIcon { get; set; }
 
         /// <summary>
         /// Initialization method. Invokes once at lolibar's launch.

@@ -15,7 +15,7 @@ namespace LolibarApp.Source.Tools
         public static string? CurProcNameInfo    { get; private set; }
 
         #region AddTab
-        public static string? GetAddTabInfo()
+        public static string? GetAddWorkspaceInfo()
         {
             return "Add Workspace";
         }
@@ -34,11 +34,12 @@ namespace LolibarApp.Source.Tools
             CurProcIdInfo   = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
             CurProcNameInfo = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
 
-            var nameAndId = "";
+            var nameAndId = string.Empty;
 
-            if (CurProcNameInfo != "") nameAndId += $"{CurProcNameInfo} : ";
-            if (CurProcIdInfo   != "") nameAndId += $"{CurProcIdInfo  }";
+            if (CurProcNameInfo != string.Empty) nameAndId += $"{CurProcNameInfo} : ";
+            if (CurProcIdInfo   != string.Empty) nameAndId += $"{CurProcIdInfo  }";
 
+            if (nameAndId == string.Empty) return "No process info";
             return nameAndId;
 
         }
@@ -62,8 +63,8 @@ namespace LolibarApp.Source.Tools
             var RamUsedInPercentInfo    = $"{String.Format("{0:0.0}", Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 1))}%";
             var RamUsedInGbInfo         = $"{String.Format("{0:0.0}", Math.Round((double)computerInfo.TotalPhysicalMemory - (double)computerInfo.AvailablePhysicalMemory) / 1024.0 / 1024.0 / 1024.0)}Gb";
 
-            if (ShowRamInPercent)   return RamUsedInPercentInfo ?? "";
-            else                    return RamUsedInGbInfo      ?? "";
+            if (ShowRamInPercent)   return RamUsedInPercentInfo ?? string.Empty;
+            else                    return RamUsedInGbInfo      ?? string.Empty;
         }
         #endregion
 

@@ -9,19 +9,19 @@ namespace LolibarApp.Mods
         // Runs once after launch
         public override void Initialize()
         {
-            UpdateDelay = 500;
-            UseSystemTheme = false;
-            BarColor = LolibarHelper.SetColor("#05202d");
-            BarElementColor = LolibarHelper.SetColor("#e2968b");
-            BarHeight = 36;
-            //BarElementMargin = new System.Windows.Thickness(24, 0, 24, 0);
+            UpdateDelay                 = 500;
+            UseSystemTheme              = false;
+            BarColor                    = LolibarHelper.SetColor("#05202d");
+            BarContainersContentColor   = LolibarHelper.SetColor("#e2968b");
+            BarHeight                   = 36;
+            //BarContainerColor           = LolibarHelper.SetColor("#30e2968b");
         }
 
         // Updates every "UpdateDelay".
         public override void Update()
         {
-            BarUserText = "🐳";
-            BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
+            BarUserText     = "🐳";
+            BarTimeText     = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
         }
     }
 }

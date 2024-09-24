@@ -130,8 +130,9 @@ namespace LolibarApp.Source
         {
             if (!Config.UseSystemTheme) return;
 
-            Config.BarColor        = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
-            Config.BarElementColor = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
+            Config.BarColor                     = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
+            Config.BarContainersContentColor    = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
+            Config.BarContainerColor            = Config.BarColor;
         }
         void PostInitializeContainersVisibility()
         {
@@ -181,7 +182,7 @@ namespace LolibarApp.Source
                 Config.BarNetworkText = LolibarDefaults.GetNetworkInfo();
                 Config.BarNetworkIcon = LolibarDefaults.GetNetworkIcon();   // Dynamically updates network icon
 
-                Config.BarAddTabText = LolibarDefaults.GetAddTabInfo();
+                Config.BarAddWorkspaceText = LolibarDefaults.GetAddWorkspaceInfo();
             }
 
             // Right Containers
@@ -200,35 +201,36 @@ namespace LolibarApp.Source
         {
             // --- Global UI properties ---
 
-            Resources["BarMargin"] = Config.BarMargin;
-            Resources["BarHeight"] = Config.BarHeight;
-            Resources["BarWidth"] = Config.BarWidth;
+            Resources["BarMargin"]                  = Config.BarMargin;
+            Resources["BarHeight"]                  = Config.BarHeight;
+            Resources["BarWidth"]                   = Config.BarWidth;
 
-            Resources["BarColor"] = Config.BarColor;
-            Resources["BarBorderRadius"] = Config.BarBorderRadius;
-            Resources["BarOpacity"] = Config.BarOpacity;
-            Resources["BarStrokeSize"] = Config.BarStrokeSize;
+            Resources["BarColor"]                   = Config.BarColor;
+            Resources["BarCornerRadius"]            = Config.BarCornerRadius;
+            Resources["BarOpacity"]                 = Config.BarOpacity;
+            Resources["BarStrokeThickness"]         = Config.BarStrokeThickness;
 
-            Resources["BarElementColor"] = Config.BarElementColor;
+            Resources["BarContainersContentColor"]  = Config.BarContainersContentColor;
 
-            Resources["BarElementMargin"] = Config.BarElementMargin;
-            Resources["BarWorkspacesMargin"] = Config.BarWorkspacesMargin;
-            Resources["BarWorkspacesInnerMargin"] = Config.BarWorkspacesInnerMargin;
+            Resources["BarContainerMargin"]           = Config.BarContainerMargin;
+            Resources["BarContainerInnerMargin"]      = Config.BarContainerInnerMargin;
 
-            Resources["BarIconSize"] = Config.BarIconSize;
-            Resources["BarIconSizeSmall"] = Config.BarIconSizeSmall;
+            Resources["BarWorkspacesMargin"]        = Config.BarWorkspacesMargin;
 
-            Resources["BarFontSize"] = Config.BarFontSize;
+            Resources["BarIconSize"]                = Config.BarIconSize;
+            Resources["BarIconSizeSmall"]           = Config.BarIconSizeSmall;
 
-            Resources["BarSeparatorWidth"] = Config.BarSeparatorWidth;
-            Resources["BarSeparatorHeight"] = Config.BarSeparatorHeight;
+            Resources["BarFontSize"]                = Config.BarFontSize;
 
-            Resources["BarSeparatorBorderRadius"] = Config.BarSeparatorBorderRadius;
+            Resources["BarSeparatorWidth"]          = Config.BarSeparatorWidth;
+            Resources["BarSeparatorHeight"]         = Config.BarSeparatorHeight;
+            Resources["BarSeparatorRadius"]         = Config.BarSeparatorRadius;
+
+            Resources["BarContainersCornerRadius"]  = Config.BarContainersCornerRadius;
+            Resources["BarContainerColor"]          = Config.BarContainerColor;
 
 
             // --- Left Containers ---
-
-            Resources["BarAddTabText"] = Config.BarAddTabText;
 
             Resources["BarUserText"] = Config.BarUserText;
 
@@ -248,6 +250,8 @@ namespace LolibarApp.Source
 
             Resources["BarNetworkText"] = Config.BarNetworkText;
             Resources["BarNetworkIcon"] = Config.BarNetworkIcon;
+
+            Resources["BarAddWorkspaceText"] = Config.BarAddWorkspaceText;
 
             // --- Right Containers ---
 

@@ -18,6 +18,13 @@ namespace LolibarApp.Source.Tools
         {
             return (SolidColorBrush)new BrushConverter().ConvertFrom(color);
         }
+        /// <summary>
+        /// Converts ARGB Color to HEX one!
+        /// </summary>
+        public static string ARGBtoHEX(SolidColorBrush brush)
+        {
+            return $"#{Convert.ToHexString([brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B]).Replace("-", "")}";
+        }
 
         public static void CloseApplicationGently()
         {

@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -76,13 +77,13 @@ namespace LolibarApp.Source.Tools
             Border border = new Border()
             {
                 Margin = new Thickness(5, 5, 5, 5),
-                CornerRadius = new CornerRadius(Config.BarWorkspacesBorderRadius),
-                Background = Config.BarElementColor
+                CornerRadius = Config.BarContainersCornerRadius,
+                Background = Config.BarContainersContentColor
             };
             TextBlock tabBlock = new TextBlock()
             {
                 Text = $"unsupported",
-                Margin = Config.BarWorkspacesInnerMargin,
+                Margin = Config.BarContainerInnerMargin,
                 Foreground = Config.BarColor,
             };
             border.Child = tabBlock;
@@ -98,32 +99,31 @@ namespace LolibarApp.Source.Tools
             parent.Children.RemoveRange(0, parent.Children.Count);
 
             // And create new children, lol
-            var background = Config.BarColor;
-            var foreground = Config.BarColor;
+            var background = System.Windows.Media.Brushes.Transparent;
+            var foreground = Config.BarContainersContentColor;
 
             for (int i = 0; i < desktopCount; i++)
             {
                 int index = i;
                 if (i != currentDesktopIndex)
                 {
-                    background = Config.BarColor;
-                    foreground = Config.BarElementColor;
+                    background = System.Windows.Media.Brushes.Transparent;
                 }
                 else
                 {
-                    background = Config.BarElementColor;
-                    foreground = Config.BarColor;
+                    var hex = LolibarHelper.ARGBtoHEX(foreground).Substring(3);
+                    background = LolibarHelper.SetColor($"#30{hex}");
                 }
                 Border border = new Border()
                 {
                     Margin = Config.BarWorkspacesMargin,
-                    CornerRadius = new CornerRadius(Config.BarWorkspacesBorderRadius),
+                    CornerRadius = Config.BarContainersCornerRadius,
                     Background = background
                 };
                 TextBlock tabBlock = new TextBlock()
                 {
                     Text = $"{index + 1}",
-                    Margin = Config.BarWorkspacesInnerMargin,
+                    Margin = Config.BarContainerInnerMargin,
                     Foreground = foreground,
                 };
                 border.Child = tabBlock;
@@ -192,9 +192,9 @@ namespace LolibarApp.Source.Tools
             }
             return false;
         }
-        public void SetEventsToAddTabContainer(UIElement addTabButton)
+        public void SetEventsToAddWorkspaceContainer(UIElement addWorkspaceContainer)
         {
-            addTabButton.SetContainerEvents(
+            addWorkspaceContainer.SetContainerEvents(
                 LolibarEvents.UI_MouseEnter,
                 LolibarEvents.UI_MouseLeave,
                 new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
