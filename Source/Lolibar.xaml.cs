@@ -51,6 +51,7 @@ namespace LolibarApp.Source
 
             ContentRendered += Lolibar_ContentRendered;
             Closing         += Lolibar_Closing;
+            Closed          += Lolibar_Closed;
 
             // ---
 

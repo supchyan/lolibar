@@ -75,6 +75,14 @@ namespace LolibarApp.Source
                 e.Cancel = true;
             }
         }
+        private void Lolibar_Closed(object? sender, EventArgs e)
+        {
+            // Should dispose tray icon [ it don't ]
+            trayIcon.Icon       = null;
+            trayIcon.Visible    = false;
+            trayIcon.Dispose();
+            System.Windows.Forms.Application.DoEvents();
+        }
         #endregion
     }
 }
