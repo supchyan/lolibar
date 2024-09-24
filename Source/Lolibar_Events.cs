@@ -12,13 +12,13 @@ namespace LolibarApp.Source
         
         void Lolibar_ContentRendered(object? sender, EventArgs e)
         {
-            transformToDevice = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-            screenSize = (System.Windows.Size)transformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
+            transformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+            screenSize          = (System.Windows.Size)transformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
 
-            Left = (LolibarHelper.Inch_ScreenWidth - Width) / 2;
-            Top  = LolibarHelper.Inch_ScreenHeight;
+            Left                = (LolibarHelper.Inch_ScreenWidth - Width) / 2;
+            Top                 = LolibarHelper.Inch_ScreenHeight;
 
-            IsRendered = true;
+            IsRendered          = true;
         }
 
         void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)
@@ -55,7 +55,7 @@ namespace LolibarApp.Source
                 IsHidden = true;
             }
 
-            if (oldIsHidden != IsHidden)
+            if (OldIsHidden != IsHidden)
             {
                 if (!IsHidden)
                 {
@@ -65,7 +65,7 @@ namespace LolibarApp.Source
                 {
                     LolibarAnimator.BeginStatusBarHideAnimation(this);
                 }
-                oldIsHidden = IsHidden;
+                OldIsHidden = IsHidden;
             }
         }
         void Lolibar_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

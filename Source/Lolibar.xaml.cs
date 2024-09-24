@@ -17,18 +17,19 @@ namespace LolibarApp.Source
         public static StackPanel barRightContainer  { get; private set; }
 
         // Misc
-        MouseHook MouseHandler  = new();
+        MouseHook MouseHandler = new();
         Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
         LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
-        // For screen coordinates calculation
-        Matrix transformToDevice;
-        System.Windows.Size screenSize;
+        // Screen coordinates calculation properties
+        Matrix transformToDevice                    { get; set; }
+        System.Windows.Size screenSize              { get; set; }
         public static double StatusBarVisiblePosY   { get; private set; }
         public static double StatusBarHidePosY      { get; private set; }
 
         // Drawing conditions
-        bool IsHidden, oldIsHidden;
+        bool IsHidden                               { get; set; }
+        bool OldIsHidden                            { get; set; }
 
         // Null window to prevent lolibar's appearing inside alt+tab menu
         Window nullWin = new()
@@ -157,7 +158,7 @@ namespace LolibarApp.Source
             
             if (Config.HideBarWorkspacesContainer)
             {
-                BarWorkspacesContainer.Visibility   = Visibility.Collapsed;
+                BarWorkspacesContainer.Visibility = Visibility.Collapsed;
             }
         }
         void PostInitializeSnapping()
@@ -249,33 +250,33 @@ namespace LolibarApp.Source
 
             // --- Left Containers ---
 
-            Resources["BarUserText"] = Config.BarUserText;
+            Resources["BarUserText"]                = Config.BarUserText;
 
-            Resources["BarCurProcText"] = Config.BarCurProcText;
-            Resources["BarCurProcIcon"] = Config.BarCurProcIcon;
+            Resources["BarCurProcText"]             = Config.BarCurProcText;
+            Resources["BarCurProcIcon"]             = Config.BarCurProcIcon;
 
             // --- Center Containers ---
 
-            Resources["BarCpuText"] = Config.BarCpuText;
-            Resources["BarCpuIcon"] = Config.BarCpuIcon;
+            Resources["BarCpuText"]                 = Config.BarCpuText;
+            Resources["BarCpuIcon"]                 = Config.BarCpuIcon;
 
-            Resources["BarRamText"] = Config.BarRamText;
-            Resources["BarRamIcon"] = Config.BarRamIcon;
+            Resources["BarRamText"]                 = Config.BarRamText;
+            Resources["BarRamIcon"]                 = Config.BarRamIcon;
 
-            Resources["BarDiskText"] = Config.BarDiskText;
-            Resources["BarDiskIcon"] = Config.BarDiskIcon;
+            Resources["BarDiskText"]                = Config.BarDiskText;
+            Resources["BarDiskIcon"]                = Config.BarDiskIcon;
 
-            Resources["BarNetworkText"] = Config.BarNetworkText;
-            Resources["BarNetworkIcon"] = Config.BarNetworkIcon;
+            Resources["BarNetworkText"]             = Config.BarNetworkText;
+            Resources["BarNetworkIcon"]             = Config.BarNetworkIcon;
 
-            Resources["BarAddWorkspaceText"] = Config.BarAddWorkspaceText;
+            Resources["BarAddWorkspaceText"]        = Config.BarAddWorkspaceText;
 
             // --- Right Containers ---
 
-            Resources["BarPowerText"] = Config.BarPowerText;
-            Resources["BarPowerIcon"] = Config.BarPowerIcon;
+            Resources["BarPowerText"]               = Config.BarPowerText;
+            Resources["BarPowerIcon"]               = Config.BarPowerIcon;
 
-            Resources["BarTimeText"] = Config.BarTimeText;
+            Resources["BarTimeText"]                = Config.BarTimeText;
         }
     }
 }

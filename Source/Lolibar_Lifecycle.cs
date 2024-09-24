@@ -53,33 +53,33 @@ namespace LolibarApp.Source
 
             // --- Containers initialization ---
 
-            Config.BarUserText              = string.Empty;
+            Config.BarUserText                  = string.Empty;
 
-            Config.BarCurProcText           = string.Empty;
-            Config.BarCurProcIcon           = LolibarDefaults.CurProcIcon;
-
-            // ---
-
-            Config.BarCpuText               = string.Empty;
-            Config.BarCpuIcon               = LolibarDefaults.CpuIcon;
-
-            Config.BarRamText               = string.Empty;
-            Config.BarRamIcon               = LolibarDefaults.RamIcon;
-
-            Config.BarDiskText              = string.Empty;
-            Config.BarDiskIcon              = LolibarDefaults.GetDiskIcon();
-
-            Config.BarNetworkText           = string.Empty;
-            Config.BarNetworkIcon           = LolibarDefaults.GetNetworkIcon();
-
-            Config.BarAddWorkspaceText      = string.Empty;
+            Config.BarCurProcText               = string.Empty;
+            Config.BarCurProcIcon               = LolibarDefaults.CurProcIcon;
 
             // ---
 
-            Config.BarPowerText             = string.Empty;
-            Config.BarPowerIcon             = LolibarDefaults.GetPowerIcon();
+            Config.BarCpuText                   = string.Empty;
+            Config.BarCpuIcon                   = LolibarDefaults.CpuIcon;
 
-            Config.BarTimeText              = string.Empty;
+            Config.BarRamText                   = string.Empty;
+            Config.BarRamIcon                   = LolibarDefaults.RamIcon;
+
+            Config.BarDiskText                  = string.Empty;
+            Config.BarDiskIcon                  = LolibarDefaults.GetDiskIcon();
+
+            Config.BarNetworkText               = string.Empty;
+            Config.BarNetworkIcon               = LolibarDefaults.GetNetworkIcon();
+
+            Config.BarAddWorkspaceText          = string.Empty;
+
+            // ---
+
+            Config.BarPowerText                 = string.Empty;
+            Config.BarPowerIcon                 = LolibarDefaults.GetPowerIcon();
+
+            Config.BarTimeText                  = string.Empty;
 
             //
         }
@@ -98,8 +98,6 @@ namespace LolibarApp.Source
             UpdateResources();
             lolibarVirtualDesktop.SetEventsToAddWorkspaceContainer(BarAddWorkspaceContainer);
         }
-
-        
         async void UpdateCycle()
         {
             while (true)
