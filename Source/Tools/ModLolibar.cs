@@ -23,6 +23,14 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static bool HideBarCenterContainers { get; set; }
         /// <summary>
+        /// Hides lolibar's right side content. (False by default)
+        /// </summary>
+        public static bool HideBarRightContainers { get; set; }
+        /// <summary>
+        /// Hides lolibar's user container. (False by default)
+        /// </summary>
+        public static bool HideBarUserContainer { get; set; }
+        /// <summary>
         /// Hides lolibar's info container. (False by default)
         /// </summary>
         public static bool HideBarInfoContainer { get; set; }
@@ -30,10 +38,6 @@ namespace LolibarApp.Source.Tools
         /// Hides lolibar's workspaces container. (False by default)
         /// </summary>
         public static bool HideBarWorkspacesContainer { get; set; }
-        /// <summary>
-        /// Hides lolibar's right side content. (False by default)
-        /// </summary>
-        public static bool HideBarRightContainers { get; set; }
 
         /// <summary>
         /// Time between update loop iterations in milliseconds. (1000ms by default)
@@ -154,10 +158,6 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static string BarNetworkText { get; set; }
         /// <summary>
-        /// Content of the Sound Container.
-        /// </summary>
-        public static string BarSoundText { get; set; }
-        /// <summary>
         /// Content of the Power Container.
         /// </summary>
         public static string BarPowerText { get; set; }
@@ -166,10 +166,6 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static string BarTimeText { get; set; }
 
-        /// <summary>
-        /// Icon of the Sound Container.
-        /// </summary>
-        public static Geometry BarSoundIcon { get; set; }
         /// <summary>
         /// Icon of the Network Container.
         /// </summary>

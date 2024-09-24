@@ -141,11 +141,24 @@ namespace LolibarApp.Source
         }
         void PostInitializeContainersVisibility()
         {
-            if (Config.HideBarLeftContainers)       BarLeftContainer.Visibility         = Visibility.Collapsed;
-            if (Config.HideBarCenterContainers)     BarCenterContainer.Visibility       = Visibility.Collapsed;
-            if (Config.HideBarRightContainers)      BarRightContainer.Visibility        = Visibility.Collapsed;
-            if (Config.HideBarInfoContainer)        BarInfoContainer.Visibility         = Visibility.Collapsed;
-            if (Config.HideBarWorkspacesContainer)  BarWorkspacesContainer.Visibility   = Visibility.Collapsed;
+            if (Config.HideBarLeftContainers)   BarLeftContainer.Visibility     = Visibility.Collapsed;
+            if (Config.HideBarCenterContainers) BarCenterContainer.Visibility   = Visibility.Collapsed;
+            if (Config.HideBarRightContainers)  BarRightContainer.Visibility    = Visibility.Collapsed;
+
+            if (Config.HideBarUserContainer)
+            {
+                BarUserContainer.Visibility = Visibility.Collapsed;
+            }
+
+            if (Config.HideBarInfoContainer)
+            {
+                BarInfoContainer.Visibility = Visibility.Collapsed;
+            }
+            
+            if (Config.HideBarWorkspacesContainer)
+            {
+                BarWorkspacesContainer.Visibility   = Visibility.Collapsed;
+            }
         }
         void PostInitializeSnapping()
         {
@@ -169,36 +182,34 @@ namespace LolibarApp.Source
             // Left Containers
             if(!Config.HideBarLeftContainers)
             {
-                Config.BarUserText = LolibarDefaults.GetUserInfo();
+                Config.BarUserText          = LolibarDefaults.GetUserInfo();
 
-                Config.BarCurProcText = LolibarDefaults.GetCurProcInfo();
+                Config.BarCurProcText       = LolibarDefaults.GetCurProcInfo();
             }
 
             // Center Containers
             if (!Config.HideBarCenterContainers)
             {
-                Config.BarCpuText = LolibarDefaults.GetCpuInfo();
+                Config.BarCpuText           = LolibarDefaults.GetCpuInfo();
 
-                Config.BarRamText = LolibarDefaults.GetRamInfo();
+                Config.BarRamText           = LolibarDefaults.GetRamInfo();
 
-                Config.BarDiskText = LolibarDefaults.GetDiskInfo();
-                Config.BarDiskIcon = LolibarDefaults.GetDiskIcon();         // Dynamically updates disk icon
+                Config.BarDiskText          = LolibarDefaults.GetDiskInfo();
+                Config.BarDiskIcon          = LolibarDefaults.GetDiskIcon();         // Dynamically updates disk icon
 
-                Config.BarNetworkText = LolibarDefaults.GetNetworkInfo();
-                Config.BarNetworkIcon = LolibarDefaults.GetNetworkIcon();   // Dynamically updates network icon
+                Config.BarNetworkText       = LolibarDefaults.GetNetworkInfo();
+                Config.BarNetworkIcon       = LolibarDefaults.GetNetworkIcon();   // Dynamically updates network icon
 
-                Config.BarAddWorkspaceText = LolibarDefaults.GetAddWorkspaceInfo();
+                Config.BarAddWorkspaceText  = LolibarDefaults.GetAddWorkspaceInfo();
             }
 
             // Right Containers
             if (!Config.HideBarRightContainers)
             {
-                Config.BarPowerText = LolibarDefaults.GetPowerInfo();
-                Config.BarPowerIcon = LolibarDefaults.GetPowerIcon();       // Dynamically updates power icon
+                Config.BarPowerText         = LolibarDefaults.GetPowerInfo();
+                Config.BarPowerIcon         = LolibarDefaults.GetPowerIcon();       // Dynamically updates power icon
 
-                Config.BarSoundText = LolibarDefaults.GetSoundInfo();
-
-                Config.BarTimeText = LolibarDefaults.GetTimeInfo();
+                Config.BarTimeText          = LolibarDefaults.GetTimeInfo();
             }
         }
 
@@ -260,9 +271,6 @@ namespace LolibarApp.Source
             Resources["BarAddWorkspaceText"] = Config.BarAddWorkspaceText;
 
             // --- Right Containers ---
-
-            Resources["BarSoundText"] = Config.BarSoundText;
-            Resources["BarSoundIcon"] = Config.BarSoundIcon;
 
             Resources["BarPowerText"] = Config.BarPowerText;
             Resources["BarPowerIcon"] = Config.BarPowerIcon;

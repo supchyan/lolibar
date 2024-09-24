@@ -76,9 +76,6 @@ namespace LolibarApp.Source
 
             // ---
 
-            Config.BarSoundText             = string.Empty;
-            Config.BarSoundIcon             = LolibarDefaults.SoundIcon;
-
             Config.BarPowerText             = string.Empty;
             Config.BarPowerIcon             = LolibarDefaults.GetPowerIcon();
 
