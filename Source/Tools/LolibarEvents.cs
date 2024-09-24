@@ -58,20 +58,6 @@ namespace LolibarApp.Source.Tools
             LolibarDefaults.ChangeNetworkInfo();
         }
 
-        public static void BarSoundContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new Process
-            {
-                StartInfo = new()
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "Start-Process ms-settings:sound",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            }.Start();
-        }
-
         public static void BarPowerContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process

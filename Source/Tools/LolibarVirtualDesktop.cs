@@ -187,6 +187,9 @@ namespace LolibarApp.Source.Tools
             }
             return false;
         }
+        /// <summary>
+        /// Sets events to `Add Workspaces` button at the near of the workspaces.
+        /// </summary>
         public void SetEventsToAddWorkspaceContainer(UIElement addWorkspaceContainer)
         {
             addWorkspaceContainer.SetContainerEvents(
@@ -239,19 +242,19 @@ namespace LolibarApp.Source.Tools
             if (IsVirtualDesktopValid())
             {
                 // return if this UI hasn't updated yet.
-                if (oldDesktopCount != VirtualDesktop.Desktop.Count) return;
+                if (index >= VirtualDesktop.Desktop.Count) return;
                 VirtualDesktop.Desktop.FromIndex(index).Remove();
             }
             else if (IsVirtualDesktop11Valid())
             {
                 // return if this UI hasn't updated yet.
-                if (oldDesktopCount != VirtualDesktop11.Desktop.Count) return;
+                if (index >= VirtualDesktop11.Desktop.Count) return;
                 VirtualDesktop11.Desktop.FromIndex(index).Remove();
             }
             else if (IsVirtualDesktop11_24H2Valid())
             {
                 // return if this UI hasn't updated yet.
-                if (oldDesktopCount != VirtualDesktop11_24H2.Desktop.Count) return;
+                if (index >= VirtualDesktop11_24H2.Desktop.Count) return;
                 VirtualDesktop11_24H2.Desktop.FromIndex(index).Remove();
             }
         }

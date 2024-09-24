@@ -11,7 +11,7 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static bool UseSystemTheme { get; set; }
         /// <summary>
-        /// When Lolibar should be snapped to top of the screen. (False by default)
+        /// When Lolibar should be snapped to top of the screen. (True by default)
         /// </summary>
         public static bool SnapBarToTop { get; set; }
         /// <summary>
@@ -86,17 +86,22 @@ namespace LolibarApp.Source.Tools
         /// </summary>
         public static Thickness BarStrokeThickness { get; set; }
         /// <summary>
+        /// Margin between containers in lolibar's containers.
+        /// </summary>
+        public static Thickness BarContainerMargin { get; set; }
+        /// <summary>
         /// Gap between Border and it's content inside. ( Padding of the text inside it's box, if it's more accurate )
         /// </summary>
         public static Thickness BarContainerInnerMargin { get; set; }
         /// <summary>
+        /// Gap between elements inside border. ( Padding between the text and the icon inside their box [ border ], if it's more accurate )
+        /// </summary>
+        public static Thickness BarContainersContentMargin { get; set; }
+        /// <summary>
         /// Gap between workspaces.
         /// </summary>
         public static Thickness BarWorkspacesMargin { get; set; }
-        /// <summary>
-        /// Margin between containers in lolibar's containers.
-        /// </summary>
-        public static Thickness BarContainerMargin { get; set; }
+        
 
         /// <summary>
         /// Lolibar's containers color. ( That boxes, where sort of content draws )

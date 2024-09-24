@@ -4,12 +4,18 @@ using System.Windows.Media;
 using Ikst.MouseHook;
 using LolibarApp.Source.Tools;
 using LolibarApp.Mods;
+using System.Windows.Controls;
 
 namespace LolibarApp.Source
 {
 
     public partial class Lolibar : Window
     {
+        // Static container's links
+        public static StackPanel barLeftContainer   { get; private set; }
+        public static StackPanel barCenterContainer { get; private set; }
+        public static StackPanel barRightContainer  { get; private set; }
+
         // Misc
         MouseHook MouseHandler  = new();
         Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
@@ -45,13 +51,18 @@ namespace LolibarApp.Source
         {
             InitializeComponent();
 
-            // Move lolibar into null window
-            nullWin.Show();
-            Owner = GetWindow(nullWin);
-
             ContentRendered += Lolibar_ContentRendered;
             Closing         += Lolibar_Closing;
             Closed          += Lolibar_Closed;
+
+            // --- Move lolibar into null window ---
+            nullWin.Show();
+            Owner = GetWindow(nullWin);
+
+            // --- Write main containers into accessable types ---
+            barCenterContainer  = BarCenterContainer;
+            barLeftContainer    = BarLeftContainer;
+            barRightContainer   = BarRightContainer;
 
             // ---
 
@@ -98,13 +109,6 @@ namespace LolibarApp.Source
                 LolibarEvents.UI_MouseEnter,
                 LolibarEvents.UI_MouseLeave,
                 LolibarEvents.BarPowerContainer_MouseLeftButtonUp,
-                null
-            );
-
-            BarSoundContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                LolibarEvents.BarSoundContainer_MouseLeftButtonUp,
                 null
             );
 
@@ -213,8 +217,9 @@ namespace LolibarApp.Source
 
             Resources["BarContainersContentColor"]  = Config.BarContainersContentColor;
 
-            Resources["BarContainerMargin"]           = Config.BarContainerMargin;
-            Resources["BarContainerInnerMargin"]      = Config.BarContainerInnerMargin;
+            Resources["BarContainerMargin"]         = Config.BarContainerMargin;
+            Resources["BarContainerInnerMargin"]    = Config.BarContainerInnerMargin;
+            Resources["BarContainersContentMargin"] = Config.BarContainersContentMargin;
 
             Resources["BarWorkspacesMargin"]        = Config.BarWorkspacesMargin;
 
