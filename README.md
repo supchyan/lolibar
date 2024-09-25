@@ -94,9 +94,10 @@ void OpenSoundSettingsEvent(object sender, System.Windows.Input.MouseButtonEvent
         }
     }.Start();
 }
-// Simple enough, isn't it?
+
+// Simple enough, isn't it? 
 ```
 
 <div align=center><img src="https://github.com/user-attachments/assets/244f5cd3-9a2a-47a4-851b-c1f604418d56" /></div>
 
-##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
+##### <div align=center> ☕Have questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
