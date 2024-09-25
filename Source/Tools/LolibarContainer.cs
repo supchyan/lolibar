@@ -3,18 +3,22 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Shapes;
+using System.Reflection;
 
 namespace LolibarApp.Source.Tools;
 
 public class LolibarContainer
 {
-    public string Name { get; set; }
-    public StackPanel? Parent { get; set; }
-    public Geometry? Icon { get; set; }
-    public string? Text { get; set; }
-    public LolibarEnums.SeparatorPosition? SeparatorPosition { get; set; }
-    public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent { get; set; }
-    public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent { get; set; }
+    public string Name                  { get; set; }
+    public StackPanel? Parent           { get; set; }
+    public Geometry? Icon               { get; set; }
+    public string? Text                 { get; set; }
+    public bool UseWorkspaceSwapEvents  { get; set; }
+    public LolibarEnums.SeparatorPosition? SeparatorPosition                        { get; set; }
+    public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent     { get; set; }
+    public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
+
+    // Rarely used
     public Border? Border { get; private set; }
 
     public void Create()
@@ -28,40 +32,40 @@ public class LolibarContainer
         {
             RadiusX = Config.BarSeparatorRadius,
             RadiusY = Config.BarSeparatorRadius,
-            Width = Config.BarSeparatorWidth,
-            Height = Config.BarSeparatorHeight,
-            Fill = Config.BarContainersContentColor,
+            Width   = Config.BarSeparatorWidth,
+            Height  = Config.BarSeparatorHeight,
+            Fill    = Config.BarContainersContentColor,
             Opacity = 0.3
         };
         System.Windows.Shapes.Rectangle separatorRight = new()
         {
             RadiusX = Config.BarSeparatorRadius,
             RadiusY = Config.BarSeparatorRadius,
-            Width = Config.BarSeparatorWidth,
-            Height = Config.BarSeparatorHeight,
-            Fill = Config.BarContainersContentColor,
+            Width   = Config.BarSeparatorWidth,
+            Height  = Config.BarSeparatorHeight,
+            Fill    = Config.BarContainersContentColor,
             Opacity = 0.3
         };
 
         Border border = new Border()
         {
-            Name = Name,
-            Margin = Config.BarContainerMargin,
-            CornerRadius = Config.BarContainersCornerRadius,
-            Background = Config.BarContainerColor,
+            Name                = Name,
+            Margin              = Config.BarContainerMargin,
+            CornerRadius        = Config.BarContainersCornerRadius,
+            Background          = Config.BarContainerColor,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment = System.Windows.VerticalAlignment.Center
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
 
         Border = border;
 
         StackPanel stackPanel = new StackPanel()
         {
-            Name = $"{Name}StackPanel",
-            Orientation = System.Windows.Controls.Orientation.Horizontal,
-            Margin = Config.BarContainerInnerMargin,
+            Name                = $"{Name}StackPanel",
+            Orientation         = System.Windows.Controls.Orientation.Horizontal,
+            Margin              = Config.BarContainerInnerMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment = System.Windows.VerticalAlignment.Center
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
 
         border.Child = stackPanel;
@@ -71,11 +75,11 @@ public class LolibarContainer
             App.Current.Resources[$"{Name}Icon"] = Icon;
             Path iconItem = new Path()
             {
-                Stretch = Stretch.Uniform,
-                Margin = Config.BarContainersContentMargin,
-                Fill = Config.BarContainersContentColor,
+                Stretch             = Stretch.Uniform,
+                Margin              = Config.BarContainersContentMargin,
+                Fill                = Config.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                VerticalAlignment = System.Windows.VerticalAlignment.Center
+                VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
             iconItem.SetResourceReference(Path.DataProperty, $"{Name}Icon");
 
@@ -87,10 +91,10 @@ public class LolibarContainer
             App.Current.Resources[$"{Name}Text"] = Text;
             TextBlock textItem = new TextBlock()
             {
-                Margin = Config.BarContainersContentMargin,
-                Foreground = Config.BarContainersContentColor,
+                Margin              = Config.BarContainersContentMargin,
+                Foreground          = Config.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                VerticalAlignment = System.Windows.VerticalAlignment.Center
+                VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
             textItem.SetResourceReference(TextBlock.TextProperty, $"{Name}Text");
 
@@ -106,6 +110,11 @@ public class LolibarContainer
                 MouseLeftButtonUpEvent,
                 MouseRightButtonUpEvent
             );
+        }
+
+        if (UseWorkspaceSwapEvents)
+        {
+            border.PreviewMouseWheel += LolibarEvents.SwapWorkspacesEvent;
         }
 
         if (Parent == Lolibar.BarRightContainer)

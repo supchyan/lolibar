@@ -210,6 +210,7 @@ public abstract class ModLolibar
     public static readonly LolibarContainer BarWorkspacesContainer = new()
     {
         Name = "BarWorkspacesContainer",
+        UseWorkspaceSwapEvents = true,
     };
     public static readonly LolibarContainer BarPowerContainer = new()
     {

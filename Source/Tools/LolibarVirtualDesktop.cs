@@ -1,6 +1,9 @@
 ﻿using LolibarApp.Mods;
+using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using VirtualDesktop11_24H2;
 
 namespace LolibarApp.Source.Tools;
 
@@ -255,6 +258,44 @@ public class LolibarVirtualDesktop
             // return if this UI hasn't updated yet.
             if (index >= VirtualDesktop11_24H2.Desktop.Count) return;
             VirtualDesktop11_24H2.Desktop.FromIndex(index).Remove();
+        }
+    }
+
+    public static void GoToDesktopRight()
+    {
+        if (IsVirtualDesktopValid())
+        {
+            if (VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) == VirtualDesktop.Desktop.Count - 1) return;
+            VirtualDesktop.Desktop.FromIndex(VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) + 1).MakeVisible();
+        }
+        else if (IsVirtualDesktop11Valid())
+        {
+            if (VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) == VirtualDesktop11.Desktop.Count - 1) return;
+            VirtualDesktop11.Desktop.FromIndex(VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) + 1).MakeVisible();
+        }
+        else if (IsVirtualDesktop11_24H2Valid())
+        {
+            if (VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) == VirtualDesktop11_24H2.Desktop.Count - 1) return;
+            VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) + 1).MakeVisible();
+        }
+    }
+
+    public static void GoToDesktopLeft()
+    {
+        if (IsVirtualDesktopValid())
+        {
+            if (VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) == 0) return;
+            VirtualDesktop.Desktop.FromIndex(VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) - 1).MakeVisible();
+        }
+        else if (IsVirtualDesktop11Valid())
+        {
+            if (VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) == 0) return;
+            VirtualDesktop11.Desktop.FromIndex(VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) - 1).MakeVisible();
+        }
+        else if (IsVirtualDesktop11_24H2Valid())
+        {
+            if (VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) == 0) return;
+            VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) - 1).MakeVisible();
         }
     }
 }

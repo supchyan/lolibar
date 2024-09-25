@@ -11,9 +11,9 @@ class Config : ModLolibar
     public override void Initialize()
     {
         // --- Properties ---
-        BarUpdateDelay = 500;
-        BarHeight = 36;
-        BarColor = LolibarHelper.SetColor("#452a25");
+        BarUpdateDelay  = 500;
+        BarHeight       = 36;
+        BarColor        = LolibarHelper.SetColor("#452a25");
         BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
 
         // --- Initializes default containers ---
@@ -22,10 +22,10 @@ class Config : ModLolibar
         // --- Let's add a new custom container ---
         new LolibarContainer()
         {
-            Name = "CustomSoundContainer",
-            Parent = Lolibar.BarRightContainer,
-            Icon = LolibarDefaults.SoundBaseIcon,
-            Text = "Sound",
+            Name    = "CustomSoundContainer",
+            Parent  = Lolibar.BarRightContainer,
+            Icon    = LolibarDefaults.SoundBaseIcon,
+            Text    = "Sound",
             MouseLeftButtonUpEvent = OpenSoundSettingsEvent
 
         }.Create();
@@ -58,10 +58,10 @@ class Config : ModLolibar
         {
             StartInfo = new()
             {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:sound",
+                FileName        = "powershell.exe",
+                Arguments       = "Start-Process ms-settings:sound",
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow  = true,
             }
         }.Start();
     }

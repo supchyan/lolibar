@@ -52,7 +52,7 @@ public static partial class LolibarHelper
     {
         if (mouseEnterEvent != null)        element.MouseEnter          += mouseEnterEvent;
         if (mouseLeaveEvent != null)        element.MouseLeave          += mouseLeaveEvent;
-        if (leftMouseClickEvent != null)    element.PreviewMouseLeftButtonUp   += leftMouseClickEvent;
-        if (rightMouseClickEvent != null)   element.PreviewMouseRightButtonUp += rightMouseClickEvent;
+        if (leftMouseClickEvent != null)    element.PreviewMouseLeftButtonUp    += leftMouseClickEvent;
+        if (rightMouseClickEvent != null)   element.PreviewMouseRightButtonUp   += rightMouseClickEvent;
     }
 }

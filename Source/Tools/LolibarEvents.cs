@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 
 namespace LolibarApp.Source.Tools;
 
@@ -83,5 +84,18 @@ public class LolibarEvents
     public static void SwapNetworkInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         LolibarDefaults.ChangeNetworkInfo();
+    }
+
+    public static void SwapWorkspacesEvent(object sender, MouseWheelEventArgs e)
+    {
+        if (e.Delta > 0)
+        {
+            LolibarVirtualDesktop.GoToDesktopLeft();
+        }
+
+        if (e.Delta < 0)
+        {
+            LolibarVirtualDesktop.GoToDesktopRight();
+        }
     }
 }
