@@ -38,19 +38,31 @@ class Config : ModLolibar
         // --- Updates default properties ---
         base.Update();
 
-        // I want to change Content inside User and Time containers, so:
+        // I want to change a content inside User and Time containers, so:
         BarUserText = $"🐳";
         BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
     }
 
     // --- Example default containers override ---
-    public override void CreateUserContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
-    {
-        base.CreateUserContainer(parent, LolibarEnums.SeparatorPosition.Right);
-    }
     public override void CreateCurProcContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
     {
-        base.CreateCurProcContainer(null, sepPos);
+        base.CreateCurProcContainer(parent, LolibarEnums.SeparatorPosition.Left);
+    }
+    public override void CreateCpuContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    {
+        base.CreateCpuContainer(null, sepPos);
+    }
+    public override void CreateRamContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    {
+        base.CreateRamContainer(null, sepPos);
+    }
+    public override void CreateDiskContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    {
+        base.CreateDiskContainer(null, sepPos);
+    }
+    public override void CreateNetworkContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    {
+        base.CreateNetworkContainer(null, sepPos);
     }
 
     // --- Example custom event ---
