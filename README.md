@@ -23,28 +23,27 @@ class Config : ModLolibar
     // --- Runs once after launch ---
     public override void Initialize()
     {
-        
+        base.Initialize();
     }
 
     // --- Updates every `BarUpdateDelay` ---
     public override void Update()
     {
-
+        base.Update();
     }
 }
 ```
 
 > Example
 ```csharp
-// [Config.cs] - My personal setup, which fits my needs
+// [Config.cs]
 public override void Initialize()
 {
     // --- Properties ---
-    BarUpdateDelay              = 500;
-    BarUseSystemTheme           = false;
-    BarHeight                   = 36;
-    BarColor                    = LolibarHelper.SetColor("#452a25");
-    BarContainersContentColor   = LolibarHelper.SetColor("#b56e5c");
+    BarUpdateDelay  = 500;
+    BarHeight       = 36;
+    BarColor        = LolibarHelper.SetColor("#452a25");
+    BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
 
     // --- Initializes default containers ---
     base.Initialize();
@@ -54,7 +53,7 @@ public override void Initialize()
     {
         Name    = "CustomSoundContainer",
         Parent  = Lolibar.BarRightContainer,
-        Icon    = LolibarDefaults.SoundBaseIcon, // wip here
+        Icon    = LolibarDefaults.SoundBaseIcon,
         Text    = "Sound",
         MouseLeftButtonUpEvent = OpenSoundSettingsEvent
 
@@ -88,16 +87,17 @@ void OpenSoundSettingsEvent(object sender, System.Windows.Input.MouseButtonEvent
     {
         StartInfo = new()
         {
-            FileName = "powershell.exe",
-            Arguments = "Start-Process ms-settings:sound",
+            FileName        = "powershell.exe",
+            Arguments       = "Start-Process ms-settings:sound",
             UseShellExecute = false,
-            CreateNoWindow = true,
+            CreateNoWindow  = true,
         }
     }.Start();
 }
-// Simple enough, isn't it?
+
+// Simple enough, isn't it? 
 ```
 
 <div align=center><img src="https://github.com/user-attachments/assets/244f5cd3-9a2a-47a4-851b-c1f604418d56" /></div>
 
-##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
+##### <div align=center> ☕Have questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
