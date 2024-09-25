@@ -69,7 +69,7 @@ class Config : ModLolibar
         // --- Updates default properties ---
         base.Update();
     
-        // I want to change Content inside User and Time containers, so:
+        // I want to change a content inside User and Time containers, so:
         BarUserText = $"🐳";
         BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
     }
