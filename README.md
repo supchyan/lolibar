@@ -10,7 +10,8 @@
 > This project is for **Windows Platform** only! Please, check **[polybar](https://github.com/polybar/polybar)** repo, if you're looking for the Linux one.
 
 </br>
-<div align=center><img src="https://github.com/user-attachments/assets/0933f6ed-1ba8-479a-be8a-465b8a4f71f5" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/61c31ab5-b0aa-420f-81c0-5cd19cd136f4" /></div>
+
 </br>
 
 > How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
@@ -19,13 +20,13 @@
 
 class Config : ModLolibar
 {
-    // Runs once after launch
+    // --- Runs once after launch ---
     public override void Initialize()
     {
         
     }
 
-    // Updates every "UpdateDelay".
+    // --- Updates every `BarUpdateDelay` ---
     public override void Update()
     {
 
@@ -36,56 +37,67 @@ class Config : ModLolibar
 > Example
 ```csharp
 // [Config.cs] - My personal setup, which fits my needs
-class Config : ModLolibar
+public override void Initialize()
 {
-    // Runs once after launch
-    public override void Initialize()
+    // --- Properties ---
+    BarUpdateDelay              = 500;
+    BarUseSystemTheme           = false;
+    BarHeight                   = 36;
+    BarColor                    = LolibarHelper.SetColor("#452a25");
+    BarContainersContentColor   = LolibarHelper.SetColor("#b56e5c");
+
+    // --- Initializes default containers ---
+    base.Initialize();
+
+    // --- Let's add a new custom container ---
+    new LolibarContainer()
     {
-        UpdateDelay                 = 500;
-        UseSystemTheme              = false;
+        Name    = "CustomSoundContainer",
+        Parent  = Lolibar.BarRightContainer,
+        Icon    = LolibarDefaults.SoundBaseIcon, // wip here
+        Text    = "Sound",
+        MouseLeftButtonUpEvent = OpenSoundSettingsEvent
 
-        BarHeight                   = 36;
+    }.Create();
+}
 
-        BarColor                    = LolibarHelper.SetColor("#452a25");
-        BarContainersContentColor   = LolibarHelper.SetColor("#b56e5c");
+public override void Update()
+{
+    // --- Updates default properties ---
+    base.Update();
 
-        HideBarInfoContainer        = true;
+    // I want to change Content inside User and Time containers, so:
+    BarUserText = $"🐳";
+    BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
+}
 
-        // Let's add a clickable container!
-        ContainerGenerator.CreateContainer(
-            Lolibar.barRightContainer, // parent container
-            LolibarDefaults.SoundIcon, // icon content
-            "Sound",                   // text content
-            OpenSoundSettings,         // onleftclick event
-            default                    // onrightclick event [ which is null here ]
-        );
-    }
+// --- Example default containers override ---
+public override void CreateUserContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+{
+    base.CreateUserContainer(parent, LolibarEnums.SeparatorPosition.Right);
+}
+public override void CreateCurProcContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+{
+    base.CreateCurProcContainer(null, sepPos);
+}
 
-    // Updates every "UpdateDelay".
-    public override void Update()
+// --- Example custom event ---
+void OpenSoundSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+{
+    new Process
     {
-        BarUserText = $"🐳";
-        BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
-    }
-
-    // My custom event...
-    void OpenSoundSettings(object sender, System.Windows.Input.MouseButtonEventArgs e)
-    {
-        new Process
+        StartInfo = new()
         {
-            StartInfo = new()
-            {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:sound",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            }
-        }.Start();
-    }
+            FileName = "powershell.exe",
+            Arguments = "Start-Process ms-settings:sound",
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        }
+    }.Start();
 }
 // Simple enough, isn't it?
 ```
 
-<div align=center><img src="https://github.com/user-attachments/assets/000354cc-e5c5-4de5-9d7e-3e9a123e91e9" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/244f5cd3-9a2a-47a4-851b-c1f604418d56" /></div>
 
 ##### <div align=center> ☕Have a suggestions for this project? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
