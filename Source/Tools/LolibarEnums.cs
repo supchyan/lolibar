@@ -1,11 +1,10 @@
-﻿namespace LolibarApp.Source.Tools
+﻿namespace LolibarApp.Source.Tools;
+
+public class LolibarEnums
 {
-    public class LolibarEnums
-    {
-        public enum SeparatorPosition { 
-            Left, 
-            Right, 
-            Both 
-        }
+    public enum SeparatorPosition { 
+        Left, 
+        Right, 
+        Both 
     }
 }
