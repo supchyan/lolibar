@@ -23,13 +23,13 @@ class Config : ModLolibar
     // --- Runs once after launch ---
     public override void Initialize()
     {
-        
+        base.Initialize();
     }
 
     // --- Updates every `BarUpdateDelay` ---
     public override void Update()
     {
-
+        base.Update();
     }
 }
 ```
