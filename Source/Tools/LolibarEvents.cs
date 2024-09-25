@@ -7,6 +7,7 @@ namespace LolibarApp.Source.Tools
     {
         public static void UI_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            // --- changes cursor type ---
             sender.GetType().GetProperty("Cursor")?.SetValue(sender, System.Windows.Input.Cursors.Hand);
 
             LolibarAnimator.BeginDecOpacityAnimation((UIElement)sender);
@@ -15,7 +16,8 @@ namespace LolibarApp.Source.Tools
         {
             LolibarAnimator.BeginIncOpacityAnimation((UIElement)sender);
         }
-        public static void BarUserContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+        public static void OpenUserSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process
             {
@@ -28,8 +30,7 @@ namespace LolibarApp.Source.Tools
                 }
             }.Start();
         }
-
-        public static void BarCurProcContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public static void OpenTaskManagerEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process
             {
@@ -42,23 +43,7 @@ namespace LolibarApp.Source.Tools
                 }
             }.Start();
         }
-
-        public static void BarRamContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeRamInfo();
-        }
-
-        public static void BarDiskContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeDiskInfo();
-        }
-
-        public static void BarNetworkContainer_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            LolibarDefaults.ChangeNetworkInfo();
-        }
-
-        public static void BarPowerContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public static void OpenPowerSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             new Process
             {
@@ -71,8 +56,7 @@ namespace LolibarApp.Source.Tools
                 }
             }.Start();
         }
-
-        public static void BarTimeContainer_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public static void OpenTimeSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // probable fix #9, so shouldn't be overlooked. seems, `sender` here is application itself...
             //if (e.OriginalSource == sender) System.Windows.MessageBox.Show("show");
@@ -88,5 +72,17 @@ namespace LolibarApp.Source.Tools
             }.Start();
         }
 
+        public static void SwapRamInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeRamInfo();
+        }
+        public static void SwapDiskInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeDiskInfo();
+        }
+        public static void SwapNetworkInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LolibarDefaults.ChangeNetworkInfo();
+        }
     }
 }

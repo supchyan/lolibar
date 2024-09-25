@@ -10,8 +10,9 @@ namespace LolibarApp.Source.Tools
         int  oldDesktopIndex    = 0;
         bool errorTabGenerated  = false;
 
-        public void WorkspaceTabsListener(StackPanel parent)
+        public void WorkspaceTabsListener(Border parent)
         {
+            var spawnContainer = (StackPanel)parent.Child;
             // Stop doing all logic below, if error tab has been already generated.
             if (errorTabGenerated) return;
 
@@ -33,7 +34,7 @@ namespace LolibarApp.Source.Tools
                 if (!ShouldUpdateWorkspaces(VirtualDesktop.Desktop.Count, VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current))) return;
                 
                 UpdateWorkspaceTabs(
-                    parent,
+                    spawnContainer,
                     VirtualDesktop.Desktop.Count,
                     VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current)
                 );
@@ -43,7 +44,7 @@ namespace LolibarApp.Source.Tools
                 if (!ShouldUpdateWorkspaces(VirtualDesktop11.Desktop.Count, VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current))) return;
 
                 UpdateWorkspaceTabs(
-                    parent,
+                    spawnContainer,
                     VirtualDesktop11.Desktop.Count,
                     VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current)
                 );
@@ -54,14 +55,14 @@ namespace LolibarApp.Source.Tools
                 if (!ShouldUpdateWorkspaces(VirtualDesktop11_24H2.Desktop.Count, VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current))) return;
 
                 UpdateWorkspaceTabs(
-                    parent,
+                    spawnContainer,
                     VirtualDesktop11_24H2.Desktop.Count,
                     VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current)
                 );
             }
             else
             {
-                CreateErrorWorkspaceTab(parent);
+                CreateErrorWorkspaceTab(spawnContainer);
             }
         }
         // Creates error tab, if no valid method to draw workspaces...
@@ -99,27 +100,29 @@ namespace LolibarApp.Source.Tools
 
             for (int i = 0; i < desktopCount; i++)
             {
-                int index = i;
+                int index = i; // Just put it here like that
+                
                 if (i != currentDesktopIndex)
                 {
                     background = System.Windows.Media.Brushes.Transparent;
                 }
                 else
                 {
-                    var hex = LolibarHelper.ARGBtoHEX(foreground).Substring(3);
-                    background = LolibarHelper.SetColor($"#30{hex}");
+                    var hex         = LolibarHelper.ARGBtoHEX(foreground).Substring(3);
+                    background      = LolibarHelper.SetColor($"#30{hex}");
                 }
-                Border border = new Border()
+
+                Border border       = new Border()
                 {
-                    Margin = Config.BarWorkspacesMargin,
-                    CornerRadius = Config.BarContainersCornerRadius,
-                    Background = background
+                    Margin          = Config.BarWorkspacesMargin,
+                    CornerRadius    = Config.BarContainersCornerRadius,
+                    Background      = background
                 };
-                TextBlock tabBlock = new TextBlock()
+                TextBlock tabBlock  = new TextBlock()
                 {
-                    Text = $"{index + 1}",
-                    Margin = Config.BarContainerInnerMargin,
-                    Foreground = foreground,
+                    Text            = $"{index + 1}",
+                    Margin          = Config.BarContainerInnerMargin,
+                    Foreground      = foreground,
                 };
                 border.Child = tabBlock;
                 border.SetContainerEvents(
@@ -133,11 +136,21 @@ namespace LolibarApp.Source.Tools
                     })
                 );
 
+                // if user clicked to already selected workspace -> create a new one
+                if (i == currentDesktopIndex)
+                {
+                    border.PreviewMouseLeftButtonUp += 
+                        new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) =>
+                        {
+                            CreateDesktop();
+                        });
+                }
+
                 parent.Children.Add(border);
             }
         }
 
-        bool IsVirtualDesktopValid()
+        static bool IsVirtualDesktopValid()
         {
             try
             {
@@ -149,7 +162,7 @@ namespace LolibarApp.Source.Tools
             }
             return true;
         }
-        bool IsVirtualDesktop11Valid()
+        static bool IsVirtualDesktop11Valid()
         {
             try
             {
@@ -161,7 +174,7 @@ namespace LolibarApp.Source.Tools
             }
             return true;
         }
-        bool IsVirtualDesktop11_24H2Valid()
+        static bool IsVirtualDesktop11_24H2Valid()
         {
             try
             {
@@ -187,21 +200,7 @@ namespace LolibarApp.Source.Tools
             }
             return false;
         }
-        /// <summary>
-        /// Sets events to `Add Workspaces` button at the near of the workspaces.
-        /// </summary>
-        public void SetEventsToAddWorkspaceContainer(UIElement addWorkspaceContainer)
-        {
-            addWorkspaceContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
-                    CreateDesktop();
-                }),
-                null
-            );
-        }
-        void CreateDesktop()
+        static void CreateDesktop()
         {
             if (IsVirtualDesktopValid())
             {
@@ -219,7 +218,7 @@ namespace LolibarApp.Source.Tools
                 MoveToDesktop(VirtualDesktop11_24H2.Desktop.Count - 1);
             }
         }
-        void MoveToDesktop(int index)
+        static void MoveToDesktop(int index)
         {
             if (IsVirtualDesktopValid())
             {

@@ -13,22 +13,15 @@ namespace LolibarApp.Source.Tools
         public static string? CurProcIdInfo      { get; private set; }
         public static string? CurProcNameInfo    { get; private set; }
 
-        #region AddTab
-        public static string? GetAddWorkspaceInfo()
-        {
-            return "Add Workspace";
-        }
-        #endregion
-
         #region User
-        public static string? GetUserInfo()
+        public static string? UserInfo()
         {
             return $"{WindowsIdentity.GetCurrent().Name.Split('\\')[1]}";
         }
         #endregion
 
         #region CurProc
-        public static string? GetCurProcInfo()
+        public static string? CurProcInfo()
         {
             CurProcIdInfo   = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
             CurProcNameInfo = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
@@ -42,12 +35,20 @@ namespace LolibarApp.Source.Tools
             return nameAndId;
 
         }
+        public static Geometry? CurProcIcon()
+        {
+            return CurProcBaseIcon;
+        }
         #endregion
 
         #region Cpu
-        public static string? GetCpuInfo()
+        public static string? CpuInfo()
         {
             return $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.CPU_Total.NextValue(), 1))}%";
+        }
+        public static Geometry? CpuIcon()
+        {
+            return CpuBaseIcon;
         }
         #endregion
 
@@ -56,7 +57,7 @@ namespace LolibarApp.Source.Tools
         {
             ShowRamInPercent = !ShowRamInPercent;
         }
-        public static string? GetRamInfo()
+        public static string? RamInfo()
         {
             var computerInfo            = new ComputerInfo();
             var RamUsedInPercentInfo    = $"{String.Format("{0:0.0}", Math.Round(100.0 * (1.0 - ((double)computerInfo.AvailablePhysicalMemory / (double)computerInfo.TotalPhysicalMemory)), 1))}%";
@@ -64,6 +65,10 @@ namespace LolibarApp.Source.Tools
 
             if (ShowRamInPercent)   return RamUsedInPercentInfo ?? string.Empty;
             else                    return RamUsedInGbInfo      ?? string.Empty;
+        }
+        public static Geometry? RamIcon()
+        {
+            return RamBaseIcon;
         }
         #endregion
 
@@ -73,7 +78,7 @@ namespace LolibarApp.Source.Tools
             if (DiskInfoState < 2) DiskInfoState++;
             else DiskInfoState = 0;
         }
-        public static string? GetDiskInfo()
+        public static string? DiskInfo()
         {
             switch (DiskInfoState)
             {
@@ -85,15 +90,14 @@ namespace LolibarApp.Source.Tools
 
                 case 2: // only write average usage
                     return $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.Disk_Write_Total.NextValue(), 1))}%";
-
             }
             return null;
         }
-        public static Geometry? GetDiskIcon()
+        public static Geometry? DiskIcon()
         {
             switch (DiskInfoState)
             {
-                case 0: return DiskNormalIcon;  // read + write average usage
+                case 0: return DiskBaseIcon;  // read + write average usage
                 case 1: return DiskReadIcon;    // only read average usage
                 case 2: return DiskWriteIcon;   // only write average usage
             }
@@ -107,7 +111,7 @@ namespace LolibarApp.Source.Tools
             if (NetworkInfoState < 2) NetworkInfoState++;
             else NetworkInfoState = 0;
         }
-        public static string? GetNetworkInfo()
+        public static string? NetworkInfo()
         {
             switch (NetworkInfoState)
             {
@@ -123,11 +127,11 @@ namespace LolibarApp.Source.Tools
             }
             return null;
         }
-        public static Geometry? GetNetworkIcon()
+        public static Geometry? NetworkIcon()
         {
             switch (NetworkInfoState)
             {
-                case 0: return NetworkNormalIcon;       // total kbps usage
+                case 0: return NetworkBaseIcon;       // total kbps usage
                 case 1: return NetworkSentIcon;         // sent kbps usage
                 case 2: return NetworkReceivedIcon;     // received kbps usage
             }
@@ -136,11 +140,11 @@ namespace LolibarApp.Source.Tools
         #endregion
 
         #region Power
-        public static string? GetPowerInfo()
+        public static string? PowerInfo()
         {
             return $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent)}%";
         }
-        public static Geometry? GetPowerIcon()
+        public static Geometry? PowerIcon()
         {
             var powerStatus = SystemInformation.PowerStatus;
             // Power Icon handling
@@ -168,13 +172,13 @@ namespace LolibarApp.Source.Tools
             else
             {
                 // Empty Power Icon
-                return PowerEmptyIcon;
+                return PowerBaseIcon;
             }
         }
         #endregion
 
         #region Time
-        public static string? GetTimeInfo()
+        public static string? TimeInfo()
         {
             return $"{DateTime.Now}";
         }

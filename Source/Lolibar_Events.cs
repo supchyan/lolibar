@@ -12,8 +12,8 @@ namespace LolibarApp.Source
         
         void Lolibar_ContentRendered(object? sender, EventArgs e)
         {
-            transformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-            screenSize          = (System.Windows.Size)transformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
+            TransformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+            ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
 
             Left                = (LolibarHelper.Inch_ScreenWidth - Width) / 2;
             Top                 = LolibarHelper.Inch_ScreenHeight;
@@ -28,17 +28,17 @@ namespace LolibarApp.Source
             bool Show_Trigger, Hide_Trigger;
             
             bool MouseMinY = mouseStruct.pt.y <= 0;
-            bool MouseMaxY = mouseStruct.pt.y >= screenSize.Height;
+            bool MouseMaxY = mouseStruct.pt.y >= ScreenSize.Height;
 
             bool MouseMinX = mouseStruct.pt.x <= 0;
-            bool MouseMaxX = mouseStruct.pt.x >= screenSize.Width;
+            bool MouseMaxX = mouseStruct.pt.x >= ScreenSize.Width;
 
             var BarSizeY = Height + 4 * Config.BarMargin;
 
-            if (!Config.SnapBarToTop)
+            if (!Config.BarSnapToTop)
             {
                 Show_Trigger = MouseMaxY && (MouseMinX || MouseMaxX);
-                Hide_Trigger = mouseStruct.pt.y < screenSize.Height - BarSizeY;
+                Hide_Trigger = mouseStruct.pt.y < ScreenSize.Height - BarSizeY;
             }
             else
             {

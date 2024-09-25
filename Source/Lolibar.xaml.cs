@@ -12,18 +12,18 @@ namespace LolibarApp.Source
     public partial class Lolibar : Window
     {
         // Static container's links
-        public static StackPanel barLeftContainer   { get; private set; }
-        public static StackPanel barCenterContainer { get; private set; }
-        public static StackPanel barRightContainer  { get; private set; }
+        public static StackPanel BarLeftContainer   { get; private set; } = new StackPanel();
+        public static StackPanel BarCenterContainer { get; private set; } = new StackPanel();
+        public static StackPanel BarRightContainer  { get; private set; } = new StackPanel();
 
         // Misc
-        MouseHook MouseHandler = new();
-        Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
-        LolibarVirtualDesktop lolibarVirtualDesktop = new();
+        readonly MouseHook MouseHandler = new();
+        readonly Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
+        readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
         // Screen coordinates calculation properties
-        Matrix transformToDevice                    { get; set; }
-        System.Windows.Size screenSize              { get; set; }
+        Matrix TransformToDevice                    { get; set; }
+        System.Windows.Size ScreenSize              { get; set; }
         public static double StatusBarVisiblePosY   { get; private set; }
         public static double StatusBarHidePosY      { get; private set; }
 
@@ -61,66 +61,11 @@ namespace LolibarApp.Source
             Owner = GetWindow(nullWin);
 
             // --- Write main containers into accessable types ---
-            barCenterContainer  = BarCenterContainer;
-            barLeftContainer    = BarLeftContainer;
-            barRightContainer   = BarRightContainer;
+            BarCenterContainer  = _BarCenterContainer;
+            BarLeftContainer    = _BarLeftContainer;
+            BarRightContainer   = _BarRightContainer;
 
             // ---
-
-            BarUserContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                LolibarEvents.BarUserContainer_MouseLeftButtonUp,
-                null
-            );
-
-            BarCurProcContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                LolibarEvents.BarCurProcContainer_MouseLeftButtonUp,
-                null
-            );
-
-            // ---
-
-            BarRamContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                null,
-                LolibarEvents.BarRamContainer_MouseRightButtonUp
-            );
-
-            BarDiskContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                null,
-                LolibarEvents.BarDiskContainer_MouseRightButtonUp
-            );
-
-            BarNetworkContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                null,
-                LolibarEvents.BarNetworkContainer_MouseRightButtonUp
-            );
-
-            // ---
-
-            BarPowerContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                LolibarEvents.BarPowerContainer_MouseLeftButtonUp,
-                null
-            );
-
-            // ---
-
-            BarTimeContainer.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
-                LolibarEvents.BarTimeContainer_MouseLeftButtonUp,
-                null
-            );
 
             InitializeCycle();
             UpdateCycle();
@@ -134,36 +79,16 @@ namespace LolibarApp.Source
 
         void ListenForSystemThemeUsage()
         {
-            if (!Config.UseSystemTheme) return;
+            if (!Config.BarUseSystemTheme) return;
 
             Config.BarColor                     = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#232428") : LolibarHelper.SetColor("#eeeeee");
             Config.BarContainersContentColor    = ShouldSystemUseDarkMode() ? LolibarHelper.SetColor("#b5bac1") : LolibarHelper.SetColor("#2d2d2d");
             Config.BarContainerColor            = Config.BarColor;
         }
-        void PostInitializeContainersVisibility()
-        {
-            if (Config.HideBarLeftContainers)   BarLeftContainer.Visibility     = Visibility.Collapsed;
-            if (Config.HideBarCenterContainers) BarCenterContainer.Visibility   = Visibility.Collapsed;
-            if (Config.HideBarRightContainers)  BarRightContainer.Visibility    = Visibility.Collapsed;
 
-            if (Config.HideBarUserContainer)
-            {
-                BarUserContainer.Visibility = Visibility.Collapsed;
-            }
-
-            if (Config.HideBarInfoContainer)
-            {
-                BarInfoContainer.Visibility = Visibility.Collapsed;
-            }
-            
-            if (Config.HideBarWorkspacesContainer)
-            {
-                BarWorkspacesContainer.Visibility = Visibility.Collapsed;
-            }
-        }
         void PostInitializeSnapping()
         {
-            if (!Config.SnapBarToTop)
+            if (!Config.BarSnapToTop)
             {
                 StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Config.BarHeight - Config.BarMargin;
                 StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
@@ -175,52 +100,16 @@ namespace LolibarApp.Source
             }
         }
 
-        void UpdateDefaultInfo()
-        {
-            // Check if system theme affects lolibar's colors
-            ListenForSystemThemeUsage();
-
-            // Left Containers
-            if(!Config.HideBarLeftContainers)
-            {
-                Config.BarUserText          = LolibarDefaults.GetUserInfo();
-
-                Config.BarCurProcText       = LolibarDefaults.GetCurProcInfo();
-            }
-
-            // Center Containers
-            if (!Config.HideBarCenterContainers)
-            {
-                Config.BarCpuText           = LolibarDefaults.GetCpuInfo();
-
-                Config.BarRamText           = LolibarDefaults.GetRamInfo();
-
-                Config.BarDiskText          = LolibarDefaults.GetDiskInfo();
-                Config.BarDiskIcon          = LolibarDefaults.GetDiskIcon();         // Dynamically updates disk icon
-
-                Config.BarNetworkText       = LolibarDefaults.GetNetworkInfo();
-                Config.BarNetworkIcon       = LolibarDefaults.GetNetworkIcon();   // Dynamically updates network icon
-
-                Config.BarAddWorkspaceText  = LolibarDefaults.GetAddWorkspaceInfo();
-            }
-
-            // Right Containers
-            if (!Config.HideBarRightContainers)
-            {
-                Config.BarPowerText         = LolibarDefaults.GetPowerInfo();
-                Config.BarPowerIcon         = LolibarDefaults.GetPowerIcon();       // Dynamically updates power icon
-
-                Config.BarTimeText          = LolibarDefaults.GetTimeInfo();
-            }
-        }
-
-        void UpdateResources()
+        /// <summary>
+        /// Reloads resources in Lolibar.xaml.
+        /// </summary>
+        void ReloadResources()
         {
             // --- Global UI properties ---
-
             Resources["BarMargin"]                  = Config.BarMargin;
             Resources["BarHeight"]                  = Config.BarHeight;
             Resources["BarWidth"]                   = Config.BarWidth;
+            Resources["BarFontSize"]                = Config.BarFontSize;
 
             Resources["BarColor"]                   = Config.BarColor;
             Resources["BarCornerRadius"]            = Config.BarCornerRadius;
@@ -235,48 +124,7 @@ namespace LolibarApp.Source
 
             Resources["BarWorkspacesMargin"]        = Config.BarWorkspacesMargin;
 
-            Resources["BarIconSize"]                = Config.BarIconSize;
-            Resources["BarIconSizeSmall"]           = Config.BarIconSizeSmall;
-
-            Resources["BarFontSize"]                = Config.BarFontSize;
-
-            Resources["BarSeparatorWidth"]          = Config.BarSeparatorWidth;
-            Resources["BarSeparatorHeight"]         = Config.BarSeparatorHeight;
-            Resources["BarSeparatorRadius"]         = Config.BarSeparatorRadius;
-
-            Resources["BarContainersCornerRadius"]  = Config.BarContainersCornerRadius;
-            Resources["BarContainerColor"]          = Config.BarContainerColor;
-
-
-            // --- Left Containers ---
-
-            Resources["BarUserText"]                = Config.BarUserText;
-
-            Resources["BarCurProcText"]             = Config.BarCurProcText;
-            Resources["BarCurProcIcon"]             = Config.BarCurProcIcon;
-
-            // --- Center Containers ---
-
-            Resources["BarCpuText"]                 = Config.BarCpuText;
-            Resources["BarCpuIcon"]                 = Config.BarCpuIcon;
-
-            Resources["BarRamText"]                 = Config.BarRamText;
-            Resources["BarRamIcon"]                 = Config.BarRamIcon;
-
-            Resources["BarDiskText"]                = Config.BarDiskText;
-            Resources["BarDiskIcon"]                = Config.BarDiskIcon;
-
-            Resources["BarNetworkText"]             = Config.BarNetworkText;
-            Resources["BarNetworkIcon"]             = Config.BarNetworkIcon;
-
             Resources["BarAddWorkspaceText"]        = Config.BarAddWorkspaceText;
-
-            // --- Right Containers ---
-
-            Resources["BarPowerText"]               = Config.BarPowerText;
-            Resources["BarPowerIcon"]               = Config.BarPowerIcon;
-
-            Resources["BarTimeText"]                = Config.BarTimeText;
         }
     }
 }
