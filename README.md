@@ -36,12 +36,11 @@ class Config : ModLolibar
 
 > Example
 ```csharp
-// [Config.cs] - My personal setup, which fits my needs
+// [Config.cs]
 public override void Initialize()
 {
     // --- Properties ---
     BarUpdateDelay              = 500;
-    BarUseSystemTheme           = false;
     BarHeight                   = 36;
     BarColor                    = LolibarHelper.SetColor("#452a25");
     BarContainersContentColor   = LolibarHelper.SetColor("#b56e5c");
