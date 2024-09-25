@@ -8,6 +8,7 @@ namespace LolibarApp.Mods;
 // --- You can freely customize Lolibar's appearance here ---
 class Config : ModLolibar
 {
+    // --- Runs once after launch ---
     public override void Initialize()
     {
         // --- Properties ---
@@ -31,6 +32,7 @@ class Config : ModLolibar
         }.Create();
     }
 
+    // --- Updates every `BarUpdateDelay` ---
     public override void Update()
     {
         // --- Updates default properties ---
