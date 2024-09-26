@@ -129,8 +129,6 @@ public class LolibarVirtualDesktop
             };
             border.Child = tabBlock;
             border.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
                 new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
                     MoveToDesktop(index);
                 }),

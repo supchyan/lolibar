@@ -41,18 +41,17 @@ public static partial class LolibarHelper
     }
 
     /// <summary>
-    /// Simplifies initialize of the default events for `containers`.
+    /// Simplifies container's events initialization.
     /// </summary>
     /// <param name="element">Actual container</param>
-    /// <param name="mouseEnterEvent">Set 'null', if you don't need it</param>
-    /// <param name="mouseLeaveEvent">Set 'null', if you don't need it</param>
-    /// <param name="leftMouseClickEvent">Set 'null', if you don't need it</param>
-    /// <param name="rightMouseClickEvent">Set 'null', if you don't need it</param>
-    public static void SetContainerEvents(this UIElement element, System.Windows.Input.MouseEventHandler? mouseEnterEvent, System.Windows.Input.MouseEventHandler? mouseLeaveEvent, System.Windows.Input.MouseButtonEventHandler? leftMouseClickEvent, System.Windows.Input.MouseButtonEventHandler? rightMouseClickEvent)
+    /// <param name="MouseButtonLeftUp">Invokes action on `MouseButtonLeftUp`.</param>
+    /// <param name="MouseButtonRightUp">Invokes action on `MouseButtonRightUp`.</param>
+    public static void SetContainerEvents(this UIElement element, System.Windows.Input.MouseButtonEventHandler? MouseButtonLeftUp = null, System.Windows.Input.MouseButtonEventHandler? MouseButtonRightUp = null)
     {
-        if (mouseEnterEvent != null)        element.MouseEnter          += mouseEnterEvent;
-        if (mouseLeaveEvent != null)        element.MouseLeave          += mouseLeaveEvent;
-        if (leftMouseClickEvent != null)    element.PreviewMouseLeftButtonUp    += leftMouseClickEvent;
-        if (rightMouseClickEvent != null)   element.PreviewMouseRightButtonUp   += rightMouseClickEvent;
+        if (MouseButtonLeftUp != null )   element.PreviewMouseLeftButtonUp    += MouseButtonLeftUp;
+        if (MouseButtonRightUp != null)   element.PreviewMouseRightButtonUp   += MouseButtonRightUp;
+
+        element.MouseEnter += LolibarEvents.UI_MouseEnter;
+        element.MouseLeave += LolibarEvents.UI_MouseLeave;
     }
 }

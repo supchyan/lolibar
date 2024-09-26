@@ -106,8 +106,6 @@ public class LolibarContainer
         if (MouseLeftButtonUpEvent != null || MouseRightButtonUpEvent != null)
         {
             border.SetContainerEvents(
-                LolibarEvents.UI_MouseEnter,
-                LolibarEvents.UI_MouseLeave,
                 MouseLeftButtonUpEvent,
                 MouseRightButtonUpEvent
             );
