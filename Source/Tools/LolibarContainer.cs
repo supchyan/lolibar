@@ -23,6 +23,7 @@ public class LolibarContainer
 
     public void Create()
     {
+        if (Name == null  ) throw new ArgumentNullException("name");
         if (Parent == null) return;
 
         bool drawLeftSeparator  = SeparatorPosition == LolibarEnums.SeparatorPosition.Left || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;

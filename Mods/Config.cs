@@ -12,6 +12,7 @@ class Config : ModLolibar
     public override void Initialize()
     {
         // --- Properties ---
+        BarUpdateDelay  = 100;
         BarHeight       = 36;
         BarColor        = LolibarHelper.SetColor("#452a25");
         BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
