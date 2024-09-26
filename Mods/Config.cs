@@ -12,7 +12,6 @@ class Config : ModLolibar
     public override void Initialize()
     {
         // --- Properties ---
-        BarUpdateDelay  = 500;
         BarHeight       = 36;
         BarColor        = LolibarHelper.SetColor("#452a25");
         BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
@@ -25,7 +24,7 @@ class Config : ModLolibar
         {
             Name    = "CustomSoundContainer",
             Parent  = Lolibar.BarRightContainer,
-            Icon    = LolibarDefaults.SoundBaseIcon,
+            Icon    = Icons.SoundIcon,
             Text    = "Sound",
             MouseLeftButtonUpEvent = OpenSoundSettingsEvent
 
@@ -43,7 +42,7 @@ class Config : ModLolibar
         BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
     }
 
-    // --- Example default containers override ---
+    // --- Example overriding of the default containers ---
     public override void CreateCurProcContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
     {
         base.CreateCurProcContainer(parent, LolibarEnums.SeparatorPosition.Left);

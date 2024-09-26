@@ -96,11 +96,6 @@ public abstract class ModLolibar
     /// Cornder radius of the elements containers.
     /// </summary>
     public static CornerRadius BarContainersCornerRadius { get; set; } = new CornerRadius(3.0);
-
-    /// <summary>
-    /// 'Add Workspace' text near Workspaces Container
-    /// </summary>
-    public static string BarAddWorkspaceText { get; set; } = string.Empty;
     /// <summary>
     /// Content of the User Container.
     /// </summary>

@@ -111,9 +111,5 @@ public partial class Lolibar : Window
         Resources["BarContainerMargin"]         = Config.BarContainerMargin;
         Resources["BarContainerInnerMargin"]    = Config.BarContainerInnerMargin;
         Resources["BarContainersContentMargin"] = Config.BarContainersContentMargin;
-
-        Resources["BarWorkspacesMargin"]        = Config.BarWorkspacesMargin;
-
-        Resources["BarAddWorkspaceText"]        = Config.BarAddWorkspaceText;
     }
 }

@@ -3,7 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Shapes;
-using System.Reflection;
 
 namespace LolibarApp.Source.Tools;
 
@@ -14,6 +13,7 @@ public class LolibarContainer
     public Geometry? Icon               { get; set; }
     public string? Text                 { get; set; }
     public bool UseWorkspaceSwapEvents  { get; set; }
+    public bool IsCreated               { get; private set; }
     public LolibarEnums.SeparatorPosition? SeparatorPosition                        { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent     { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
@@ -111,7 +111,8 @@ public class LolibarContainer
                 MouseRightButtonUpEvent
             );
         }
-
+        
+        // Applies workspace scrolling feature to specified container
         if (UseWorkspaceSwapEvents)
         {
             border.PreviewMouseWheel += LolibarEvents.SwapWorkspacesEvent;
@@ -164,9 +165,13 @@ public class LolibarContainer
                 Parent.Children.Add(separatorRight);
             }
         }
+
+        IsCreated = true;
     }
     public void Update(string? newText = null, Geometry? newIcon = null)
     {
+        if (!IsCreated) return;
+
         App.Current.Resources[$"{Name}Text"] = newText;
         App.Current.Resources[$"{Name}Icon"] = newIcon;
     }
