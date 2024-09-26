@@ -147,33 +147,26 @@ public partial class LolibarDefaults
     public static Geometry? PowerIcon()
     {
         var powerStatus = SystemInformation.PowerStatus;
+
         // Power Icon handling
+        if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging))
+        {
+            return PowerChargingIcon;
+        }
         if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.High))
         {
-            // High Power Icon
-            return powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                PowerChargingIcon :
-                PowerHighIcon;
+            return PowerHighIcon;
         }
-        else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
+        if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
         {
-            // Low Power Icon
-            return powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                PowerChargingIcon :
-                PowerLowIcon;
+            return PowerLowIcon;
         }
-        else if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
+        if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
         {
-            // Critical Power Icon
-            return powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging) ?
-                PowerChargingIcon :
-                PowerCriticalIcon;
+            return PowerCriticalIcon;
         }
-        else
-        {
-            // Empty Power Icon
-            return PowerBaseIcon;
-        }
+
+        return PowerBaseIcon;
     }
     #endregion
 

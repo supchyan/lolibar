@@ -3,15 +3,14 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using VirtualDesktop11_24H2;
 
 namespace LolibarApp.Source.Tools;
 
 public class LolibarVirtualDesktop
 {
-    int  oldDesktopCount    = 0;
-    int  oldDesktopIndex    = 0;
-    bool errorTabGenerated  = false;
+    int  oldDesktopCount     = 0;
+    int oldDesktopIndex      = 0;
+    bool errorTabGenerated   = false;
 
     public void WorkspaceTabsListener(Border parent)
     {
@@ -201,7 +200,7 @@ public class LolibarVirtualDesktop
         }
         return false;
     }
-    static void CreateDesktop()
+    void CreateDesktop()
     {
         if (IsVirtualDesktopValid())
         {
@@ -219,7 +218,7 @@ public class LolibarVirtualDesktop
             MoveToDesktop(VirtualDesktop11_24H2.Desktop.Count - 1);
         }
     }
-    static void MoveToDesktop(int index)
+    void MoveToDesktop(int index)
     {
         if (IsVirtualDesktopValid())
         {
