@@ -17,8 +17,7 @@
 > How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
 ```csharp
 // [Config.cs]
-
-class Config : ModLolibar
+class Config : LolibarMod
 {
     // --- Runs once after launch ---
     public override void Initialize()
@@ -37,55 +36,54 @@ class Config : ModLolibar
 > Example
 ```csharp
 // [Config.cs]
-class Config : ModLolibar
+class Config : LolibarMod
 {
     // --- Runs once after launch ---
     public override void Initialize()
     {
         // --- Properties ---
-        BarUpdateDelay  = 500;
+        BarUpdateDelay  = 300;
         BarHeight       = 36;
         BarColor        = LolibarHelper.SetColor("#452a25");
         BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
-    
-        // --- Initializes default containers ---
-        base.Initialize();
-    
+
+        base.Initialize(); // Should be invoked after style changes
+
         // --- Let's add a new custom container ---
         new LolibarContainer()
         {
             Name    = "CustomSoundContainer",
             Parent  = Lolibar.BarRightContainer,
-            Icon    = LolibarDefaults.SoundBaseIcon,
+            Icon    = Icons.SoundIcon,
             Text    = "Sound",
-            MouseLeftButtonUpEvent = OpenSoundSettingsEvent
-    
+            MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
+
         }.Create();
     }
 
     // --- Updates every `BarUpdateDelay` ---
     public override void Update()
     {
-        // --- Updates default properties ---
-        base.Update();
-    
-        // I want to change a content inside User and Time containers, so:
-        BarUserText = $"🐳";
-        BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
+        base.Update(); // Use this, if you want to update default properties as well
+
+        // This, how you can set custom info of the updatable container:
+        BarUserContainer.Text = "🐳";
+        BarUserContainer.Update();
+
+        // Another example for the `Time Container`:
+        BarTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
+        BarTimeContainer.Update();
     }
-    
-    // --- Example default containers override ---
-    public override void CreateUserContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+
+    // --- Example override of the default containers ---
+    public override void CreateUserContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateUserContainer(parent, LolibarEnums.SeparatorPosition.Right);
     }
-    public override void CreateCurProcContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
-    {
-        base.CreateCurProcContainer(null, sepPos);
-    }
-    
+    public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
+
     // --- Example custom event ---
-    void OpenSoundSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void OpenSoundSettingsCustomEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         new Process
         {
