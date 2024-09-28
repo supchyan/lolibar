@@ -10,7 +10,7 @@
 		<AssemblyName>lolibar</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
-	  <None Remove="Source\Effects\Transparency.fx" />
+	  <None Remove="Effects\ThresholdEffect.fx.ps" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -18,8 +18,8 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<Resource Include="Effects\ThresholdEffect.fx.ps" />
 		<Resource Include="Fonts\mononoki.ttf"></Resource>
-		<Resource Include="Source\Effects\Transparency.fx" />
 	</ItemGroup>
 
 </Project>

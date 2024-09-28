@@ -23,7 +23,7 @@ public class LolibarContainer
 
     public void Create()
     {
-        if (Name   == null) throw new ArgumentNullException("name");
+        if (Name   == null || Name == string.Empty) throw new ArgumentNullException("name");
         if (Parent == null) return;
 
         bool drawLeftSeparator  = SeparatorPosition == LolibarEnums.SeparatorPosition.Left || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;
@@ -48,7 +48,7 @@ public class LolibarContainer
             Opacity = 0.3
         };
 
-        Border border = new Border()
+        Border border = new()
         {
             Name                = Name,
             Margin              = Config.BarContainerMargin,
@@ -60,7 +60,7 @@ public class LolibarContainer
 
         Border = border;
 
-        StackPanel stackPanel = new StackPanel()
+        StackPanel stackPanel = new()
         {
             Name                = $"{Name}StackPanel",
             Orientation         = System.Windows.Controls.Orientation.Horizontal,
@@ -74,7 +74,7 @@ public class LolibarContainer
         if (Icon != null)
         {
             App.Current.Resources[$"{Name}Icon"] = Icon;
-            Path iconItem = new Path()
+            Path iconItem = new()
             {
                 Stretch             = Stretch.Uniform,
                 Margin              = Config.BarContainersContentMargin,
@@ -90,7 +90,7 @@ public class LolibarContainer
         if (Text != null)
         {
             App.Current.Resources[$"{Name}Text"] = Text;
-            TextBlock textItem = new TextBlock()
+            TextBlock textItem = new()
             {
                 Margin              = Config.BarContainersContentMargin,
                 Foreground          = Config.BarContainersContentColor,

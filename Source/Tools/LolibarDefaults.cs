@@ -142,9 +142,9 @@ public partial class LolibarDefaults
     {
         switch (NetworkInfoState)
         {
-            case 0:     return NetworkBaseIcon;       // total kbps usage
-            case 1:     return NetworkSentIcon;         // sent kbps usage
-            case 2:     return NetworkReceivedIcon;     // received kbps usage
+            case 0:     return NetworkBaseIcon;     // total kbps usage
+            case 1:     return NetworkSentIcon;     // sent kbps usage
+            case 2:     return NetworkReceivedIcon; // received kbps usage
             default:    break;
         }
         return null;

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LolibarApp.Source"
+        xmlns:tools="clr-namespace:LolibarApp.Source.Tools"
         mc:Ignorable="d"
 
         Title="lolibar"
@@ -28,8 +29,10 @@
         
         IsTabStop="False"
         UseLayoutRounding="True" Background="{x:Null}" Foreground="{x:Null}">
-
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="{DynamicResource BarOpacity}">
+    <Window.Resources>
+        <tools:LolibarEffects x:Key="thresholdEffect" Threshold="0.25" BlankColor="Orange" />
+    </Window.Resources>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="{DynamicResource BarOpacity}" Effect="{StaticResource thresholdEffect}">
         <Border Name="Bar" BorderThickness="{DynamicResource BarStrokeThickness}" BorderBrush="{DynamicResource BarContainersContentColor}" Background="{DynamicResource BarColor}" CornerRadius="{DynamicResource BarCornerRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}">
             <Grid>
                 <Grid.ColumnDefinitions>
