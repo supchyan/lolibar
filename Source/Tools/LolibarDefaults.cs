@@ -97,7 +97,7 @@ public partial class LolibarDefaults
     {
         switch (DiskInfoState)
         {
-            case 0: return DiskBaseIcon;  // read + write average usage
+            case 0: return DiskBaseIcon;    // read + write average usage
             case 1: return DiskReadIcon;    // only read average usage
             case 2: return DiskWriteIcon;   // only write average usage
         }

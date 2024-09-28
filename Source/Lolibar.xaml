@@ -28,8 +28,9 @@
         
         IsTabStop="False"
         UseLayoutRounding="True" Background="{x:Null}" Foreground="{x:Null}">
+
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="{DynamicResource BarOpacity}">
-        <Border Name="Bar" BorderThickness="{DynamicResource BarStrokeThickness}" BorderBrush="{DynamicResource BarContainersContentColor}" Background="{DynamicResource BarColor}" CornerRadius="{DynamicResource BarCornerRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}" >
+        <Border Name="Bar" BorderThickness="{DynamicResource BarStrokeThickness}" BorderBrush="{DynamicResource BarContainersContentColor}" Background="{DynamicResource BarColor}" CornerRadius="{DynamicResource BarCornerRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>

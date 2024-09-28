@@ -6,13 +6,13 @@ using System.Windows.Controls;
 namespace LolibarApp.Mods;
 
 // --- You can freely customize Lolibar's appearance here ---
-class Config : ModLolibar
+class Config : LolibarMod
 {
     // --- Runs once after launch ---
     public override void Initialize()
     {
         // --- Properties ---
-        BarUpdateDelay  = 100;
+        BarUpdateDelay  = 300;
         BarHeight       = 36;
         BarColor        = LolibarHelper.SetColor("#452a25");
         BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
@@ -27,7 +27,7 @@ class Config : ModLolibar
             Parent  = Lolibar.BarRightContainer,
             Icon    = Icons.SoundIcon,
             Text    = "Sound",
-            MouseLeftButtonUpEvent = OpenSoundSettingsEvent
+            MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
 
         }.Create();
     }
@@ -38,35 +38,39 @@ class Config : ModLolibar
         // --- Updates default properties ---
         base.Update();
 
-        // I want to change a content inside User and Time containers, so:
-        BarUserText = $"🐳";
-        BarTimeText = $"{ DateTime.Now.Day } / { DateTime.Now.Month } / { DateTime.Now.Year } { DateTime.Now.DayOfWeek }";
+        // This, how you can set custom info of the updatable container:
+        BarUserContainer.Text = "🐳";
+        BarUserContainer.Update();
+
+        // Another example for the `Time Container`:
+        BarTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
+        BarTimeContainer.Update();
     }
 
-    // --- Example overriding of the default containers ---
-    public override void CreateCurProcContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    // --- Example override of the default containers ---
+    public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateCurProcContainer(parent, LolibarEnums.SeparatorPosition.Left);
     }
-    public override void CreateCpuContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    public override void CreateCpuContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateCpuContainer(null, sepPos);
     }
-    public override void CreateRamContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    public override void CreateRamContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateRamContainer(null, sepPos);
     }
-    public override void CreateDiskContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    public override void CreateDiskContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateDiskContainer(null, sepPos);
     }
-    public override void CreateNetworkContainer(StackPanel? parent = null, LolibarEnums.SeparatorPosition? sepPos = null)
+    public override void CreateNetworkContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateNetworkContainer(null, sepPos);
     }
 
     // --- Example custom event ---
-    void OpenSoundSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void OpenSoundSettingsCustomEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         new Process
         {

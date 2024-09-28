@@ -19,11 +19,11 @@ public class LolibarContainer
     public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
 
     // Rarely used
-    public Border? Border { get; private set; }
+    public Border Border { get; private set; }
 
     public void Create()
     {
-        if (Name == null  ) throw new ArgumentNullException("name");
+        if (Name   == null) throw new ArgumentNullException("name");
         if (Parent == null) return;
 
         bool drawLeftSeparator  = SeparatorPosition == LolibarEnums.SeparatorPosition.Left || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;
@@ -167,11 +167,11 @@ public class LolibarContainer
 
         IsCreated = true;
     }
-    public void Update(string? newText = null, Geometry? newIcon = null)
+    public void Update()
     {
         if (!IsCreated) return;
 
-        App.Current.Resources[$"{Name}Text"] = newText;
-        App.Current.Resources[$"{Name}Icon"] = newIcon;
+        App.Current.Resources[$"{Name}Text"] = Text;
+        App.Current.Resources[$"{Name}Icon"] = Icon;
     }
 }

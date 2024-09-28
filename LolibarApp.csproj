@@ -9,6 +9,9 @@
 		<ApplicationIcon>app_icon.ico</ApplicationIcon>
 		<AssemblyName>lolibar</AssemblyName>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Source\Effects\Transparency.fx" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Ikst.MouseHook" Version="1.0.0" />
@@ -16,6 +19,7 @@
 	
 	<ItemGroup>
 		<Resource Include="Fonts\mononoki.ttf"></Resource>
+		<Resource Include="Source\Effects\Transparency.fx" />
 	</ItemGroup>
 
 </Project>

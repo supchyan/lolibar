@@ -10,7 +10,7 @@ namespace LolibarApp.Source;
 
 public partial class Lolibar : Window
 {
-    // Static container's links
+    // --- Links to the root containers ---
     public static StackPanel BarLeftContainer   { get; private set; } = new StackPanel();
     public static StackPanel BarCenterContainer { get; private set; } = new StackPanel();
     public static StackPanel BarRightContainer  { get; private set; } = new StackPanel();
@@ -20,13 +20,13 @@ public partial class Lolibar : Window
     readonly Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
     readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
-    // Screen coordinates calculation properties
+    // --- Screen calculation properties ---
     Matrix TransformToDevice                    { get; set; }
     System.Windows.Size ScreenSize              { get; set; }
     public static double StatusBarVisiblePosY   { get; private set; }
     public static double StatusBarHidePosY      { get; private set; }
 
-    // Drawing conditions
+    // --- Drawing triggers ---
     bool IsHidden                               { get; set; }
     bool OldIsHidden                            { get; set; }
 
@@ -91,7 +91,7 @@ public partial class Lolibar : Window
     }
 
     /// <summary>
-    /// Reloads resources in Lolibar.xaml.
+    /// Reloads resources in Lolibar.xaml. [  It have to be removed in the future... ]
     /// </summary>
     void ReloadResources()
     {
