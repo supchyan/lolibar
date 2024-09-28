@@ -10,8 +10,8 @@ public partial class LolibarDefaults
     static int  DiskInfoState       = 0;
     static int  NetworkInfoState    = 0;
 
-    public static string? CurProcIdInfo      { get; private set; }
-    public static string? CurProcNameInfo    { get; private set; }
+    public static string CurProcIdInfo      { get; private set; }   = string.Empty;
+    public static string CurProcNameInfo    { get; private set; }   = string.Empty;
 
     #region User
     public static string? UserInfo()
@@ -23,8 +23,8 @@ public partial class LolibarDefaults
     #region CurProc
     public static string? CurProcInfo()
     {
-        CurProcIdInfo   = $"{PerfMonitor.GetForegroundProcessInfo()[0]}";
-        CurProcNameInfo = $"{PerfMonitor.GetForegroundProcessInfo()[1]}";
+        CurProcIdInfo   = $"{LolibarPerfMon.GetForegroundProcessInfo()[0]}";
+        CurProcNameInfo = $"{LolibarPerfMon.GetForegroundProcessInfo()[1]}";
 
         var nameAndId = string.Empty;
 
@@ -44,7 +44,7 @@ public partial class LolibarDefaults
     #region Cpu
     public static string? CpuInfo()
     {
-        return $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.CPU_Total.NextValue(), 1))}%";
+        return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.CPU_Total.NextValue(), 1))}%";
     }
     public static Geometry? CpuIcon()
     {
@@ -83,13 +83,16 @@ public partial class LolibarDefaults
         switch (DiskInfoState)
         {
             case 0: // read + write average usage
-                return $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.Disk_Total.NextValue(), 1))}%";
+                return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.Disk_Total.NextValue(), 1))}%";
 
             case 1: // only read average usage
-                return $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.Disk_Read_Total.NextValue(), 1))}%";
+                return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.Disk_Read_Total.NextValue(), 1))}%";
 
             case 2: // only write average usage
-                return $"{String.Format("{0:0.0}", Math.Round(PerfMonitor.Disk_Write_Total.NextValue(), 1))}%";
+                return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.Disk_Write_Total.NextValue(), 1))}%";
+            
+            default:
+                break;
         }
         return null;
     }
@@ -97,9 +100,10 @@ public partial class LolibarDefaults
     {
         switch (DiskInfoState)
         {
-            case 0: return DiskBaseIcon;    // read + write average usage
-            case 1: return DiskReadIcon;    // only read average usage
-            case 2: return DiskWriteIcon;   // only write average usage
+            case 0:     return DiskBaseIcon;    // read + write average usage
+            case 1:     return DiskReadIcon;    // only read average usage
+            case 2:     return DiskWriteIcon;   // only write average usage
+            default:    break;
         }
         return null;
     }
@@ -113,17 +117,24 @@ public partial class LolibarDefaults
     }
     public static string? NetworkInfo()
     {
+        
+
         switch (NetworkInfoState)
         {
             case 0: // total kbps usage
-                return $"{Math.Round(PerfMonitor.Network_Bytes_Total.NextValue() / 1024)}Kbps";
+                if (LolibarPerfMon.Network_Bytes_Total == null) return "No data";
+                return $"{Math.Round(LolibarPerfMon.Network_Bytes_Total.NextValue() / 1024)}Kbps";
 
             case 1: // sent kbps usage
-                return $"{Math.Round(PerfMonitor.Network_Bytes_Sent.NextValue() / 1024)}Kbps";
+                if (LolibarPerfMon.Network_Bytes_Sent == null) return "No data";
+                return $"{Math.Round(LolibarPerfMon.Network_Bytes_Sent.NextValue() / 1024)}Kbps";
 
             case 2: // received kbps usage
-                return $"{Math.Round(PerfMonitor.Network_Bytes_Received.NextValue() / 1024)}Kbps";
+                if (LolibarPerfMon.Network_Bytes_Received == null) return "No data";
+                return $"{Math.Round(LolibarPerfMon.Network_Bytes_Received.NextValue() / 1024)}Kbps";
 
+            default:
+                break;
         }
         return null;
     }
@@ -131,9 +142,10 @@ public partial class LolibarDefaults
     {
         switch (NetworkInfoState)
         {
-            case 0: return NetworkBaseIcon;       // total kbps usage
-            case 1: return NetworkSentIcon;         // sent kbps usage
-            case 2: return NetworkReceivedIcon;     // received kbps usage
+            case 0:     return NetworkBaseIcon;       // total kbps usage
+            case 1:     return NetworkSentIcon;         // sent kbps usage
+            case 2:     return NetworkReceivedIcon;     // received kbps usage
+            default:    break;
         }
         return null;
     }

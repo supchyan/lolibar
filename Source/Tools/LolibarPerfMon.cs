@@ -2,16 +2,16 @@
 
 namespace LolibarApp.Source.Tools;
 
-public class PerfMonitor
+public class LolibarPerfMon
 {
     // Counters
-    public static readonly PerformanceCounter CPU_Total         = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+    public static readonly PerformanceCounter CPU_Total         = new("Processor", "% Processor Time", "_Total");
     
-    public static readonly PerformanceCounter RAM_Left_MB       = new PerformanceCounter("Memory", "Available MBytes");
+    public static readonly PerformanceCounter RAM_Left_MB       = new("Memory", "Available MBytes");
 
-    public static readonly PerformanceCounter Disk_Total        = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
-    public static readonly PerformanceCounter Disk_Read_Total   = new PerformanceCounter("PhysicalDisk", "% Disk Read Time", "_Total");
-    public static readonly PerformanceCounter Disk_Write_Total  = new PerformanceCounter("PhysicalDisk", "% Disk Write Time", "_Total");
+    public static readonly PerformanceCounter Disk_Total        = new("PhysicalDisk", "% Disk Time", "_Total");
+    public static readonly PerformanceCounter Disk_Read_Total   = new("PhysicalDisk", "% Disk Read Time", "_Total");
+    public static readonly PerformanceCounter Disk_Write_Total  = new("PhysicalDisk", "% Disk Write Time", "_Total");
 
     public static PerformanceCounter? Network_Bytes_Total       { get; private set; }
     public static PerformanceCounter? Network_Bytes_Sent        { get; private set; }
@@ -64,9 +64,9 @@ public class PerfMonitor
         {
             if (instance.Contains("802.11ac"))
             {
-                Network_Bytes_Total     = new PerformanceCounter($"Network Interface", "Bytes Total/sec", instance);
-                Network_Bytes_Sent      = new PerformanceCounter($"Network Interface", "Bytes Sent/sec", instance);
-                Network_Bytes_Received  = new PerformanceCounter($"Network Interface", "Bytes Received/sec", instance);
+                Network_Bytes_Total     = new($"Network Interface", "Bytes Total/sec", instance);
+                Network_Bytes_Sent      = new($"Network Interface", "Bytes Sent/sec", instance);
+                Network_Bytes_Received  = new($"Network Interface", "Bytes Received/sec", instance);
                 return;
             }
         }

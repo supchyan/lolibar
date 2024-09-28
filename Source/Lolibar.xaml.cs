@@ -112,4 +112,26 @@ public partial class Lolibar : Window
         Resources["BarContainerInnerMargin"]    = Config.BarContainerInnerMargin;
         Resources["BarContainersContentMargin"] = Config.BarContainersContentMargin;
     }
+
+    #region Lifecycle
+    void InitializeCycle()
+    {
+        // --- Initialize ---
+        config.Initialize();
+
+        // -- PostInitialize ---
+        PostInitializeSnapping();
+        ReloadResources();
+    }
+    async void UpdateCycle()
+    {
+        while (true)
+        {
+            await Task.Delay(Config.BarUpdateDelay);
+
+            // --- Update ---
+            config.Update();
+        }
+    }
+    #endregion
 }

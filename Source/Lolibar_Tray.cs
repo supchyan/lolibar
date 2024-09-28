@@ -8,7 +8,7 @@ namespace LolibarApp.Source;
 partial class Lolibar : Window
 {
     #region Tray [ Notify Icon ]
-    NotifyIcon? trayIcon;
+    NotifyIcon trayIcon;
     void GenerateTrayMenu()
     {
         trayIcon = new NotifyIcon

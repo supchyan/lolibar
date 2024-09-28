@@ -222,7 +222,7 @@ public abstract class LolibarMod
     /// <param name="sepPos">Should container generate separator as well?</param>
     public virtual void CreateNetworkContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
-        PerfMonitor.InitializeNetworkCounters();
+        LolibarPerfMon.InitializeNetworkCounters();
 
         // v It's here, because we need to initialize it's content above ^
         BarNetworkContainer.Text = LolibarDefaults.NetworkInfo();
