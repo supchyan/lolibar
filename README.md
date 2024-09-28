@@ -47,8 +47,7 @@ class Config : LolibarMod
         BarColor        = LolibarHelper.SetColor("#452a25");
         BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
 
-        // --- Initializes default containers ---
-        base.Initialize();
+        base.Initialize(); // Should be invoked after style changes
 
         // --- Let's add a new custom container ---
         new LolibarContainer()
@@ -65,8 +64,7 @@ class Config : LolibarMod
     // --- Updates every `BarUpdateDelay` ---
     public override void Update()
     {
-        // --- Updates default properties ---
-        base.Update();
+        base.Update(); // Use this, if you want to update default properties as well
 
         // This, how you can set custom info of the updatable container:
         BarUserContainer.Text = "🐳";
@@ -78,26 +76,11 @@ class Config : LolibarMod
     }
 
     // --- Example override of the default containers ---
-    public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
+    public override void CreateUserContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
-        base.CreateCurProcContainer(parent, LolibarEnums.SeparatorPosition.Left);
+        base.CreateUserContainer(parent, LolibarEnums.SeparatorPosition.Right);
     }
-    public override void CreateCpuContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
-    {
-        base.CreateCpuContainer(null, sepPos);
-    }
-    public override void CreateRamContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
-    {
-        base.CreateRamContainer(null, sepPos);
-    }
-    public override void CreateDiskContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
-    {
-        base.CreateDiskContainer(null, sepPos);
-    }
-    public override void CreateNetworkContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
-    {
-        base.CreateNetworkContainer(null, sepPos);
-    }
+    public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
 
     // --- Example custom event ---
     void OpenSoundSettingsCustomEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
