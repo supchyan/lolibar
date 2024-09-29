@@ -28,7 +28,7 @@ public abstract class LolibarMod
     /// <summary>
     /// Lolibar's height property. [ U - Updatable ]
     /// </summary>
-    public static double U_BarHeight { get; set; } = 42.0;
+    public static double BarHeight { get; set; } = 42.0;
     /// <summary>
     /// Lolibar's Left padding property. [ U - Updatable ]
     /// </summary>
@@ -325,9 +325,8 @@ public abstract class LolibarMod
         BarPowerContainer.Icon = LolibarDefaults.PowerIcon();
         BarPowerContainer.Update();
 
-        U_BarWidth = LolibarHelper.Inch_ScreenWidth - 2 * BarMargin;
-        U_BarHeight = 42.0;
+        U_BarWidth = Lolibar.Inch_ScreenWidth - 2 * BarMargin;
 
-        U_BarLeft = (LolibarHelper.Inch_ScreenWidth - U_BarWidth) / 2;
+        U_BarLeft = (Lolibar.Inch_ScreenWidth - U_BarWidth) / 2;
     }
 }

@@ -26,6 +26,9 @@ public partial class Lolibar : Window
     public static double StatusBarVisiblePosY   { get; private set; }
     public static double StatusBarHidePosY      { get; private set; }
 
+    public static double Inch_ScreenWidth       { get; set; }
+    public static double Inch_ScreenHeight      { get; set; }
+
     // --- Drawing triggers ---
     bool IsHidden                               { get; set; }
     bool OldIsHidden                            { get; set; }
@@ -75,18 +78,22 @@ public partial class Lolibar : Window
 
         GenerateTrayMenu();
     }
-
+    static void PreUpdateInchScreenSize()
+    {
+        Inch_ScreenWidth    = SystemParameters.PrimaryScreenWidth;
+        Inch_ScreenHeight   = SystemParameters.PrimaryScreenHeight;
+    }
     static void PreUpdateSnapping()
     {
         if (!Config.BarSnapToTop)
         {
-            StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Config.U_BarHeight - Config.BarMargin;
-            StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
+            StatusBarVisiblePosY = Inch_ScreenHeight - Config.BarHeight - Config.BarMargin;
+            StatusBarHidePosY    = Inch_ScreenHeight;
         }
         else
         {
             StatusBarVisiblePosY = Config.BarMargin;
-            StatusBarHidePosY    = -Config.U_BarHeight - Config.BarMargin;
+            StatusBarHidePosY    = -Config.BarHeight - Config.BarMargin;
         }
     }
 
@@ -96,7 +103,7 @@ public partial class Lolibar : Window
     void PostUpdateRootProperties()
     {
         Width               = Config.U_BarWidth;
-        Height              = Config.U_BarHeight;
+        Height              = Config.BarHeight;
 
         Left                = Config.U_BarLeft;
         
@@ -126,7 +133,7 @@ public partial class Lolibar : Window
             await Task.Delay(Config.BarUpdateDelay);
 
             // --- PreUpdate ---
-            LolibarHelper.PreUpdateInchScreenSize();
+            PreUpdateInchScreenSize();
             PreUpdateSnapping();
 
             // --- Update ---

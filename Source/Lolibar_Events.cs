@@ -12,7 +12,7 @@ partial class Lolibar
     void Lolibar_ContentRendered(object? sender, EventArgs e)
     {
         TransformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-        ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
+        ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)Inch_ScreenWidth, (float)Inch_ScreenHeight));
 
         IsRendered          = true;
     }
