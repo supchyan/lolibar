@@ -74,9 +74,9 @@ partial class Lolibar
     void Lolibar_Closed(object? sender, EventArgs e)
     {
         // Should dispose tray icon [ but doesn't ]
-        trayIcon.Icon       = null;
-        trayIcon.Visible    = false;
-        trayIcon.Dispose();
+        TrayIcon.Icon       = null;
+        TrayIcon.Visible    = false;
+        TrayIcon.Dispose();
         System.Windows.Forms.Application.DoEvents();
     }
     #endregion

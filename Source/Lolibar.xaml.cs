@@ -71,8 +71,6 @@ public partial class Lolibar : Window
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
-
-        GenerateTrayMenu();
     }
     static void PreUpdateInchScreenSize()
     {
