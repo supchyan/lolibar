@@ -46,10 +46,6 @@ public partial class Lolibar : Window
     // A trigger to prevent different app's job before... it's window actually rendered
     bool IsRendered;
 
-    // System theme check
-    [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
-    public static extern bool ShouldSystemUseDarkMode();
-
     public Lolibar()
     {
         InitializeComponent();
