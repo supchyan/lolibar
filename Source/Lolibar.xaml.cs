@@ -26,8 +26,8 @@ public partial class Lolibar : Window
     public static double StatusBarVisiblePosY   { get; private set; }
     public static double StatusBarHidePosY      { get; private set; }
 
-    public static double Inch_ScreenWidth       { get; set; }
-    public static double Inch_ScreenHeight      { get; set; }
+    public static double Inch_ScreenWidth       { get; private set; }
+    public static double Inch_ScreenHeight      { get; private set; }
 
     // --- Drawing triggers ---
     bool IsHidden                               { get; set; }
