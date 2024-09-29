@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
-using LolibarApp.Mods;
+using LolibarApp.Mods;  
 
 namespace LolibarApp.Source.Tools;
 
@@ -22,13 +22,17 @@ public abstract class LolibarMod
     /// </summary>
     public static double BarMargin { get; set; } = 8.0;
     /// <summary>
-    /// Lolibar's width property.
+    /// Lolibar's width property. [ U - Updatable ]
     /// </summary>
-    public static double BarWidth { get; set; } = LolibarHelper.Inch_ScreenWidth - 2 * BarMargin; // Fit to screen width as default
+    public static double U_BarWidth { get; set; } = 300.0;
     /// <summary>
-    /// Lolibar's height property.
+    /// Lolibar's height property. [ U - Updatable ]
     /// </summary>
-    public static double BarHeight { get; set; } = 42.0;
+    public static double U_BarHeight { get; set; } = 42.0;
+    /// <summary>
+    /// Lolibar's Left padding property. [ U - Updatable ]
+    /// </summary>
+    public static double U_BarLeft { get; set; } = 0.0;
     /// <summary>
     /// Lolibar's opacity property. (From 0 to 1)
     /// </summary>
@@ -223,7 +227,6 @@ public abstract class LolibarMod
     {
         LolibarPerfMon.InitializeNetworkCounters();
 
-        // v It's here, because we need to initialize it's content above ^
         BarNetworkContainer.Text = LolibarDefaults.NetworkInfo();
         BarNetworkContainer.Icon = LolibarDefaults.NetworkIcon();
 
@@ -321,5 +324,10 @@ public abstract class LolibarMod
         BarPowerContainer.Text = LolibarDefaults.PowerInfo();
         BarPowerContainer.Icon = LolibarDefaults.PowerIcon();
         BarPowerContainer.Update();
+
+        U_BarWidth = LolibarHelper.Inch_ScreenWidth - 2 * BarMargin;
+        U_BarHeight = 42.0;
+
+        U_BarLeft = (LolibarHelper.Inch_ScreenWidth - U_BarWidth) / 2;
     }
 }

@@ -14,9 +14,6 @@ partial class Lolibar
         TransformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
         ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)LolibarHelper.Inch_ScreenWidth, (float)LolibarHelper.Inch_ScreenHeight));
 
-        Left                = (LolibarHelper.Inch_ScreenWidth - Width) / 2;
-        Top                 = LolibarHelper.Inch_ScreenHeight;
-
         IsRendered          = true;
     }
 
@@ -76,7 +73,7 @@ partial class Lolibar
     }
     void Lolibar_Closed(object? sender, EventArgs e)
     {
-        // Should dispose tray icon [ it don't ]
+        // Should dispose tray icon [ but doesn't ]
         trayIcon.Icon       = null;
         trayIcon.Visible    = false;
         trayIcon.Dispose();

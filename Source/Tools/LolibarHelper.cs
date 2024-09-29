@@ -5,9 +5,14 @@ namespace LolibarApp.Source.Tools;
 
 public static partial class LolibarHelper
 {
-    public static readonly double Inch_ScreenWidth = SystemParameters.PrimaryScreenWidth;
-    public static readonly double Inch_ScreenHeight = SystemParameters.PrimaryScreenHeight;
+    public static double Inch_ScreenWidth  { get; set; }
+    public static double Inch_ScreenHeight { get; set; }
 
+    public static void PreUpdateInchScreenSize()
+    {
+        Inch_ScreenWidth    = SystemParameters.PrimaryScreenWidth;
+        Inch_ScreenHeight   = SystemParameters.PrimaryScreenHeight;
+    }
     /// <summary>
     /// Generates `SolidColorBrush` object, by getting HEX Color value.
     /// </summary>

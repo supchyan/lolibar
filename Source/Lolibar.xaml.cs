@@ -37,7 +37,7 @@ public partial class Lolibar : Window
         WindowStyle = WindowStyle.ToolWindow,
         ShowInTaskbar = false,
         Width = 0, Height = 0,
-        Top = LolibarHelper.Inch_ScreenWidth // to move it outside the screen 
+        Left = -100 // to open the null_window outside of the screen 
     };
 
     // A trigger to prevent different app's job before... it's window actually rendered
@@ -76,41 +76,41 @@ public partial class Lolibar : Window
         GenerateTrayMenu();
     }
 
-    void PostInitializeSnapping()
+    static void PreUpdateSnapping()
     {
         if (!Config.BarSnapToTop)
         {
-            StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Config.BarHeight - Config.BarMargin;
+            StatusBarVisiblePosY = LolibarHelper.Inch_ScreenHeight - Config.U_BarHeight - Config.BarMargin;
             StatusBarHidePosY    = LolibarHelper.Inch_ScreenHeight;
         }
         else
         {
             StatusBarVisiblePosY = Config.BarMargin;
-            StatusBarHidePosY    = -Config.BarHeight - Config.BarMargin;
+            StatusBarHidePosY    = -Config.U_BarHeight - Config.BarMargin;
         }
     }
 
     /// <summary>
-    /// Reloads resources in Lolibar.xaml. [  It have to be removed in the future... ]
+    /// Reloads root properties.
     /// </summary>
-    void ReloadResources()
+    void PostUpdateRootProperties()
     {
-        // --- Global UI properties ---
-        Resources["BarMargin"]                  = Config.BarMargin;
-        Resources["BarHeight"]                  = Config.BarHeight;
-        Resources["BarWidth"]                   = Config.BarWidth;
-        Resources["BarFontSize"]                = Config.BarFontSize;
+        Width               = Config.U_BarWidth;
+        Height              = Config.U_BarHeight;
 
-        Resources["BarColor"]                   = Config.BarColor;
-        Resources["BarCornerRadius"]            = Config.BarCornerRadius;
-        Resources["BarOpacity"]                 = Config.BarOpacity;
-        Resources["BarStrokeThickness"]         = Config.BarStrokeThickness;
+        Left                = Config.U_BarLeft;
+        
+        FontSize            = Config.BarFontSize;
 
-        Resources["BarContainersContentColor"]  = Config.BarContainersContentColor;
+        RootGrid.Opacity    = Config.BarOpacity;
 
-        Resources["BarContainerMargin"]         = Config.BarContainerMargin;
-        Resources["BarContainerInnerMargin"]    = Config.BarContainerInnerMargin;
-        Resources["BarContainersContentMargin"] = Config.BarContainersContentMargin;
+        Bar.Background      = Config.BarColor;
+        Bar.CornerRadius    = Config.BarCornerRadius;
+        Bar.BorderThickness = Config.BarStrokeThickness;
+        Bar.BorderBrush     = Config.BarContainersContentColor;
+
+        _BarLeftContainer.Margin = _BarCenterContainer.Margin = _BarRightContainer.Margin = Config.BarContainerMargin;
+
     }
 
     #region Lifecycle
@@ -118,10 +118,6 @@ public partial class Lolibar : Window
     {
         // --- Initialize ---
         config.Initialize();
-
-        // -- PostInitialize ---
-        PostInitializeSnapping();
-        ReloadResources();
     }
     async void UpdateCycle()
     {
@@ -129,8 +125,15 @@ public partial class Lolibar : Window
         {
             await Task.Delay(Config.BarUpdateDelay);
 
+            // --- PreUpdate ---
+            LolibarHelper.PreUpdateInchScreenSize();
+            PreUpdateSnapping();
+
             // --- Update ---
             config.Update();
+
+            // --- PostUpdate ---
+            PostUpdateRootProperties();
         }
     }
     #endregion

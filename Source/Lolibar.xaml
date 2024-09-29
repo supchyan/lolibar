@@ -18,10 +18,6 @@
         AllowsTransparency="True"
         
         Opacity="0" d:Opacity="1"
-        FontSize="{DynamicResource BarFontSize}"
-        
-        Height="{DynamicResource BarHeight}"
-        Width="{DynamicResource BarWidth}"
         
         d:DesignHeight="41.56"
         d:DesignWidth="1000.026"
@@ -29,11 +25,8 @@
         
         IsTabStop="False"
         UseLayoutRounding="True" Background="{x:Null}" Foreground="{x:Null}">
-    <Window.Resources>
-        <tools:LolibarEffects x:Key="thresholdEffect" Threshold="0.25" BlankColor="Orange" />
-    </Window.Resources>
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="{DynamicResource BarOpacity}" Effect="{StaticResource thresholdEffect}">
-        <Border Name="Bar" BorderThickness="{DynamicResource BarStrokeThickness}" BorderBrush="{DynamicResource BarContainersContentColor}" Background="{DynamicResource BarColor}" CornerRadius="{DynamicResource BarCornerRadius}" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}">
+    <Grid Name="RootGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border Name="Bar" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -42,19 +35,19 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    <StackPanel Name="_BarLeftContainer"  Margin="{DynamicResource BarContainerMargin}" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <StackPanel Name="_BarLeftContainer" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
 
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Column="1">
-                    <StackPanel Name="_BarCenterContainer" Margin="{DynamicResource BarContainerMargin}" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Name="_BarCenterContainer" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
                     
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Column="2">
-                    <StackPanel Name="_BarRightContainer" Margin="{DynamicResource BarContainerMargin}" VerticalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel Name="_BarRightContainer" VerticalAlignment="Center" Orientation="Horizontal">
 
                     </StackPanel>
                 </Grid>
