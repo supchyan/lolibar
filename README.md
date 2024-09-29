@@ -33,21 +33,21 @@ class Config : LolibarMod
 }
 ```
 
-> Example
+> Example:
 ```csharp
 // [Config.cs]
+// --- You can freely customize Lolibar's appearance here ---
 class Config : LolibarMod
 {
     // --- Runs once after launch ---
     public override void Initialize()
     {
         // --- Properties ---
-        BarUpdateDelay  = 300;
-        BarHeight       = 36;
-        BarColor        = LolibarHelper.SetColor("#452a25");
-        BarContainersContentColor = LolibarHelper.SetColor("#b56e5c");
-
-        base.Initialize(); // Should be invoked after style changes
+        BarUpdateDelay            = 300;
+        BarColor                  = LolibarHelper.SetColor("#2a3247");
+        BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
+        
+        base.Initialize(); // Should be invoked after static style changes
 
         // --- Let's add a new custom container ---
         new LolibarContainer()
@@ -66,6 +66,9 @@ class Config : LolibarMod
     {
         base.Update(); // Use this, if you want to update default properties as well
 
+        // U_* - means, this property is updatable, so we modify it here
+        U_BarHeight = 36;
+
         // This, how you can set custom info of the updatable container:
         BarUserContainer.Text = "🐳";
         BarUserContainer.Update();
@@ -76,11 +79,14 @@ class Config : LolibarMod
     }
 
     // --- Example override of the default containers ---
-    public override void CreateUserContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
+    public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
-        base.CreateUserContainer(parent, LolibarEnums.SeparatorPosition.Right);
+        base.CreateCurProcContainer(Lolibar.BarRightContainer, LolibarEnums.SeparatorPosition.Left);
     }
-    public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
+    public override void CreateCpuContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
+    public override void CreateRamContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
+    public override void CreateDiskContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
+    public override void CreateNetworkContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
 
     // --- Example custom event ---
     void OpenSoundSettingsCustomEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -100,6 +106,6 @@ class Config : LolibarMod
 // Simple enough, isn't it? 
 ```
 
-<div align=center><img src="https://github.com/user-attachments/assets/244f5cd3-9a2a-47a4-851b-c1f604418d56" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/1a9708d8-9cdc-46e0-8673-494672a53514" /></div>
 
 ##### <div align=center> ☕Have questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
