@@ -44,6 +44,7 @@ class Config : LolibarMod
     {
         // --- Properties ---
         BarUpdateDelay            = 300;
+        BarHeight                 = 36;
         BarColor                  = LolibarHelper.SetColor("#2a3247");
         BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
         
@@ -66,14 +67,11 @@ class Config : LolibarMod
     {
         base.Update(); // Use this, if you want to update default properties as well
 
-        // U_* - means, this property is updatable, so we modify it here
-        U_BarHeight = 36;
-
-        // This, how you can set custom info of the updatable container:
+        // This, how info in containers can be updated:
         BarUserContainer.Text = "🐳";
         BarUserContainer.Update();
 
-        // Another example for the `Time Container`:
+        // Another example for the `Time container`:
         BarTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
         BarTimeContainer.Update();
     }
