@@ -8,7 +8,7 @@ namespace LolibarApp.Source;
 partial class Lolibar : Window
 {
     #region Tray [ Notify Icon ]
-    readonly NotifyIcon TrayIcon = new NotifyIcon
+    readonly NotifyIcon TrayIcon = new()
     {
         Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
         Text = "Lolibar Menu",
@@ -16,11 +16,11 @@ partial class Lolibar : Window
         ContextMenuStrip = new()
         {
             Items =
-                {
-                    new ToolStripMenuItem("Restart", null, OnRestartSelected),
-                    new ToolStripMenuItem("GitHub",  null, OnGitHubSelected),
-                    new ToolStripMenuItem("Exit",    null, OnExitSelected)
-                }
+            {
+                new ToolStripMenuItem("Restart", null, OnRestartSelected),
+                new ToolStripMenuItem("GitHub",  null, OnGitHubSelected),
+                new ToolStripMenuItem("Exit",    null, OnExitSelected)
+            }
         }
     };
     // Tray Content
