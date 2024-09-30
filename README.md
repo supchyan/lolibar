@@ -14,7 +14,7 @@
 
 </br>
 
-> How does it work? Also, check this → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
+> How does it work? Reference from → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
 ```csharp
 // [Config.cs]
 class Config : LolibarMod
