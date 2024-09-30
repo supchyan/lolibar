@@ -2,6 +2,7 @@
 using LolibarApp.Source.Tools;
 using System.Windows;
 using LolibarApp.Mods;
+using System.Diagnostics;
 
 namespace LolibarApp.Source;
 
@@ -11,10 +12,7 @@ partial class Lolibar
     
     void Lolibar_ContentRendered(object? sender, EventArgs e)
     {
-        TransformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-        ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)Inch_ScreenWidth, (float)Inch_ScreenHeight));
-
-        IsRendered          = true;
+        IsRendered = true;
     }
 
     void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)

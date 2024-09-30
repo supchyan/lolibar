@@ -1,8 +1,10 @@
 ﻿using LolibarApp.Mods;
+using Microsoft.Win32;
 using System;
-using System.Reflection;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using static LolibarApp.Source.Tools.LolibarEnums;
 
 namespace LolibarApp.Source.Tools;
 
@@ -10,61 +12,94 @@ public class LolibarVirtualDesktop
 {
     public static int  OldDesktopCount      { get; private set; }
     public static int  OldDesktopIndex      { get; private set; }
-    public static bool IsErrorTabGenerated    { get; private set; }
+    public static bool IsErrorTabGenerated  { get; private set; }
 
+    static WinVer WindowsVersion { get; set; } = WinVer.Unknown;
+
+    static void GetWindowsVersion()
+    {
+        try
+        {
+            int testInt = VirtualDesktop.Desktop.Count;
+            WindowsVersion = WinVer.Win10;
+        }
+        catch
+        {
+            try
+            {
+                int testInt = VirtualDesktop11.Desktop.Count;
+                WindowsVersion = WinVer.Win11;
+            }
+            catch
+            {
+                try
+                {
+                    int testInt = VirtualDesktop11_24H2.Desktop.Count;
+                    WindowsVersion = WinVer.Win11_24H2;
+                }
+                catch
+                {
+                    WindowsVersion = WinVer.Unsupported;
+                }
+            }
+        }
+    }
     public static void WorkspaceTabsListener(Border parent)
     {
-        var spawnContainer = (StackPanel)parent.Child;
         // Stop doing all logic below, if `error_tab` has been generated.
         if (IsErrorTabGenerated) return;
 
+        var spawnContainer = (StackPanel)parent.Child;
+
         /* 
-        What happens below?
+        What's happening below?
 
         Windows still has no one way to handle Virtual Desktops,
-        so someone made tools for differents Win32 builds to handle this stuff properly.
-        I've implemented it as different `usings`, so the code below checks
-        if any method is avaliable to work with and then tries to follow it's `using` as well.
-        Hope I've explained everything good to you, thanks.
-        If you know better way to handle this part of the Win32, feel free to notify me
-        on my Discord server ;)
+        so someone made tools for different Win32 builds to handle this stuff properly.
+        I've implemented it as different `namespaces`, so that code below adapt to current Win32 patch.
         
         (supchyan)
         */
-        if (IsVirtualDesktopValid())
-        {
-            if (!ShouldUpdateWorkspaces(VirtualDesktop.Desktop.Count, VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current))) return;
-            
-            UpdateWorkspaceTabs(
-                spawnContainer,
-                VirtualDesktop.Desktop.Count,
-                VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current)
-            );
-        }
-        else if (IsVirtualDesktop11Valid())
-        {
-            if (!ShouldUpdateWorkspaces(VirtualDesktop11.Desktop.Count, VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current))) return;
 
-            UpdateWorkspaceTabs(
-                spawnContainer,
-                VirtualDesktop11.Desktop.Count,
-                VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current)
-            );
-
-        }
-        else if (IsVirtualDesktop11_24H2Valid())
+        switch (WindowsVersion)
         {
-            if (!ShouldUpdateWorkspaces(VirtualDesktop11_24H2.Desktop.Count, VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current))) return;
+            case WinVer.Unknown:
+                GetWindowsVersion();
+            break;
 
-            UpdateWorkspaceTabs(
-                spawnContainer,
-                VirtualDesktop11_24H2.Desktop.Count,
-                VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current)
-            );
-        }
-        else
-        {
-            CreateErrorWorkspaceTab(spawnContainer);
+            case WinVer.Win10:
+                if (!ShouldUpdateWorkspaces(VirtualDesktop.Desktop.Count, VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current))) return;
+
+                UpdateWorkspaceTabs(
+                    spawnContainer,
+                    VirtualDesktop.Desktop.Count,
+                    VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current)
+                );
+            break;
+
+            case WinVer.Win11:
+                if (!ShouldUpdateWorkspaces(VirtualDesktop11.Desktop.Count, VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current))) return;
+
+                UpdateWorkspaceTabs(
+                    spawnContainer,
+                    VirtualDesktop11.Desktop.Count,
+                    VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current)
+                );
+            break;
+
+            case WinVer.Win11_24H2:
+                if (!ShouldUpdateWorkspaces(VirtualDesktop11_24H2.Desktop.Count, VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current))) return;
+
+                UpdateWorkspaceTabs(
+                    spawnContainer,
+                    VirtualDesktop11_24H2.Desktop.Count,
+                    VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current)
+                );
+            break;
+
+            case WinVer.Unsupported:
+                CreateErrorWorkspaceTab(spawnContainer);
+            break;
         }
     }
     // Creates error tab, if no valid method to draw workspaces...
@@ -126,7 +161,9 @@ public class LolibarVirtualDesktop
                 Margin          = Config.BarContainerInnerMargin,
                 Foreground      = foreground,
             };
+
             border.Child = tabBlock;
+
             border.SetContainerEvents(
                 new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
                     MoveToDesktop(index);
@@ -150,43 +187,6 @@ public class LolibarVirtualDesktop
         }
     }
 
-    static bool IsVirtualDesktopValid()
-    {
-        try
-        {
-            int testInt = VirtualDesktop.Desktop.Count;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        return true;
-    }
-    static bool IsVirtualDesktop11Valid()
-    {
-        try
-        {
-            int testInt = VirtualDesktop11.Desktop.Count;
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
-    }
-    static bool IsVirtualDesktop11_24H2Valid()
-    {
-        try
-        {
-            int testInt = VirtualDesktop11.Desktop.Count;
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
-    }
-
     static bool ShouldUpdateWorkspaces(int currentDesktopCount, int currentDesktopIndex) {
         if (OldDesktopCount != currentDesktopCount)
         {
@@ -202,35 +202,39 @@ public class LolibarVirtualDesktop
     }
     static void CreateDesktop()
     {
-        if (IsVirtualDesktopValid())
+        switch (WindowsVersion)
         {
-            VirtualDesktop.Desktop.Create();
-            MoveToDesktop(VirtualDesktop.Desktop.Count - 1);
-        }
-        else if (IsVirtualDesktop11Valid())
-        {
-            VirtualDesktop11.Desktop.Create();
-            MoveToDesktop(VirtualDesktop11.Desktop.Count - 1);
-        }
-        else if (IsVirtualDesktop11_24H2Valid())
-        {
-            VirtualDesktop11_24H2.Desktop.Create();
-            MoveToDesktop(VirtualDesktop11_24H2.Desktop.Count - 1);
+            case WinVer.Win10:
+                VirtualDesktop.Desktop.Create();
+                MoveToDesktop(VirtualDesktop.Desktop.Count - 1);
+            break;
+
+            case WinVer.Win11:
+                VirtualDesktop11.Desktop.Create();
+                MoveToDesktop(VirtualDesktop11.Desktop.Count - 1);
+            break;
+
+            case WinVer.Win11_24H2:
+                VirtualDesktop11_24H2.Desktop.Create();
+                MoveToDesktop(VirtualDesktop11_24H2.Desktop.Count - 1);
+            break;
         }
     }
     static void MoveToDesktop(int index)
     {
-        if (IsVirtualDesktopValid())
+        switch (WindowsVersion)
         {
-            VirtualDesktop.Desktop.FromIndex(index).MakeVisible();
-        }
-        else if (IsVirtualDesktop11Valid())
-        {
-            VirtualDesktop11.Desktop.FromIndex(index).MakeVisible();
-        }
-        else if (IsVirtualDesktop11_24H2Valid())
-        {
-            VirtualDesktop11_24H2.Desktop.FromIndex(index).MakeVisible();
+            case WinVer.Win10:
+                VirtualDesktop.Desktop.FromIndex(index).MakeVisible();
+            break;
+
+            case WinVer.Win11:
+                VirtualDesktop11.Desktop.FromIndex(index).MakeVisible();
+            break;
+
+            case WinVer.Win11_24H2:
+                VirtualDesktop11_24H2.Desktop.FromIndex(index).MakeVisible();
+            break;
         }
     }
     static void RemoveDesktop(int index)
@@ -238,70 +242,76 @@ public class LolibarVirtualDesktop
         // Prevent user from removing last standing workspace
         if (OldDesktopCount == 1) return;
 
-        if (IsVirtualDesktopValid())
+        switch (WindowsVersion)
         {
-            // return if this UI hasn't updated yet.
-            if (index >= VirtualDesktop.Desktop.Count) return;
+            case WinVer.Win10:
+                // return if this UI hasn't updated yet.
+                if (index >= VirtualDesktop.Desktop.Count) return;
 
-            VirtualDesktop.Desktop.FromIndex(index).Remove();
-        }
-        else if (IsVirtualDesktop11Valid())
-        {
-            // return if this UI hasn't updated yet.
-            if (index >= VirtualDesktop11.Desktop.Count) return;
+                VirtualDesktop.Desktop.FromIndex(index).Remove();
+            break;
 
-            VirtualDesktop11.Desktop.FromIndex(index).Remove();
-        }
-        else if (IsVirtualDesktop11_24H2Valid())
-        {
-            // return if this UI hasn't updated yet.
-            if (index >= VirtualDesktop11_24H2.Desktop.Count) return;
+            case WinVer.Win11:
+                // return if this UI hasn't updated yet.
+                if (index >= VirtualDesktop11.Desktop.Count) return;
 
-            VirtualDesktop11_24H2.Desktop.FromIndex(index).Remove();
+                VirtualDesktop11.Desktop.FromIndex(index).Remove();
+            break;
+
+            case WinVer.Win11_24H2:
+                // return if this UI hasn't updated yet.
+                if (index >= VirtualDesktop11_24H2.Desktop.Count) return;
+
+                VirtualDesktop11_24H2.Desktop.FromIndex(index).Remove();
+            break;
         }
     }
 
     public static void GoToDesktopRight()
     {
-        if (IsVirtualDesktopValid())
+        switch (WindowsVersion)
         {
-            if (VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) == VirtualDesktop.Desktop.Count - 1) return;
-            
-            VirtualDesktop.Desktop.FromIndex(VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) + 1).MakeVisible();
-        }
-        else if (IsVirtualDesktop11Valid())
-        {
-            if (VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) == VirtualDesktop11.Desktop.Count - 1) return;
-            
-            VirtualDesktop11.Desktop.FromIndex(VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) + 1).MakeVisible();
-        }
-        else if (IsVirtualDesktop11_24H2Valid())
-        {
-            if (VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) == VirtualDesktop11_24H2.Desktop.Count - 1) return;
+            case WinVer.Win10:
+                if (VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) == VirtualDesktop.Desktop.Count - 1) return;
 
-            VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) + 1).MakeVisible();
+                VirtualDesktop.Desktop.FromIndex(VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) + 1).MakeVisible();
+            break;
+
+            case WinVer.Win11:
+                if (VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) == VirtualDesktop11.Desktop.Count - 1) return;
+
+                VirtualDesktop11.Desktop.FromIndex(VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) + 1).MakeVisible();
+            break;
+
+            case WinVer.Win11_24H2:
+                if (VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) == VirtualDesktop11_24H2.Desktop.Count - 1) return;
+
+                VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) + 1).MakeVisible();
+            break;
         }
     }
 
     public static void GoToDesktopLeft()
     {
-        if (IsVirtualDesktopValid())
+        switch (WindowsVersion)
         {
-            if (VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) == 0) return;
-            
-            VirtualDesktop.Desktop.FromIndex(VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) - 1).MakeVisible();
-        }
-        else if (IsVirtualDesktop11Valid())
-        {
-            if (VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) == 0) return;
-            
-            VirtualDesktop11.Desktop.FromIndex(VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) - 1).MakeVisible();
-        }
-        else if (IsVirtualDesktop11_24H2Valid())
-        {
-            if (VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) == 0) return;
-            
-            VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) - 1).MakeVisible();
+            case WinVer.Win10:
+                if (VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) == 0) return;
+
+                VirtualDesktop.Desktop.FromIndex(VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current) - 1).MakeVisible();
+            break;
+
+            case WinVer.Win11:
+                if (VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) == 0) return;
+
+                VirtualDesktop11.Desktop.FromIndex(VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current) - 1).MakeVisible();
+            break;
+
+            case WinVer.Win11_24H2:
+                if (VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) == 0) return;
+
+                VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) - 1).MakeVisible();
+            break;
         }
     }
 }

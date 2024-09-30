@@ -8,4 +8,12 @@ public class LolibarEnums
         Right, 
         Both 
     }
+    public enum WinVer
+    {
+        Unknown,
+        Unsupported,
+        Win10,
+        Win11,
+        Win11_24H2,
+    }
 }

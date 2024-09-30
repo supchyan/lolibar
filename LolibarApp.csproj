@@ -9,10 +9,7 @@
 		<ApplicationIcon>app_icon.ico</ApplicationIcon>
 		<AssemblyName>lolibar</AssemblyName>
 	</PropertyGroup>
-	<ItemGroup>
-	  <None Remove="Effects\ThresholdEffect.fx.ps" />
-	</ItemGroup>
-
+	
 	<ItemGroup>
 		<PackageReference Include="Ikst.MouseHook" Version="1.0.0" />
 	</ItemGroup>

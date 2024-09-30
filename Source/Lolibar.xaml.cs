@@ -21,8 +21,8 @@ public partial class Lolibar : Window
     readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
     // --- Screen calculation properties ---
-    Matrix TransformToDevice                    { get; set; }
-    System.Windows.Size ScreenSize              { get; set; }
+     Matrix TransformToDevice                    { get; set; }
+    static System.Windows.Size ScreenSize              { get; set; }
     public static double StatusBarVisiblePosY   { get; private set; }
     public static double StatusBarHidePosY      { get; private set; }
 
@@ -72,10 +72,12 @@ public partial class Lolibar : Window
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
     }
-    static void PreUpdateInchScreenSize()
+    void PreUpdateScreenSize()
     {
         Inch_ScreenWidth    = SystemParameters.PrimaryScreenWidth;
         Inch_ScreenHeight   = SystemParameters.PrimaryScreenHeight;
+        TransformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+        ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)Inch_ScreenWidth, (float)Inch_ScreenHeight));
     }
     static void PreUpdateSnapping()
     {
@@ -127,7 +129,7 @@ public partial class Lolibar : Window
             await Task.Delay(Config.BarUpdateDelay);
 
             // --- PreUpdate ---
-            PreUpdateInchScreenSize();
+            PreUpdateScreenSize();
             PreUpdateSnapping();
 
             // --- Update ---
