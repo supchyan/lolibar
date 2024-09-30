@@ -59,6 +59,8 @@ public class LolibarVirtualDesktop
         for different Win32 builds to handle this stuff properly.
         I've implemented it as different `namespaces`, so that code below
         tries to adapt them to current Windows OS patch.
+
+        Contact me on my Discord server, if you know better way, thanks.
         
         (supchyan)
         */
