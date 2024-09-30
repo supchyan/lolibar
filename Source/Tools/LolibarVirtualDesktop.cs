@@ -54,9 +54,11 @@ public class LolibarVirtualDesktop
         /* 
         What's happening below?
 
-        Windows still has no one way to handle Virtual Desktops,
-        so someone made tools for different Win32 builds to handle this stuff properly.
-        I've implemented it as different `namespaces`, so that code below adapt to current Win32 patch.
+        Windows OS still has no one way to handle Virtual Desktops,
+        so https://github.com/MScholtes/VirtualDesktop made tools
+        for different Win32 builds to handle this stuff properly.
+        I've implemented it as different `namespaces`, so that code below
+        tries to adapt them to current Windows OS patch.
         
         (supchyan)
         */
