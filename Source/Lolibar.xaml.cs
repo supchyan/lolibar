@@ -1,10 +1,11 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using Ikst.MouseHook;
 using LolibarApp.Source.Tools;
 using LolibarApp.Mods;
 using System.Windows.Controls;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace LolibarApp.Source;
 
@@ -138,6 +139,107 @@ public partial class Lolibar : Window
             // --- PostUpdate ---
             PostUpdateRootProperties();
         }
+    }
+    #endregion
+
+    #region Events
+    void Lolibar_ContentRendered(object? sender, EventArgs e)
+    {
+        IsRendered = true;
+    }
+
+    void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)
+    {
+        if (!IsRendered) return;
+
+        bool ShowTrigger, HideTrigger;
+
+        bool MouseMinY = mouseStruct.pt.y <= 0;
+        bool MouseMaxY = mouseStruct.pt.y >= ScreenSize.Height;
+
+        bool MouseMinX = mouseStruct.pt.x <= 0;
+        bool MouseMaxX = mouseStruct.pt.x >= ScreenSize.Width;
+
+        var BarSizeY = Height + 4 * Config.BarMargin;
+
+        if (!Config.BarSnapToTop)
+        {
+            ShowTrigger = MouseMaxY && (MouseMinX || MouseMaxX);
+            HideTrigger = mouseStruct.pt.y < ScreenSize.Height - BarSizeY;
+        }
+        else
+        {
+            ShowTrigger = MouseMinY && (MouseMinX || MouseMaxX);
+            HideTrigger = mouseStruct.pt.y > BarSizeY;
+        }
+
+        if (ShowTrigger)
+        {
+            IsHidden = false;
+        }
+        else if (HideTrigger)
+        {
+            IsHidden = true;
+        }
+
+        if (OldIsHidden != IsHidden)
+        {
+            if (!IsHidden)
+            {
+                LolibarAnimator.BeginStatusBarShowAnimation(this);
+            }
+            else
+            {
+                LolibarAnimator.BeginStatusBarHideAnimation(this);
+            }
+            OldIsHidden = IsHidden;
+        }
+    }
+    void Lolibar_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (System.Windows.Forms.Control.ModifierKeys.HasFlag(Keys.Alt))
+        {
+            e.Cancel = true;
+        }
+    }
+    void Lolibar_Closed(object? sender, EventArgs e)
+    {
+        // Should dispose tray icon [ but doesn't ]
+        TrayIcon.Icon = null;
+        TrayIcon.Visible = false;
+        TrayIcon.Dispose();
+        System.Windows.Forms.Application.DoEvents();
+    }
+    #endregion
+
+    #region Tray [ Notify Icon ]
+    readonly NotifyIcon TrayIcon = new()
+    {
+        Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+        Text = "Lolibar Menu",
+        Visible = true,
+        ContextMenuStrip = new()
+        {
+            Items =
+            {
+                new ToolStripMenuItem("Restart", null, OnRestartSelected),
+                new ToolStripMenuItem("GitHub",  null, OnGitHubSelected),
+                new ToolStripMenuItem("Exit",    null, OnExitSelected)
+            }
+        }
+    };
+    // Tray Content
+    static void OnRestartSelected(object? sender, EventArgs e)
+    {
+        LolibarHelper.RestartApplicationGently();
+    }
+    static void OnGitHubSelected(object? sender, EventArgs e)
+    {
+        Process.Start("explorer", "https://github.com/supchyan/lolibar");
+    }
+    static void OnExitSelected(object? sender, EventArgs e)
+    {
+        LolibarHelper.CloseApplicationGently();
     }
     #endregion
 }
