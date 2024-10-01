@@ -26,7 +26,7 @@ public abstract class LolibarMod
     /// </summary>
     public static double U_BarWidth { get; set; } = 300.0;
     /// <summary>
-    /// Lolibar's height property. [ U - Updatable ]
+    /// Lolibar's height property.
     /// </summary>
     public static double BarHeight { get; set; } = 42.0;
     /// <summary>
