@@ -87,11 +87,11 @@ public abstract class LolibarMod
     /// <summary>
     /// Lolibar's main color.
     /// </summary>
-    public static SolidColorBrush BarColor { get; set; } = LolibarHelper.SetColor("#2f2f2f");
+    public static SolidColorBrush BarColor { get; set; } = LolibarHelper.SetColor("#38393c");
     /// <summary>
     /// Lolibar's elements color. (Icons / Text / etc.)
     /// </summary>
-    public static SolidColorBrush BarContainersContentColor { get; set; } = LolibarHelper.SetColor("#55b456");
+    public static SolidColorBrush BarContainersContentColor { get; set; } = LolibarHelper.SetColor("#dddddd");
 
     /// <summary>
     /// Lolibar's border radius property.
