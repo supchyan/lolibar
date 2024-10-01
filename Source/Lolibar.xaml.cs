@@ -22,8 +22,8 @@ public partial class Lolibar : Window
     readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
     // --- Screen calculation properties ---
-     Matrix TransformToDevice                    { get; set; }
-    static System.Windows.Size ScreenSize              { get; set; }
+    Matrix TransformToDevice                    { get; set; }
+    static System.Windows.Size ScreenSize       { get; set; }
     public static double StatusBarVisiblePosY   { get; private set; }
     public static double StatusBarHidePosY      { get; private set; }
 
@@ -55,11 +55,11 @@ public partial class Lolibar : Window
         Closing         += Lolibar_Closing;
         Closed          += Lolibar_Closed;
 
-        // --- Move lolibar into null window ---
+        // --- Moves lolibar into the null window ---
         nullWin.Show();
         Owner = GetWindow(nullWin);
 
-        // --- Write main containers into accessable types ---
+        // --- Writes main containers into accessable types ---
         BarCenterContainer  = _BarCenterContainer;
         BarLeftContainer    = _BarLeftContainer;
         BarRightContainer   = _BarRightContainer;
@@ -95,7 +95,7 @@ public partial class Lolibar : Window
     }
 
     /// <summary>
-    /// Reloads root properties.
+    /// Updates root properties.
     /// </summary>
     void PostUpdateRootProperties()
     {
@@ -114,7 +114,6 @@ public partial class Lolibar : Window
         Bar.BorderBrush     = Config.BarContainersContentColor;
 
         _BarLeftContainer.Margin = _BarCenterContainer.Margin = _BarRightContainer.Margin = Config.BarContainerMargin;
-
     }
 
     #region Lifecycle
