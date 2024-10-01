@@ -10,8 +10,7 @@
 > This project is for **Windows Platform** only! Please, check **[polybar](https://github.com/polybar/polybar)** repo, if you're looking for the Linux one.
 
 </br>
-<div align=center><img src="https://github.com/user-attachments/assets/61c31ab5-b0aa-420f-81c0-5cd19cd136f4" /></div>
-
+<div align=center><img src="https://github.com/user-attachments/assets/272cd6bf-415e-494a-a5a0-2d4c4a19847b" /></div>
 </br>
 
 > How does it work? Reference from → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
