@@ -3,10 +3,10 @@ using System.Diagnostics;
 using LolibarApp.Source;
 using System.Windows.Controls;
 
-namespace LolibarApp.Mods;
+namespace LolibarApp.Modding;
 
 // --- You can freely customize Lolibar's appearance here ---
-class Config : LolibarMod
+class ModClass : LolibarProperties
 {
     // --- Runs once after launch ---
     public override void Initialize()
@@ -24,7 +24,7 @@ class Config : LolibarMod
         {
             Name    = "CustomSoundContainer",
             Parent  = Lolibar.BarRightContainer,
-            Icon    = Icons.SoundIcon,
+            Icon    = ModIcons.SoundIcon,
             Text    = "Sound",
             MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
 

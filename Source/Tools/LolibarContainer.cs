@@ -1,4 +1,4 @@
-﻿using LolibarApp.Mods;
+﻿using LolibarApp.Modding;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
@@ -31,29 +31,29 @@ public class LolibarContainer
 
         System.Windows.Shapes.Rectangle separatorLeft = new()
         {
-            RadiusX = Config.BarSeparatorRadius,
-            RadiusY = Config.BarSeparatorRadius,
-            Width   = Config.BarSeparatorWidth,
-            Height  = Config.BarSeparatorHeight,
-            Fill    = Config.BarContainersContentColor,
+            RadiusX = ModClass.BarSeparatorRadius,
+            RadiusY = ModClass.BarSeparatorRadius,
+            Width   = ModClass.BarSeparatorWidth,
+            Height  = ModClass.BarSeparatorHeight,
+            Fill    = ModClass.BarContainersContentColor,
             Opacity = 0.3
         };
         System.Windows.Shapes.Rectangle separatorRight = new()
         {
-            RadiusX = Config.BarSeparatorRadius,
-            RadiusY = Config.BarSeparatorRadius,
-            Width   = Config.BarSeparatorWidth,
-            Height  = Config.BarSeparatorHeight,
-            Fill    = Config.BarContainersContentColor,
+            RadiusX = ModClass.BarSeparatorRadius,
+            RadiusY = ModClass.BarSeparatorRadius,
+            Width   = ModClass.BarSeparatorWidth,
+            Height  = ModClass.BarSeparatorHeight,
+            Fill    = ModClass.BarContainersContentColor,
             Opacity = 0.3
         };
 
         Border border = new()
         {
             Name                = Name,
-            Margin              = Config.BarContainerMargin,
-            CornerRadius        = Config.BarContainersCornerRadius,
-            Background          = Config.BarContainerColor,
+            Margin              = ModClass.BarContainerMargin,
+            CornerRadius        = ModClass.BarContainersCornerRadius,
+            Background          = ModClass.BarContainerColor,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
             VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
@@ -64,7 +64,7 @@ public class LolibarContainer
         {
             Name                = $"{Name}StackPanel",
             Orientation         = System.Windows.Controls.Orientation.Horizontal,
-            Margin              = Config.BarContainerInnerMargin,
+            Margin              = ModClass.BarContainerInnerMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
             VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
@@ -77,8 +77,8 @@ public class LolibarContainer
             Path iconItem = new()
             {
                 Stretch             = Stretch.Uniform,
-                Margin              = Config.BarContainersContentMargin,
-                Fill                = Config.BarContainersContentColor,
+                Margin              = ModClass.BarContainersContentMargin,
+                Fill                = ModClass.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
@@ -92,8 +92,8 @@ public class LolibarContainer
             App.Current.Resources[$"{Name}Text"] = Text;
             TextBlock textItem = new()
             {
-                Margin              = Config.BarContainersContentMargin,
-                Foreground          = Config.BarContainersContentColor,
+                Margin              = ModClass.BarContainersContentMargin,
+                Foreground          = ModClass.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };

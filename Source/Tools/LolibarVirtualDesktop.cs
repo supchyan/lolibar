@@ -1,7 +1,4 @@
-﻿using LolibarApp.Mods;
-using Microsoft.Win32;
-using System;
-using System.Diagnostics;
+﻿using LolibarApp.Modding;
 using System.Windows;
 using System.Windows.Controls;
 using static LolibarApp.Source.Tools.LolibarEnums;
@@ -114,14 +111,14 @@ public class LolibarVirtualDesktop
         Border border = new()
         {
             Margin = new Thickness(5, 5, 5, 5),
-            CornerRadius = Config.BarContainersCornerRadius,
-            Background = Config.BarContainersContentColor
+            CornerRadius = ModClass.BarContainersCornerRadius,
+            Background = ModClass.BarContainersContentColor
         };
         TextBlock tabBlock = new()
         {
             Text = $"unsupported",
-            Margin = Config.BarContainerInnerMargin,
-            Foreground = Config.BarColor,
+            Margin = ModClass.BarContainerInnerMargin,
+            Foreground = ModClass.BarColor,
         };
         border.Child = tabBlock;
         parent.Children.Add(border);
@@ -137,7 +134,7 @@ public class LolibarVirtualDesktop
 
         // And create new children, lol
         var background = System.Windows.Media.Brushes.Transparent;
-        var foreground = Config.BarContainersContentColor;
+        var foreground = ModClass.BarContainersContentColor;
 
         for (int i = 0; i < desktopCount; i++)
         {
@@ -155,14 +152,14 @@ public class LolibarVirtualDesktop
 
             Border border       = new()
             {
-                Margin          = Config.BarWorkspacesMargin,
-                CornerRadius    = Config.BarContainersCornerRadius,
+                Margin          = ModClass.BarWorkspacesMargin,
+                CornerRadius    = ModClass.BarContainersCornerRadius,
                 Background      = background
             };
             TextBlock tabBlock  = new()
             {
                 Text            = $"{index + 1}",
-                Margin          = Config.BarContainerInnerMargin,
+                Margin          = ModClass.BarContainerInnerMargin,
                 Foreground      = foreground,
             };
 

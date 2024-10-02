@@ -1,11 +1,12 @@
 ﻿using System.Windows;
-using System.Windows.Media;
 using Ikst.MouseHook;
 using LolibarApp.Source.Tools;
-using LolibarApp.Mods;
+using LolibarApp.Modding;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Reflection;
+using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace LolibarApp.Source;
 
@@ -18,24 +19,26 @@ public partial class Lolibar : Window
 
     // Misc
     readonly MouseHook MouseHandler = new();
-    readonly Config config = new(); // We use Config's object to invoke Update() and Initialize() methods.
+    readonly ModClass modClass = new(); // We use Config's object to invoke Update() and Initialize() methods.
     readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
     // --- Screen calculation properties ---
-    Matrix TransformToDevice                    { get; set; }
-    static System.Windows.Size ScreenSize       { get; set; }
+    [DllImport("user32.dll")] public static extern IntPtr GetDC(IntPtr hwnd);
+    [DllImport("gdi32.dll")] public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+    public static Vector2 Inch_Screen           { get; private set; }
+    public static Vector2 ScreenSize            { get; private set; }
+
     public static double StatusBarVisiblePosY   { get; private set; }
     public static double StatusBarHidePosY      { get; private set; }
 
-    public static double Inch_ScreenWidth       { get; private set; }
-    public static double Inch_ScreenHeight      { get; private set; }
 
     // --- Drawing triggers ---
     bool IsHidden                               { get; set; }
     bool OldIsHidden                            { get; set; }
 
     // Null window to prevent lolibar's appearing inside alt+tab menu
-    Window nullWin = new()
+    readonly Window nullWin = new()
     {
         Visibility = Visibility.Hidden,
         WindowStyle = WindowStyle.ToolWindow,
@@ -72,25 +75,26 @@ public partial class Lolibar : Window
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
+        
     }
+
     void PreUpdateScreenSize()
     {
-        Inch_ScreenWidth    = SystemParameters.PrimaryScreenWidth;
-        Inch_ScreenHeight   = SystemParameters.PrimaryScreenHeight;
-        TransformToDevice   = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-        ScreenSize          = (System.Windows.Size)TransformToDevice.Transform(new System.Windows.Point((float)Inch_ScreenWidth, (float)Inch_ScreenHeight));
+        // These applies to your primary screen, so statusbar will be drawn in it only.
+        Inch_Screen     = new((float)SystemParameters.WorkArea.Width, (float)SystemParameters.WorkArea.Height);
+        ScreenSize      = new(GetDeviceCaps(GetDC(IntPtr.Zero), 118), GetDeviceCaps(GetDC(IntPtr.Zero), 117));
     }
     static void PreUpdateSnapping()
     {
-        if (!Config.BarSnapToTop)
+        if (!ModClass.BarSnapToTop)
         {
-            StatusBarVisiblePosY = Inch_ScreenHeight - Config.BarHeight - Config.BarMargin;
-            StatusBarHidePosY    = Inch_ScreenHeight;
+            StatusBarVisiblePosY = Inch_Screen.Y - ModClass.BarHeight - ModClass.BarMargin;
+            StatusBarHidePosY    = Inch_Screen.Y;
         }
         else
         {
-            StatusBarVisiblePosY = Config.BarMargin;
-            StatusBarHidePosY    = -Config.BarHeight - Config.BarMargin;
+            StatusBarVisiblePosY = ModClass.BarMargin;
+            StatusBarHidePosY    = -ModClass.BarHeight - ModClass.BarMargin;
         }
     }
 
@@ -99,41 +103,41 @@ public partial class Lolibar : Window
     /// </summary>
     void PostUpdateRootProperties()
     {
-        Width               = Config.U_BarWidth;
-        Height              = Config.BarHeight;
+        Width               = ModClass.U_BarWidth;
+        Height              = ModClass.BarHeight;
 
-        Left                = Config.U_BarLeft;
+        Left                = ModClass.U_BarLeft;
         
-        FontSize            = Config.BarFontSize;
+        FontSize            = ModClass.BarFontSize;
 
-        RootGrid.Opacity    = Config.BarOpacity;
+        RootGrid.Opacity    = ModClass.BarOpacity;
 
-        Bar.Background      = Config.BarColor;
-        Bar.CornerRadius    = Config.BarCornerRadius;
-        Bar.BorderThickness = Config.BarStrokeThickness;
-        Bar.BorderBrush     = Config.BarContainersContentColor;
+        Bar.Background      = ModClass.BarColor;
+        Bar.CornerRadius    = ModClass.BarCornerRadius;
+        Bar.BorderThickness = ModClass.BarStrokeThickness;
+        Bar.BorderBrush     = ModClass.BarContainersContentColor;
 
-        _BarLeftContainer.Margin = _BarCenterContainer.Margin = _BarRightContainer.Margin = Config.BarContainerMargin;
+        _BarLeftContainer.Margin = _BarCenterContainer.Margin = _BarRightContainer.Margin = ModClass.BarContainerMargin;
     }
 
     #region Lifecycle
     void InitializeCycle()
     {
         // --- Initialize ---
-        config.Initialize();
+        modClass.Initialize();
     }
     async void UpdateCycle()
     {
         while (true)
         {
-            await Task.Delay(Config.BarUpdateDelay);
+            await Task.Delay(ModClass.BarUpdateDelay);
 
             // --- PreUpdate ---
             PreUpdateScreenSize();
             PreUpdateSnapping();
 
             // --- Update ---
-            config.Update();
+            modClass.Update();
 
             // --- PostUpdate ---
             PostUpdateRootProperties();
@@ -142,29 +146,24 @@ public partial class Lolibar : Window
     #endregion
 
     #region Events
-    void Lolibar_ContentRendered(object? sender, EventArgs e)
-    {
-        IsRendered = true;
-    }
-
     void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)
     {
         if (!IsRendered) return;
-
+        
         bool ShowTrigger, HideTrigger;
 
         bool MouseMinY = mouseStruct.pt.y <= 0;
-        bool MouseMaxY = mouseStruct.pt.y >= ScreenSize.Height;
+        bool MouseMaxY = mouseStruct.pt.y >= ScreenSize.Y;
 
         bool MouseMinX = mouseStruct.pt.x <= 0;
-        bool MouseMaxX = mouseStruct.pt.x >= ScreenSize.Width;
+        bool MouseMaxX = mouseStruct.pt.x >= ScreenSize.X;
 
-        var BarSizeY = Height + 4 * Config.BarMargin;
+        var BarSizeY = ModClass.BarHeight + ModClass.BarMargin + 18; // 18 just an offset
 
-        if (!Config.BarSnapToTop)
+        if (!ModClass.BarSnapToTop)
         {
             ShowTrigger = MouseMaxY && (MouseMinX || MouseMaxX);
-            HideTrigger = mouseStruct.pt.y < ScreenSize.Height - BarSizeY;
+            HideTrigger = mouseStruct.pt.y < ScreenSize.Y - BarSizeY;
         }
         else
         {
@@ -193,6 +192,10 @@ public partial class Lolibar : Window
             }
             OldIsHidden = IsHidden;
         }
+    }
+    void Lolibar_ContentRendered(object? sender, EventArgs e)
+    {
+        IsRendered = true;
     }
     void Lolibar_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
     {

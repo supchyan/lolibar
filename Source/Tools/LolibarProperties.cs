@@ -1,11 +1,11 @@
 ﻿using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
-using LolibarApp.Mods;  
+using LolibarApp.Modding;  
 
 namespace LolibarApp.Source.Tools;
 
-public abstract class LolibarMod
+public abstract class LolibarProperties
 {
     /// <summary>
     /// When Lolibar should be snapped to top of the screen. (True by default)
@@ -293,7 +293,7 @@ public abstract class LolibarMod
     /// </summary>
     public virtual void Update()
     {
-        LolibarVirtualDesktop.WorkspaceTabsListener(Config.BarWorkspacesContainer.Border);
+        LolibarVirtualDesktop.WorkspaceTabsListener(ModClass.BarWorkspacesContainer.Border);
 
         BarUserContainer.Text = LolibarDefaults.UserInfo();
         BarUserContainer.Update();
@@ -325,8 +325,8 @@ public abstract class LolibarMod
         BarPowerContainer.Icon = LolibarDefaults.PowerIcon();
         BarPowerContainer.Update();
 
-        U_BarWidth = Lolibar.Inch_ScreenWidth - 2 * BarMargin;
+        U_BarWidth = Lolibar.Inch_Screen.X - 2 * BarMargin;
 
-        U_BarLeft = (Lolibar.Inch_ScreenWidth - U_BarWidth) / 2;
+        U_BarLeft = (Lolibar.Inch_Screen.X - U_BarWidth) / 2;
     }
 }

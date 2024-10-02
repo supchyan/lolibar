@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
+using VirtualDesktop;
 
 namespace LolibarApp.Source.Tools;
 
@@ -18,11 +20,15 @@ public class LolibarPerfMon
     public static PerformanceCounter? Network_Bytes_Received    { get; private set; }
 
     // https://stackoverflow.com/questions/97283/how-can-i-determine-the-name-of-the-currently-focused-process-in-c-sharp
-    [System.Runtime.InteropServices.DllImport("user32.dll")]
-    static extern nint GetForegroundWindow();
+    [DllImport("user32.dll")]
+    static extern IntPtr GetForegroundWindow();
 
-    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    [DllImport("user32.dll")]
     static extern int GetWindowThreadProcessId(nint hwnd, out uint lpdwProcessId);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
+
     /// <summary>
     /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
     /// </summary>
@@ -33,6 +39,7 @@ public class LolibarPerfMon
 
         GetWindowThreadProcessId(hwnd, out uint pid);
 
+        // Prevent info update when statusbar gets focus
         if (pid == Process.GetCurrentProcess().Id)
         {
             return
@@ -41,12 +48,16 @@ public class LolibarPerfMon
                 LolibarDefaults.CurProcNameInfo
             ];
         }
-            
+
 
         foreach (var p in Process.GetProcesses())
         {
             if (p.Id == pid)
             {
+                //надо трекать, если окно fullscreen mode
+                    
+                //GetWindowRect(GetForegroundWindow(), out Rectangle rect);
+                //Debug.WriteLine(rect.Width - rect.X);
                 return
                 [
                     $"{pid}",

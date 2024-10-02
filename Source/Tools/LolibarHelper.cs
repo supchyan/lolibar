@@ -5,6 +5,10 @@ namespace LolibarApp.Source.Tools;
 
 public static partial class LolibarHelper
 {
+    public static int GetWindowsScaling()
+    {
+        return (int)(100 * Screen.PrimaryScreen?.Bounds.Width ?? 0 / SystemParameters.PrimaryScreenWidth);
+    }
     /// <summary>
     /// Generates `SolidColorBrush` object, by getting HEX Color value.
     /// </summary>
