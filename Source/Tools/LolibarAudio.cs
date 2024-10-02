@@ -94,7 +94,6 @@ public class LolibarAudio
     /// <summary>
     /// Returns `true`, if current audio stream is playing.
     /// </summary>
-    /// <returns></returns>
     public static bool IsPlaying()
     {
         var session = Stream?.GetCurrentSession();
