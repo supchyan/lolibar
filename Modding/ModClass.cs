@@ -86,4 +86,3 @@ class ModClass : LolibarProperties
         }.Start();
     }
 }
-// Simple enough, isn't it? 🐳
