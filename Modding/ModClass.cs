@@ -12,27 +12,26 @@ class ModClass : LolibarProperties
     // --- Runs once after launch ---
     public override void Initialize()
     {
-        // --- Properties ---
-        BarUpdateDelay            = 250;
-        BarHeight                 = 36;
-        BarColor                  = LolibarHelper.SetColor("#2a3247");
+        // --- Properties. Starts with `Bar*`, so easy to remember ---
+        BarUpdateDelay = 250;
+        BarHeight = 36;
+        BarColor = LolibarHelper.SetColor("#2a3247");
         BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
-        
+
         base.Initialize(); // Should be invoked after non-dynamic style changes
 
         // --- Let's add a new custom container ---
         new LolibarContainer()
         {
-            Name    = "CustomSoundContainer",
-            Parent  = Lolibar.BarRightContainer,
-            Icon    = ModIcons.SoundIcon,
-            Text    = "Sound",
+            Name = "CustomSoundContainer",
+            Parent = Lolibar.BarRightContainer,
+            Icon = ModIcons.SoundIcon,
+            Text = "Sound",
             MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
 
         }.Create();
 
-        // Check Lolibar's examples section
-        // to understand where it comes from:
+        // Check Lolibar's examples section to understand where it comes from:
         ExampleAudioStreamController.Create();
     }
 
@@ -53,16 +52,20 @@ class ModClass : LolibarProperties
         ExampleAudioStreamController.Update();
     }
 
-    // --- Example override of the default containers... ---
+    // Example override initialization of the default containers...
     public override void CreateTimeContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
+        // Change spawn parent to `Lolibar.BarLeftContainer`;
+        // Change separator position to Left:
         base.CreateTimeContainer(Lolibar.BarLeftContainer, LolibarEnums.SeparatorPosition.Left);
     }
     public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
+        // Change spawn parent to `Lolibar.BarRightContainer`;
+        // Change separator position to Left:
         base.CreateCurProcContainer(Lolibar.BarRightContainer, LolibarEnums.SeparatorPosition.Left);
     }
-    // --- ...Remove these guys ---
+    // ...Empty body here prevents these containers from initializing at all.
     public override void CreateCpuContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
     public override void CreateRamContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
     public override void CreateDiskContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
@@ -83,3 +86,4 @@ class ModClass : LolibarProperties
         }.Start();
     }
 }
+// Simple enough, isn't it? 🐳
