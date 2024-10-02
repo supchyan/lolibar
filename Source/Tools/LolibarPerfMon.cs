@@ -24,7 +24,6 @@ public class LolibarPerfMon
     /// <summary>
     /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
     /// </summary>
-    /// <returns></returns>
     public static string[] GetForegroundProcessInfo()
     {
         var defaults = new string[]
