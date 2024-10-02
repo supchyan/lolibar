@@ -16,6 +16,7 @@
 > How does it work? Reference from → **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
 ```csharp
 // [ModClass.cs]
+
 class ModClass : LolibarProperties
 {
     // --- Runs once after launch ---
@@ -35,6 +36,7 @@ class ModClass : LolibarProperties
 > Example:
 ```csharp
 // [ModClass.cs]
+
 // --- You can freely customize Lolibar's appearance here ---
 class ModClass : LolibarProperties
 {
@@ -100,7 +102,7 @@ class ModClass : LolibarProperties
         }.Start();
     }
 }
-// Simple enough, isn't it? 
+// Simple enough, isn't it? 🐳
 ```
 
 <div align=center><img src="https://github.com/user-attachments/assets/1a9708d8-9cdc-46e0-8673-494672a53514" /></div>
