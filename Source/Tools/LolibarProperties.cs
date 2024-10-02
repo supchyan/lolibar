@@ -293,7 +293,7 @@ public abstract class LolibarProperties
     /// </summary>
     public virtual void Update()
     {
-        LolibarVirtualDesktop.WorkspaceTabsListener(ModClass.BarWorkspacesContainer.Border);
+        LolibarVirtualDesktop.WorkspaceTabsListener(ModClass.BarWorkspacesContainer.BorderComponent);
 
         BarUserContainer.Text = LolibarDefaults.UserInfo();
         BarUserContainer.Update();

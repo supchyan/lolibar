@@ -41,12 +41,12 @@ public class LolibarVirtualDesktop
             }
         }
     }
-    public static void WorkspaceTabsListener(Border parent)
+    public static void WorkspaceTabsListener(Border border)
     {
         // Stop doing all logic below, if `error_tab` has been generated.
         if (IsErrorTabGenerated) return;
 
-        var spawnContainer = (StackPanel)parent.Child;
+        var parent = (StackPanel)border.Child;
 
         /* 
         What's happening below?
@@ -72,7 +72,7 @@ public class LolibarVirtualDesktop
                 if (!ShouldUpdateWorkspaces(VirtualDesktop.Desktop.Count, VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current))) return;
 
                 UpdateWorkspaceTabs(
-                    spawnContainer,
+                    parent,
                     VirtualDesktop.Desktop.Count,
                     VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current)
                 );
@@ -82,7 +82,7 @@ public class LolibarVirtualDesktop
                 if (!ShouldUpdateWorkspaces(VirtualDesktop11.Desktop.Count, VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current))) return;
 
                 UpdateWorkspaceTabs(
-                    spawnContainer,
+                    parent,
                     VirtualDesktop11.Desktop.Count,
                     VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current)
                 );
@@ -92,14 +92,14 @@ public class LolibarVirtualDesktop
                 if (!ShouldUpdateWorkspaces(VirtualDesktop11_24H2.Desktop.Count, VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current))) return;
 
                 UpdateWorkspaceTabs(
-                    spawnContainer,
+                    parent,
                     VirtualDesktop11_24H2.Desktop.Count,
                     VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current)
                 );
             break;
 
             case WinVer.Unsupported:
-                CreateErrorWorkspaceTab(spawnContainer);
+                CreateErrorWorkspaceTab(parent);
             break;
         }
     }
@@ -133,58 +133,40 @@ public class LolibarVirtualDesktop
         parent.Children.RemoveRange(0, parent.Children.Count);
 
         // And create new children, lol
-        var background = System.Windows.Media.Brushes.Transparent;
-        var foreground = ModClass.BarContainersContentColor;
+        var hasBackground = false;
 
         for (int i = 0; i < desktopCount; i++)
         {
             int index = i; // Just put it here like that
-            
-            if (i != currentDesktopIndex)
-            {
-                background = System.Windows.Media.Brushes.Transparent;
-            }
-            else
-            {
-                var hex         = LolibarHelper.ARGBtoHEX(foreground)[3..];
-                background      = LolibarHelper.SetColor($"#30{hex}");
-            }
 
-            Border border       = new()
-            {
-                Margin          = ModClass.BarWorkspacesMargin,
-                CornerRadius    = ModClass.BarContainersCornerRadius,
-                Background      = background
-            };
-            TextBlock tabBlock  = new()
-            {
-                Text            = $"{index + 1}",
-                Margin          = ModClass.BarContainerInnerMargin,
-                Foreground      = foreground,
-            };
+            hasBackground = i == currentDesktopIndex;
 
-            border.Child = tabBlock;
-
-            border.SetContainerEvents(
-                new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
+            LolibarContainer tab = new()
+            {
+                Name = $"WorkspaceTab{index + 1}",
+                Parent = parent,
+                Text = $"{index + 1}",
+                HasBackground = hasBackground,
+                MouseLeftButtonUpEvent = new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
                     MoveToDesktop(index);
                 }),
-                new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
+                MouseRightButtonUpEvent = new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
                     RemoveDesktop(index);
                 })
-            );
+            };
 
-            // if user clicked to already selected workspace -> create a new one
+            // Create a new desktop on current tab's left click
             if (i == currentDesktopIndex)
             {
-                border.PreviewMouseLeftButtonUp += 
+                tab.MouseLeftButtonUpEvent = 
                     new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) =>
                     {
                         CreateDesktop();
                     });
             }
 
-            parent.Children.Add(border);
+            // Add tab to a parent component
+            tab.Create();
         }
     }
 

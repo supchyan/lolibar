@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using LolibarApp.Source;
 using System.Windows.Controls;
+using LolibarApp.Modding.Examples.ExampleAudioStreamController;
 
 namespace LolibarApp.Modding;
 
@@ -12,7 +13,7 @@ class ModClass : LolibarProperties
     public override void Initialize()
     {
         // --- Properties ---
-        BarUpdateDelay            = 300;
+        BarUpdateDelay            = 250;
         BarHeight                 = 36;
         BarColor                  = LolibarHelper.SetColor("#2a3247");
         BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
@@ -29,6 +30,10 @@ class ModClass : LolibarProperties
             MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
 
         }.Create();
+
+        // Check Lolibar's examples section
+        // to understand where it comes from:
+        ExampleAudioStreamController.Create();
     }
 
     // --- Updates every `BarUpdateDelay` ---
@@ -43,13 +48,21 @@ class ModClass : LolibarProperties
         // Another example for the `Time container`:
         BarTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
         BarTimeContainer.Update();
+
+        // Check Lolibar's examples section to understand where it comes from:
+        ExampleAudioStreamController.Update();
     }
 
-    // --- Example override of the default containers ---
+    // --- Example override of the default containers... ---
+    public override void CreateTimeContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
+    {
+        base.CreateTimeContainer(Lolibar.BarLeftContainer, LolibarEnums.SeparatorPosition.Left);
+    }
     public override void CreateCurProcContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos)
     {
         base.CreateCurProcContainer(Lolibar.BarRightContainer, LolibarEnums.SeparatorPosition.Left);
     }
+    // --- ...Remove these guys ---
     public override void CreateCpuContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
     public override void CreateRamContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
     public override void CreateDiskContainer(StackPanel? parent, LolibarEnums.SeparatorPosition? sepPos) { }
@@ -62,10 +75,10 @@ class ModClass : LolibarProperties
         {
             StartInfo = new()
             {
-                FileName        = "powershell.exe",
-                Arguments       = "Start-Process ms-settings:sound",
+                FileName = "powershell.exe",
+                Arguments = "Start-Process ms-settings:sound",
                 UseShellExecute = false,
-                CreateNoWindow  = true,
+                CreateNoWindow = true,
             }
         }.Start();
     }
