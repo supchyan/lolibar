@@ -11,6 +11,9 @@
 <div align=center><img src="https://github.com/user-attachments/assets/272cd6bf-415e-494a-a5a0-2d4c4a19847b" /></div>
 </br>
 
+### 🎟️Pre-requirements
+All modding operations I highly recommend you to do in `VisualStudio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net` versions as well, but I work with `8.0` version, so any issues with differennt `.net` versions is out of my desire to fix.
+
 ### 🎟️Basics understanding
 In two words, as I mentioned before, this toolkit provides capabilites to modify existing setup of the lolibar. </br>
 There are no many mod files to force you get into bunch of stuff. All you need to start modding is understand **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
@@ -135,8 +138,20 @@ class ModClass : LolibarProperties
 
 <div align=center><img src="https://github.com/user-attachments/assets/e4524213-3df6-49e1-bdea-33d30c2015b2" /></div>
 
+### 🎟️About `LolibarApp.csproj`
+To compile this project, you have to set valid `TargetFramework` for your system in **[LolibarApp.csproj](https://github.com/supchyan/lolibar/blob/master/LolibarApp.csproj)** </br>
+As an example of this source, for Windows 11 it should be set to `net8.0-windows10.0.22000.0`. </br>
+You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/desktop-to-uwp-enhance)** article on Microsoft Learn to find out, which `TargetFramework` is for you.
+```csproj
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+        ...other tags
+    </PropertyGroup>
+</Project>
+```
 ### 🎟️Advanced containers guide
-If you want to create enhanced, wide functional containers, you can check [Examples](https://github.com/supchyan/lolibar/tree/master/Modding/Examples/) section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
+If you want to create enhanced, wide functional containers, you can check **[Examples](https://github.com/supchyan/lolibar/tree/master/Modding/Examples/)** section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
 
 ---
-##### <div align=center> ☕Have questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
+##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
