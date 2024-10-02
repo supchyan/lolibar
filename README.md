@@ -140,7 +140,8 @@ class ModClass : LolibarProperties
 
 ### 🎟️Problems with compilation
 To compile this project, you have to set valid `TargetFramework` for your system in **[LolibarApp.csproj](https://github.com/supchyan/lolibar/blob/master/LolibarApp.csproj)** </br>
-For Windows 11 it should be `net8.0-windows10.0.22000.0`
+As an example of this source, for Windows 11 it should be set to `net8.0-windows10.0.22000.0`. </br>
+You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/desktop-to-uwp-enhance)** article on Microsoft Learn to find out, which `TargetFramework` is for you.
 ```csproj
 [LolibarApp.csproj]
 ﻿<Project Sdk="Microsoft.NET.Sdk">
@@ -154,4 +155,4 @@ For Windows 11 it should be `net8.0-windows10.0.22000.0`
 If you want to create enhanced, wide functional containers, you can check **[Examples](https://github.com/supchyan/lolibar/tree/master/Modding/Examples/)** section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
 
 ---
-##### <div align=center> ☕Have questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
+##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
