@@ -49,7 +49,7 @@ class ModClass : LolibarProperties
         BarColor                  = LolibarHelper.SetColor("#2a3247");
         BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
         
-        base.Initialize(); // Should be invoked after static style changes
+        base.Initialize(); // Should be invoked after non-dynamic style changes
 
         // --- Let's add a new custom container ---
         new LolibarContainer()
