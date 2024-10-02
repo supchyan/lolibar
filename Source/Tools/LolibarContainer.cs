@@ -11,10 +11,10 @@ namespace LolibarApp.Source.Tools;
 /// </summary>
 public class LolibarContainer
 {
-    public string Name                  { get; set; }
-    public StackPanel? Parent           { get; set; }
-    public Geometry? Icon               { get; set; }
-    public string? Text                 { get; set; }
+    public string       Name            { get; set; }
+    public StackPanel?  Parent          { get; set; }
+    public Geometry?    Icon            { get; set; }
+    public string?      Text            { get; set; }
     /// <summary>
     /// Set it to `true`, if you want to make this container handle Virtual Desktop Events. (False as default)
     /// </summary>
@@ -36,7 +36,10 @@ public class LolibarContainer
     public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent     { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
 
-    
+    SolidColorBrush BorderBackground()
+    {
+        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(ModClass.BarContainersContentColor)[3..]}") : LolibarHelper.SetColor("#00000000");
+    }
 
     public void Create()
     {
@@ -65,15 +68,16 @@ public class LolibarContainer
             Opacity = 0.3
         };
 
+        App.Current.Resources[$"{Name}BorderBackground"] = BorderBackground();
         Border border = new()
         {
             Name                = Name,
             Margin              = ModClass.BarContainerMargin,
             CornerRadius        = ModClass.BarContainersCornerRadius,
-            Background          = HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(ModClass.BarContainersContentColor)[3..]}") : LolibarHelper.SetColor("#00000000"),
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
             VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
+        border.SetResourceReference(Border.BackgroundProperty, $"{Name}BorderBackground");
 
         BorderComponent = border;
 
@@ -184,11 +188,13 @@ public class LolibarContainer
 
         IsCreated = true;
     }
+
     public void Update()
     {
         if (!IsCreated) return;
 
         App.Current.Resources[$"{Name}Text"] = Text;
         App.Current.Resources[$"{Name}Icon"] = Icon;
+        App.Current.Resources[$"{Name}BorderBackground"] = BorderBackground();
     }
 }
