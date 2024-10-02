@@ -136,7 +136,7 @@ class ModClass : LolibarProperties
 <div align=center><img src="https://github.com/user-attachments/assets/e4524213-3df6-49e1-bdea-33d30c2015b2" /></div>
 
 ### 🎟️Advanced containers guide
-If you want to create enhanced, wide functional containers, you can check [Examples](https://github.com/supchyan/lolibar/tree/master/Modding/Examples/) section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
+If you want to create enhanced, wide functional containers, you can check **[Examples](https://github.com/supchyan/lolibar/tree/master/Modding/Examples/)** section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
 
 ---
 ##### <div align=center> ☕Have questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
