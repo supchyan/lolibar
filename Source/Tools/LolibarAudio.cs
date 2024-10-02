@@ -18,7 +18,7 @@ public class LolibarAudio
     #region Method Calls
     static async void TryToInitializeInfoEvents()
     {
-        if (Stream.GetCurrentSession() != null)
+        if (Stream?.GetCurrentSession() != null)
         {
             StreamInfo = await GetMediaProperties(Stream.GetCurrentSession());
 
@@ -36,7 +36,9 @@ public class LolibarAudio
     public static async void InitializeStreamEvents()
     {
         Stream = await GetSystemMediaTransportControlsSessionManager();
-        Stream.SessionsChanged += Stream_SessionsChanged;
+        
+        if (Stream != null) Stream.SessionsChanged += Stream_SessionsChanged;
+
         TryToInitializeInfoEvents();
     }
 
@@ -47,13 +49,13 @@ public class LolibarAudio
 
     private static async void LolibarAudio_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
     {
-        var session = Stream.GetCurrentSession();
+        var session = Stream?.GetCurrentSession();
         if (session != null) StreamInfo = await GetMediaProperties(session);
     }
 
     private static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
     {
-        var session = Stream.GetCurrentSession();
+        var session = Stream?.GetCurrentSession();
         if (session != null) StreamInfo = await GetMediaProperties(session);
     }
 

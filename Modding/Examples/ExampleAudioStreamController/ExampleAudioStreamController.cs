@@ -10,13 +10,13 @@ public class ExampleAudioStreamController
     static LolibarContainer BaseContainer;
 
     // --- Button containers ---
-    static LolibarContainer PreviousButton;
-    static LolibarContainer PlayButton;
-    static LolibarContainer NextButton;
+    static LolibarContainer PreviousButtonContainer;
+    static LolibarContainer PlayButtonContainer;
+    static LolibarContainer NextButtonContainer;
 
     // Info container. We will show information about audio stream here.
     // Means Title / Artist / etc.
-    static LolibarContainer AudioInfo;
+    static LolibarContainer AudioInfoContainer;
 
     // To make things easier, let's combine
     // container's generate methods into the one.
@@ -38,7 +38,7 @@ public class ExampleAudioStreamController
         // so let's get it:
         var parent = (StackPanel)BaseContainer.BorderComponent.Child;
 
-        PreviousButton = new()
+        PreviousButtonContainer = new()
         {
             Name = "ExampleAudioPreviousButton",
             // Now we can use BaseContainer as a parent:
@@ -46,27 +46,27 @@ public class ExampleAudioStreamController
             Icon = ModIcons.PreviousAudioIcon,
             MouseLeftButtonUpEvent = PreviousStreamCallEvent
         };
-        PreviousButton.Create();
+        PreviousButtonContainer.Create();
 
-        PlayButton = new()
+        PlayButtonContainer = new()
         {
             Name = "ExampleAudioPlayButton",
             Parent = parent,
             Icon = ModIcons.PlayAudioIcon, // just a placeholder, we will update it later
             MouseLeftButtonUpEvent = PlayStreamCallEvent
         };
-        PlayButton.Create();
+        PlayButtonContainer.Create();
 
-        NextButton = new()
+        NextButtonContainer = new()
         {
             Name = "ExampleAudioNextButton",
             Parent = parent,
             Icon = ModIcons.NextAudioIcon,
             MouseLeftButtonUpEvent = NextStreamCallEvent
         };
-        NextButton.Create();
+        NextButtonContainer.Create();
 
-        AudioInfo = new()
+        AudioInfoContainer = new()
         {
             Name = "ExampleAudioInfoContainer",
             // I don't want to mix controls and the audio info,
@@ -75,7 +75,7 @@ public class ExampleAudioStreamController
             Text = "-", // just a placeholder, we will update it later
             HasBackground = true, // adds background to make this container more visible on the statusbar
         };
-        AudioInfo.Create();
+        AudioInfoContainer.Create();
     }
 
     // Local update method. We have to call it into `Update()` inside ModClass.cs
@@ -85,16 +85,16 @@ public class ExampleAudioStreamController
         // Let's check if Audio Stream exists and playing.
         // Yes => Set icon to `PauseIcon`,
         // No  => Set icon to `PlayIcon`.
-        PlayButton.Icon = LolibarAudio.IsPlaying() ? ModIcons.PauseAudioIcon : ModIcons.PlayAudioIcon;
+        PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? ModIcons.PauseAudioIcon : ModIcons.PlayAudioIcon;
 
         // Let's check if Stream's info exists.
         // Yes => Sets info equals audio title,
         // No  => Sets info equals "No Title".
-        AudioInfo.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
+        AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
 
         // Now, apply changes by updating containers:
-        PlayButton.Update();
-         AudioInfo.Update();
+        PlayButtonContainer.Update();
+         AudioInfoContainer.Update();
     }
 
     // We will use these events to handle Audio Stream from the statusbar:
