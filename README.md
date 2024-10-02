@@ -13,10 +13,11 @@
 <div align=center><img src="https://github.com/user-attachments/assets/272cd6bf-415e-494a-a5a0-2d4c4a19847b" /></div>
 </br>
 
-> How does it work? Reference from → **[Config.cs](https://github.com/supchyan/lolibar/blob/master/Mods/Config.cs)**
+> How does it work? Reference from → **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
 ```csharp
-// [Config.cs]
-class Config : LolibarMod
+// [ModClass.cs]
+
+class ModClass : LolibarProperties
 {
     // --- Runs once after launch ---
     public override void Initialize()
@@ -34,9 +35,10 @@ class Config : LolibarMod
 
 > Example:
 ```csharp
-// [Config.cs]
+// [ModClass.cs]
+
 // --- You can freely customize Lolibar's appearance here ---
-class Config : LolibarMod
+class ModClass : LolibarProperties
 {
     // --- Runs once after launch ---
     public override void Initialize()
@@ -47,14 +49,14 @@ class Config : LolibarMod
         BarColor                  = LolibarHelper.SetColor("#2a3247");
         BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
         
-        base.Initialize(); // Should be invoked after static style changes
+        base.Initialize(); // Should be invoked after non-dynamic style changes
 
         // --- Let's add a new custom container ---
         new LolibarContainer()
         {
             Name    = "CustomSoundContainer",
             Parent  = Lolibar.BarRightContainer,
-            Icon    = Icons.SoundIcon,
+            Icon    = ModIcons.SoundIcon,
             Text    = "Sound",
             MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
 
@@ -100,7 +102,7 @@ class Config : LolibarMod
         }.Start();
     }
 }
-// Simple enough, isn't it? 
+// Simple enough, isn't it? 🐳
 ```
 
 <div align=center><img src="https://github.com/user-attachments/assets/1a9708d8-9cdc-46e0-8673-494672a53514" /></div>
