@@ -12,7 +12,7 @@
 </br>
 
 ### 🎟️Basics understanding
-In two words, as I mentioned before, this toolkit provides capabilites to modify existing setup of the lolibar. To handle these tools, you have to get into statusbar's modding functionality. </br>
+In two words, as I mentioned before, this toolkit provides capabilites to modify existing setup of the lolibar. </br>
 There are no many mod files to force you get into bunch of stuff. All you need to start modding is understand **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
 
 > How does it work? Reference from → **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
@@ -46,7 +46,7 @@ class ModClass : LolibarProperties
 }
 ```
 
-> Example:
+> Example mod:
 ```csharp
 // [ModClass.cs]
 
