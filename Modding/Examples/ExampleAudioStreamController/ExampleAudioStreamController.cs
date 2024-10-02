@@ -82,10 +82,6 @@ public class ExampleAudioStreamController
     // if we want to update information inside our example audio containers.
     public static void Update()
     {
-        // We should update Audio Stream data to handle it in runtime,
-        // so this, how we can do that:
-        LolibarAudio.UpdateStreamData();
-
         // Let's check if Audio Stream exists and playing.
         // Yes => Set icon to `PauseIcon`,
         // No  => Set icon to `PlayIcon`.

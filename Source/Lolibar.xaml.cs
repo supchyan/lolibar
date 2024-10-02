@@ -23,9 +23,6 @@ public partial class Lolibar : Window
     readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
     // --- Screen calculation properties ---
-    [DllImport("user32.dll")] public static extern IntPtr GetDC(IntPtr hwnd);
-    [DllImport("gdi32.dll")] public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-
     public static Vector2 Inch_Screen           { get; private set; }
     public static Vector2 ScreenSize            { get; private set; }
 
@@ -75,14 +72,20 @@ public partial class Lolibar : Window
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
-        
+
+        SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
     }
 
-    void PreUpdateScreenSize()
+    private void SystemParameters_StaticPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        UpdateScreenParameters();
+    }
+
+    void UpdateScreenParameters()
     {
         // These applies to your primary screen, so statusbar will be drawn in it only.
-        Inch_Screen     = new((float)SystemParameters.WorkArea.Width, (float)SystemParameters.WorkArea.Height);
-        ScreenSize      = new(GetDeviceCaps(GetDC(IntPtr.Zero), 118), GetDeviceCaps(GetDC(IntPtr.Zero), 117));
+        Inch_Screen = new((float)SystemParameters.WorkArea.Width, (float)SystemParameters.WorkArea.Height);
+        ScreenSize  = new(LolibarExtern.GetDeviceCaps(LolibarExtern.GetDC(IntPtr.Zero), 118), LolibarExtern.GetDeviceCaps(LolibarExtern.GetDC(IntPtr.Zero), 117));
     }
     static void PreUpdateSnapping()
     {
@@ -123,6 +126,10 @@ public partial class Lolibar : Window
     #region Lifecycle
     void InitializeCycle()
     {
+        // --- PreInitialize ---
+        LolibarAudio.InitializeStreamEvents();
+        UpdateScreenParameters();
+
         // --- Initialize ---
         modClass.Initialize();
     }
@@ -133,7 +140,6 @@ public partial class Lolibar : Window
             await Task.Delay(ModClass.BarUpdateDelay);
 
             // --- PreUpdate ---
-            PreUpdateScreenSize();
             PreUpdateSnapping();
 
             // --- Update ---

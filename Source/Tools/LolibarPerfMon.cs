@@ -18,16 +18,8 @@ public class LolibarPerfMon
     public static PerformanceCounter? Network_Bytes_Total       { get; private set; }
     public static PerformanceCounter? Network_Bytes_Sent        { get; private set; }
     public static PerformanceCounter? Network_Bytes_Received    { get; private set; }
-
-    // https://stackoverflow.com/questions/97283/how-can-i-determine-the-name-of-the-currently-focused-process-in-c-sharp
-    [DllImport("user32.dll")]
-    static extern IntPtr GetForegroundWindow();
-
-    [DllImport("user32.dll")]
-    static extern int GetWindowThreadProcessId(nint hwnd, out uint lpdwProcessId);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
+    
+    static nint oldhwnd { get; set; }
 
     /// <summary>
     /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
@@ -35,29 +27,25 @@ public class LolibarPerfMon
     /// <returns></returns>
     public static string[] GetForegroundProcessInfo()
     {
-        nint hwnd = GetForegroundWindow();
+        var defaults = new string[]
+        {
+            LolibarDefaults.CurProcIdInfo,
+            LolibarDefaults.CurProcNameInfo
+        };
 
-        GetWindowThreadProcessId(hwnd, out uint pid);
+        nint hwnd = LolibarExtern.GetForegroundWindow();
+
+        if (oldhwnd == hwnd) return defaults;
+
+        LolibarExtern.GetWindowThreadProcessId(hwnd, out uint pid);
 
         // Prevent info update when statusbar gets focus
-        if (pid == Process.GetCurrentProcess().Id)
-        {
-            return
-            [
-                LolibarDefaults.CurProcIdInfo,
-                LolibarDefaults.CurProcNameInfo
-            ];
-        }
-
+        if (pid == Process.GetCurrentProcess().Id) return defaults;
 
         foreach (var p in Process.GetProcesses())
         {
             if (p.Id == pid)
             {
-                //надо трекать, если окно fullscreen mode
-                    
-                //GetWindowRect(GetForegroundWindow(), out Rectangle rect);
-                //Debug.WriteLine(rect.Width - rect.X);
                 return
                 [
                     $"{pid}",
@@ -65,6 +53,8 @@ public class LolibarPerfMon
                 ];
             }
         }
+
+        oldhwnd = hwnd;
 
         return new string[2];
     }
