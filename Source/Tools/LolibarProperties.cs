@@ -22,7 +22,7 @@ public abstract class LolibarProperties
     /// </summary>
     public static double BarMargin { get; set; } = 8.0;
     /// <summary>
-    /// Lolibar's width property. [ U - Updatable ]
+    /// Lolibar's width property. This property is updatable, so you have to modify it inside `Update()` hook.
     /// </summary>
     public static double U_BarWidth { get; set; } = 300.0;
     /// <summary>
@@ -30,7 +30,7 @@ public abstract class LolibarProperties
     /// </summary>
     public static double BarHeight { get; set; } = 42.0;
     /// <summary>
-    /// Lolibar's Left padding property. [ U - Updatable ]
+    /// Lolibar's Left padding property. This property is updatable, so you have to modify it inside `Update()` hook.
     /// </summary>
     public static double U_BarLeft { get; set; } = 0.0;
     /// <summary>

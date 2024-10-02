@@ -158,17 +158,17 @@ public partial class Lolibar : Window
         bool MouseMinX = mouseStruct.pt.x <= 0;
         bool MouseMaxX = mouseStruct.pt.x >= ScreenSize.X;
 
-        var BarSizeY = ModClass.BarHeight + ModClass.BarMargin + 18; // 18 just an offset
+        var BarVisibleY = ModClass.BarHeight + 2 * ModClass.BarMargin;
 
         if (!ModClass.BarSnapToTop)
         {
             ShowTrigger = MouseMaxY && (MouseMinX || MouseMaxX);
-            HideTrigger = mouseStruct.pt.y < ScreenSize.Y - BarSizeY;
+            HideTrigger = mouseStruct.pt.y < ScreenSize.Y - BarVisibleY;
         }
         else
         {
             ShowTrigger = MouseMinY && (MouseMinX || MouseMaxX);
-            HideTrigger = mouseStruct.pt.y > BarSizeY;
+            HideTrigger = mouseStruct.pt.y > BarVisibleY;
         }
 
         if (ShowTrigger)
