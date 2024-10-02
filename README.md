@@ -138,12 +138,11 @@ class ModClass : LolibarProperties
 
 <div align=center><img src="https://github.com/user-attachments/assets/e4524213-3df6-49e1-bdea-33d30c2015b2" /></div>
 
-### 🎟️Problems with compilation
+### 🎟️About `LolibarApp.csproj`
 To compile this project, you have to set valid `TargetFramework` for your system in **[LolibarApp.csproj](https://github.com/supchyan/lolibar/blob/master/LolibarApp.csproj)** </br>
 As an example of this source, for Windows 11 it should be set to `net8.0-windows10.0.22000.0`. </br>
 You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/desktop-to-uwp-enhance)** article on Microsoft Learn to find out, which `TargetFramework` is for you.
 ```csproj
-[LolibarApp.csproj]
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
