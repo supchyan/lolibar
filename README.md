@@ -12,7 +12,7 @@
 </br>
 
 ### 🎟️Pre-requirements
-All modding operations I highly recommend you to do in `VisualStudio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net` versions as well, but I work with `8.0` version, so any issues with differennt `.net` versions is out of my desire to fix.
+All modding operations I highly recommend you to do in `VisualStudio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdk` as well, but I work with `8.0` version, so any issues with different `.net` versions is out of my desire to fix.
 
 ### 🎟️Basics understanding
 In two words, as I mentioned before, this toolkit provides capabilites to modify existing setup of the lolibar. </br>
