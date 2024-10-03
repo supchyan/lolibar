@@ -43,8 +43,8 @@ class ModClass : LolibarProperties
 
         // Here you can setup / modify updatable content inside containers.
         // If you want to modify default container's content,
-        // you have to do stuff below base.Update(), or even remove it
-        // to prevent default content updates at all.
+        // you have to do it below base.Update(), or even more, just remove it
+        // to prevent content updates of the default containers at all.
     }
 }
 ```
