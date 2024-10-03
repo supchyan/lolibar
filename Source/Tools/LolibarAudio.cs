@@ -18,20 +18,21 @@ public class LolibarAudio
     #region Method Calls
     static async void TryToInitializeInfoEvents()
     {
-        if (Stream?.GetCurrentSession() != null)
-        {
-            StreamInfo = await GetMediaProperties(Stream.GetCurrentSession());
+        if (Stream == null) return;
 
-            Stream.GetCurrentSession().PlaybackInfoChanged      -= LolibarAudio_PlaybackInfoChanged;
-            Stream.GetCurrentSession().MediaPropertiesChanged   -= LolibarAudio_MediaPropertiesChanged;
+        StreamInfo = await GetMediaProperties(Stream.GetCurrentSession());
 
-            Stream.GetCurrentSession().PlaybackInfoChanged      += LolibarAudio_PlaybackInfoChanged;
-            Stream.GetCurrentSession().MediaPropertiesChanged   += LolibarAudio_MediaPropertiesChanged;
-        }
-        else
+        if (Stream.GetCurrentSession() == null)
         {
             StreamInfo = null;
+            return;
         }
+
+        Stream.GetCurrentSession().PlaybackInfoChanged      -= LolibarAudio_PlaybackInfoChanged;
+        Stream.GetCurrentSession().MediaPropertiesChanged   -= LolibarAudio_MediaPropertiesChanged;
+
+        Stream.GetCurrentSession().PlaybackInfoChanged      += LolibarAudio_PlaybackInfoChanged;
+        Stream.GetCurrentSession().MediaPropertiesChanged   += LolibarAudio_MediaPropertiesChanged;
     }
     public static async void InitializeStreamEvents()
     {

@@ -6,21 +6,19 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Reflection;
 using System.Numerics;
-using System.Runtime.InteropServices;
 
 namespace LolibarApp.Source;
 
 public partial class Lolibar : Window
 {
+    // Misc
+    readonly MouseHook              MouseHandler    = new();
+    readonly ModClass               modClass        = new(); // We use Config's object to invoke Update() and Initialize() methods.
+
     // --- Links to the root containers ---
     public static StackPanel BarLeftContainer   { get; private set; } = new StackPanel();
     public static StackPanel BarCenterContainer { get; private set; } = new StackPanel();
     public static StackPanel BarRightContainer  { get; private set; } = new StackPanel();
-
-    // Misc
-    readonly MouseHook MouseHandler = new();
-    readonly ModClass modClass = new(); // We use Config's object to invoke Update() and Initialize() methods.
-    readonly LolibarVirtualDesktop lolibarVirtualDesktop = new();
 
     // --- Screen calculation properties ---
     public static Vector2 Inch_Screen           { get; private set; }
@@ -44,8 +42,16 @@ public partial class Lolibar : Window
         Left = -100 // to open the null_window outside of the screen 
     };
 
-    // A trigger to prevent different app's job before... it's window actually rendered
-    bool IsRendered;
+    // Trigger to prevent different job before...
+    // ...application's window actually rendered
+    bool IsRendered                 { get; set; }
+
+    // --- Cursor velocity calculation ---
+    Task CursorCoordsListenerTask   { get; set; }
+    Vector2 OldCursorPosition       { get; set; }
+    Vector2 CursorPosition          { get; set; }
+    float CursorVelocity            { get; set; }
+    DateTime OldTime                { get; set; }
 
     public Lolibar()
     {
@@ -69,6 +75,8 @@ public partial class Lolibar : Window
         InitializeCycle();
         UpdateCycle();
 
+        UpdateCursorData(); // Uses for cursor velocity calculations
+
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
@@ -84,7 +92,7 @@ public partial class Lolibar : Window
     void UpdateScreenParameters()
     {
         // These applies to your primary screen, so statusbar will be drawn in it only.
-        Inch_Screen = new((float)SystemParameters.WorkArea.Width, (float)SystemParameters.WorkArea.Height);
+        Inch_Screen = new((float)SystemParameters.PrimaryScreenWidth, (float)SystemParameters.PrimaryScreenHeight);
         ScreenSize  = new(LolibarExtern.GetDeviceCaps(LolibarExtern.GetDC(IntPtr.Zero), 118), LolibarExtern.GetDeviceCaps(LolibarExtern.GetDC(IntPtr.Zero), 117));
     }
     static void PreUpdateSnapping()
@@ -149,31 +157,39 @@ public partial class Lolibar : Window
             PostUpdateRootProperties();
         }
     }
+    async void UpdateCursorData()
+    {
+        while (true)
+        {
+            await Task.Delay(100);
+            OldCursorPosition = CursorPosition;
+        }
+    }
     #endregion
 
     #region Events
     void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)
     {
         if (!IsRendered) return;
-        
-        bool ShowTrigger, HideTrigger;
 
-        bool MouseMinY = mouseStruct.pt.y <= 0;
-        bool MouseMaxY = mouseStruct.pt.y >= ScreenSize.Y;
+        bool ShowTrigger, HideTrigger, IsCursorInDesktopsMenuPosition;
 
-        bool MouseMinX = mouseStruct.pt.x <= 0;
-        bool MouseMaxX = mouseStruct.pt.x >= ScreenSize.X;
+        bool IsMouseMinY = mouseStruct.pt.y <= 0;
+        bool IsMouseMaxY = mouseStruct.pt.y >= ScreenSize.Y;
+
+        bool IsMouseMinX = mouseStruct.pt.x <= 0;
+        bool IsMouseMaxX = mouseStruct.pt.x >= ScreenSize.X;
 
         var BarVisibleY = ModClass.BarHeight + 2 * ModClass.BarMargin;
 
         if (!ModClass.BarSnapToTop)
         {
-            ShowTrigger = MouseMaxY && (MouseMinX || MouseMaxX);
+            ShowTrigger = (IsMouseMinX || IsMouseMaxX) && IsMouseMaxY;
             HideTrigger = mouseStruct.pt.y < ScreenSize.Y - BarVisibleY;
         }
         else
         {
-            ShowTrigger = MouseMinY && (MouseMinX || MouseMaxX);
+            ShowTrigger = (IsMouseMinX || IsMouseMaxX) && IsMouseMinY;
             HideTrigger = mouseStruct.pt.y > BarVisibleY;
         }
 
@@ -197,6 +213,35 @@ public partial class Lolibar : Window
                 LolibarAnimator.BeginStatusBarHideAnimation(this);
             }
             OldIsHidden = IsHidden;
+        }
+
+        // Logic for opening all apps and desktops view (WIN + TAB)
+        if (ModClass.BarCornersInvokesDesktopsMenu)
+        {
+            IsCursorInDesktopsMenuPosition =
+                    (ModClass.BarTargetCorner == LolibarEnums.BarTargetCorner.Left ? IsMouseMinX : IsMouseMaxX) &&
+                    (!ModClass.BarSnapToTop ? IsMouseMaxY : IsMouseMinY);
+
+            CursorPosition = new Vector2(mouseStruct.pt.x, mouseStruct.pt.y);
+
+            // Prevents CursorPosition get out of bounds values:
+            if (CursorPosition.X <= -1f) CursorPosition = new Vector2(-1f, CursorPosition.Y);
+            if (CursorPosition.Y <= -1f) CursorPosition = new Vector2(CursorPosition.X, -1f);
+
+            if (CursorPosition.X >= ScreenSize.X) CursorPosition = new Vector2(ScreenSize.X, CursorPosition.Y);
+            if (CursorPosition.Y >= ScreenSize.Y) CursorPosition = new Vector2(CursorPosition.X, ScreenSize.Y);
+            //
+
+            CursorVelocity = (OldCursorPosition - CursorPosition).Length();
+            
+            if (IsCursorInDesktopsMenuPosition && CursorVelocity >= 100f && (DateTime.Now - OldTime).Milliseconds > 500)
+            {
+                LolibarHelper.OpenWindowsDesktopsUI();
+
+                // Prevnts multiple calls of the statement above
+                // Also prevents possible WIN+TAB spam, which is breaks Windows OS (lol)
+                OldTime = DateTime.Now;
+            }
         }
     }
     void Lolibar_ContentRendered(object? sender, EventArgs e)

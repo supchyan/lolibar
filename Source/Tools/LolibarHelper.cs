@@ -51,8 +51,32 @@ public static partial class LolibarHelper
     {
         if (MouseButtonLeftUp != null )   element.PreviewMouseLeftButtonUp    += MouseButtonLeftUp;
         if (MouseButtonRightUp != null)   element.PreviewMouseRightButtonUp   += MouseButtonRightUp;
-
         element.MouseEnter += LolibarEvents.UI_MouseEnter;
         element.MouseLeave += LolibarEvents.UI_MouseLeave;
+    }
+
+    /// <summary>
+    /// Simulates specified Key Down event.
+    /// </summary>
+    public static void KeyDown(Keys vKey)
+    {
+        LolibarExtern.keybd_event((byte)vKey, 0, 0x0000, 0);
+    }
+    /// <summary>
+    /// Simulates specified Key Up event.
+    /// </summary>
+    public static void KeyUp(Keys vKey)
+    {
+        LolibarExtern.keybd_event((byte)vKey, 0, 0x0002, 0);
+    }
+    /// <summary>
+    /// Simulates WIN + TAB HotKey.
+    /// </summary>
+    public static void OpenWindowsDesktopsUI()
+    {
+        LolibarHelper.KeyDown(Keys.LWin);
+        LolibarHelper.KeyDown(Keys.Tab);
+        LolibarHelper.KeyUp(Keys.Tab);
+        LolibarHelper.KeyUp(Keys.LWin);
     }
 }

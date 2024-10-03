@@ -3,6 +3,7 @@ using System.Diagnostics;
 using LolibarApp.Source;
 using System.Windows.Controls;
 using LolibarApp.Modding.Examples.ExampleAudioStreamController;
+using LolibarApp.Modding.Examples.ExampleGnomeLinuxLeftCornerSimulation;
 
 namespace LolibarApp.Modding;
 
@@ -13,8 +14,13 @@ class ModClass : LolibarProperties
     public override void Initialize()
     {
         // --- Properties. Starts with `Bar*`, so easy to remember ---
+
+        BarCornersInvokesDesktopsMenu = true;
+
         BarUpdateDelay = 250;
+
         BarHeight = 36;
+
         BarColor = LolibarHelper.SetColor("#2a3247");
         BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
 

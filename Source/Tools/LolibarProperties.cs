@@ -8,6 +8,15 @@ namespace LolibarApp.Source.Tools;
 public abstract class LolibarProperties
 {
     /// <summary>
+    /// Screen corner invoker. Addition to bool `BarCornersInvokesDesktopsMenu`.
+    /// </summary>
+    public static LolibarEnums.BarTargetCorner BarTargetCorner { get; set; } = LolibarEnums.BarTargetCorner.Left;
+    /// <summary>
+    /// Simulates feature from Gnome Linux systems, where you can open all apps in convenient presentation,
+    /// quick moving the cursor to the statusbar's corner. You can modify the target corner with `BarTargetCorner` property. (False by default)
+    /// </summary>
+    public static bool BarCornersInvokesDesktopsMenu { get; set; } = false;
+    /// <summary>
     /// When Lolibar should be snapped to top of the screen. (True by default)
     /// </summary>
     public static bool BarSnapToTop { get; set; } = true;

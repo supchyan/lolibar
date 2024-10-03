@@ -16,4 +16,9 @@ public class LolibarEnums
         Win11,
         Win11_24H2,
     }
+    public enum BarTargetCorner
+    {
+        Left,
+        Right,
+    }
 }
