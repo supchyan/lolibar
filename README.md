@@ -12,7 +12,7 @@
 </br>
 
 ### 🎟️Pre-requirements
-All modding operations I highly recommend you to do in `VisualStudio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net` versions as well, but I work with `8.0` version, so any issues with differennt `.net` versions is out of my desire to fix.
+All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
 ### 🎟️Basics understanding
 In two words, as I mentioned before, this toolkit provides capabilites to modify existing setup of the lolibar. </br>
@@ -43,8 +43,8 @@ class ModClass : LolibarProperties
 
         // Here you can setup / modify updatable content inside containers.
         // If you want to modify default container's content,
-        // you have to do stuff below base.Update(), or even remove it
-        // to prevent default content updates at all.
+        // you have to do it below base.Update(), or even more, just remove it
+        // to prevent content updates of the default containers at all.
     }
 }
 ```
