@@ -3,7 +3,6 @@ using System.Diagnostics;
 using LolibarApp.Source;
 using System.Windows.Controls;
 using LolibarApp.Modding.Examples.ExampleAudioStreamController;
-using LolibarApp.Modding.Examples.ExampleGnomeLinuxLeftCornerSimulation;
 
 namespace LolibarApp.Modding;
 
