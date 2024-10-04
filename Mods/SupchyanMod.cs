@@ -33,10 +33,10 @@ class SupchyanMod : LolibarMod
     #region Body
     public override void PreInitialize()
     {
-        BarUpdateDelay = 250;
-        BarHeight = 36;
-        BarColor = LolibarHelper.SetColor("#2a3247");
-        BarContainersContentColor = LolibarHelper.SetColor("#6f85bd");
+        BarUpdateDelay                  = 250;
+        BarHeight                       = 36;
+        BarColor                        = LolibarHelper.SetColor("#2a3247");
+        BarContainersContentColor       = LolibarHelper.SetColor("#6f85bd");
     }
     public override void Initialize()
     {
