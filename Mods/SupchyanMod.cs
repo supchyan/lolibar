@@ -163,7 +163,7 @@ class SupchyanMod : LolibarMod
         }
         if (AudioInfoContainer != null)
         {
-            AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title;
+            AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
             AudioInfoContainer.Update();
         }
 

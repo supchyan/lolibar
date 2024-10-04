@@ -89,19 +89,23 @@ class ExampleAudioPlayerMod : LolibarMod
     }
     public override void Update()
     {
-        // Let's check if Audio Stream exists and playing.
-        // Yes => Set icon to `PauseIcon`,
-        // No  => Set icon to `PlayIcon`.
-        PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? PauseAudioIcon : PlayAudioIcon;
+        if (PlayButtonContainer != null)
+        {
+            // Let's check if Audio Stream exists and playing.
+            // Yes => Set icon to `PauseAudioIcon`,
+            // No  => Set icon to `PlayAudioIcon`.
+            PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? PauseAudioIcon : PlayAudioIcon;
+            PlayButtonContainer.Update();
+        }
 
-        // Let's check if Stream's info exists.
-        // Yes => Sets info equals audio title,
-        // No  => Sets info equals "No Title".
-        AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
-
-        // Now, apply changes, updating specified containers:
-        PlayButtonContainer.Update();
-        AudioInfoContainer.Update();
+        if (AudioInfoContainer != null)
+        {
+            // Let's check if Stream's info exists.
+            // Yes => Sets Text content equals to audio title,
+            // No  => Sets Text content equals to "No Audio".
+            AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "No Audio";
+            AudioInfoContainer.Update();
+        }
     }
 
     // We will use these events to handle Audio Stream from the statusbar:
