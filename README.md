@@ -2,19 +2,21 @@
 
 #### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
 
-> [!IMPORTANT]  
-> This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page. If you want one, you can build it by yourself.
-> 
-> This project is for **Windows Platform** only! Please, check **[polybar](https://github.com/polybar/polybar)** repo, if you're looking for the Linux one.
-
 </br>
 <div align=center><img src="https://github.com/user-attachments/assets/272cd6bf-415e-494a-a5a0-2d4c4a19847b" /></div>
 </br>
 
+## 🎟️Introduction
+This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page. If you want one, you can build it by yourself.
+
+---
+##### <div align=center>This project is for Windows Platform only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.</div>
+---
+
 ## 🎟️Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
-## 🎟️Modding understanding
+## 🎟️Modding Basics
 Have you ever tried to write mods for the video games? So, this toolkit provides the same vibes.
 ```csharp
 namespace LolibarApp.Mods;
@@ -23,15 +25,15 @@ class ExampleEmptyMod : LolibarMod
 {
     public override void PreInitialize()
     {
-        // Put your Pre-Initialization here...
+        // Put your Pre-Initialization code here...
     }
     public override void Initialize()
     {
-        // Put your Initialization here...
+        // Put your Initialization code here...
     }
     public override void Update()
     {
-        // Put your Updates here...
+        // Put your Updatable code here...
     }
 }
 ```
