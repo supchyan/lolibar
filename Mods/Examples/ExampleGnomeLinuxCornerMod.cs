@@ -27,7 +27,7 @@ class ExampleGnomeLinuxCornerMod : LolibarMod
 
         // 😎
 
-        // Depends on which side of the screen your statusbar has been snapped.
+        // Depends on which side of the screen your statusbar had been snapped.
 
         // You can modify snapping with `BarSnapToTop` property, like:
         BarSnapToTop = false;
