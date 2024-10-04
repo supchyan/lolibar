@@ -17,9 +17,7 @@ class ExampleUsernameMod : LolibarMod
             Name = "ExampleUsernameContainer",
             Parent = Lolibar.BarLeftContainer,
             Text = LolibarDefaults.GetUserInfo(), // your username in the OS
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
             MouseLeftButtonUpEvent = OpenUserSettingsEvent, // somehow, let's add leftclick mouse event
-
         };
         ExampleUsernameContainer.Create();
     }
