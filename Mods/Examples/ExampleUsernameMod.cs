@@ -16,22 +16,14 @@ class ExampleUsernameMod : LolibarMod
         {
             Name = "ExampleUsernameContainer",
             Parent = Lolibar.BarLeftContainer,
-            Text = LolibarDefaults.GetUserInfo(),
+            Text = LolibarDefaults.GetUserInfo(), // your username in the OS
             SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
-            MouseLeftButtonUpEvent = OpenUserSettingsEvent,
+            MouseLeftButtonUpEvent = OpenUserSettingsEvent, // somehow, let's add leftclick mouse event
 
         };
         ExampleUsernameContainer.Create();
-
-        // Now you will see a container contains your current username,
-        // but I like whales, so let's change it to whale's emoji:
-        ExampleUsernameContainer.Text = "🐳";
-        ExampleUsernameContainer.Update();
     }
-    public override void Update()
-    {
-        // Put your Updates here...
-    }
+    public override void Update() { }
 
     void OpenUserSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
