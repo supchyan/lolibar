@@ -33,13 +33,13 @@ class ExampleGnomeLinuxCornerMod : LolibarMod
         BarSnapToTop = false;
 
         // Now statusbar will be drawn at the BOTTOM of the screen,
-        // so Left corner now is Bottom Left corner.
+        // so the Left corner now is the Bottom Left corner.
 
         // Let's snap it back to top:
         BarSnapToTop = true;
 
         // Ok, statusbar at the TOP of the screen,
-        // so Left corner is Top Left corner for now.
+        // so the Left corner is the Top Left corner for now.
 
         // That's it!
     }
