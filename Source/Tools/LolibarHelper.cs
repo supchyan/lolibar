@@ -47,10 +47,11 @@ public static partial class LolibarHelper
     /// <param name="element">Actual container</param>
     /// <param name="MouseButtonLeftUp">Invokes action on `MouseButtonLeftUp`.</param>
     /// <param name="MouseButtonRightUp">Invokes action on `MouseButtonRightUp`.</param>
-    public static void SetContainerEvents(this UIElement element, System.Windows.Input.MouseButtonEventHandler? MouseButtonLeftUp = null, System.Windows.Input.MouseButtonEventHandler? MouseButtonRightUp = null)
+    public static void SetContainerEvents(this UIElement element, System.Windows.Input.MouseButtonEventHandler? MouseButtonLeftUpEvent = null, System.Windows.Input.MouseButtonEventHandler? MouseButtonRightUpEvent = null, System.Windows.Input.MouseWheelEventHandler? MouseWheelEvent = null)
     {
-        if (MouseButtonLeftUp != null )   element.PreviewMouseLeftButtonUp    += MouseButtonLeftUp;
-        if (MouseButtonRightUp != null)   element.PreviewMouseRightButtonUp   += MouseButtonRightUp;
+        if (MouseButtonLeftUpEvent != null )   element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
+        if (MouseButtonRightUpEvent != null)   element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
+        if (MouseWheelEvent != null        )   element.PreviewMouseWheel           += MouseWheelEvent;
         element.MouseEnter += LolibarEvents.UI_MouseEnter;
         element.MouseLeave += LolibarEvents.UI_MouseLeave;
     }

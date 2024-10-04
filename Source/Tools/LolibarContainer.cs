@@ -15,10 +15,6 @@ public class LolibarContainer
     public Geometry?    Icon            { get; set; }
     public string?      Text            { get; set; }
     /// <summary>
-    /// Set it to `true`, if you want to make this container handle Virtual Desktop Events. (False as default)
-    /// </summary>
-    public bool UseWorkspaceSwapEvents  { get; set; }
-    /// <summary>
     /// Becomes true, after container has been created and placed into the parent.
     /// </summary>
     public bool IsCreated               { get; private set; }
@@ -34,6 +30,7 @@ public class LolibarContainer
     public LolibarEnums.SeparatorPosition? SeparatorPosition                        { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent     { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
+    public System.Windows.Input.MouseWheelEventHandler? MouseWheelEvent             { get; set; }
 
     SolidColorBrush BorderBackground()
     {
@@ -123,18 +120,13 @@ public class LolibarContainer
         }
 
 
-        if (MouseLeftButtonUpEvent != null || MouseRightButtonUpEvent != null)
+        if (MouseLeftButtonUpEvent != null || MouseRightButtonUpEvent != null || MouseWheelEvent != null)
         {
             border.SetContainerEvents(
                 MouseLeftButtonUpEvent,
-                MouseRightButtonUpEvent
+                MouseRightButtonUpEvent,
+                MouseWheelEvent
             );
-        }
-        
-        // Applies workspace scrolling feature to specified container
-        if (UseWorkspaceSwapEvents)
-        {
-            border.PreviewMouseWheel += LolibarEvents.SwapWorkspacesByWheelEvent;
         }
 
         // Adds an optional left separator

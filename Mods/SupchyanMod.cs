@@ -2,6 +2,7 @@
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace LolibarApp.Mods;
@@ -35,8 +36,8 @@ class SupchyanMod : LolibarMod
     {
         BarUpdateDelay                  = 250;
         BarHeight                       = 36;
-        BarColor                        = LolibarHelper.SetColor("#2a3247");
-        BarContainersContentColor       = LolibarHelper.SetColor("#6f85bd");
+        BarColor                        = LolibarHelper.SetColor("#231d24");
+        BarContainersContentColor       = LolibarHelper.SetColor("#ebb7e4");
     }
     public override void Initialize()
     {
@@ -134,8 +135,8 @@ class SupchyanMod : LolibarMod
         {
             Name = "ExampleWorkspacesContainer",
             Parent = Lolibar.BarRightContainer,
-            UseWorkspaceSwapEvents = true,
             SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
+            MouseWheelEvent = SwapWorkspacesByMouseWheelEvent
         };
         WorkspacesContainer.Create();
 
@@ -162,7 +163,7 @@ class SupchyanMod : LolibarMod
         }
         if (AudioInfoContainer != null)
         {
-            AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
+            AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title;
             AudioInfoContainer.Update();
         }
 
@@ -251,6 +252,20 @@ class SupchyanMod : LolibarMod
                 CreateNoWindow = true,
             }
         }.Start();
+    }
+
+    // desktop workspaces
+    void SwapWorkspacesByMouseWheelEvent(object sender, MouseWheelEventArgs e)
+    {
+        if (e.Delta > 0)
+        {
+            LolibarVirtualDesktop.GoToDesktopLeft();
+        }
+
+        if (e.Delta < 0)
+        {
+            LolibarVirtualDesktop.GoToDesktopRight();
+        }
     }
     #endregion
 }

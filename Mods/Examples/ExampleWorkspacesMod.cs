@@ -1,5 +1,6 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
+using System.Windows.Input;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to make in loadable
@@ -25,8 +26,8 @@ class ExampleWorkspacesMod : LolibarMod
         {
             Name = "ExampleWorkspacesContainer",
             Parent = Lolibar.BarRightContainer,
-            UseWorkspaceSwapEvents = true, // devs cheats, hope i'll remake it later B)
             SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
+            MouseWheelEvent = SwapWorkspacesByMouseWheelEvent // swap workspaces, scrolling above this container
         };
         WorkspacesContainer.Create();
 
@@ -42,5 +43,19 @@ class ExampleWorkspacesMod : LolibarMod
         // it won't work like that.
     }
     public override void Update() { }
+
+    // This event listens mouse wheel. Wheel up swap desktops (workspaces) to left, otherwise to right:
+    void SwapWorkspacesByMouseWheelEvent(object sender, MouseWheelEventArgs e)
+    {
+        if (e.Delta > 0)
+        {
+            LolibarVirtualDesktop.GoToDesktopLeft();
+        }
+
+        if (e.Delta < 0)
+        {
+            LolibarVirtualDesktop.GoToDesktopRight();
+        }
+    }
 }
 
