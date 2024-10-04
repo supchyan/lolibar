@@ -25,7 +25,7 @@ class ExampleWorkspacesMod : LolibarMod
         {
             Name = "ExampleWorkspacesContainer",
             Parent = Lolibar.BarRightContainer,
-            UseWorkspaceSwapEvents = true,
+            UseWorkspaceSwapEvents = true, // devs cheats, hope i'll remake it later B)
             SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
         };
         WorkspacesContainer.Create();
