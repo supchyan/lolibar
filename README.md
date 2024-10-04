@@ -119,6 +119,8 @@ public override void Update() { }
 ```
 This hook is about to **update** something while statusbar execution process. `Update()` has **Update delay** - time span, between update loop iterations. This delay can be modified by `BarUpdateDelay` property. To understand `Update()`'s principles and restictions, check **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section. By the way, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey, because it has various examples of how to create one or other thing. Anyway, let's get back into updating info in `HelloContainer`:
 ```cs
+namespace LolibarApp.Mods;
+
 class MyFirstMod : LolibarMod
 {
     // I've made it external to get access to it from other hook.
