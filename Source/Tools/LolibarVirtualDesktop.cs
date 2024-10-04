@@ -1,5 +1,4 @@
-﻿using LolibarApp.Modding;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using static LolibarApp.Source.Tools.LolibarEnums;
 
@@ -7,6 +6,7 @@ namespace LolibarApp.Source.Tools;
 
 public class LolibarVirtualDesktop
 {
+    static Border?     InitializedBorder    {  get; set; }
     public static int  OldDesktopCount      { get; private set; }
     public static int  OldDesktopIndex      { get; private set; }
     public static bool IsErrorTabGenerated  { get; private set; }
@@ -41,10 +41,12 @@ public class LolibarVirtualDesktop
             }
         }
     }
-    public static void WorkspaceTabsListener(Border border)
+    public static void InvokeWorkspaceTabsUpdate(Border border)
     {
         // Stop doing all logic below, if `error_tab` has been generated.
         if (IsErrorTabGenerated) return;
+
+        if (InitializedBorder == null) InitializedBorder = border;
 
         var parent = (StackPanel)border.Child;
 
@@ -66,6 +68,7 @@ public class LolibarVirtualDesktop
         {
             case WinVer.Unknown:
                 GetWindowsVersion();
+                InvokeWorkspaceTabsUpdate(InitializedBorder);
             break;
 
             case WinVer.Win10:
@@ -111,14 +114,14 @@ public class LolibarVirtualDesktop
         Border border = new()
         {
             Margin = new Thickness(5, 5, 5, 5),
-            CornerRadius = ModClass.BarContainersCornerRadius,
-            Background = ModClass.BarContainersContentColor
+            CornerRadius = LolibarMod.BarContainersCornerRadius,
+            Background = LolibarMod.BarContainersContentColor
         };
         TextBlock tabBlock = new()
         {
             Text = $"unsupported",
-            Margin = ModClass.BarContainerInnerMargin,
-            Foreground = ModClass.BarColor,
+            Margin = LolibarMod.BarContainerInnerMargin,
+            Foreground = LolibarMod.BarColor,
         };
         border.Child = tabBlock;
         parent.Children.Add(border);
@@ -202,6 +205,7 @@ public class LolibarVirtualDesktop
                 MoveToDesktop(VirtualDesktop11_24H2.Desktop.Count - 1);
             break;
         }
+        InvokeWorkspaceTabsUpdate(InitializedBorder);
     }
     static void MoveToDesktop(int index)
     {
@@ -219,6 +223,7 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(index).MakeVisible();
             break;
         }
+        InvokeWorkspaceTabsUpdate(InitializedBorder);
     }
     static void RemoveDesktop(int index)
     {
@@ -248,6 +253,7 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(index).Remove();
             break;
         }
+        InvokeWorkspaceTabsUpdate(InitializedBorder);
     }
 
     public static void GoToDesktopRight()
@@ -272,6 +278,7 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) + 1).MakeVisible();
             break;
         }
+        InvokeWorkspaceTabsUpdate(InitializedBorder);
     }
 
     public static void GoToDesktopLeft()
@@ -296,5 +303,6 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) - 1).MakeVisible();
             break;
         }
+        InvokeWorkspaceTabsUpdate(InitializedBorder);
     }
 }

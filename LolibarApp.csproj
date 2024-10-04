@@ -19,5 +19,4 @@
 		<Resource Include="Effects\ThresholdEffect.fx.ps" />
 		<Resource Include="Fonts\mononoki.ttf"></Resource>
 	</ItemGroup>
-
 </Project>

@@ -16,9 +16,9 @@ All modding operations is highly recommended to do in `Visual Studio 2022`. More
 
 ### 🎟️Basics understanding
 In two words, as I mentioned before, this toolkit provides capabilites to modify existing setup of the lolibar. </br>
-There are no many mod files to force you get into bunch of stuff. All you need to start modding is understand **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
+There are no many mod files to force you get into bunch of stuff. All you need to start modding is understand **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Mods/ModClass.cs)**
 
-> How does it work? Reference from → **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Modding/ModClass.cs)**
+> How does it work? Reference from → **[ModClass.cs](https://github.com/supchyan/lolibar/blob/master/Mods/ModClass.cs)**
 ```csharp
 // [ModClass.cs]
 
@@ -151,7 +151,7 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 </Project>
 ```
 ### 🎟️Advanced containers guide
-If you want to create enhanced, wide functional containers, you can check **[Examples](https://github.com/supchyan/lolibar/tree/master/Modding/Examples/)** section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
+If you want to create enhanced, wide functional containers, you can check **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples/)** section. In that section, I'm is about to show all, Lolibar Toolkit can provide.
 
 ---
 ##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>

@@ -1,5 +1,4 @@
-﻿using LolibarApp.Modding;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Shapes;
@@ -38,7 +37,7 @@ public class LolibarContainer
 
     SolidColorBrush BorderBackground()
     {
-        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(ModClass.BarContainersContentColor)[3..]}") : LolibarHelper.SetColor("#00000000");
+        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(LolibarMod.BarContainersContentColor)[3..]}") : LolibarHelper.SetColor("#00000000");
     }
 
     public void Create()
@@ -51,20 +50,20 @@ public class LolibarContainer
 
         System.Windows.Shapes.Rectangle separatorLeft = new()
         {
-            RadiusX = ModClass.BarSeparatorRadius,
-            RadiusY = ModClass.BarSeparatorRadius,
-            Width   = ModClass.BarSeparatorWidth,
-            Height  = ModClass.BarSeparatorHeight,
-            Fill    = ModClass.BarContainersContentColor,
+            RadiusX = LolibarMod.BarSeparatorRadius,
+            RadiusY = LolibarMod.BarSeparatorRadius,
+            Width   = LolibarMod.BarSeparatorWidth,
+            Height  = LolibarMod.BarSeparatorHeight,
+            Fill    = LolibarMod.BarContainersContentColor,
             Opacity = 0.3
         };
         System.Windows.Shapes.Rectangle separatorRight = new()
         {
-            RadiusX = ModClass.BarSeparatorRadius,
-            RadiusY = ModClass.BarSeparatorRadius,
-            Width   = ModClass.BarSeparatorWidth,
-            Height  = ModClass.BarSeparatorHeight,
-            Fill    = ModClass.BarContainersContentColor,
+            RadiusX = LolibarMod.BarSeparatorRadius,
+            RadiusY = LolibarMod.BarSeparatorRadius,
+            Width   = LolibarMod.BarSeparatorWidth,
+            Height  = LolibarMod.BarSeparatorHeight,
+            Fill    = LolibarMod.BarContainersContentColor,
             Opacity = 0.3
         };
 
@@ -72,8 +71,8 @@ public class LolibarContainer
         Border border = new()
         {
             Name                = Name,
-            Margin              = ModClass.BarContainerMargin,
-            CornerRadius        = ModClass.BarContainersCornerRadius,
+            Margin              = LolibarMod.BarContainerMargin,
+            CornerRadius        = LolibarMod.BarContainersCornerRadius,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
             VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
@@ -85,7 +84,7 @@ public class LolibarContainer
         {
             Name                = $"{Name}StackPanel",
             Orientation         = System.Windows.Controls.Orientation.Horizontal,
-            Margin              = ModClass.BarContainerInnerMargin,
+            Margin              = LolibarMod.BarContainerInnerMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
             VerticalAlignment   = System.Windows.VerticalAlignment.Center
         };
@@ -98,8 +97,8 @@ public class LolibarContainer
             Path iconItem = new()
             {
                 Stretch             = Stretch.Uniform,
-                Margin              = ModClass.BarContainersContentMargin,
-                Fill                = ModClass.BarContainersContentColor,
+                Margin              = LolibarMod.BarContainersContentMargin,
+                Fill                = LolibarMod.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
@@ -113,8 +112,8 @@ public class LolibarContainer
             App.Current.Resources[$"{Name}Text"] = Text;
             TextBlock textItem = new()
             {
-                Margin              = ModClass.BarContainersContentMargin,
-                Foreground          = ModClass.BarContainersContentColor,
+                Margin              = LolibarMod.BarContainersContentMargin,
+                Foreground          = LolibarMod.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
@@ -135,55 +134,22 @@ public class LolibarContainer
         // Applies workspace scrolling feature to specified container
         if (UseWorkspaceSwapEvents)
         {
-            border.PreviewMouseWheel += LolibarEvents.SwapWorkspacesEvent;
+            border.PreviewMouseWheel += LolibarEvents.SwapWorkspacesByWheelEvent;
         }
 
-        if (Parent == Lolibar.BarRightContainer)
+        // Adds an optional left separator
+        if (drawLeftSeparator)
         {
-            // Saves current children into array
-            UIElement[] childrenArray = new UIElement[Parent.Children.Count];
-            Parent.Children.CopyTo(childrenArray, 0);
-
-            // Removes all children
-            Parent.Children.RemoveRange(0, Parent.Children.Count);
-
-            // Adds an optional separator
-            if (drawLeftSeparator)
-            {
-                Parent.Children.Add(separatorLeft);
-            }
-
-            // Adds a new child
-            Parent.Children.Add(border);
-
-            // Adds an optional separator
-            if (drawRightSeparator)
-            {
-                Parent.Children.Add(separatorRight);
-            }
-
-            // Restores removed children to keep a new element
-            // at the start of the container!
-            foreach (UIElement child in childrenArray)
-            {
-                Parent.Children.Add(child);
-            }
+            Parent.Children.Add(separatorLeft);
         }
-        else
+
+        // Adds a new child
+        Parent.Children.Add(border);
+
+        // Adds an optional right separator
+        if (drawRightSeparator)
         {
-            if (drawLeftSeparator)
-            {
-                Parent.Children.Add(separatorLeft);
-            }
-
-            // Adds a new child
-            Parent.Children.Add(border);
-
-            // Adds an optional separator
-            if (drawRightSeparator)
-            {
-                Parent.Children.Add(separatorRight);
-            }
+            Parent.Children.Add(separatorRight);
         }
 
         IsCreated = true;

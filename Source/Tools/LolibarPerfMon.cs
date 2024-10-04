@@ -21,6 +21,8 @@ public class LolibarPerfMon
     
     static nint oldhwnd { get; set; }
 
+    public static bool IsNetworkCountersInitialized              { get; private set; }
+
     /// <summary>
     /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
     /// </summary>
@@ -70,5 +72,6 @@ public class LolibarPerfMon
                 return;
             }
         }
+        IsNetworkCountersInitialized = true;
     }
 }
