@@ -2,9 +2,9 @@
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class B_ExampleUsernameMod : LolibarMod
+class ExampleUsernameMod : LolibarMod
 {
     public override void PreInitialize() { }
     public override void Initialize()

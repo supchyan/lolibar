@@ -2,9 +2,9 @@
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class C_ExampleDateTimeMod : LolibarMod
+class ExampleDateTimeMod : LolibarMod
 {
     LolibarContainer? DateTimeContainer;
 

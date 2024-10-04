@@ -2,9 +2,9 @@
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class F_ExamplePowerMonitorMod : LolibarMod
+class ExamplePowerMonitorMod : LolibarMod
 {
     LolibarContainer? PowerMonitorContainer;
 

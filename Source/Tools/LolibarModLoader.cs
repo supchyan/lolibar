@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace LolibarApp.Source.Tools;
 
@@ -23,6 +24,7 @@ public class LolibarModLoader
         foreach (var modtype in modtypes)
         {
             LocalMods.Add((LolibarMod)GetTypeInstance(modtype.FullName));
+            Debug.WriteLine($"[ LOADED ] MOD: {modtype.Name}");
         }
     }
     public static void PreInitializeMods()

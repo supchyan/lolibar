@@ -1,9 +1,9 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class A_ExampleUpdatablePropertiesMod : LolibarMod
+class ExampleUpdatablePropertiesMod : LolibarMod
 {
     // How to resize lolibar when screen resolution has changed?
     //

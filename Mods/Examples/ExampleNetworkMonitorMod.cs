@@ -4,7 +4,7 @@ using LolibarApp.Source.Tools;
 // This mod outside of mods namespace, so won't be loaded
 //namespace LolibarApp.Mods;
 
-class Z_ExampleNetworkMonitorMod : LolibarMod
+class ExampleNetworkMonitorMod : LolibarMod
 {
     LolibarContainer? NetworkMonitorContainer;
 

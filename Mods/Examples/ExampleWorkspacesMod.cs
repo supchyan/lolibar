@@ -1,9 +1,9 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class G_ExampleWorkspacesMod : LolibarMod
+class ExampleWorkspacesMod : LolibarMod
 {
     // This mod represents power of the `LolibarVirtualDesktop` library.
     // But to be straight, it's self sufficient,

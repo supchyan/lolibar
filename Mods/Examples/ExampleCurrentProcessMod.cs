@@ -5,7 +5,7 @@ using System.Diagnostics;
 // This mod outside of mods namespace, so won't be loaded
 //namespace LolibarApp.Mods;
 
-class Z_ExampleCurrentProcessMod : LolibarMod
+class ExampleCurrentProcessMod : LolibarMod
 {
     LolibarContainer? CurrentProcessContainer;
 

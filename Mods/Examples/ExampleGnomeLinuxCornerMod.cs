@@ -1,8 +1,8 @@
 ﻿using LolibarApp.Source.Tools;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class A_ExampleGnomeLinuxCornerMod : LolibarMod
+class ExampleGnomeLinuxCornerMod : LolibarMod
 {
     public override void PreInitialize()
     {

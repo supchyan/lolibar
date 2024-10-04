@@ -1,9 +1,9 @@
 ﻿using LolibarApp.Source.Tools;
 using System.Windows;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class A_ExampleStaticPropertiesMod : LolibarMod
+class ExampleStaticPropertiesMod : LolibarMod
 {
     // So, what about modifying lolibar's theme?
     // It's simple, but you have to understand 2 important things:

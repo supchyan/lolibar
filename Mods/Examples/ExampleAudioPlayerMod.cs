@@ -3,9 +3,9 @@ using LolibarApp.Source.Tools;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace LolibarApp.Mods;
+//namespace LolibarApp.Mods;
 
-class D_ExampleAudioPlayerMod : LolibarMod
+class ExampleAudioPlayerMod : LolibarMod
 {
     // This mod represents capabilities to handle audio streams in your OS.
     // Lolibar containes library called `LolibarAudio`, so this mod about it.
@@ -26,7 +26,7 @@ class D_ExampleAudioPlayerMod : LolibarMod
 
     // Info container. We will show information about audio stream here.
     // Means Title / Artist / etc.
-    static LolibarContainer? AudioInfoContainer;
+    LolibarContainer? AudioInfoContainer;
 
     public override void PreInitialize() { }
     public override void Initialize()

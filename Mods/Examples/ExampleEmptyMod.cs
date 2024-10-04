@@ -20,7 +20,7 @@
 // All properties overrides inside `Update()` will be applied to statusbar immediately.
 // Check `ExampleUpdatablePropertiesMod` to get in there.
 
-class Z_ExampleEmptyMod : LolibarMod
+class ExampleEmptyMod : LolibarMod
 {
     public override void PreInitialize()
     {

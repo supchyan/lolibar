@@ -4,7 +4,7 @@ using LolibarApp.Source.Tools;
 // This mod outside of mods namespace, so won't be loaded
 //namespace LolibarApp.Mods;
 
-class Z_ExampleCpuMonitorMod : LolibarMod
+class ExampleCpuMonitorMod : LolibarMod
 {
     LolibarContainer? CpuMonitorContainer;
 

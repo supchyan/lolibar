@@ -3,7 +3,7 @@ using LolibarApp.Source.Tools;
 
 //namespace LolibarApp.Mods;
 
-class Z_ExampleRamMonitorMod : LolibarMod
+class ExampleRamMonitorMod : LolibarMod
 {
     LolibarContainer? RamMonitorContainer;
 
