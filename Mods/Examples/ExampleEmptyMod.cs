@@ -1,6 +1,8 @@
 ﻿using LolibarApp.Source.Tools;
 
-// This mod outside of mods namespace, so won't be loaded
+// This mod is outside of the Mods namespace, so it won't be loaded
+// You can uncomment namespace to make in loadable
+
 //namespace LolibarApp.Mods;
 
 

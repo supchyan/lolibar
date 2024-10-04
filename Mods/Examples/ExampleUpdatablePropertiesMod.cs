@@ -1,6 +1,9 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 
+// This mod is outside of the Mods namespace, so it won't be loaded
+// You can uncomment namespace to make in loadable
+
 //namespace LolibarApp.Mods;
 
 class ExampleUpdatablePropertiesMod : LolibarMod

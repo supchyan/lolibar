@@ -3,6 +3,9 @@ using LolibarApp.Source.Tools;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+// This mod is outside of the Mods namespace, so it won't be loaded
+// You can uncomment namespace to make in loadable
+
 //namespace LolibarApp.Mods;
 
 class ExampleAudioPlayerMod : LolibarMod
