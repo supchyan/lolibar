@@ -3,21 +3,21 @@
 #### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
 
 </br>
-<div align=center><img src="https://github.com/user-attachments/assets/272cd6bf-415e-494a-a5a0-2d4c4a19847b" /></div>
-</br>
+<div align=center><img src="https://github.com/user-attachments/assets/e53fa816-ef14-4d8a-b14b-7e16ab67fede" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/d1fef496-d9d9-4bf7-a092-3fbae6ccbef2" /></div>
 
-## 🎟️Introduction
+## 🪼Introduction
 This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page. If you want one, you can build it by yourself.
 
 ---
 ##### <div align=center>This project is for Windows Platform only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.</div>
 ---
 
-## 🎟️Pre-requirements
+## 🪼Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
-## 🎟️Modding Basics
-Have you ever tried to write mods for the video games? So, this toolkit provides the same vibes.
+## 🪼Modding Basics
+Have you ever tried to write mods for the video games? So, this toolkit provides the same vibes:
 ```csharp
 namespace LolibarApp.Mods;
 
@@ -39,7 +39,7 @@ class ExampleEmptyMod : LolibarMod
 ```
 As you can see, this file looks similar to any other mod body. You can handle every single part of Lolibar's libraries here!
 
-## 🎟️Your First mod
+## 🪼Your First mod
 > [!TIP]
 > All mods is highly recommended to be stored in **[Mods](https://github.com/supchyan/lolibar/tree/master/Mods/)** folder.
 
@@ -54,7 +54,8 @@ class MyFirstMod : LolibarMod
     public override void Update() { }
 }
 ```
-All you can see above is **absolute minimum** your mod must contain. Without that, Lolibar won't compile properly. Let's talk about every part in details:
+All you can see above is **absolute minimum** your mod must contain. Without that, Lolibar won't compile properly. Let's talk about every part in details. </br></br>
+
 ```cs
 namespace LolibarApp.Mods;
 ```
@@ -102,7 +103,7 @@ public override void Initialize()
 }
 ```
 </br>
-<div align=center><img src=https://github.com/user-attachments/assets/50082bfd-b780-421f-b621-3a807c39f8ac /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/160c0d5f-7628-42c8-aeeb-8b2ae089f372 /></div>
 
 *<div align=center>Result of the initialization process we can observe after Lolibar's launch.</div>*
 </br>
@@ -147,14 +148,14 @@ class MyFirstMod : LolibarMod
 // Simple enough, isn't it? 🐳
 ```
 </br>
-<div align=center><img src=https://github.com/user-attachments/assets/12ac5b5d-688b-4b39-9d1b-199bbe2fd038 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/ba51d8a4-79ec-46db-9320-6ab4dad612cc /></div>
 
 *<div align=center>Now `HelloContainer` has a brand new text content!</div>*
 
-## 🎟️Next steps
+## 🪼Next steps
 Inspired enough to start modding? Then, get into **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section to learn more about Lolibar's capabilities. As I mentioned before, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey.
 
-## 🎟️Something about `LolibarApp.csproj`
+## 🪼Something about `LolibarApp.csproj`
 To compile this `Lolibar Project`, you have to set valid `TargetFramework` for your system in **[LolibarApp.csproj](https://github.com/supchyan/lolibar/blob/master/LolibarApp.csproj)** </br>
 As an example of this source, for Windows 11, it should be set to `net8.0-windows10.0.22000.0`. </br>
 You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/desktop-to-uwp-enhance)** article on Microsoft Learn to find out, which `TargetFramework` is for you.
@@ -167,10 +168,10 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 </Project>
 ```
 
-## 🎟️At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/8b70ca48-6eb0-45e0-84e0-ec546023bdfb /></div>
+## 🪼At the end...
+<div align=center><img src=https://github.com/user-attachments/assets/8d64d34a-0368-4f3d-a561-b66a02f6992a /></div>
 
-##### <div align=center>😎My lolibar's mod showcase</div>
+##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
 ---
 ##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
