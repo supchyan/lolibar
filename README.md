@@ -102,7 +102,7 @@ public override void Initialize()
 }
 ```
 </br>
-<div align=center><img src=https://github.com/user-attachments/assets/50082bfd-b780-421f-b621-3a807c39f8ac /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/160c0d5f-7628-42c8-aeeb-8b2ae089f372 /></div>
 
 *<div align=center>Result of the initialization process we can observe after Lolibar's launch.</div>*
 </br>
@@ -147,7 +147,7 @@ class MyFirstMod : LolibarMod
 // Simple enough, isn't it? 🐳
 ```
 </br>
-<div align=center><img src=https://github.com/user-attachments/assets/12ac5b5d-688b-4b39-9d1b-199bbe2fd038 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/ba51d8a4-79ec-46db-9320-6ab4dad612cc /></div>
 
 *<div align=center>Now `HelloContainer` has a brand new text content!</div>*
 
