@@ -1,4 +1,4 @@
-<div align=center><img src=https://github.com/user-attachments/assets/5bbe15c2-3246-4e89-ac48-efde491709c3 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/1cb181fc-6a6f-4171-845f-db6a11129099 /></div>
 
 #### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
 
