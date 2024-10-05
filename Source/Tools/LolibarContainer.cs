@@ -129,10 +129,20 @@ public class LolibarContainer
             );
         }
 
+        Thickness separatorMargin = LolibarMod.BarContainerMargin;
+
         // Adds an optional left separator
         if (drawLeftSeparator)
         {
-            Parent.Children.Add(separatorLeft);
+            StackPanel TmpStackPanel = new()
+            {
+                Margin = separatorMargin,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                VerticalAlignment = System.Windows.VerticalAlignment.Center
+            };
+
+            TmpStackPanel.Children.Add(separatorLeft);
+            Parent.Children.Add(TmpStackPanel);
         }
 
         // Adds a new child
@@ -141,7 +151,15 @@ public class LolibarContainer
         // Adds an optional right separator
         if (drawRightSeparator)
         {
-            Parent.Children.Add(separatorRight);
+            StackPanel TmpStackPanel = new()
+            {
+                Margin = separatorMargin,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                VerticalAlignment = System.Windows.VerticalAlignment.Center
+            };
+
+            TmpStackPanel.Children.Add(separatorRight);
+            Parent.Children.Add(TmpStackPanel);
         }
 
         IsCreated = true;

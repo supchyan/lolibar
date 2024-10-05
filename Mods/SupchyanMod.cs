@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows;
 
 namespace LolibarApp.Mods;
 
@@ -18,7 +19,8 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Containers
-    LolibarContainer? DateTimeContainer;
+    LolibarContainer? DateContainer;
+    LolibarContainer? TimeContainer;
 
     LolibarContainer? BaseContainer;
     LolibarContainer? PreviousButtonContainer;
@@ -36,8 +38,8 @@ class SupchyanMod : LolibarMod
     {
         BarUpdateDelay                  = 250;
         BarHeight                       = 36;
-        BarColor                        = LolibarHelper.SetColor("#231d24");
-        BarContainersContentColor       = LolibarHelper.SetColor("#ebb7e4");
+        BarColor                        = LolibarHelper.SetColor("#211714");
+        BarContainersContentColor       = LolibarHelper.SetColor("#b7a798");
     }
     public override void Initialize()
     {
@@ -52,15 +54,25 @@ class SupchyanMod : LolibarMod
 
         }.Create();
 
-        // time
-        DateTimeContainer = new()
+        // date / time
+        DateContainer = new()
         {
-            Name = "DateTimeContainer",
+            Name = "DateContainer",
             Parent = Lolibar.BarLeftContainer,
-            Text = "Time to eat a pizza 🍕",
+            Text = "-",
+            SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
+            MouseLeftButtonUpEvent = OpenTimeSettingsEvent,
+        };
+        DateContainer.Create();
+
+        TimeContainer = new()
+        {
+            Name = "TimeContainer",
+            Parent = Lolibar.BarLeftContainer,
+            Text = "-",
             MouseLeftButtonUpEvent = OpenTimeSettingsEvent
         };
-        DateTimeContainer.Create();
+        TimeContainer.Create();
 
         // audio player
         BaseContainer = new()
@@ -148,11 +160,16 @@ class SupchyanMod : LolibarMod
         BarWidth = Lolibar.Inch_Screen.X - 2 * BarMargin;
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
-        // time
-        if (DateTimeContainer != null)
+        // date / time
+        if (DateContainer != null)
         {
-            DateTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
-            DateTimeContainer.Update();
+            DateContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
+            DateContainer.Update();
+        }
+        if (TimeContainer != null)
+        {
+            TimeContainer.Text = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}";
+            TimeContainer.Update();
         }
 
         // audio player
