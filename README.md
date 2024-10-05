@@ -54,7 +54,8 @@ class MyFirstMod : LolibarMod
     public override void Update() { }
 }
 ```
-All you can see above is **absolute minimum** your mod must contain. Without that, Lolibar won't compile properly. Let's talk about every part in details:
+All you can see above is **absolute minimum** your mod must contain. Without that, Lolibar won't compile properly. Let's talk about every part in details. </br></br>
+
 ```cs
 namespace LolibarApp.Mods;
 ```
@@ -168,9 +169,9 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 ```
 
 ## 🪼At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/9d8975ff-c309-4df5-a83c-d66584b1de3c /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/8d64d34a-0368-4f3d-a561-b66a02f6992a /></div>
 
-##### <div align=center>😎My lolibar's mod showcase</div>
+##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
 ---
 ##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
