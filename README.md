@@ -168,8 +168,7 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 ```
 
 ## 🎟️At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/8b70ca48-6eb0-45e0-84e0-ec546023bdfb /></div>
-
+<div align=center><img src=https://github.com/user-attachments/assets/ab73afcc-b19d-4de8-89be-ec6b37fd6a00 /></div>
 ##### <div align=center>😎My lolibar's mod showcase</div>
 
 ---
