@@ -271,7 +271,7 @@ public partial class Lolibar : Window
     readonly NotifyIcon TrayIcon = new()
     {
         Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
-        Text = "Lolibar Menu",
+        Text = "Lolibar In Tray",
         Visible = true,
         ContextMenuStrip = new()
         {
