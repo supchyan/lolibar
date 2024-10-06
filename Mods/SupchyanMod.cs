@@ -175,7 +175,7 @@ class SupchyanMod : LolibarMod
         }
         if (TimeContainer != null)
         {
-            TimeContainer.Text = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}";
+            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)}";
             TimeContainer.Update();
         }
 

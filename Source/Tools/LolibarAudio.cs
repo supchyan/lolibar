@@ -1,4 +1,5 @@
-﻿using Windows.Media.Control;
+﻿using System.Diagnostics;
+using Windows.Media.Control;
 
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
@@ -16,7 +17,19 @@ public class LolibarAudio
     public static GlobalSystemMediaTransportControlsSessionMediaProperties? StreamInfo { get; private set; }
 
     #region Method Calls
-    static async void TryToInitializeInfoEvents()
+    public static async Task TryToResubscribeStreamEvents()
+    {
+        Stream = await GetSystemMediaTransportControlsSessionManager();
+
+        if (Stream != null)
+        {
+            Stream.SessionsChanged -= Stream_SessionsChanged;
+            Stream.SessionsChanged += Stream_SessionsChanged;
+        }
+
+        TryToResubscribeStreamInfoEvents();
+    }
+    static async void TryToResubscribeStreamInfoEvents()
     {
         if (Stream == null) return;
 
@@ -29,32 +42,25 @@ public class LolibarAudio
         }
 
         Stream.GetCurrentSession().PlaybackInfoChanged      -= LolibarAudio_PlaybackInfoChanged;
-        Stream.GetCurrentSession().MediaPropertiesChanged   -= LolibarAudio_MediaPropertiesChanged;
-
         Stream.GetCurrentSession().PlaybackInfoChanged      += LolibarAudio_PlaybackInfoChanged;
+
+        Stream.GetCurrentSession().MediaPropertiesChanged   -= LolibarAudio_MediaPropertiesChanged;
         Stream.GetCurrentSession().MediaPropertiesChanged   += LolibarAudio_MediaPropertiesChanged;
+
     }
-    public static async void InitializeStreamEvents()
+
+    static async void Stream_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args)
     {
-        Stream = await GetSystemMediaTransportControlsSessionManager();
-        
-        if (Stream != null) Stream.SessionsChanged += Stream_SessionsChanged;
-
-        TryToInitializeInfoEvents();
+        await TryToResubscribeStreamEvents();
     }
 
-    private static void Stream_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args)
-    {
-        TryToInitializeInfoEvents();
-    }
-
-    private static async void LolibarAudio_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
+    static async void LolibarAudio_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
     {
         var session = Stream?.GetCurrentSession();
         if (session != null) StreamInfo = await GetMediaProperties(session);
     }
 
-    private static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
+    static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
     {
         var session = Stream?.GetCurrentSession();
         if (session != null) StreamInfo = await GetMediaProperties(session);
