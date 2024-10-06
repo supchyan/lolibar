@@ -10,23 +10,24 @@ namespace LolibarApp.Source.Tools;
 /// </summary>
 public class LolibarContainer
 {
-    public string       Name            { get; set; }
-    public StackPanel?  Parent          { get; set; }
-    public Geometry?    Icon            { get; set; }
-    public string?      Text            { get; set; }
-    /// <summary>
-    /// Becomes true, after container has been created and placed into the parent.
-    /// </summary>
-    public bool IsCreated               { get; private set; }
+    public string           Name    { get; set; }
+    public StackPanel?      Parent  { get; set; }
+    public Geometry?        Icon    { get; set; }
+    public string?          Text    { get; set; }
+    public SolidColorBrush? Color   { get; set; } = LolibarMod.BarContainersColor;
     /// <summary>
     /// Set it to `true`, if you want to make this container have a visible background. (False as default)
     /// </summary>
-    public bool HasBackground           { get; set; }
+    public bool     HasBackground   { get; set; }
     /// <summary>
-    /// Can be used as reference to the `Border` component inside a container.
-    /// You can use it to refer to a parent and create other containers inside it. || Example: var parent = (StackPanel)Border.Child;
+    /// Can be used as reference to the `StackPanel` component inside a container.
+    /// You can use it to refer to a parent and create other containers inside it. || Example: var parent = YourContainer.SpaceInside;
     /// </summary>
-    public Border BorderComponent       { get; private set; }
+    public StackPanel SpaceInside   { get; private set; }
+    /// <summary>
+    /// Becomes true, after container has been created and placed into the parent.
+    /// </summary>
+    public bool     IsCreated       { get; private set; }
     public LolibarEnums.SeparatorPosition? SeparatorPosition                        { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent     { get; set; }
     public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
@@ -34,7 +35,7 @@ public class LolibarContainer
 
     SolidColorBrush BorderBackground()
     {
-        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(LolibarMod.BarContainersContentColor)[3..]}") : LolibarHelper.SetColor("#00000000");
+        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(Color)[3..]}") : LolibarHelper.SetColor("#00000000");
     }
 
     public void Create()
@@ -45,24 +46,27 @@ public class LolibarContainer
         bool drawLeftSeparator  = SeparatorPosition == LolibarEnums.SeparatorPosition.Left  || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;
         bool drawRightSeparator = SeparatorPosition == LolibarEnums.SeparatorPosition.Right || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;
 
+        App.Current.Resources[$"{Name}Color"] = Color;
+
         System.Windows.Shapes.Rectangle separatorLeft = new()
         {
             RadiusX = LolibarMod.BarSeparatorRadius,
             RadiusY = LolibarMod.BarSeparatorRadius,
             Width   = LolibarMod.BarSeparatorWidth,
             Height  = LolibarMod.BarSeparatorHeight,
-            Fill    = LolibarMod.BarContainersContentColor,
             Opacity = 0.3
         };
+        separatorLeft.SetResourceReference(System.Windows.Shapes.Rectangle.FillProperty, $"{Name}Color");
+
         System.Windows.Shapes.Rectangle separatorRight = new()
         {
             RadiusX = LolibarMod.BarSeparatorRadius,
             RadiusY = LolibarMod.BarSeparatorRadius,
             Width   = LolibarMod.BarSeparatorWidth,
             Height  = LolibarMod.BarSeparatorHeight,
-            Fill    = LolibarMod.BarContainersContentColor,
             Opacity = 0.3
         };
+        separatorRight.SetResourceReference(System.Windows.Shapes.Rectangle.FillProperty, $"{Name}Color");
 
         App.Current.Resources[$"{Name}BorderBackground"] = BorderBackground();
         Border border = new()
@@ -75,8 +79,6 @@ public class LolibarContainer
         };
         border.SetResourceReference(Border.BackgroundProperty, $"{Name}BorderBackground");
 
-        BorderComponent = border;
-
         StackPanel stackPanel = new()
         {
             Name                = $"{Name}StackPanel",
@@ -88,6 +90,8 @@ public class LolibarContainer
 
         border.Child = stackPanel;
 
+        SpaceInside  = stackPanel;
+
         if (Icon != null)
         {
             App.Current.Resources[$"{Name}Icon"] = Icon;
@@ -95,11 +99,11 @@ public class LolibarContainer
             {
                 Stretch             = Stretch.Uniform,
                 Margin              = LolibarMod.BarContainersContentMargin,
-                Fill                = LolibarMod.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
             iconItem.SetResourceReference(Path.DataProperty, $"{Name}Icon");
+            iconItem.SetResourceReference(Path.FillProperty, $"{Name}Color");
 
             stackPanel.Children.Add(iconItem);
         }
@@ -110,11 +114,11 @@ public class LolibarContainer
             TextBlock textItem = new()
             {
                 Margin              = LolibarMod.BarContainersContentMargin,
-                Foreground          = LolibarMod.BarContainersContentColor,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
             textItem.SetResourceReference(TextBlock.TextProperty, $"{Name}Text");
+            textItem.SetResourceReference(TextBlock.ForegroundProperty, $"{Name}Color");
 
             stackPanel.Children.Add(textItem);
         }
@@ -169,8 +173,9 @@ public class LolibarContainer
     {
         if (!IsCreated) return;
 
-        App.Current.Resources[$"{Name}Text"] = Text;
-        App.Current.Resources[$"{Name}Icon"] = Icon;
-        App.Current.Resources[$"{Name}BorderBackground"] = BorderBackground();
+        App.Current.Resources[$"{Name}Text"             ] = Text;
+        App.Current.Resources[$"{Name}Icon"             ] = Icon;
+        App.Current.Resources[$"{Name}Color"            ] = Color;
+        App.Current.Resources[$"{Name}BorderBackground" ] = BorderBackground();
     }
 }

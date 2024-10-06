@@ -10,14 +10,14 @@ class ExampleUpdatablePropertiesMod : LolibarMod
 {
     // How to resize lolibar when screen resolution has changed?
     //
-    // Lolibar libraries has `Lolibar.Inch_Screen` Vector2,
+    // Lolibar libraries has Vector2 called `Lolibar.Inch_Screen`,
     // which stores current screen resolution in Inches.
     // Feel free to use it!
     public override void PreInitialize() { }
     public override void Initialize() { }
     public override void Update()
     {
-        // Update Width property:
+        // Update Width property, depending on screen size and current margin property:
         BarWidth = Lolibar.Inch_Screen.X - 2 * BarMargin;
 
         // Then change statusbar position depends on current Width.

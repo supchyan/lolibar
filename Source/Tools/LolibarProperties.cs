@@ -90,17 +90,13 @@ public abstract partial class LolibarProperties
 
 
     /// <summary>
-    /// Lolibar's containers color. ( That boxes, where sort of content draws )
-    /// </summary>
-    public static SolidColorBrush BarContainerColor { get; set; } = System.Windows.Media.Brushes.Transparent;
-    /// <summary>
     /// Lolibar's main color.
     /// </summary>
     public static SolidColorBrush BarColor { get; set; } = LolibarHelper.SetColor("#38393c");
     /// <summary>
     /// Lolibar's elements color. (Icons / Text / etc.)
     /// </summary>
-    public static SolidColorBrush BarContainersContentColor { get; set; } = LolibarHelper.SetColor("#dddddd");
+    public static SolidColorBrush BarContainersColor { get; set; } = LolibarHelper.SetColor("#dddddd");
 
     /// <summary>
     /// Lolibar's border radius property.

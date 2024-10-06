@@ -46,7 +46,7 @@ class ExampleAudioPlayerMod : LolibarMod
         // Setup local parent component for the containers.
         // It should be StackPanel, which always is a Child of the BorderComponent,
         // so let's get it:
-        var parent = (StackPanel)BaseContainer.BorderComponent.Child;
+        var parent = BaseContainer.SpaceInside;
 
         PreviousButtonContainer = new()
         {

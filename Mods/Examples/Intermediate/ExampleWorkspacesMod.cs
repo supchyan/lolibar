@@ -36,7 +36,7 @@ class ExampleWorkspacesMod : LolibarMod
         // After invoking it for the first time,
         // `InvokeWorkspaceTabsUpdate` will update itself automatically,
         // so no need to put it into `Update()` hook!
-        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(WorkspacesContainer.BorderComponent);
+        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(WorkspacesContainer.SpaceInside);
 
         // Important thing, `LolibarVirtualDesktop` controls last provided container,
         // so if you want to dublicate your virtual desktops controls for some reason,

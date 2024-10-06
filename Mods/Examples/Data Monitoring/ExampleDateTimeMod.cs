@@ -25,7 +25,7 @@ class ExampleDateTimeMod : LolibarMod
     }
     public override void Update()
     {
-        // ... but I want to make my custom time container, so let's totally override it's content:
+        // ... but I want to make my custom datetime container, so let's totally override it's content:
         DateTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
         DateTimeContainer.Update();
     }

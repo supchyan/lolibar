@@ -124,7 +124,7 @@ public partial class Lolibar : Window
         Bar.Background      = LolibarMod.BarColor;
         Bar.CornerRadius    = LolibarMod.BarCornerRadius;
         Bar.BorderThickness = LolibarMod.BarStrokeThickness;
-        Bar.BorderBrush     = LolibarMod.BarContainersContentColor;
+        Bar.BorderBrush     = LolibarMod.BarContainersColor;
 
         _BarLeftContainer.Margin = _BarCenterContainer.Margin = _BarRightContainer.Margin = LolibarMod.BarContainerMargin;
     }

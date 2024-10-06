@@ -22,7 +22,7 @@ class SupchyanMod : LolibarMod
     LolibarContainer? DateContainer;
     LolibarContainer? TimeContainer;
 
-    LolibarContainer? BaseContainer;
+    LolibarContainer? AudioContainerParent;
     LolibarContainer? PreviousButtonContainer;
     LolibarContainer? PlayButtonContainer;
     LolibarContainer? NextButtonContainer;
@@ -39,18 +39,25 @@ class SupchyanMod : LolibarMod
         BarUpdateDelay                  = 250;
         BarHeight                       = 36;
         BarColor                        = LolibarHelper.SetColor("#211714");
-        BarContainersContentColor       = LolibarHelper.SetColor("#b7a798");
+        BarContainersColor              = LolibarHelper.SetColor("#b7a798");
     }
     public override void Initialize()
     {
-        // username
+        // whale
+        var WhaleContainerParent = new LolibarContainer()
+        {
+            Name = "WhaleContainerParent",
+            Parent = Lolibar.BarLeftContainer,
+
+        };
+        WhaleContainerParent.Create();
         new LolibarContainer()
         {
-            Name = "UsernameContainer",
-            Parent = Lolibar.BarLeftContainer,
+            Name = "WhaleContainer",
+            Parent = WhaleContainerParent.SpaceInside,
             Text = "🐳",
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
             MouseLeftButtonUpEvent = OpenUserSettingsEvent,
+            HasBackground = true
 
         }.Create();
 
@@ -60,7 +67,7 @@ class SupchyanMod : LolibarMod
             Name = "DateContainer",
             Parent = Lolibar.BarLeftContainer,
             Text = "-",
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
+            SeparatorPosition = LolibarEnums.SeparatorPosition.Both,
             MouseLeftButtonUpEvent = OpenTimeSettingsEvent,
         };
         DateContainer.Create();
@@ -75,14 +82,14 @@ class SupchyanMod : LolibarMod
         TimeContainer.Create();
 
         // audio player
-        BaseContainer = new()
+        AudioContainerParent = new()
         {
-            Name = "AudioBaseContainer",
+            Name = "AudioContainerParent",
             Parent = Lolibar.BarCenterContainer,
         };
-        BaseContainer.Create();
+        AudioContainerParent.Create();
 
-        var parent = (StackPanel)BaseContainer.BorderComponent.Child;
+        var parent = AudioContainerParent.SpaceInside;
 
         PreviousButtonContainer = new()
         {
@@ -145,14 +152,14 @@ class SupchyanMod : LolibarMod
         // desktop workspaces
         WorkspacesContainer = new()
         {
-            Name = "ExampleWorkspacesContainer",
+            Name = "WorkspacesContainer",
             Parent = Lolibar.BarRightContainer,
             SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
             MouseWheelEvent = SwapWorkspacesByMouseWheelEvent
         };
         WorkspacesContainer.Create();
 
-        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(WorkspacesContainer.BorderComponent);
+        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(WorkspacesContainer.SpaceInside);
     }
     public override void Update() 
     {

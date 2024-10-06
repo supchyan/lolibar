@@ -6,7 +6,6 @@
 //namespace LolibarApp.Mods;
 
 
-
 // This mod represents minimal set of the modding methods to begin.
 // Recommendations to use:
 //
