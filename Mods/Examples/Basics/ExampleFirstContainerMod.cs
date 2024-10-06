@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 //namespace LolibarApp.Mods;
 
-class ExampleContainerMod : LolibarMod
+class ExampleFirstContainerMod : LolibarMod
 {
     // This mod exmplains, how to create, customize and update containers.
 
