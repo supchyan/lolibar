@@ -1,10 +1,7 @@
-<div align=center><img width=512 src=https://github.com/user-attachments/assets/1cb181fc-6a6f-4171-845f-db6a11129099 /></div>
-
-#### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
-
-</br>
 <div align=center><img src="https://github.com/user-attachments/assets/e53fa816-ef14-4d8a-b14b-7e16ab67fede" /></div>
 <div align=center><img src="https://github.com/user-attachments/assets/d1fef496-d9d9-4bf7-a092-3fbae6ccbef2" /></div>
+
+#### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
 
 ## 🪼Introduction
 This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page. If you want one, you can build it by yourself.
