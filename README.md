@@ -168,8 +168,8 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 ```
 
 ## 🪼Special thanks
-- **[Virtual Desktop library](https://github.com/MScholtes/VirtualDesktop)**
-- **[Windows Media Controller library](https://github.com/DubyaDude/WindowsMediaController)**
+- **[VirtualDesktop@MScholtes](https://github.com/MScholtes/VirtualDesktop)**
+- **[WindowsMedia Controller@DubyaDude](https://github.com/DubyaDude/WindowsMediaController)**
 
 ## 🪼At the end...
 <div align=center><img src=https://github.com/user-attachments/assets/8d64d34a-0368-4f3d-a561-b66a02f6992a /></div>
