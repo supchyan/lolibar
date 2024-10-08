@@ -167,6 +167,10 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 </Project>
 ```
 
+## 🪼Special thanks
+- **[Virtual Desktop library](https://github.com/MScholtes/VirtualDesktop)**
+- **[Windows Media Controller](https://github.com/DubyaDude/WindowsMediaController)
+
 ## 🪼At the end...
 <div align=center><img src=https://github.com/user-attachments/assets/8d64d34a-0368-4f3d-a561-b66a02f6992a /></div>
 
