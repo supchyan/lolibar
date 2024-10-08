@@ -1,20 +1,22 @@
 <div align=center><img src="https://github.com/user-attachments/assets/e53fa816-ef14-4d8a-b14b-7e16ab67fede" /></div>
 <div align=center><img src="https://github.com/user-attachments/assets/d1fef496-d9d9-4bf7-a092-3fbae6ccbef2" /></div>
 
-#### <div align=center>lolibar | [polybar](https://github.com/polybar/polybar) alternative for windows platform | c#</div>
+#### <div align=center>lolibar | statusbar for Windows 10 / 11 | C#</div>
 
 ## 🪼Introduction
-This project is **toolkit** for developers, which grants capabilities to create statusbars, so there is no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page. If you want one, you can build it by yourself.
+This project is **toolkit** for modders, which grants capabilities to create statusbars. There're no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can configure it using this toolkit!
 
----
-##### <div align=center>This project is for Windows Platform only! Please, check [polybar](https://github.com/polybar/polybar) repo, if you're looking for the Linux one.</div>
----
+## 🪼Alternatives
+- **[yasb](https://github.com/da-rth/yasb) (Cross platform, Python)**
+- **[polybar](https://github.com/polybar/polybar) (Linux, C++)**
+- **[eww](https://github.com/elkowar/eww) (Linux, Rust)**
+- **[ironbar](https://github.com/JakeStanger/ironbar) (Linux, Rust)**
 
 ## 🪼Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
 ## 🪼Modding Basics
-Have you ever tried to write mods for the video games? So, this toolkit provides the same vibes:
+Have you ever tried to write mods for video games? So, this toolkit provides the same vibes:
 ```csharp
 namespace LolibarApp.Mods;
 
