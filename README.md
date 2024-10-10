@@ -172,7 +172,7 @@ You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/mod
 - **[WindowsMediaController](https://github.com/DubyaDude/WindowsMediaController) by @DubyaDude**
 
 ## 🪼At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/469e2420-72de-4de7-a1ca-6b37d21d8e4b /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/d48ca5e4-c6da-49f7-bd64-a3ede048693e /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
