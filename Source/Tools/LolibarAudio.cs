@@ -32,7 +32,7 @@ public class LolibarAudio
         Stream.SessionsChanged -= Stream_SessionsChanged;
         Stream.SessionsChanged += Stream_SessionsChanged;
     }
-    static async void TryToResubscribeStreamInfoEvents()
+    public static async void TryToResubscribeStreamInfoEvents()
     {
         if (CurrentSession == null)
         {

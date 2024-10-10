@@ -21,9 +21,9 @@ public class LolibarContainer
     public bool     HasBackground   { get; set; }
     /// <summary>
     /// Can be used as reference to the `StackPanel` component inside a container.
-    /// You can use it to refer to a parent and create other containers inside it. || Example: var parent = YourContainer.SpaceInside;
+    /// You can use it to refer a container as parent and create other containers inside it. || Example: var parent = YourContainer.SpaceInside;
     /// </summary>
-    public StackPanel SpaceInside   { get; private set; }
+    public StackPanel? SpaceInside   { get; private set; }
     /// <summary>
     /// Becomes true, after container has been created and placed into the parent.
     /// </summary>

@@ -135,6 +135,7 @@ public partial class Lolibar : Window
         // --- PreInitialize ---
         LolibarModLoader.LoadMods();
         LolibarAudio.TryToResubscribeStreamEvents();
+        LolibarAudio.TryToResubscribeStreamInfoEvents();
         UpdateScreenParameters();
 
         // --- Mods PreInitialize ---
