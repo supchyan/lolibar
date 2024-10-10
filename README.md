@@ -15,19 +15,6 @@ This project is **toolkit** for modders, which grants capabilities to create sta
 ## 🪼Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
-## 🪼Something about `LolibarApp.csproj`
-To compile this `Lolibar Project`, you have to set valid `TargetFramework` for your system in **[LolibarApp.csproj](https://github.com/supchyan/lolibar/blob/master/LolibarApp.csproj)** </br>
-As an example of this source, for Windows 11, it should be set to `net8.0-windows10.0.22000.0`. </br>
-You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/desktop-to-uwp-enhance)** article on Microsoft Learn to find out, which `TargetFramework` is for you.
-```csproj
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
-        ...other tags
-    </PropertyGroup>
-</Project>
-```
-
 ## 🪼Modding Basics
 Have you ever tried to write mods for video games? So, this toolkit provides the same vibes:
 ```csharp
