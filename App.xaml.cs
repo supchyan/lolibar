@@ -13,6 +13,6 @@ public partial class App : System.Windows.Application
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         Exception exception = (Exception)e.ExceptionObject;
-        System.Windows.MessageBox.Show($"{exception.Source}.exe caught an error.\n\nError message: {exception.Message}\n{exception.StackTrace}");
+        System.Windows.MessageBox.Show($"{exception.Source}.exe caught an error.\n\nError: {exception.Message}\n{exception.InnerException}\n{exception.StackTrace}");
     }
 }
