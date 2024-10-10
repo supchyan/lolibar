@@ -1,10 +1,8 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows;
 
 namespace LolibarApp.Mods;
 
@@ -175,7 +173,7 @@ class SupchyanMod : LolibarMod
         }
         if (TimeContainer != null)
         {
-            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)}";
+            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in Moscow";
             TimeContainer.Update();
         }
 
@@ -190,7 +188,7 @@ class SupchyanMod : LolibarMod
             AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
             AudioInfoContainer.Update();
         }
-
+        
         // power
         if (PowerMonitorContainer != null)
         {

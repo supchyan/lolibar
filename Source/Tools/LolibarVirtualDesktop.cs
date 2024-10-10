@@ -7,7 +7,7 @@ namespace LolibarApp.Source.Tools;
 
 public class LolibarVirtualDesktop
 {
-    static StackPanel?     InitializedParent    {  get; set; }
+    static StackPanel? InitializedParent    {  get; set; }
     public static int  OldDesktopCount      { get; private set; }
     public static int  OldDesktopIndex      { get; private set; }
     public static bool IsErrorTabGenerated  { get; private set; }
@@ -42,10 +42,11 @@ public class LolibarVirtualDesktop
             }
         }
     }
-    public static void InvokeWorkspaceTabsUpdate(StackPanel parent)
+    public static void InvokeWorkspaceTabsUpdate(StackPanel? parent)
     {
-        // Stop doing all logic below, if `error_tab` has been generated.
-        if (IsErrorTabGenerated) return;
+        // Stop doing all logic below, if `error_tab` has been generated
+        // or parent is undefined.
+        if (IsErrorTabGenerated || parent == null) return;
 
         if (InitializedParent == null) InitializedParent = parent;
 
@@ -56,9 +57,10 @@ public class LolibarVirtualDesktop
         so https://github.com/MScholtes/VirtualDesktop made tools
         for different Win32 builds to handle this stuff properly.
         I've implemented it as different `namespaces`, so that code below
-        tries to adapt them to current Windows OS patch.
+        tries to adapt them to specifeid Windows patch.
 
-        Contact me on my Discord server, if you know better way, thanks.
+        Contact me on my Discord server, if you know better way
+        to solve that kind of problem, thanks.
         
         (supchyan)
         */

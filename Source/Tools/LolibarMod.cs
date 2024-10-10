@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace LolibarApp.Source.Tools;
+﻿namespace LolibarApp.Source.Tools;
 
 public abstract class LolibarMod : LolibarProperties
 {
