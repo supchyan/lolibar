@@ -177,7 +177,6 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 
 ## 🪼Special thanks
 - **[VirtualDesktop](https://github.com/MScholtes/VirtualDesktop) by @MScholtes**
-- **[WindowsMediaController](https://github.com/DubyaDude/WindowsMediaController) by @DubyaDude**
 
 ## 🪼At the end...
 <div align=center><img src=https://github.com/user-attachments/assets/d48ca5e4-c6da-49f7-bd64-a3ede048693e /></div>
