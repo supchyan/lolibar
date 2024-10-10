@@ -173,7 +173,7 @@ class SupchyanMod : LolibarMod
         }
         if (TimeContainer != null)
         {
-            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in Moscow";
+            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in {TimeZoneInfo.Local.DisplayName.Substring(12)}";
             TimeContainer.Update();
         }
 
