@@ -130,11 +130,11 @@ public partial class Lolibar : Window
     }
 
     #region Lifecycle
-    async void InitializeCycle()
+    void InitializeCycle()
     {
         // --- PreInitialize ---
         LolibarModLoader.LoadMods();
-        await LolibarAudio.TryToResubscribeStreamEvents();
+        LolibarAudio.TryToResubscribeStreamEvents();
         UpdateScreenParameters();
 
         // --- Mods PreInitialize ---

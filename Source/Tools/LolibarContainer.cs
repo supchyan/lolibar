@@ -10,7 +10,7 @@ namespace LolibarApp.Source.Tools;
 /// </summary>
 public class LolibarContainer
 {
-    public string           Name    { get; set; }
+    public string?          Name    { get; set; }
     public StackPanel?      Parent  { get; set; }
     public Geometry?        Icon    { get; set; }
     public string?          Text    { get; set; }

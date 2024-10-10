@@ -38,8 +38,8 @@ class SupchyanMod : LolibarMod
     {
         BarUpdateDelay                  = 250;
         BarHeight                       = 36;
-        BarColor                        = LolibarHelper.SetColor("#211714");
-        BarContainersColor              = LolibarHelper.SetColor("#b7a798");
+        BarColor                        = LolibarHelper.SetColor("#090e11");
+        BarContainersColor              = LolibarHelper.SetColor("#8da2b8");
     }
     public override void Initialize()
     {
