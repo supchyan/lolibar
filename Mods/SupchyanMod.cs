@@ -105,7 +105,7 @@ class SupchyanMod : LolibarMod
             Name = "AudioPlayButton",
             Parent = parent,
             Icon = PlayAudioIcon,
-            MouseLeftButtonUpEvent = PlayStreamCallEvent
+            MouseLeftButtonUpEvent = PlayOrPauseStreamCallEvent
         };
         PlayButtonContainer.Create();
 
@@ -238,11 +238,9 @@ class SupchyanMod : LolibarMod
     {
         LolibarAudio.Previous();
     }
-    void PlayStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void PlayOrPauseStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (LolibarAudio.IsPlaying()) LolibarAudio.Pause();
-
-        else LolibarAudio.Resume();
+        LolibarAudio.PlayOrPause();
     }
     void NextStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {

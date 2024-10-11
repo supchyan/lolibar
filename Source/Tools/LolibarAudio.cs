@@ -67,6 +67,14 @@ public class LolibarAudio
 
     #region Public Methods
     /// <summary>
+    /// Attempts to play current audio stream if paused, and pause if opposite.
+    /// </summary>
+    public static async void PlayOrPause()
+    {
+        if (CurrentSession != null)
+            await CurrentSession.TryTogglePlayPauseAsync();
+    }
+    /// <summary>
     /// Attempts to pause current audio stream.
     /// </summary>
     public static async void Pause()

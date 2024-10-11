@@ -62,7 +62,7 @@ class ExampleAudioPlayerMod : LolibarMod
             Name = "ExampleAudioPlayButton",
             Parent = parent,
             Icon = PlayAudioIcon, // just a placeholder, we will update it later
-            MouseLeftButtonUpEvent = PlayStreamCallEvent
+            MouseLeftButtonUpEvent = PlayOrPauseStreamCallEvent
         };
         PlayButtonContainer.Create();
 
@@ -112,11 +112,14 @@ class ExampleAudioPlayerMod : LolibarMod
     {
         LolibarAudio.Previous();
     }
-    void PlayStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void PlayOrPauseStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         if (LolibarAudio.IsPlaying()) LolibarAudio.Pause();
 
         else LolibarAudio.Resume();
+
+        // Alternativly, you can use:
+        // LolibarAudio.PlayOrPause(); // which is the same, but concise.
     }
     void NextStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
