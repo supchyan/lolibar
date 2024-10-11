@@ -15,19 +15,6 @@ This project is **toolkit** for modders, which grants capabilities to create sta
 ## 🪼Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
-## 🪼Something about `LolibarApp.csproj`
-To compile this `Lolibar Project`, you have to set valid `TargetFramework` for your system in **[LolibarApp.csproj](https://github.com/supchyan/lolibar/blob/master/LolibarApp.csproj)** </br>
-As an example of this source, for Windows 11, it should be set to `net8.0-windows10.0.22000.0`. </br>
-You can read **[this](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/desktop-to-uwp-enhance)** article on Microsoft Learn to find out, which `TargetFramework` is for you.
-```csproj
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
-        ...other tags
-    </PropertyGroup>
-</Project>
-```
-
 ## 🪼Modding Basics
 Have you ever tried to write mods for video games? So, this toolkit provides the same vibes:
 ```csharp
@@ -171,6 +158,10 @@ class MyFirstMod : LolibarMod
 <div align=center><img src=https://github.com/user-attachments/assets/0b5f5253-ff5e-4c94-82d9-7b07559e82f7 /></div>
 
 *<div align=center>`HelloContainer` shows current time.</div>*
+</br>
+
+To build 'n run `Lolibar` project, select preferred profile at the top of the VS and push any of `▶` `▷` buttons.</br>
+<div align=center><img src=https://github.com/user-attachments/assets/6128d51e-2de1-4d7a-9db2-2cb0e2fbf404 /></div>
 
 ## 🪼Next steps
 Inspired enough to start modding? Then, get into **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section to learn more about Lolibar's capabilities. As I mentioned before, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey. Especially **[Basics](https://github.com/supchyan/lolibar/tree/master/Mods/Examples/Basics)** section. Good luck!
