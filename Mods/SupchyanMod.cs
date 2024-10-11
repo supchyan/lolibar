@@ -3,6 +3,7 @@ using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows;
 
 namespace LolibarApp.Mods;
 
@@ -36,8 +37,8 @@ class SupchyanMod : LolibarMod
     {
         BarUpdateDelay                  = 250;
         BarHeight                       = 36;
-        BarColor                        = LolibarHelper.SetColor("#090e11");
-        BarContainersColor              = LolibarHelper.SetColor("#8da2b8");
+        BarColor                        = LolibarHelper.SetColor("#11131f");
+        BarContainersColor              = LolibarHelper.SetColor("#bab7af");
     }
     public override void Initialize()
     {
@@ -55,7 +56,8 @@ class SupchyanMod : LolibarMod
             Parent = WhaleContainerParent.SpaceInside,
             Text = "🐳",
             MouseLeftButtonUpEvent = OpenUserSettingsEvent,
-            HasBackground = true
+            HasBackground = true,
+            Color = LolibarHelper.SetColor("#9c9489")
 
         }.Create();
 
@@ -122,6 +124,7 @@ class SupchyanMod : LolibarMod
             Parent = Lolibar.BarCenterContainer,
             Text = "-",
             HasBackground = true,
+            Color = LolibarHelper.SetColor("#9c9489")
         };
         AudioInfoContainer.Create();
 
@@ -173,7 +176,7 @@ class SupchyanMod : LolibarMod
         }
         if (TimeContainer != null)
         {
-            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in {TimeZoneInfo.Local.DisplayName.Substring(12)}";
+            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in {(TimeZoneInfo.Local.DisplayName is var time && time.Contains("(UTC) ") ? time.Replace("(UTC) ", "") : time.Substring(12))}";
             TimeContainer.Update();
         }
 
