@@ -158,6 +158,10 @@ class MyFirstMod : LolibarMod
 <div align=center><img src=https://github.com/user-attachments/assets/0b5f5253-ff5e-4c94-82d9-7b07559e82f7 /></div>
 
 *<div align=center>`HelloContainer` shows current time.</div>*
+</br>
+
+To build 'n run `Lolibar` project, select preferred profile at the top of the VS and push any of `▶` `▷` buttons.</br>
+<div align=center><img src=https://github.com/user-attachments/assets/6128d51e-2de1-4d7a-9db2-2cb0e2fbf404 /></div>
 
 ## 🪼Next steps
 Inspired enough to start modding? Then, get into **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section to learn more about Lolibar's capabilities. As I mentioned before, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey. Especially **[Basics](https://github.com/supchyan/lolibar/tree/master/Mods/Examples/Basics)** section. Good luck!
