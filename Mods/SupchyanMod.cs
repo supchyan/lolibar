@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
+using System;
 
 namespace LolibarApp.Mods;
 
@@ -160,12 +161,15 @@ class SupchyanMod : LolibarMod
         };
         WorkspacesContainer.Create();
 
-        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(WorkspacesContainer.SpaceInside);
+        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(
+            parent:             WorkspacesContainer.SpaceInside,
+            showDesktopNames:   true
+        );
     }
     public override void Update() 
     {
         // properties
-        BarWidth = Lolibar.Inch_Screen.X - 2 * BarMargin;
+        BarWidth = Lolibar.Inch_Screen.X  - 2 * BarMargin;
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
         // date / time

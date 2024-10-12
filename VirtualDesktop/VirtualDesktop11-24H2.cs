@@ -4,6 +4,7 @@
 // Compile with:
 // C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe VirtualDesktop11_24H211-24H2.cs
 
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -361,15 +362,14 @@ namespace VirtualDesktop11_24H2
 		public static string DesktopNameFromDesktop(Desktop desktop)
 		{ // return name of desktop or "Desktop n" if it has no name
 
-			// get desktop name
-			string desktopName = null;
-			try {
-				desktopName = desktop.ivd.GetName();
-			}
-			catch { }
+            var desktopName = (string?)Registry.GetValue(
+                keyName: String.Format(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops\{0:B}", desktop.ivd.GetId()),
+                valueName: "Name",
+                defaultValue: ""
+            );
 
-			// no name found, generate generic name
-			if (string.IsNullOrEmpty(desktopName))
+            // no name found, generate generic name
+            if (string.IsNullOrEmpty(desktopName))
 			{ // create name "Desktop n" (n = number starting with 1)
 				desktopName = "Desktop " + (DesktopManager.GetDesktopIndex(desktop.ivd) + 1).ToString();
 			}
@@ -379,15 +379,14 @@ namespace VirtualDesktop11_24H2
 		public static string DesktopNameFromIndex(int index)
 		{ // return name of desktop from index (-> index = 0..Count-1) or "Desktop n" if it has no name
 
-			// get desktop name
-			string desktopName = null;
-			try {
-				desktopName = DesktopManager.GetDesktop(index).GetName();
-			}
-			catch { }
+            var desktopName = (string?)Registry.GetValue(
+                keyName: String.Format(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops\{0:B}", DesktopManager.GetDesktop(index).GetId()),
+                valueName: "Name",
+                defaultValue: ""
+            );
 
-			// no name found, generate generic name
-			if (string.IsNullOrEmpty(desktopName))
+            // no name found, generate generic name
+            if (string.IsNullOrEmpty(desktopName))
 			{ // create name "Desktop n" (n = number starting with 1)
 				desktopName = "Desktop " + (index + 1).ToString();
 			}
@@ -397,15 +396,14 @@ namespace VirtualDesktop11_24H2
 		public static bool HasDesktopNameFromIndex(int index)
 		{ // return true is desktop is named or false if it has no name
 
-			// read desktop name in registry
-			string desktopName = null;
-			try {
-				desktopName = DesktopManager.GetDesktop(index).GetName();
-			}
-			catch { }
+            var desktopName = (string?)Registry.GetValue(
+                keyName: String.Format(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops\{0:B}", DesktopManager.GetDesktop(index).GetId()),
+                valueName: "Name",
+                defaultValue: ""
+            );
 
-			// name found?
-			if (string.IsNullOrEmpty(desktopName))
+            // name found?
+            if (string.IsNullOrEmpty(desktopName))
 				return false;
 			else
 				return true;

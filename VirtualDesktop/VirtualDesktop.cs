@@ -4,6 +4,7 @@
 // Compile with:
 // C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe VirtualDesktop.cs
 
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -389,17 +390,15 @@ Console.WriteLine("Name of desktop: " + desktopName);
 
 		public static string DesktopNameFromDesktop(Desktop desktop)
 		{ // return name of desktop or "Desktop n" if it has no name
-			Guid guid = desktop.ivd.GetId();
 
-			// read desktop name in registry
-			string desktopName = null;
-			try {
-				desktopName = (string)Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VirtualDesktops\\Desktops\\{" + guid.ToString() + "}", "Name", null);
-			}
-			catch { }
+            var desktopName = (string?)Registry.GetValue(
+                keyName: String.Format(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops\{0:B}", desktop.ivd.GetId()),
+                valueName: "Name",
+                defaultValue: ""
+            );
 
-			// no name found, generate generic name
-			if (string.IsNullOrEmpty(desktopName))
+            // no name found, generate generic name
+            if (string.IsNullOrEmpty(desktopName))
 			{ // create name "Desktop n" (n = number starting with 1)
 				desktopName = "Desktop " + (DesktopManager.GetDesktopIndex(desktop.ivd) + 1).ToString();
 			}
@@ -408,17 +407,14 @@ Console.WriteLine("Name of desktop: " + desktopName);
 
 		public static string DesktopNameFromIndex(int index)
 		{ // return name of desktop from index (-> index = 0..Count-1) or "Desktop n" if it has no name
-			Guid guid = DesktopManager.GetDesktop(index).GetId();
+            var desktopName = (string?)Registry.GetValue(
+                keyName: String.Format(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops\{0:B}", DesktopManager.GetDesktop(index).GetId()),
+                valueName: "Name",
+                defaultValue: ""
+            );
 
-			// read desktop name in registry
-			string desktopName = null;
-			try {
-				desktopName = (string)Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VirtualDesktops\\Desktops\\{" + guid.ToString() + "}", "Name", null);
-			}
-			catch { }
-
-			// no name found, generate generic name
-			if (string.IsNullOrEmpty(desktopName))
+            // no name found, generate generic name
+            if (string.IsNullOrEmpty(desktopName))
 			{ // create name "Desktop n" (n = number starting with 1)
 				desktopName = "Desktop " + (index + 1).ToString();
 			}
@@ -427,17 +423,14 @@ Console.WriteLine("Name of desktop: " + desktopName);
 
 		public static bool HasDesktopNameFromIndex(int index)
 		{ // return true is desktop is named or false if it has no name
-			Guid guid = DesktopManager.GetDesktop(index).GetId();
+            var desktopName = (string?)Registry.GetValue(
+                keyName: String.Format(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops\{0:B}", DesktopManager.GetDesktop(index).GetId()),
+                valueName: "Name",
+                defaultValue: ""
+            );
 
-			// read desktop name in registry
-			string desktopName = null;
-			try {
-				desktopName = (string)Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VirtualDesktops\\Desktops\\{" + guid.ToString() + "}", "Name", null);
-			}
-			catch { }
-
-			// name found?
-			if (string.IsNullOrEmpty(desktopName))
+            // name found?
+            if (string.IsNullOrEmpty(desktopName))
 				return false;
 			else
 				return true;

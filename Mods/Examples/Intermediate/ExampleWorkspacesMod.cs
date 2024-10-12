@@ -31,12 +31,17 @@ class ExampleWorkspacesMod : LolibarMod
         };
         WorkspacesContainer.Create();
 
-        // We use this to fill WorkspacesContainer with Desktop Tabs.
+        // We use `InvokeWorkspaceTabsUpdate()` to fill WorkspacesContainer with workspaces.
         // Otherwise, it will be empty.
         // After invoking it for the first time,
         // `InvokeWorkspaceTabsUpdate` will update itself automatically,
         // so no need to put it into `Update()` hook!
-        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(WorkspacesContainer.SpaceInside);
+        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(
+            // Where we should append workspaces. Their parent container:
+            parent:             WorkspacesContainer.SpaceInside,
+            // Append workspaces (desktops) with it's names, otherwise names will be replaced by indexes.
+            showDesktopNames:   false
+        );
 
         // Important thing, `LolibarVirtualDesktop` controls last provided container,
         // so if you want to dublicate your virtual desktops controls for some reason,
