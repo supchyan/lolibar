@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/1b2de4ee-337e-4ea6-a1e0-3b4d98ad1d21)<div align=center><img src="https://github.com/user-attachments/assets/e53fa816-ef14-4d8a-b14b-7e16ab67fede" /></div>
+<div align=center><img src="https://github.com/user-attachments/assets/e53fa816-ef14-4d8a-b14b-7e16ab67fede" /></div>
 <div align=center><img src="https://github.com/user-attachments/assets/d1fef496-d9d9-4bf7-a092-3fbae6ccbef2" /></div>
 
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
@@ -170,7 +170,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[VirtualDesktop](https://github.com/MScholtes/VirtualDesktop) by @MScholtes**
 
 ## 🪼At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/33d31752-3279-4bfc-aa92-1746b59a28ea /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/1e928542-09d8-423e-89b5-1b0dbb2c4768 /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
