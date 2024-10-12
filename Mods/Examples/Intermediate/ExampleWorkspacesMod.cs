@@ -10,7 +10,7 @@ using System.Windows.Input;
 class ExampleWorkspacesMod : LolibarMod
 {
     // This mod represents power of the `LolibarVirtualDesktop` library.
-    // But to be straight, it's self sufficient,
+    // But to be straight, heavy part of mod is self sufficient,
     // so all you need is create parent container, where you want to put your tabs,
     // and just invoke tabs update once in `Initialize()` hook.
     //
@@ -39,8 +39,9 @@ class ExampleWorkspacesMod : LolibarMod
         LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(
             // Where we should append workspaces. Their parent container:
             parent:             WorkspacesContainer.SpaceInside,
-            // Append workspaces (desktops) with it's names, otherwise names will be replaced by indexes.
-            showDesktopNames:   false
+            // Append workspaces* (*desktops) with its names, otherwise names will be replaced by indexes.
+            // Ah and, if desktop has no name, it will be named its index too.
+            showDesktopNames:   true
         );
 
         // Important thing, `LolibarVirtualDesktop` controls last provided container,

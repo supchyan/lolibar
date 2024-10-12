@@ -371,7 +371,7 @@ namespace VirtualDesktop11
             // no name found, generate generic name
             if (string.IsNullOrEmpty(desktopName))
 			{ // create name "Desktop n" (n = number starting with 1)
-				desktopName = "Desktop " + (DesktopManager.GetDesktopIndex(desktop.ivd) + 1).ToString();
+				desktopName = (DesktopManager.GetDesktopIndex(desktop.ivd) + 1).ToString();
 			}
 			return desktopName;
 		}
@@ -388,7 +388,7 @@ namespace VirtualDesktop11
             // no name found, generate generic name
             if (string.IsNullOrEmpty(desktopName))
 			{ // create name "Desktop n" (n = number starting with 1)
-				desktopName = "Desktop " + (index + 1).ToString();
+				desktopName = (index + 1).ToString();
 			}
 			return desktopName;
 		}

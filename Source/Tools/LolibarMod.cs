@@ -3,7 +3,7 @@
 public abstract class LolibarMod : LolibarProperties
 {
     /// <summary>
-    /// Pre-Initialization method. Invokes once at lolibar's launch before Initialize() does it's job.
+    /// Pre-Initialization method. Invokes once at lolibar's launch before Initialize() does its job.
     /// Highly recommended to setup lolibar's styles here.
     /// </summary>
     public virtual void PreInitialize()

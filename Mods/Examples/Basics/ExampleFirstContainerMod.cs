@@ -26,7 +26,7 @@ class ExampleFirstContainerMod : LolibarMod
 
 
         // Container's name. You have to choose it,
-        // unless you won't overlap it's resources with other containers.
+        // unless you won't overlap its resources with other containers.
         MyFirstContainer.Name = "MyCoolContainer";
 
 
@@ -42,7 +42,7 @@ class ExampleFirstContainerMod : LolibarMod
         // Icon is `Geometry` class instance, which is sort of SVG icons representation.
         // So, if you have a svg icon, you want to use as the container one, you have to do:
         //
-        // 1. Get it's data. Just open svg icon file in text editor and copy it's value.
+        // 1. Get it's data. Just open svg icon file in text editor and copy its value.
         // This will be long odd line of symbols, goes inside d="" but it's ok.
         // That line is coordinates of icon's verticles, whitch uses to draw svg exactly.
         //
@@ -121,7 +121,7 @@ class ExampleFirstContainerMod : LolibarMod
     public override void Update()
     {
         // In `Update()` section you can update container's parameters.
-        // Let's update it's text content to something else:
+        // Let's update its text content to something else:
         MyFirstContainer.Text = DateTime.Now.Millisecond.ToString();
 
         // Now our text have to be show current time milliseconds.

@@ -63,7 +63,7 @@ namespace LolibarApp.Mods;
 ```cs
 public override void PreInitialize() { }
 ```
-`PreInitialize()` hook useful to initialize something before `Initialize()` hook invoked, so it's pre-initialization. I recommend you to setup all properties in there. What is `properties`? Let's talk about them, referencing to **[LolibarProperties](https://github.com/supchyan/lolibar/blob/master/Source/Tools/LolibarProperties.cs)** class:
+`PreInitialize()` hook useful to initialize something before `Initialize()` hook invoked, so its pre-initialization. I recommend you to setup all properties in there. What is `properties`? Let's talk about them, referencing to **[LolibarProperties](https://github.com/supchyan/lolibar/blob/master/Source/Tools/LolibarProperties.cs)** class:
 ```cs
 // Properties stores values, which uses in Lolibar's resources.
 // It can be anything, starting from styles, such as Main Color (BarColor),

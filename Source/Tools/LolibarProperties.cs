@@ -55,15 +55,15 @@ public abstract partial class LolibarProperties
     /// </summary>
     public static double BarIconSize { get; set; } = 16.0;
     /// <summary>
-    /// Separator - that bar between elements in lolibar's containers. This is it's width property.
+    /// Separator - that bar between elements in lolibar's containers. This is its width property.
     /// </summary>
     public static double BarSeparatorWidth { get; set; } = 4.0;
     /// <summary>
-    /// Separator - that bar between elements in lolibar's containers. This is it's height property.
+    /// Separator - that bar between elements in lolibar's containers. This is its height property.
     /// </summary>
     public static double BarSeparatorHeight { get; set; } = 16.0;
     /// <summary>
-    /// Separator - that bar between elements in lolibar's containers. This is it's border radius property.
+    /// Separator - that bar between elements in lolibar's containers. This is its border radius property.
     /// </summary>
     public static double BarSeparatorRadius { get; set; } = BarSeparatorWidth / 2.0;
 
@@ -76,7 +76,7 @@ public abstract partial class LolibarProperties
     /// </summary>
     public static Thickness BarContainerMargin { get; set; } = new Thickness(0.0, 0.0, 0.0, 0.0);
     /// <summary>
-    /// Gap between Border and it's content inside. ( Padding of the text inside it's box, if it's more accurate )
+    /// Gap between Border and its content inside. ( Padding of the text inside its box, if it's more accurate )
     /// </summary>
     public static Thickness BarContainerInnerMargin { get; set; } = new Thickness(9.0, 5.0, 9.0, 5.0);
     /// <summary>
