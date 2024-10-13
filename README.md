@@ -36,7 +36,7 @@ class ExampleEmptyMod : LolibarMod
     }
 }
 ```
-As you can see, this file looks similar to any other mod body. You can handle every single part of Lolibar's libraries here!
+As you can see, this file looks familiar with any other mod body. You can handle every single part of Lolibar's libraries here!
 
 ## 🪼Your First mod
 > [!TIP]
