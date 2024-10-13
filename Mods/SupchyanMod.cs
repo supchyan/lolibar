@@ -19,18 +19,18 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Containers
-    LolibarContainer? DateContainer;
-    LolibarContainer? TimeContainer;
+    LolibarContainer DateContainer              = new();
+    LolibarContainer TimeContainer              = new();
 
-    LolibarContainer? AudioContainerParent;
-    LolibarContainer? PreviousButtonContainer;
-    LolibarContainer? PlayButtonContainer;
-    LolibarContainer? NextButtonContainer;
-    LolibarContainer? AudioInfoContainer;
+    LolibarContainer AudioContainerParent       = new();
+    LolibarContainer PreviousButtonContainer    = new();
+    LolibarContainer PlayButtonContainer        = new();
+    LolibarContainer NextButtonContainer        = new();
+    LolibarContainer AudioInfoContainer         = new();
 
-    LolibarContainer? PowerMonitorContainer;
+    LolibarContainer PowerMonitorContainer      = new();
 
-    LolibarContainer? WorkspacesContainer;
+    LolibarContainer WorkspacesContainer        = new();
     #endregion
 
     #region Body
@@ -48,9 +48,9 @@ class SupchyanMod : LolibarMod
         {
             Name = "WhaleContainerParent",
             Parent = Lolibar.BarLeftContainer,
-
         };
         WhaleContainerParent.Create();
+
         new LolibarContainer()
         {
             Name = "WhaleContainer",
@@ -173,36 +173,23 @@ class SupchyanMod : LolibarMod
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
         // date / time
-        if (DateContainer != null)
-        {
-            DateContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
-            DateContainer.Update();
-        }
-        if (TimeContainer != null)
-        {
-            TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in {(TimeZoneInfo.Local.DisplayName is var time && time.Contains("(UTC) ") ? time.Replace("(UTC) ", "") : time.Substring(12))}";
-            TimeContainer.Update();
-        }
+        DateContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
+        DateContainer.Update();
+
+        TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in {(TimeZoneInfo.Local.DisplayName is var time && time.Contains("(UTC) ") ? time.Replace("(UTC) ", "") : time.Substring(12))}";
+        TimeContainer.Update();
 
         // audio player
-        if (PlayButtonContainer != null)
-        {
-            PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? PauseAudioIcon : PlayAudioIcon;
-            PlayButtonContainer.Update();
-        }
-        if (AudioInfoContainer != null)
-        {
-            AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
-            AudioInfoContainer.Update();
-        }
-        
+        PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? PauseAudioIcon : PlayAudioIcon;
+        PlayButtonContainer.Update();
+
+        AudioInfoContainer.Text = LolibarAudio.StreamInfo?.Title ?? "Whale Audio";
+        AudioInfoContainer.Update();
+
         // power
-        if (PowerMonitorContainer != null)
-        {
-            PowerMonitorContainer.Text = LolibarDefaults.GetPowerInfo();
-            PowerMonitorContainer.Icon = LolibarDefaults.GetPowerIcon();
-            PowerMonitorContainer.Update();
-        }
+        PowerMonitorContainer.Text = LolibarDefaults.GetPowerInfo();
+        PowerMonitorContainer.Icon = LolibarDefaults.GetPowerIcon();
+        PowerMonitorContainer.Update();
     }
     #endregion
 
