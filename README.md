@@ -36,13 +36,13 @@ class ExampleEmptyMod : LolibarMod
     }
 }
 ```
-As you can see, this file looks familiar with any other mod body. You can handle every single part of Lolibar's libraries here!
+As you can see, this code looks familiar with any other mod body. You can handle every single part of Lolibar's libraries here!
 
 ## 🪼Your First mod
 > [!TIP]
 > All mods is highly recommended to be stored in **[Mods](https://github.com/supchyan/lolibar/tree/master/Mods/)** folder.
 
-The first step of your modding journey is **creating a mod class**. Let's get into `MyFirstMod.cs`:
+The first step of your modding journey - **create a mod class**. Let me explain basics on `MyFirstMod.cs` example:
 ```cs
 namespace LolibarApp.Mods;
 
@@ -53,7 +53,7 @@ class MyFirstMod : LolibarMod
     public override void Update() { }
 }
 ```
-All you can see above is **absolute minimum** your mod must contain. Without that, Lolibar won't compile properly. Let's talk about every part in details. </br></br>
+Code you can see above is **absolute minimum** your mod must contain. Without that, Lolibar won't compile properly. Now, talk about every part in details ↓↓↓ </br></br>
 
 ```cs
 namespace LolibarApp.Mods;
@@ -63,11 +63,11 @@ namespace LolibarApp.Mods;
 ```cs
 public override void PreInitialize() { }
 ```
-`PreInitialize()` hook useful to initialize something before `Initialize()` hook invoked, so its pre-initialization. I recommend you to setup all properties in there. What is `properties`? Let's talk about them, referencing to **[LolibarProperties](https://github.com/supchyan/lolibar/blob/master/Source/Tools/LolibarProperties.cs)** class:
+`PreInitialize()` hook useful to initialize something before `Initialize()` hook invoked, because calls before initialization process started. I recommend you to setup all properties in there. What is `properties`? Let's talk about them, referencing to **[LolibarProperties](https://github.com/supchyan/lolibar/blob/master/Source/Tools/LolibarProperties.cs)** class:
 ```cs
 // Properties stores values, which uses in Lolibar's resources.
 // It can be anything, starting from styles, such as Main Color (BarColor),
-// ending with triggers, simulating or providing something.
+// ending with triggers, simulates or provides something.
 
 // Basic example:
 public override void PreInitialize()
@@ -114,7 +114,14 @@ Here we can see a new object instance, that has a couple of local properties ins
 * `Name` - Initial container name. Uses for automatic resources initialization;
 * `Parent` - Any other container, where this should be placed;
 * `Text` - Text content of the container;
-* `HasBackground` - Trigger to draw border around the container. It's semi-transparent and fits well with the whole statusbar theme. 
+* `HasBackground` - Trigger to draw border around the container. It's semi-transparent and fits well with the whole statusbar theme.
+</br></br>
+
+I've used `Lolibar.BarCenterContainer` here, which is tricky part to put `HelloContainer` into one of default containers. Lolibar has `3` default containers to place custom ones inside:
+* `BarLeftContainer` - Most left side of the statusbar;
+* `BarRightContainer` - Most right side of the statusbar.
+* `BarCenterContainer` - This container is centered relative to `BarLeftContainer` and `BarRightContainer`. Ain't a center of the status bar! 
+</br></br>
 
 We've drawn a static container. Now, let's update it's content, using `Update()` hook:
 ```cs
@@ -149,7 +156,7 @@ class MyFirstMod : LolibarMod
         HelloContainer.Text = DateTime.Now.ToString();   // Change instance's text content ...
         HelloContainer.Update();                         // ... And update it in resources
 
-        // Now, text inside `HelloContainer` will be updated to the current system's time every `BarUpdateDelay`.
+        // Now, text inside `HelloContainer` will be equal current system's time every `BarUpdateDelay`.
     }
 }
 // Simple enough, isn't it? 🐳
@@ -160,7 +167,7 @@ class MyFirstMod : LolibarMod
 *<div align=center>`HelloContainer` shows current time.</div>*
 </br>
 
-To build 'n run `Lolibar` project, select preferred profile at the top of the VS and push any of `▶` `▷` buttons.</br>
+To build 'n run `Lolibar` project, you need to select preferred profile at the top of the VS and push any of `▶` `▷` buttons.</br>
 <div align=center><img src=https://github.com/user-attachments/assets/6128d51e-2de1-4d7a-9db2-2cb0e2fbf404 /></div>
 
 ## 🪼Next steps
