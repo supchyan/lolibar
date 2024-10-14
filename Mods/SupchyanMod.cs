@@ -38,8 +38,8 @@ class SupchyanMod : LolibarMod
     {
         BarUpdateDelay                  = 250;
         BarHeight                       = 36;
-        BarColor                        = LolibarHelper.SetColor("#11131f");
-        BarContainersColor              = LolibarHelper.SetColor("#bab7af");
+        BarColor                        = LolibarHelper.SetColor("#1f2726");
+        BarContainersColor              = LolibarHelper.SetColor("#22a4a3");
     }
     public override void Initialize()
     {
@@ -69,7 +69,7 @@ class SupchyanMod : LolibarMod
             Parent = Lolibar.BarLeftContainer,
             Text = "-",
             SeparatorPosition = LolibarEnums.SeparatorPosition.Both,
-            MouseLeftButtonUpEvent = OpenTimeSettingsEvent,
+            MouseLeftButtonUpEvent = OpenCalendarEvent,
         };
         DateContainer.Create();
 
@@ -209,7 +209,14 @@ class SupchyanMod : LolibarMod
         }.Start();
     }
 
-    // time
+    // date / time
+    void OpenCalendarEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        LolibarHelper.KeyDown(Keys.LWin);
+        LolibarHelper.KeyDown(Keys.C);
+        LolibarHelper.KeyUp(Keys.C);
+        LolibarHelper.KeyUp(Keys.LWin);
+    }
     void OpenTimeSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         new Process
