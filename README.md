@@ -6,7 +6,7 @@
 ## 🪼Introduction
 This project is **toolkit** for modders, which grants capabilities to create statusbars. There're no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can configure it using this toolkit!
 
-## 🪼Alternatives
+## 🪼Similar Projects
 - **[yasb](https://github.com/da-rth/yasb) (Cross platform, Python)**
 - **[polybar](https://github.com/polybar/polybar) (Linux, C++)**
 - **[eww](https://github.com/elkowar/eww) (Linux, Rust)**
