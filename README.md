@@ -112,7 +112,7 @@ public override void Initialize()
 
 Here we can see a new object instance, that has a couple of local properties inside. Let me explain about those, which certain example has:
 * `Name` - Initial container name. Uses for automatic resources initialization;
-* `Parent` - Any other container, where this should be placed;
+* `Parent` - Any other container, where **your container** should be placed;
 * `Text` - Text content of the container;
 * `HasBackground` - Trigger to draw border around the container. It's semi-transparent and fits well with the whole statusbar theme.
 </br></br>
