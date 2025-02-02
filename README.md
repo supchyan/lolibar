@@ -67,7 +67,7 @@ public override void PreInitialize() { }
 ```cs
 // Properties stores values, which uses in Lolibar's resources.
 // It can be anything, starting from styles, such as Main Color (BarColor),
-// ending with triggers, simulates or provides something.
+// ending by triggers, which simulates or provides something.
 
 // Basic example:
 public override void PreInitialize()
