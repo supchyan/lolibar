@@ -6,7 +6,7 @@
 ## 🪼Introduction
 This project is **toolkit** for modders, which grants capabilities to create statusbars. There're no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can configure it using this toolkit!
 
-## 🪼Alternatives
+## 🪼Similar Projects
 - **[yasb](https://github.com/da-rth/yasb) (Cross platform, Python)**
 - **[polybar](https://github.com/polybar/polybar) (Linux, C++)**
 - **[eww](https://github.com/elkowar/eww) (Linux, Rust)**
@@ -67,7 +67,7 @@ public override void PreInitialize() { }
 ```cs
 // Properties stores values, which uses in Lolibar's resources.
 // It can be anything, starting from styles, such as Main Color (BarColor),
-// ending with triggers, simulates or provides something.
+// ending by triggers, which simulates or provides something.
 
 // Basic example:
 public override void PreInitialize()
@@ -112,22 +112,22 @@ public override void Initialize()
 
 Here we can see a new object instance, that has a couple of local properties inside. Let me explain about those, which certain example has:
 * `Name` - Initial container name. Uses for automatic resources initialization;
-* `Parent` - Any other container, where this should be placed;
+* `Parent` - Any other container, where **your container** should be placed;
 * `Text` - Text content of the container;
 * `HasBackground` - Trigger to draw border around the container. It's semi-transparent and fits well with the whole statusbar theme.
 </br></br>
 
-I've used `Lolibar.BarCenterContainer` here, which is tricky part to put `HelloContainer` into one of default containers. Lolibar has `3` default containers to place custom ones inside:
+I used `Lolibar.BarCenterContainer` here, which is tricky part to put `HelloContainer` into the one of default containers. Lolibar has `3` default containers to place custom containers inside:
 * `BarLeftContainer` - Most left side of the statusbar;
 * `BarRightContainer` - Most right side of the statusbar.
-* `BarCenterContainer` - This container is centered relative to `BarLeftContainer` and `BarRightContainer`. Ain't a center of the status bar! 
+* `BarCenterContainer` - This container is centered relative to `BarLeftContainer` and `BarRightContainer`. This is not a center of the status bar! 
 </br></br>
 
 We've drawn a static container. Now, let's update it's content, using `Update()` hook:
 ```cs
 public override void Update() { }
 ```
-This hook is about to **update** something along statusbar's execution process. `Update()` hook has an **Update Delay** - time span, between loop iterations. Yes, `Update()` is an infinite loop hook, so keep it in mind. The interations delay can be modified by `BarUpdateDelay` property, which can be setup in `PreInitialize()` hook as well. To understand `Update()`'s principles better, check **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section. By the way, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey, because it has various examples of how to create one or other thing. Anyway, let's get back into updating info in `HelloContainer`:
+This hook is about to **update** something along statusbar's execution process. `Update()` hook has an **Update Delay** - time span, between loop iterations. Yes, `Update()` is an infinite loop hook, so keep it in mind. The interations delay can be modified by `BarUpdateDelay` property, which can be defined in `PreInitialize()` hook as well. To understand `Update()`'s principles better, check **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section. By the way, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey, because it has various examples of how to create one or other thing. Anyway, let's get back to updating info in `HelloContainer`:
 ```cs
 using LolibarApp.Source.Tools;
 using LolibarApp.Source;
@@ -136,7 +136,7 @@ namespace LolibarApp.Mods;
 
 class MyFirstMod : LolibarMod
 {
-    // I've made it external to get access to it from other hook.
+    // I made this container as external var to get access to it under different hooks.
     LolibarContainer HelloContainer;
 
     public override void PreInitialize() { }
@@ -164,7 +164,7 @@ class MyFirstMod : LolibarMod
 </br>
 <div align=center><img src=https://github.com/user-attachments/assets/0b5f5253-ff5e-4c94-82d9-7b07559e82f7 /></div>
 
-*<div align=center>`HelloContainer` shows current time.</div>*
+*<div align=center>`HelloContainer` shows current time (every 1000ms by default).</div>*
 </br>
 
 To build 'n run `Lolibar` project, you need to select preferred profile at the top of the VS and push any of `▶` `▷` buttons.</br>
