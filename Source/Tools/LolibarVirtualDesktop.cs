@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Diagnostics;
 using System.Windows.Controls;
 using static LolibarApp.Source.Tools.LolibarEnums;
 
@@ -282,7 +280,13 @@ public class LolibarVirtualDesktop
         }
         InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
     }
-
+    public static void UpdateInitializedTabs()
+    {
+        if (InitializedParent != null)
+        {
+            //InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        }
+    }
     public static void GoToDesktopRight()
     {
         switch (WindowsVersion)

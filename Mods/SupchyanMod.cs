@@ -37,9 +37,9 @@ class SupchyanMod : LolibarMod
     public override void PreInitialize()
     {
         BarUpdateDelay                  = 250;
-        BarHeight                       = 36;
-        BarColor                        = LolibarHelper.SetColor("#1f2726");
-        BarContainersColor              = LolibarHelper.SetColor("#22a4a3");
+        BarHeight                       = 40;
+        BarColor                        = LolibarHelper.SetColor("#b8bcc3");
+        BarContainersColor              = LolibarHelper.SetColor("#33354b");
     }
     public override void Initialize()
     {
@@ -53,40 +53,40 @@ class SupchyanMod : LolibarMod
 
         new LolibarContainer()
         {
-            Name = "WhaleContainer",
-            Parent = WhaleContainerParent.SpaceInside,
-            Text = "🐳",
-            MouseLeftButtonUpEvent = OpenUserSettingsEvent,
-            HasBackground = true,
-            Color = LolibarHelper.SetColor("#9c9489")
+            Name                    = "WhaleContainer",
+            Parent                  = WhaleContainerParent.SpaceInside,
+            Text                    = "🌖",
+            MouseLeftButtonUpEvent  = OpenUserSettingsEvent,
+            HasBackground           = true,
+            Color                   = LolibarHelper.SetColor("#41484f")
 
         }.Create();
 
         // date / time
         DateContainer = new()
         {
-            Name = "DateContainer",
-            Parent = Lolibar.BarLeftContainer,
-            Text = "-",
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Both,
-            MouseLeftButtonUpEvent = OpenCalendarEvent,
+            Name                    = "DateContainer",
+            Parent                  = Lolibar.BarLeftContainer,
+            Text                    = "-",
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Both,
+            MouseLeftButtonUpEvent  = OpenCalendarEvent,
         };
         DateContainer.Create();
 
         TimeContainer = new()
         {
-            Name = "TimeContainer",
-            Parent = Lolibar.BarLeftContainer,
-            Text = "-",
-            MouseLeftButtonUpEvent = OpenTimeSettingsEvent
+            Name                    = "TimeContainer",
+            Parent                  = Lolibar.BarLeftContainer,
+            Text                    = "-",
+            MouseLeftButtonUpEvent  = OpenTimeSettingsEvent
         };
         TimeContainer.Create();
 
         // audio player
         AudioContainerParent = new()
         {
-            Name = "AudioContainerParent",
-            Parent = Lolibar.BarCenterContainer,
+            Name    = "AudioContainerParent",
+            Parent  = Lolibar.BarCenterContainer,
         };
         AudioContainerParent.Create();
 
@@ -94,38 +94,38 @@ class SupchyanMod : LolibarMod
 
         PreviousButtonContainer = new()
         {
-            Name = "AudioPreviousButton",
-            Parent = parent,
-            Icon = PreviousAudioIcon,
-            MouseLeftButtonUpEvent = PreviousStreamCallEvent
+            Name                    = "AudioPreviousButton",
+            Parent                  = parent,
+            Icon                    = PreviousAudioIcon,
+            MouseLeftButtonUpEvent  = PreviousStreamCallEvent
         };
         PreviousButtonContainer.Create();
 
         PlayButtonContainer = new()
         {
-            Name = "AudioPlayButton",
-            Parent = parent,
-            Icon = PlayAudioIcon,
-            MouseLeftButtonUpEvent = PlayOrPauseStreamCallEvent
+            Name                    = "AudioPlayButton",
+            Parent                  = parent,
+            Icon                    = PlayAudioIcon,
+            MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent
         };
         PlayButtonContainer.Create();
 
         NextButtonContainer = new()
         {
-            Name = "AudioNextButton",
-            Parent = parent,
-            Icon = NextAudioIcon,
-            MouseLeftButtonUpEvent = NextStreamCallEvent
+            Name                    = "AudioNextButton",
+            Parent                  = parent,
+            Icon                    = NextAudioIcon,
+            MouseLeftButtonUpEvent  = NextStreamCallEvent
         };
         NextButtonContainer.Create();
 
         AudioInfoContainer = new()
         {
-            Name = "AudioInfoContainer",
-            Parent = Lolibar.BarCenterContainer,
-            Text = "-",
-            HasBackground = true,
-            Color = LolibarHelper.SetColor("#9c9489")
+            Name            = "AudioInfoContainer",
+            Parent          = Lolibar.BarCenterContainer,
+            Text            = "-",
+            HasBackground   = true,
+            Color           = LolibarHelper.SetColor("#41484f")
         };
         AudioInfoContainer.Create();
 
@@ -143,21 +143,21 @@ class SupchyanMod : LolibarMod
         // power
         PowerMonitorContainer = new()
         {
-            Name = "PowerMonitorContainer",
-            Parent = Lolibar.BarRightContainer,
-            Text = LolibarDefaults.GetPowerInfo(),
-            Icon = LolibarDefaults.GetPowerIcon(),
-            MouseLeftButtonUpEvent = OpenPowerSettingsEvent
+            Name                    = "PowerMonitorContainer",
+            Parent                  = Lolibar.BarRightContainer,
+            Text                    = LolibarDefaults.GetPowerInfo(),
+            Icon                    = LolibarDefaults.GetPowerIcon(),
+            MouseLeftButtonUpEvent  = OpenPowerSettingsEvent
         };
         PowerMonitorContainer.Create();
 
         // desktop workspaces
         WorkspacesContainer = new()
         {
-            Name = "WorkspacesContainer",
-            Parent = Lolibar.BarRightContainer,
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
-            MouseWheelEvent = SwapWorkspacesByMouseWheelEvent
+            Name                = "WorkspacesContainer",
+            Parent              = Lolibar.BarRightContainer,
+            SeparatorPosition   = LolibarEnums.SeparatorPosition.Left,
+            MouseWheelEvent     = SwapWorkspacesByMouseWheelEvent
         };
         WorkspacesContainer.Create();
 
@@ -173,10 +173,14 @@ class SupchyanMod : LolibarMod
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
         // date / time
-        DateContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
+        DateContainer.Text = $"{DateTime.Now.DayOfWeek}, {DateTime.Now.Day} {DateTime.Now.ToString("MMMM")} {DateTime.Now.Year}";
         DateContainer.Update();
 
-        TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} in {(TimeZoneInfo.Local.DisplayName is var time && time.Contains("(UTC) ") ? time.Replace("(UTC) ", "") : time.Substring(12))}";
+        // You can add Time Zone display, like:
+        // string TimeZone = $"Your Time Zone: {(TimeZoneInfo.Local.DisplayName is var time && time.Contains("(UTC) ") ? time.Replace("(UTC) ", "") : time.Substring(12))}";
+        // --
+        TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)}"; 
+
         TimeContainer.Update();
 
         // audio player

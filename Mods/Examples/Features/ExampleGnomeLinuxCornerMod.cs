@@ -3,7 +3,7 @@
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to make in loadable
 
-//namespace LolibarApp.Mods;
+// namespace LolibarApp.Mods;
 
 class ExampleGnomeLinuxCornerMod : LolibarMod
 {
@@ -13,15 +13,12 @@ class ExampleGnomeLinuxCornerMod : LolibarMod
         BarCornersInvokesDesktopsMenu = true;
 
         // Now you can simulate WIN+TAB key press,
-        // quick moving your mouse cursor to the Left corner of the statusbar.
+        // moving your mouse cursor to the *Top Left corner of the screen.
 
         // You can modify the target corner:
         BarTargetCorner = LolibarEnums.BarTargetCorner.Right;
 
-        // This property equals Left by default, so let's get back to it:
-        BarTargetCorner = LolibarEnums.BarTargetCorner.Left;
-
-        // So now, this feature compared to the Left corner of your screen!
+        // So now, this feature compared to the Right corner of your screen!
 
         // But wait, which corner? Top Left? Bottom Left? Both???
 
@@ -33,13 +30,13 @@ class ExampleGnomeLinuxCornerMod : LolibarMod
         BarSnapToTop = false;
 
         // Now statusbar will be drawn at the BOTTOM of the screen,
-        // so the Left corner now is the Bottom Left corner.
+        // so the Right corner now is the BOTTOM Right corner.
 
         // Let's snap it back to top:
         BarSnapToTop = true;
 
         // Ok, statusbar at the TOP of the screen,
-        // so the Left corner is the Top Left corner for now.
+        // so the Right corner is the Top Right corner for now.
 
         // That's it!
     }

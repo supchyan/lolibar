@@ -3,13 +3,13 @@
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
 {
-    static async Task<GlobalSystemMediaTransportControlsSessionManager> GetSystemMediaTransportControlsSessionManager() => await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
+    static async Task<GlobalSystemMediaTransportControlsSessionManager> GetSystemMediaTransportControlsSessionManager() => await GlobalSystemMediaTransportControlsSessionManager.RequestAsync()!;
     static async Task<GlobalSystemMediaTransportControlsSessionMediaProperties?> GetMediaProperties(GlobalSystemMediaTransportControlsSession? session) => session != null ? await session.TryGetMediaPropertiesAsync() : default;
 
     /// <summary>
     /// Current audio stream instance. (Returns `null` if nothing is buffered / playing)
     /// </summary>
-    public static GlobalSystemMediaTransportControlsSessionManager? Stream { get; private set; } = GetSystemMediaTransportControlsSessionManager().Result;
+    public static GlobalSystemMediaTransportControlsSessionManager? Stream { get; private set; } = GetSystemMediaTransportControlsSessionManager().Result!;
     /// <summary>
     /// Current audio stream info. (Returns `null` if stream doesn't exist or stream's info is unreachable)
     /// </summary>
@@ -43,7 +43,10 @@ public class LolibarAudio
             StreamInfo = await GetMediaProperties(CurrentSession);
         }
 
-        CurrentSession.PlaybackInfoChanged    += LolibarAudio_PlaybackInfoChanged;
+        CurrentSession.PlaybackInfoChanged -= LolibarAudio_PlaybackInfoChanged;
+        CurrentSession.MediaPropertiesChanged -= LolibarAudio_MediaPropertiesChanged;
+
+        CurrentSession.PlaybackInfoChanged += LolibarAudio_PlaybackInfoChanged;
         CurrentSession.MediaPropertiesChanged += LolibarAudio_MediaPropertiesChanged;
     }
     #endregion

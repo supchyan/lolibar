@@ -45,7 +45,7 @@ public partial class Lolibar : Window
     bool IsRendered                 { get; set; }
 
     // --- Cursor velocity calculation ---
-    Task CursorCoordsListenerTask   { get; set; }
+    System.Threading.Tasks.Task CursorCoordsListenerTask   { get; set; }
     Vector2 OldCursorPosition       { get; set; }
     Vector2 CursorPosition          { get; set; }
     float CursorVelocity            { get; set; }
@@ -148,7 +148,7 @@ public partial class Lolibar : Window
     {
         while (true)
         {
-            await Task.Delay(LolibarMod.BarUpdateDelay);
+            await System.Threading.Tasks.Task.Delay(LolibarMod.BarUpdateDelay);
 
             // --- PreUpdate ---
             PreUpdateSnapping();
@@ -164,7 +164,7 @@ public partial class Lolibar : Window
     {
         while (true)
         {
-            await Task.Delay(100);
+            await System.Threading.Tasks.Task.Delay(100);
             OldCursorPosition = CursorPosition;
         }
     }
@@ -210,6 +210,7 @@ public partial class Lolibar : Window
             if (!IsHidden)
             {
                 LolibarAnimator.BeginStatusBarShowAnimation(this);
+                LolibarVirtualDesktop.UpdateInitializedTabs();
             }
             else
             {
@@ -237,7 +238,7 @@ public partial class Lolibar : Window
 
             CursorVelocity = (OldCursorPosition - CursorPosition).Length();
             
-            if (IsCursorInDesktopsMenuPosition && CursorVelocity >= 100f && (DateTime.Now - OldTime).Milliseconds > 500)
+            if (IsCursorInDesktopsMenuPosition && CursorVelocity >= 2f && (DateTime.Now - OldTime).Milliseconds > 500)
             {
                 LolibarHelper.OpenWindowsDesktopsUI();
 
@@ -278,12 +279,40 @@ public partial class Lolibar : Window
         {
             Items =
             {
+                new ToolStripMenuItem("Run on Windows Start Up", null, OnRunOnWindowsStartUpSelected),
                 new ToolStripMenuItem("Restart", null, OnRestartSelected),
                 new ToolStripMenuItem("GitHub",  null, OnGitHubSelected),
                 new ToolStripMenuItem("Exit",    null, OnExitSelected)
             }
         }
     };
+    class JsonClass
+    {
+        public string? Path { get; set; }
+        public string? Dest { get; set; }
+    }   
+    private static void OnRunOnWindowsStartUpSelected(object? sender, EventArgs e)
+    {
+        //var fileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.exe";
+        //var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
+        //var dest = $"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
+
+        //File.WriteAllText(
+        //    $"{path}\\Misc\\location.json",
+        //    $"{JsonSerializer.Serialize(
+        //        new JsonClass
+        //        {
+        //            Path = $"{path}\\{fileName}",
+        //            Dest = $"{dest}\\{fileName}"
+        //        }
+        //    )}"
+        //);
+        //Process proc = new();
+        //proc.StartInfo.FileName = @"Misc\StartUp.exe";
+        //proc.StartInfo.UseShellExecute = true;
+        //proc.Start();
+    }
+
     // Tray Content
     static void OnRestartSelected(object? sender, EventArgs e)
     {

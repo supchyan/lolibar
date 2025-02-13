@@ -9,14 +9,12 @@
 		<UseWPF>true</UseWPF>
 		<ApplicationIcon>app_icon.ico</ApplicationIcon>
 		<AssemblyName>lolibar</AssemblyName>
-	</PropertyGroup>
-	
+	</PropertyGroup>	
 	<ItemGroup>
 		<PackageReference Include="Ikst.MouseHook" Version="1.0.0" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<Resource Include="Effects\ThresholdEffect.fx.ps" />
 		<Resource Include="Fonts\mononoki.ttf"></Resource>
+		<Content Include="Misc\StartUp.exe">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 </Project>
