@@ -10,9 +10,10 @@ namespace LolibarApp.Source;
 
 public partial class Lolibar : Window
 {
-    // Misc
-    readonly MouseHook  MouseHandler    = new();
-    readonly LolibarPublicMod PublicMod = new();
+    // --- Misc ---
+    readonly MouseHook          MouseHandler    = new();
+    readonly LolibarPublicMod   PublicMod = new();
+
     // --- Links to the root containers ---
     public static StackPanel BarLeftContainer   { get; private set; } = new StackPanel();
     public static StackPanel BarCenterContainer { get; private set; } = new StackPanel();
@@ -45,11 +46,14 @@ public partial class Lolibar : Window
     bool IsRendered                 { get; set; }
 
     // --- Cursor velocity calculation ---
-    System.Threading.Tasks.Task CursorCoordsListenerTask   { get; set; }
+    Task CursorCoordsListenerTask   { get; set; }
     Vector2 OldCursorPosition       { get; set; }
     Vector2 CursorPosition          { get; set; }
     float CursorVelocity            { get; set; }
     DateTime OldTime                { get; set; }
+
+    // --- VDesktop update trigger on lolibar's opening ---
+    bool ShouldManuallyUpdateVirtualDesktops { get; set; }
 
     public Lolibar()
     {
@@ -130,12 +134,12 @@ public partial class Lolibar : Window
     }
 
     #region Lifecycle
-    void InitializeCycle()
+    async void InitializeCycle()
     {
         // --- PreInitialize ---
         LolibarModLoader.LoadMods();
-        LolibarAudio.TryToResubscribeStreamEvents();
-        LolibarAudio.TryToResubscribeStreamInfoEvents();
+        LolibarAudio.TryToResubscribeStreamEventsAsync();
+        await LolibarAudio.TryToResubscribeStreamInfoEvents();
         UpdateScreenParameters();
 
         // --- Mods PreInitialize ---
@@ -148,7 +152,7 @@ public partial class Lolibar : Window
     {
         while (true)
         {
-            await System.Threading.Tasks.Task.Delay(LolibarMod.BarUpdateDelay);
+            await Task.Delay(LolibarMod.BarUpdateDelay);
 
             // --- PreUpdate ---
             PreUpdateSnapping();
@@ -164,8 +168,14 @@ public partial class Lolibar : Window
     {
         while (true)
         {
-            await System.Threading.Tasks.Task.Delay(100);
+            await Task.Delay(100);
             OldCursorPosition = CursorPosition;
+
+            if (ShouldManuallyUpdateVirtualDesktops)
+            {
+                LolibarVirtualDesktop.UpdateInitializedDesktops();
+                ShouldManuallyUpdateVirtualDesktops = false;
+            }
         }
     }
     #endregion
@@ -210,7 +220,7 @@ public partial class Lolibar : Window
             if (!IsHidden)
             {
                 LolibarAnimator.BeginStatusBarShowAnimation(this);
-                LolibarVirtualDesktop.UpdateInitializedTabs();
+                ShouldManuallyUpdateVirtualDesktops = true;
             }
             else
             {

@@ -5,9 +5,7 @@
 // C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe VirtualDesktop1111.cs
 
 using Microsoft.Win32;
-using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 // Based on http://stackoverflow.com/a/32417530, Windows 10 SDK, github project Grabacr07/VirtualDesktop11 and own research
 

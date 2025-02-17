@@ -6,7 +6,15 @@ namespace LolibarApp.Source.Tools;
 
 public class LolibarVirtualDesktop
 {
+    /// <summary>
+    /// Some initialized readonly parent container for the virtual desktops navigation. (null by default)
+    /// </summary>
     static StackPanel? InitializedParent            { get; set; }
+    /// <summary>
+    /// Some initialized readonly trigger,
+    /// determines whenever desktops' tabs should be named
+    /// as actual desktops they controls. (false by default)
+    /// </summary>
     static bool        InitializedShowDesktopNames  { get; set; }
     public static int  OldDesktopCount      { get; private set; }
     public static int  OldDesktopIndex      { get; private set; }
@@ -42,13 +50,18 @@ public class LolibarVirtualDesktop
             }
         }
     }
+    /// <summary>
+    /// Invokes updates of the Virtual Desktops' tabs in the specified `parent`.
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="showDesktopNames"></param>
     public static void InvokeWorkspaceTabsUpdate(StackPanel? parent, bool showDesktopNames)
     {
         // Stop doing all logic below, if `error_tab` has been generated
         // or parent is undefined.
         if (IsErrorTabGenerated || parent == null) return;
 
-        if (InitializedParent == null) InitializedParent = parent;
+        InitializedParent ??= parent;
         InitializedShowDesktopNames = showDesktopNames;
 
         /* 
@@ -74,8 +87,6 @@ public class LolibarVirtualDesktop
             break;
 
             case WinVer.Win10:
-                if (!ShouldUpdateWorkspaces(VirtualDesktop.Desktop.Count, VirtualDesktop.Desktop.FromDesktop(VirtualDesktop.Desktop.Current))) return;
-
                 UpdateWorkspaceTabs(
                     parent,
                     desktopCount: VirtualDesktop.Desktop.Count,
@@ -85,8 +96,6 @@ public class LolibarVirtualDesktop
             break;
 
             case WinVer.Win11:
-                if (!ShouldUpdateWorkspaces(VirtualDesktop11.Desktop.Count, VirtualDesktop11.Desktop.FromDesktop(VirtualDesktop11.Desktop.Current))) return;
-
                 UpdateWorkspaceTabs(
                     parent,
                     desktopCount: VirtualDesktop11.Desktop.Count,
@@ -96,8 +105,6 @@ public class LolibarVirtualDesktop
             break;
 
             case WinVer.Win11_24H2:
-                if (!ShouldUpdateWorkspaces(VirtualDesktop11_24H2.Desktop.Count, VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current))) return;
-
                 UpdateWorkspaceTabs(
                     parent,
                     desktopCount: VirtualDesktop11_24H2.Desktop.Count,
@@ -129,8 +136,10 @@ public class LolibarVirtualDesktop
         IsErrorTabGenerated = true;
     }
     // Recreates workspaces tabs, which is related on Windows Virtual Desktops
-    static void UpdateWorkspaceTabs(StackPanel parent, int desktopCount, int currentDesktopIndex, bool showDesktopNames)
+    static void UpdateWorkspaceTabs(StackPanel? parent, int desktopCount, int currentDesktopIndex, bool showDesktopNames)
     {
+        if (parent == null) return;
+
         // Remove all children
         parent.Children.RemoveRange(0, parent.Children.Count);
 
@@ -188,19 +197,12 @@ public class LolibarVirtualDesktop
             tab.Create();
         }
     }
-
-    static bool ShouldUpdateWorkspaces(int currentDesktopCount, int currentDesktopIndex) {
-        if (OldDesktopCount != currentDesktopCount)
-        {
-            OldDesktopCount = currentDesktopCount;
-            return true;
-        }
-        if (OldDesktopIndex != currentDesktopIndex)
-        {
-            OldDesktopIndex = currentDesktopIndex;
-            return true;
-        }
-        return false;
+    /// <summary>
+    /// Manually updates initialized Virtual Dekstops in some initialized parent.
+    /// </summary>
+    public static void UpdateInitializedDesktops()
+    {
+        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
     }
     static void CreateDesktop()
     {
@@ -280,13 +282,6 @@ public class LolibarVirtualDesktop
         }
         InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
     }
-    public static void UpdateInitializedTabs()
-    {
-        if (InitializedParent != null)
-        {
-            //InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
-        }
-    }
     public static void GoToDesktopRight()
     {
         switch (WindowsVersion)
@@ -314,7 +309,6 @@ public class LolibarVirtualDesktop
         }
         InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
     }
-
     public static void GoToDesktopLeft()
     {
         switch (WindowsVersion)

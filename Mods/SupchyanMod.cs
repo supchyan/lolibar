@@ -180,7 +180,7 @@ class SupchyanMod : LolibarMod
         // string TimeZone = $"Your Time Zone: {(TimeZoneInfo.Local.DisplayName is var time && time.Contains("(UTC) ") ? time.Replace("(UTC) ", "") : time.Substring(12))}";
         // --
         TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)}"; 
-
+        TimeContainer.Text = LolibarAudio.CurrentSession?.GetPlaybackInfo().PlaybackStatus.ToString();
         TimeContainer.Update();
 
         // audio player
