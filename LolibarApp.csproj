@@ -13,8 +13,10 @@
 	<ItemGroup>
 		<PackageReference Include="Ikst.MouseHook" Version="1.0.0" />
 		<Resource Include="Fonts\mononoki.ttf"></Resource>
-		<Content Include="Misc\StartUp.exe">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
+	</ItemGroup>	
+	<ItemGroup>
+		<Content Include="Autorun\*">
+		    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
 	</ItemGroup>
 </Project>

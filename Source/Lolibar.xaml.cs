@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Reflection;
 using System.Numerics;
+using System.IO;
 
 namespace LolibarApp.Source;
 
@@ -280,7 +281,9 @@ public partial class Lolibar : Window
     #endregion
 
     #region Tray [ Notify Icon ]
-    readonly NotifyIcon TrayIcon = new()
+    readonly static ToolStripMenuItem AutorunTrayItem = new(AutorunTrayItemContent(), null, OnAutorunSelected);
+    
+    readonly static NotifyIcon TrayIcon = new()
     {
         Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
         Text = "Lolibar In Tray",
@@ -289,38 +292,42 @@ public partial class Lolibar : Window
         {
             Items =
             {
-                new ToolStripMenuItem("Run on Windows Start Up", null, OnRunOnWindowsStartUpSelected),
-                new ToolStripMenuItem("Restart", null, OnRestartSelected),
-                new ToolStripMenuItem("GitHub",  null, OnGitHubSelected),
-                new ToolStripMenuItem("Exit",    null, OnExitSelected)
+                new ToolStripMenuItem("Close Lolibar",  null, OnExitSelected   ),
+                new ToolStripMenuItem("Restart",        null, OnRestartSelected),
+                new ToolStripMenuItem("GitHub",         null, OnGitHubSelected ),
+                AutorunTrayItem,
             }
         }
     };
-    class JsonClass
+    static bool IsAutorunPathExist()
     {
-        public string? Path { get; set; }
-        public string? Dest { get; set; }
-    }   
-    private static void OnRunOnWindowsStartUpSelected(object? sender, EventArgs e)
-    {
-        //var fileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.exe";
-        //var path = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
-        //var dest = $"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
+        var PathExists = Path.Exists("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\lolibar.lnk");
+        
+        if (PathExists)
+            return true;
 
-        //File.WriteAllText(
-        //    $"{path}\\Misc\\location.json",
-        //    $"{JsonSerializer.Serialize(
-        //        new JsonClass
-        //        {
-        //            Path = $"{path}\\{fileName}",
-        //            Dest = $"{dest}\\{fileName}"
-        //        }
-        //    )}"
-        //);
-        //Process proc = new();
-        //proc.StartInfo.FileName = @"Misc\StartUp.exe";
-        //proc.StartInfo.UseShellExecute = true;
-        //proc.Start();
+        else 
+            return false;
+    }
+    static string AutorunTrayItemContent()
+    {
+        return IsAutorunPathExist() ? "Autorun (On)" : "Autorun (Off)";
+    }
+    static void UpdateAutorunTrayItem()
+    {
+        AutorunTrayItem.Text = AutorunTrayItemContent();
+        TrayIcon.ContextMenuStrip?.Items.Remove(AutorunTrayItem);
+        TrayIcon.ContextMenuStrip?.Items.Add(AutorunTrayItem);
+    } 
+    private static void OnAutorunSelected(object? sender, EventArgs e)
+    {
+        Process proc = new();
+        proc.StartInfo.FileName = @"Autorun\autorun.exe";
+        proc.StartInfo.UseShellExecute = true;
+        proc.Start();
+        proc.WaitForExit();
+
+        UpdateAutorunTrayItem();
     }
 
     // Tray Content

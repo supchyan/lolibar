@@ -1,0 +1,42 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {},
+    ".NETCoreApp,Version=v8.0/win-x64": {
+      "autorun/1.0.0": {
+        "dependencies": {
+          "Interop.IWshRuntimeLibrary": "1.0.1"
+        },
+        "runtime": {
+          "autorun.dll": {}
+        }
+      },
+      "Interop.IWshRuntimeLibrary/1.0.1": {
+        "runtime": {
+          "lib/net45/Interop.IWshRuntimeLibrary.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "autorun/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Interop.IWshRuntimeLibrary/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wUgwJ2GPD7ovBqDM2x426QJxw6W6FFQPSPbsFrl7H6CHrzTiooL/0mN5er/7D7aYLye0KX3wHwwqy3QRRFbMzg==",
+      "path": "interop.iwshruntimelibrary/1.0.1",
+      "hashPath": "interop.iwshruntimelibrary.1.0.1.nupkg.sha512"
+    }
+  }
+}
