@@ -177,7 +177,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[VirtualDesktop](https://github.com/MScholtes/VirtualDesktop) by @MScholtes**
 
 ## 🪼At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/1e928542-09d8-423e-89b5-1b0dbb2c4768 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/0f78433b-eb51-443e-a177-548f31c9c83b /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
