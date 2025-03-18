@@ -78,7 +78,8 @@ public partial class Lolibar : Window
         InitializeCycle();
         UpdateCycle();
 
-        UpdateCursorData(); // Uses for cursor velocity calculations
+        UpdateCursorData(); // For cursor velocity calculations
+        UpdateDesktopsData();  // For Dynamic Virtual Desktops Update
 
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
@@ -173,9 +174,15 @@ public partial class Lolibar : Window
     {
         while (true)
         {
-            await Task.Delay(100);
+            await Task.Delay(10);
             OldCursorPosition = CursorPosition;
-
+        }
+    }
+    async void UpdateDesktopsData()
+    {
+        while (true)
+        {
+            await Task.Delay(100);
             if (ShouldManuallyUpdateVirtualDesktops)
             {
                 LolibarVirtualDesktop.UpdateInitializedDesktops();

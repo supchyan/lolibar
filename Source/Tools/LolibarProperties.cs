@@ -13,7 +13,7 @@ public abstract partial class LolibarProperties
     public static LolibarEnums.BarTargetCorner BarTargetCorner { get; set; } = LolibarEnums.BarTargetCorner.Left;
     /// <summary>
     /// Simulates feature from Gnome Linux systems, where you can open all apps in convenient presentation,
-    /// quick moving the cursor to the statusbar's corner. You can modify the target corner with `BarTargetCorner` property. (False by default)
+    /// moving the cursor to the statusbar's corner. You can modify the target corner with `BarTargetCorner` property. (False by default)
     /// </summary>
     public static bool BarCornersInvokesDesktopsMenu { get; set; } = false;
     /// <summary>

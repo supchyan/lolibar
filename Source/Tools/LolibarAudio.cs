@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Media.Control;
+﻿using Windows.Media.Control;
 
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
