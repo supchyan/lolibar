@@ -25,8 +25,8 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Containers
-    LolibarContainer UserTimeContainerParent = new();
-    LolibarContainer UserTimeContainer = new();
+    LolibarContainer UserTimeContainerParent    = new();
+    LolibarContainer UserTimeContainer          = new();
 
     LolibarContainer DateContainer              = new();
 
@@ -45,28 +45,28 @@ class SupchyanMod : LolibarMod
     #region Body
     public override void PreInitialize()
     {
-        BarUpdateDelay                  = 250;
-        BarHeight                       = 40;
-        BarColor                        = LolibarHelper.SetColor(PrimaryColorCode);
-        BarContainersColor              = LolibarHelper.SetColor(SecondaryColorCode);
+        BarUpdateDelay              = 250;
+        BarHeight                   = 40;
+        BarColor                    = LolibarHelper.SetColor(PrimaryColorCode);
+        BarContainersColor          = LolibarHelper.SetColor(SecondaryColorCode);
     }
     public override void Initialize()
     {
         // --- User / Time ---
         UserTimeContainerParent = new()
         {
-            Name = "UserContainerParent",
-            Parent = Lolibar.BarLeftContainer,
+            Name                    = "UserContainerParent",
+            Parent                  = Lolibar.BarLeftContainer,
         };
         UserTimeContainerParent.Create();
 
         UserTimeContainer = new()
         {
-            Name = "UserTimeContainer",
-            Parent = UserTimeContainerParent.SpaceInside,
-            Text = "-",
-            MouseLeftButtonUpEvent = OpenUserSettingsEvent,
-            HasBackground = true,
+            Name                    = "UserTimeContainer",
+            Parent                  = UserTimeContainerParent.SpaceInside,
+            Text                    = "-",
+            MouseLeftButtonUpEvent  = OpenUserSettingsEvent,
+            HasBackground           = true,
         };
         UserTimeContainer.Create();
 
@@ -203,10 +203,10 @@ class SupchyanMod : LolibarMod
         {
             StartInfo = new()
             {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:accounts",
+                FileName        = "powershell.exe",
+                Arguments       = "Start-Process ms-settings:accounts",
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow  = true,
             }
         }.Start();
     }
@@ -225,54 +225,54 @@ class SupchyanMod : LolibarMod
         {
             StartInfo = new()
             {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:dateandtime",
+                FileName        = "powershell.exe",
+                Arguments       = "Start-Process ms-settings:dateandtime",
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow  = true,
             }
         }.Start();
     }
 
     // audio player
-    void PreviousStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void PreviousStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
         LolibarAudio.Previous();
     }
-    void PlayOrPauseStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void PlayOrPauseStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
         LolibarAudio.PlayOrPause();
     }
-    void NextStreamCallEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void NextStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
         LolibarAudio.Next();
     }
 
     // sound settings
-    void OpenSoundSettingsCustomEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void OpenSoundSettingsCustomEvent(object sender, MouseButtonEventArgs e)
     {
         new Process
         {
             StartInfo = new()
             {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:sound",
+                FileName        = "powershell.exe",
+                Arguments       = "Start-Process ms-settings:sound",
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow  = true,
             }
         }.Start();
     }
 
     // power
-    void OpenPowerSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    void OpenPowerSettingsEvent(object sender, MouseButtonEventArgs e)
     {
         new Process
         {
             StartInfo = new()
             {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:batterysaver",
+                FileName        = "powershell.exe",
+                Arguments       = "Start-Process ms-settings:batterysaver",
                 UseShellExecute = false,
-                CreateNoWindow = true,
+                CreateNoWindow  = true,
             }
         }.Start();
     }
