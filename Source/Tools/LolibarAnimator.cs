@@ -99,4 +99,20 @@ partial class LolibarAnimator : Window
         Storyboard.SetTargetProperty(Animation, new PropertyPath(OpacityProperty));
         SB.Begin((FrameworkElement)_);
     }
+    public static void BeginBlinkOpacityAnimation(UIElement _)
+    {
+        Storyboard SB = new();
+        var OpacityAnimation = new DoubleAnimation
+        {
+            From = 0,
+            To = 1,
+            Duration = elementDuration,
+            EasingFunction = easingFunction,
+        };
+        SB.Children.Add(OpacityAnimation);
+        Storyboard.SetTarget(OpacityAnimation, _);
+        Storyboard.SetTargetProperty(OpacityAnimation, new PropertyPath(OpacityProperty));
+
+        SB.Begin((FrameworkElement)_);
+    }
 }

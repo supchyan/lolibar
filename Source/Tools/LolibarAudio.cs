@@ -1,4 +1,5 @@
-﻿using Windows.Media.Control;
+﻿using System.Diagnostics;
+using Windows.Media.Control;
 
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
@@ -23,7 +24,7 @@ public class LolibarAudio
         }
     }
 
-    #region Methods
+    #region Private Methods
     public static async Task TryToSubscribeStreamEvents()
     {
         try
@@ -84,7 +85,6 @@ public class LolibarAudio
             StreamInfo = await GetMediaProperties(CurrentSession);
         }
     }
-
     static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
     {
         if (CurrentSession != null)

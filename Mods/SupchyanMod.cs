@@ -11,6 +11,7 @@ namespace LolibarApp.Mods;
 class SupchyanMod : LolibarMod
 {
     #region Anime Stuff
+    string OldAudioTitle = string.Empty;
     byte AudioPlayerAnimationFrame = 0;
     readonly string[] AudioPlayerAnimationFrames =
     [
@@ -102,12 +103,10 @@ class SupchyanMod : LolibarMod
         };
         AudioContainerParent.Create();
 
-        var parent = AudioContainerParent.SpaceInside;
-
         PreviousButtonContainer = new()
         {
             Name                    = "AudioPreviousButton",
-            Parent                  = parent,
+            Parent                  = AudioContainerParent.SpaceInside,
             Icon                    = PreviousAudioIcon,
             MouseLeftButtonUpEvent  = PreviousStreamCallEvent
         };
@@ -116,7 +115,7 @@ class SupchyanMod : LolibarMod
         PlayButtonContainer = new()
         {
             Name                    = "AudioPlayButton",
-            Parent                  = parent,
+            Parent                  = AudioContainerParent.SpaceInside,
             Icon                    = PlayAudioIcon,
             MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent
         };
@@ -125,7 +124,7 @@ class SupchyanMod : LolibarMod
         NextButtonContainer = new()
         {
             Name                    = "AudioNextButton",
-            Parent                  = parent,
+            Parent                  = AudioContainerParent.SpaceInside,
             Icon                    = NextAudioIcon,
             MouseLeftButtonUpEvent  = NextStreamCallEvent
         };
@@ -199,7 +198,14 @@ class SupchyanMod : LolibarMod
         PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? PauseAudioIcon : PlayAudioIcon;
         PlayButtonContainer.Update();
 
-        AudioInfoContainer.Text = $"{LolibarAudio.StreamInfo?.Title}" ?? $"NO AUDIO {PlaceholderAudioPlayerAnimation()}";
+        UseAudioTitleBlinkAnimation();
+
+        var AudioTitle = LolibarAudio.StreamInfo?.Title ?? "";
+
+        AudioInfoContainer.Text = AudioTitle == ""          ?
+            $"NO AUDIO {PlaceholderAudioPlayerAnimation()}" :
+            $"{LolibarAudio.StreamInfo?.Title}"             ;
+
         AudioInfoContainer.Update();
 
         // --- Power ---
@@ -254,7 +260,20 @@ class SupchyanMod : LolibarMod
     }
     void PlayOrPauseStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
-        LolibarAudio.PlayOrPause();
+        if (AudioInfoContainer.SpaceInside == null)
+        {
+            return;
+        }
+        if (LolibarAudio.IsPlaying())
+        {
+            LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.SpaceInside);
+            LolibarAudio.Pause();
+        }
+        else
+        {
+            LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.SpaceInside);
+            LolibarAudio.Resume();
+        }
     }
     void NextStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
@@ -322,6 +341,20 @@ class SupchyanMod : LolibarMod
         else
         {
             return AudioPlayerAnimationFrames[AudioPlayerAnimationFrame];
+        }
+    }
+    /// <summary>
+    /// My hook to blink audio title in the container whenever audio title has been changed.
+    /// Like... visual audio streams transition effect.
+    /// </summary>
+    void UseAudioTitleBlinkAnimation()
+    {
+        if (AudioInfoContainer.SpaceInside == null) return;
+
+        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title)
+        {
+            LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.SpaceInside);
+            OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;
         }
     }
     #endregion
