@@ -1,4 +1,5 @@
-﻿using Windows.Media.Control;
+﻿using System;
+using Windows.Media.Control;
 
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
@@ -24,11 +25,11 @@ public class LolibarAudio
     }
 
     #region Methods
-    public static void TryToResubscribeStreamEventsAsync()
+    public static async Task TryToSubscribeStreamEvents()
     {
         try
         {
-            Stream = GetSystemMediaTransportControlsSessionManager().Result;
+            Stream = await GetSystemMediaTransportControlsSessionManager();
 
             if (Stream == null) 
             {
@@ -44,7 +45,7 @@ public class LolibarAudio
 
         }
     }
-    public static async Task TryToResubscribeStreamInfoEvents()
+    public static async Task TryToSubscribeStreamInfoEvents()
     {
         try
         {
@@ -74,19 +75,23 @@ public class LolibarAudio
     #region Events
     static async void Stream_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args)
     {
-        TryToResubscribeStreamEventsAsync();
-        await TryToResubscribeStreamInfoEvents();
+        await TryToSubscribeStreamEvents();
+        await TryToSubscribeStreamInfoEvents();
     }
     static async void LolibarAudio_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
     {
         if (CurrentSession != null)
+        {
             StreamInfo = await GetMediaProperties(CurrentSession);
+        }
     }
 
     static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
     {
         if (CurrentSession != null)
+        {
             StreamInfo = await GetMediaProperties(CurrentSession);
+        }
     }
     #endregion
 
@@ -107,7 +112,9 @@ public class LolibarAudio
     public static async void Pause()
     {
         if (CurrentSession != null)
+        {
             await CurrentSession.TryPauseAsync();
+        }
     }
     /// <summary>
     /// Attempts to start playing / resume current audio stream.
@@ -115,7 +122,9 @@ public class LolibarAudio
     public static async void Resume()
     {
         if (CurrentSession != null)
+        {
             await CurrentSession.TryPlayAsync();
+        }
     }
     /// <summary>
     /// Attempts to skip current audio stream and start to play the next one.
@@ -123,7 +132,9 @@ public class LolibarAudio
     public static async void Next()
     {
         if (CurrentSession != null)
+        {
             await CurrentSession.TrySkipNextAsync();
+        }
     }
     /// <summary>
     /// Attempts to return to previous audio stream and start to play it.
@@ -131,15 +142,23 @@ public class LolibarAudio
     public static async void Previous()
     {
         if (CurrentSession != null)
+        {
             await CurrentSession.TrySkipPreviousAsync();
+        }
     }
     /// <summary>
     /// Returns `true`, if current audio stream is playing.
     /// </summary>
     public static bool IsPlaying()
     {
-        if (CurrentSession != null) return CurrentSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
-        else return false;
+        if (CurrentSession != null)
+        {
+            return CurrentSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
+        }
+        else
+        {
+            return false;
+        }
     }
     #endregion
 }

@@ -155,9 +155,13 @@ public partial class LolibarDefaults
     #endregion
 
     #region Power
+    static double GetPowerPercent()
+    {
+        return Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent);
+    }
     public static string? GetPowerInfo()
     {
-        return $"{Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent)}%";
+        return $"{GetPowerPercent()}%";
     }
     public static Geometry? GetPowerIcon()
     {
@@ -168,15 +172,15 @@ public partial class LolibarDefaults
         {
             return PowerChargingIcon;
         }
-        if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.High))
+        if (GetPowerPercent() >= 80)
         {
             return PowerHighIcon;
         }
-        if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Low))
+        if (GetPowerPercent() >= 30)
         {
             return PowerLowIcon;
         }
-        if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Critical))
+        if (GetPowerPercent() < 30)
         {
             return PowerCriticalIcon;
         }

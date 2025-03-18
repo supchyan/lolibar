@@ -139,8 +139,8 @@ public partial class Lolibar : Window
     {
         // --- PreInitialize ---
         LolibarModLoader.LoadMods();
-        LolibarAudio.TryToResubscribeStreamEventsAsync();
-        await LolibarAudio.TryToResubscribeStreamInfoEvents();
+        await LolibarAudio.TryToSubscribeStreamEvents();
+        await LolibarAudio.TryToSubscribeStreamInfoEvents();
         UpdateScreenParameters();
 
         // --- Mods PreInitialize ---
@@ -163,6 +163,10 @@ public partial class Lolibar : Window
 
             // --- PostUpdate ---
             PostUpdateRootProperties();
+
+            // --- async Audio Events Resubscribe --- (Junky, but works)
+            LolibarAudio.TryToSubscribeStreamEvents();
+            LolibarAudio.TryToSubscribeStreamInfoEvents();
         }
     }
     async void UpdateCursorData()
