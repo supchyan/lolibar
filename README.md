@@ -162,7 +162,7 @@ class MyFirstMod : LolibarMod
         HelloContainer.Text = DateTime.Now.ToString();   // Change instance's text content ...
         HelloContainer.Update();                         // ... And update it in resources
 
-        // Now, text inside `HelloContainer` will be equal current system's time every `BarUpdateDelay`.
+        // Now, text inside `HelloContainer` equals current OS time after every `BarUpdateDelay`.
     }
 }
 // Simple enough, isn't it? 🐳
