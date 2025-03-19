@@ -7,7 +7,7 @@
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
 
 ## 🌸Introduction
-This project is **toolkit** for modders, which grants capabilities to create statusbars. There're **NO** `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can configure it using this toolkit!
+This project is the **toolkit** set for modders, which allow to create statusbars for Windows. There're **NO** `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can build it using this toolkit's source! Since this is C# Project, there is no complicated stuff in building procedure. Following a guide below will help you to get into it ASAP.
 
 ## 🌸Similar Projects
 - **[yasb](https://github.com/da-rth/yasb) (Cross platform, Python)**
@@ -19,10 +19,10 @@ This project is **toolkit** for modders, which grants capabilities to create sta
 <div align=center><img src=https://github.com/user-attachments/assets/1deb7840-e859-4944-8464-441ff86af89c width=800 height=auto /></div>
 
 ## 🌸Pre-requirements
-All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
+All modding operations is highly recommended to do in `Visual Studio 2022+`. Moreover, to build this project, you have to install `.NET 8.0 SDK`. Alternatively, you can use other `.NET SDK` versions as well, but `master` branch targets to `.NET 8.0`, so any issues with different SDK versions you have to solve locally.
 
 ## 🌸Modding Basics
-Have you ever tried to write mods for video games? So, this toolkit provides the same vibes:
+Have you ever tried to write mods for video games? So, this toolkit provide the same vibe:
 ```csharp
 namespace LolibarApp.Mods;
 
