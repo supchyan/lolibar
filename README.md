@@ -6,19 +6,22 @@
 
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
 
-## 🪼Introduction
-This project is **toolkit** for modders, which grants capabilities to create statusbars. There're no `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can configure it using this toolkit!
+## 🌸Introduction
+This project is **toolkit** for modders, which grants capabilities to create statusbars. There're **NO** `ready-to-use` executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to gain one, you can configure it using this toolkit!
 
-## 🪼Similar Projects
+## 🌸Similar Projects
 - **[yasb](https://github.com/da-rth/yasb) (Cross platform, Python)**
 - **[polybar](https://github.com/polybar/polybar) (Linux, C++)**
 - **[eww](https://github.com/elkowar/eww) (Linux, Rust)**
 - **[ironbar](https://github.com/JakeStanger/ironbar) (Linux, Rust)**
 
-## 🪼Pre-requirements
+## 🌸Average PC Usage
+<div align=center><img src=https://github.com/user-attachments/assets/1deb7840-e859-4944-8464-441ff86af89c width=800 height=auto /></div>
+
+## 🌸Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022`. Moreover, to build this project, you have to install `.NET8.0 SDK`. Actually, you can use other `.net sdks` as well, but `main branch` targets to `.net8.0`, so any issues with different `.net` versions you have to solve locally.
 
-## 🪼Modding Basics
+## 🌸Modding Basics
 Have you ever tried to write mods for video games? So, this toolkit provides the same vibes:
 ```csharp
 namespace LolibarApp.Mods;
@@ -41,7 +44,7 @@ class ExampleEmptyMod : LolibarMod
 ```
 As you can see, this code looks familiar with any other mod body. You can handle every single part of Lolibar's libraries here!
 
-## 🪼Your First mod
+## 🌸Your First mod
 > [!TIP]
 > All mods is highly recommended to be stored in **[Mods](https://github.com/supchyan/lolibar/tree/master/Mods/)** folder.
 
@@ -173,13 +176,13 @@ class MyFirstMod : LolibarMod
 To build 'n run `Lolibar` project, you need to select preferred profile at the top of the VS and push any of `▶` `▷` buttons.</br>
 <div align=center><img src=https://github.com/user-attachments/assets/6128d51e-2de1-4d7a-9db2-2cb0e2fbf404 /></div>
 
-## 🪼Next steps
+## 🌸Next steps
 Inspired enough to start modding? Then, get into **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section to learn more about Lolibar's capabilities. As I mentioned before, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey. Especially **[Basics](https://github.com/supchyan/lolibar/tree/master/Mods/Examples/Basics)** section. Good luck!
 
-## 🪼Special thanks
+## 🌸Special thanks
 - **[VirtualDesktop](https://github.com/MScholtes/VirtualDesktop) by @MScholtes**
 
-## 🪼At the end...
+## 🌸At the end...
 <div align=center><img src=https://github.com/user-attachments/assets/791250c1-112e-47e0-8756-284e36194162 /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
