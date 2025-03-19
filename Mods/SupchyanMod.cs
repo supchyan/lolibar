@@ -3,8 +3,6 @@ using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows;
-using System;
 
 namespace LolibarApp.Mods;
 
@@ -351,7 +349,7 @@ class SupchyanMod : LolibarMod
     {
         if (AudioInfoContainer.SpaceInside == null) return;
 
-        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title)
+        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title) // bug, when no audio
         {
             LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.SpaceInside);
             OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;
