@@ -1,5 +1,6 @@
-<div align=center><img src="https://github.com/user-attachments/assets/e53fa816-ef14-4d8a-b14b-7e16ab67fede" /></div>
-<div align=center><img src="https://github.com/user-attachments/assets/d1fef496-d9d9-4bf7-a092-3fbae6ccbef2" /></div>
+<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs><img src=https://github.com/user-attachments/assets/b01b9b95-d8d6-4293-b5f2-324dea26af9f /></a></div>
+<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/ShowcaseMod.cs><img src=https://github.com/user-attachments/assets/07662aad-f4d6-4f20-9a34-6a0ab7aca995 /></a></div>
+
 
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
 
