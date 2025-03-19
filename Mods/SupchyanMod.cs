@@ -9,9 +9,9 @@ namespace LolibarApp.Mods;
 class SupchyanMod : LolibarMod
 {
     #region Anime Stuff
-    string OldAudioTitle = string.Empty;
-    byte AudioPlayerAnimationFrame = 0;
-    readonly string[] AudioPlayerAnimationFrames =
+    string OldAudioTitle                            = string.Empty;
+    byte AudioPlayerAnimationFrame                  = 0;
+    readonly string[] AudioPlayerAnimationFrames    =
     [
         "⠋",
         "⠙",
@@ -349,7 +349,7 @@ class SupchyanMod : LolibarMod
     {
         if (AudioInfoContainer.SpaceInside == null) return;
 
-        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title) // bug, when no audio
+        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title) // blink bug when no audio
         {
             LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.SpaceInside);
             OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;

@@ -8,9 +8,9 @@ using System.Windows.Media;
 class ShowcaseMod : LolibarMod
 {
     #region Anime Stuff
-    string OldAudioTitle = string.Empty;
-    byte BrailleCodeAnimationFrame = 0;
-    readonly string[] BrailleCodeAnimationFrames =
+    string OldAudioTitle                            = string.Empty;
+    byte BrailleCodeAnimationFrame                  = 0;
+    readonly string[] BrailleCodeAnimationFrames    =
     [
         "⠋",
         "⠙",
@@ -35,7 +35,7 @@ class ShowcaseMod : LolibarMod
     #endregion
 
     #region Containers
-    LolibarContainer WorkspacesContainer = new();
+    LolibarContainer WorkspacesContainer        = new();
 
     LolibarContainer DateTimeContainer          = new();
 
@@ -77,70 +77,70 @@ class ShowcaseMod : LolibarMod
 
         DateTimeContainer = new()
         {
-            Name = "DateTimeContainer",
-            Parent = Lolibar.BarLeftContainer,
-            Text = "-",
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
-            MouseLeftButtonUpEvent = OpenCalendarEvent
+            Name                    = "DateTimeContainer",
+            Parent                  = Lolibar.BarLeftContainer,
+            Text                    = "-",
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Left,
+            MouseLeftButtonUpEvent  = OpenCalendarEvent
         };
         DateTimeContainer.Create();
 
         // --- Right Side ---
 
         // --- Audio Player ---
-        AudioInfoContainer = new()
+        AudioInfoContainer          = new()
         {
-            Name = "AudioInfoContainer",
-            Parent = Lolibar.BarRightContainer,
-            Text = "-",
-            HasBackground = true,
-            Color = LolibarHelper.SetColor(AltTextColorCode)
+            Name                    = "AudioInfoContainer",
+            Parent                  = Lolibar.BarRightContainer,
+            Text                    = "-",
+            HasBackground           = true,
+            Color                   = LolibarHelper.SetColor(AltTextColorCode)
         };
         AudioInfoContainer.Create();
 
-        AudioContainerParent = new()
+        AudioContainerParent        = new()
         {
-            Name = "AudioContainerParent",
-            Parent = Lolibar.BarRightContainer,
+            Name                    = "AudioContainerParent",
+            Parent                  = Lolibar.BarRightContainer,
         };
         AudioContainerParent.Create();
 
-        PreviousButtonContainer = new()
+        PreviousButtonContainer     = new()
         {
-            Name = "AudioPreviousButton",
-            Parent = AudioContainerParent.SpaceInside,
-            Icon = PreviousAudioIcon,
-            Color = LolibarHelper.SetColor(AltTextColorCode),
-            MouseLeftButtonUpEvent = PreviousStreamCallEvent
+            Name                    = "AudioPreviousButton",
+            Parent                  = AudioContainerParent.SpaceInside,
+            Icon                    = PreviousAudioIcon,
+            Color                   = LolibarHelper.SetColor(AltTextColorCode),
+            MouseLeftButtonUpEvent  = PreviousStreamCallEvent
         };
         PreviousButtonContainer.Create();
 
-        PlayButtonContainer = new()
+        PlayButtonContainer         = new()
         {
-            Name = "AudioPlayButton",
-            Parent = AudioContainerParent.SpaceInside,
-            Icon = PlayAudioIcon,
-            Color = LolibarHelper.SetColor(AltTextColorCode),
-            MouseLeftButtonUpEvent = PlayOrPauseStreamCallEvent
+            Name                    = "AudioPlayButton",
+            Parent                  = AudioContainerParent.SpaceInside,
+            Icon                    = PlayAudioIcon,
+            Color                   = LolibarHelper.SetColor(AltTextColorCode),
+            MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent
         };
         PlayButtonContainer.Create();
 
-        NextButtonContainer = new()
+        NextButtonContainer         = new()
         {
-            Name = "AudioNextButton",
-            Parent = AudioContainerParent.SpaceInside,
-            Icon = NextAudioIcon,
-            Color = LolibarHelper.SetColor(AltTextColorCode),
-            MouseLeftButtonUpEvent = NextStreamCallEvent
+            Name                    = "AudioNextButton",
+            Parent                  = AudioContainerParent.SpaceInside,
+            Icon                    = NextAudioIcon,
+            Color                   = LolibarHelper.SetColor(AltTextColorCode),
+            MouseLeftButtonUpEvent  = NextStreamCallEvent
         };
         NextButtonContainer.Create();
 
-        BrailleCodeContainer = new()
+        BrailleCodeContainer        = new()
         {
-            Name = "BrailleCodeContainer",
-            Parent = Lolibar.BarRightContainer,
-            Text = "-",
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Left
+            Name                    = "BrailleCodeContainer",
+            Parent                  = Lolibar.BarRightContainer,
+            Text                    = "-",
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Left
         };
         BrailleCodeContainer.Create();
     }
@@ -257,7 +257,7 @@ class ShowcaseMod : LolibarMod
     {
         if (AudioInfoContainer.SpaceInside == null) return;
 
-        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title) // bug, when no audio
+        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title)
         {
             LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.SpaceInside);
             OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;
