@@ -10,6 +10,7 @@ class SupchyanMod : LolibarMod
 {
     #region Anime Stuff
     string OldAudioTitle                            = string.Empty;
+    int OldAudioPlaybackState                       = -1;
     byte AudioPlayerAnimationFrame                  = 0;
     readonly string[] AudioPlayerAnimationFrames    =
     [
@@ -115,7 +116,7 @@ class SupchyanMod : LolibarMod
             Name                    = "AudioPlayButton",
             Parent                  = AudioContainerParent.SpaceInside,
             Icon                    = PlayAudioIcon,
-            MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent
+            MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent,
         };
         PlayButtonContainer.Create();
 
@@ -204,6 +205,20 @@ class SupchyanMod : LolibarMod
             $"NO AUDIO {PlaceholderAudioPlayerAnimation()}" :
             $"{LolibarAudio.StreamInfo?.Title}"             ;
 
+        // Smooth opacity animtaion upon audio playback state change
+        if (AudioInfoContainer.SpaceInside != null && OldAudioPlaybackState != LolibarAudio.IsPlaying().GetHashCode())
+        {
+            if (LolibarAudio.IsPlaying())
+            {
+                LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.SpaceInside);
+            }
+            else
+            {
+                LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.SpaceInside);
+            }
+            OldAudioPlaybackState = LolibarAudio.IsPlaying().GetHashCode();
+        }
+
         AudioInfoContainer.Update();
 
         // --- Power ---
@@ -264,12 +279,10 @@ class SupchyanMod : LolibarMod
         }
         if (LolibarAudio.IsPlaying())
         {
-            LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.SpaceInside);
             LolibarAudio.Pause();
         }
         else
         {
-            LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.SpaceInside);
             LolibarAudio.Resume();
         }
     }
@@ -347,9 +360,9 @@ class SupchyanMod : LolibarMod
     /// </summary>
     void UseAudioTitleBlinkAnimation()
     {
-        if (AudioInfoContainer.SpaceInside == null) return;
+        if (AudioInfoContainer.SpaceInside == null || LolibarAudio.StreamInfo?.Title == null) return;
 
-        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title) // blink bug when no audio
+        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title)
         {
             LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.SpaceInside);
             OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;

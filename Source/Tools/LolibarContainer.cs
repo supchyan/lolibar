@@ -35,7 +35,7 @@ public class LolibarContainer
 
     SolidColorBrush BorderBackground()
     {
-        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(Color)[3..]}") : LolibarHelper.SetColor("#00000000");
+        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(Color ?? new SolidColorBrush())[3..]}") : LolibarHelper.SetColor("#00000000");
     }
 
     public void Create()

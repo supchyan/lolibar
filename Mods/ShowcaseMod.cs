@@ -12,6 +12,7 @@ class ShowcaseMod : LolibarMod
 {
     #region Anime Stuff
     string OldAudioTitle                            = string.Empty;
+    int OldAudioPlaybackState                       = -1;
     byte BrailleCodeAnimationFrame                  = 0;
     readonly string[] BrailleCodeAnimationFrames    =
     [
@@ -166,8 +167,22 @@ class ShowcaseMod : LolibarMod
         var AudioTitle = LolibarAudio.StreamInfo?.Title ?? "";
 
         AudioInfoContainer.Text = AudioTitle == ""          ?
-            $"Nothing to play..." :
+            $"Nothing to play..."                           :
             $"{LolibarAudio.StreamInfo?.Title}"             ;
+
+        // Smooth opacity animtaion upon audio playback state change
+        if (AudioInfoContainer.SpaceInside != null && OldAudioPlaybackState != LolibarAudio.IsPlaying().GetHashCode())
+        {
+            if (LolibarAudio.IsPlaying())
+            {
+                LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.SpaceInside);
+            }
+            else
+            {
+                LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.SpaceInside);
+            }
+            OldAudioPlaybackState = LolibarAudio.IsPlaying().GetHashCode();
+        }
 
         AudioInfoContainer.Update();
 
@@ -199,12 +214,10 @@ class ShowcaseMod : LolibarMod
         }
         if (LolibarAudio.IsPlaying())
         {
-            LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.SpaceInside);
             LolibarAudio.Pause();
         }
         else
         {
-            LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.SpaceInside);
             LolibarAudio.Resume();
         }
     }
