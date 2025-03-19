@@ -3,7 +3,7 @@ using LolibarApp.Source.Tools;
 using System.Diagnostics;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
-// You can uncomment namespace to make in loadable
+// You can uncomment namespace to enable (load) it
 
 //namespace LolibarApp.Mods;
 

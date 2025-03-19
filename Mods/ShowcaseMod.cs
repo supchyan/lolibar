@@ -3,6 +3,9 @@ using LolibarApp.Source.Tools;
 using System.Windows.Input;
 using System.Windows.Media;
 
+// This mod is outside of the Mods namespace, so it won't be loaded
+// You can uncomment namespace to enable (load) it
+
 //namespace LolibarApp.Mods;
 
 class ShowcaseMod : LolibarMod
