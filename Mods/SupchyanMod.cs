@@ -11,8 +11,8 @@ class SupchyanMod : LolibarMod
     #region Anime Stuff
     string OldAudioTitle                            = string.Empty;
     int OldAudioPlaybackState                       = -1;
-    byte AudioPlayerAnimationFrame                  = 0;
-    readonly string[] AudioPlayerAnimationFrames    =
+    byte BrailleCodeAnimationFrame                  = 0;
+    readonly string[] BrailleCodeAnimationFrames    =
     [
         "⠋",
         "⠙",
@@ -58,7 +58,7 @@ class SupchyanMod : LolibarMod
     #region Body
     public override void PreInitialize()
     {
-        BarUpdateDelay              = 250;
+        BarUpdateDelay              = 100;
         BarHeight                   = 40;
         BarColor                    = LolibarHelper.SetColor(PrimaryColorCode);
         BarContainersColor          = LolibarHelper.SetColor(SecondaryColorCode);
@@ -201,9 +201,12 @@ class SupchyanMod : LolibarMod
 
         var AudioTitle = LolibarAudio.StreamInfo?.Title ?? "";
 
-        AudioInfoContainer.Text = AudioTitle == ""          ?
-            $"NO AUDIO {PlaceholderAudioPlayerAnimation()}" :
-            $"{LolibarAudio.StreamInfo?.Title}"             ;
+        AudioInfoContainer.Text = LolibarAudio.IsPlaying() ? $"{AudioTitle} {BrailleAudioPlayerAnimation()}" : AudioTitle;
+
+        if (AudioTitle == "")
+        {
+            AudioInfoContainer.Text = $"U_U";
+        }
 
         // Smooth opacity animtaion upon audio playback state change
         if (AudioInfoContainer.SpaceInside != null && OldAudioPlaybackState != LolibarAudio.IsPlaying().GetHashCode())
@@ -341,17 +344,17 @@ class SupchyanMod : LolibarMod
     /// This is my placeholder animation for the Audio Player when no audio stream in it.
     /// </summary>
     /// <returns></returns>
-    string PlaceholderAudioPlayerAnimation()
+    string BrailleAudioPlayerAnimation()
     {
-        AudioPlayerAnimationFrame++;
-        if (AudioPlayerAnimationFrame >= AudioPlayerAnimationFrames.Length)
+        BrailleCodeAnimationFrame++;
+        if (BrailleCodeAnimationFrame >= BrailleCodeAnimationFrames.Length)
         {
-            AudioPlayerAnimationFrame = 0;
-            return AudioPlayerAnimationFrames[AudioPlayerAnimationFrame];
+            BrailleCodeAnimationFrame = 0;
+            return BrailleCodeAnimationFrames[BrailleCodeAnimationFrame];
         }
         else
         {
-            return AudioPlayerAnimationFrames[AudioPlayerAnimationFrame];
+            return BrailleCodeAnimationFrames[BrailleCodeAnimationFrame];
         }
     }
     /// <summary>
