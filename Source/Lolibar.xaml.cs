@@ -293,7 +293,10 @@ public partial class Lolibar : Window
 
     #region Tray [ Notify Icon ]
     readonly static ToolStripMenuItem AutorunTrayItem = new(AutorunTrayItemContent(), null, OnAutorunSelected);
-    
+    readonly static ToolStripMenuItem RestartTrayItem = new("Restart", null, OnRestartSelected);
+    readonly static ToolStripMenuItem GitHubTrayItem = new("GitHub", null, OnGitHubSelected);
+    readonly static ToolStripMenuItem CloseTrayItem = new("Close Lolibar", null, OnExitSelected);
+
     readonly static NotifyIcon TrayIcon = new()
     {
         Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
@@ -303,10 +306,10 @@ public partial class Lolibar : Window
         {
             Items =
             {
-                new ToolStripMenuItem("Close Lolibar",  null, OnExitSelected   ),
-                new ToolStripMenuItem("Restart",        null, OnRestartSelected),
-                new ToolStripMenuItem("GitHub",         null, OnGitHubSelected ),
                 AutorunTrayItem,
+                RestartTrayItem,
+                GitHubTrayItem,
+                CloseTrayItem
             }
         }
     };
@@ -324,11 +327,24 @@ public partial class Lolibar : Window
     {
         return IsAutorunPathExist() ? "Autorun (On)" : "Autorun (Off)";
     }
-    static void UpdateAutorunTrayItem()
+    /// <summary>
+    /// Updates the whole Lolibar's Tray Menu, when Autorun property has changed
+    /// </summary>
+    static void UpdateTrayItems()
     {
         AutorunTrayItem.Text = AutorunTrayItemContent();
+
         TrayIcon.ContextMenuStrip?.Items.Remove(AutorunTrayItem);
         TrayIcon.ContextMenuStrip?.Items.Add(AutorunTrayItem);
+
+        TrayIcon.ContextMenuStrip?.Items.Remove(RestartTrayItem);
+        TrayIcon.ContextMenuStrip?.Items.Add(RestartTrayItem);
+
+        TrayIcon.ContextMenuStrip?.Items.Remove(GitHubTrayItem);
+        TrayIcon.ContextMenuStrip?.Items.Add(GitHubTrayItem);
+
+        TrayIcon.ContextMenuStrip?.Items.Remove(CloseTrayItem);
+        TrayIcon.ContextMenuStrip?.Items.Add(CloseTrayItem);
     } 
     private static void OnAutorunSelected(object? sender, EventArgs e)
     {
@@ -338,7 +354,7 @@ public partial class Lolibar : Window
         proc.Start();
         proc.WaitForExit();
 
-        UpdateAutorunTrayItem();
+        UpdateTrayItems();
     }
 
     // Tray Content
