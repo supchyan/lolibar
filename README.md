@@ -148,12 +148,12 @@ class MyFirstMod : LolibarMod
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        HelloContainer = new()
+        HelloContainer     = new()
         {
-            Name = "HelloContainer",
-            Parent = Lolibar.BarCenterContainer,
-            Text = "Hello!",
-            HasBackground = true
+            Name           = "HelloContainer",
+            Parent         = Lolibar.BarCenterContainer,
+            Text           = "Hello!",
+            HasBackground  = true
         };
         HelloContainer.Create();
     }
