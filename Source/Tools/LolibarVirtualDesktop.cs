@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using static LolibarApp.Source.Tools.LolibarEnums;
 
 namespace LolibarApp.Source.Tools;

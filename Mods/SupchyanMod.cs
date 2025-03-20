@@ -49,7 +49,6 @@ class SupchyanMod : LolibarMod
     LolibarContainer NextButtonContainer        = new();
     LolibarContainer AudioInfoContainer         = new();
 
-    LolibarContainer SoundSettingsContainer     = new();
     LolibarContainer PowerMonitorContainer      = new();
 
     LolibarContainer WorkspacesContainer        = new();
@@ -138,17 +137,6 @@ class SupchyanMod : LolibarMod
             Color           = LolibarHelper.SetColor(TernaryColorCode)
         };
         AudioInfoContainer.Create();
-
-        // --- Sound Settings ---
-        SoundSettingsContainer = new()
-        {
-            Name = "SoundSettingsContainer",
-            Parent = Lolibar.BarRightContainer,
-            Icon = SoundIcon,
-            Text = "Sound",
-            MouseLeftButtonUpEvent = OpenSoundSettingsCustomEvent
-        };
-        SoundSettingsContainer.Create();
 
         // --- Power ---
         PowerMonitorContainer = new()
@@ -285,21 +273,6 @@ class SupchyanMod : LolibarMod
     void NextStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
         LolibarAudio.Next();
-    }
-
-    // sound settings
-    void OpenSoundSettingsCustomEvent(object sender, MouseButtonEventArgs e)
-    {
-        new Process
-        {
-            StartInfo = new()
-            {
-                FileName        = "powershell.exe",
-                Arguments       = "Start-Process ms-settings:sound",
-                UseShellExecute = false,
-                CreateNoWindow  = true,
-            }
-        }.Start();
     }
 
     // power
