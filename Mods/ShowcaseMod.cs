@@ -151,7 +151,7 @@ class ShowcaseMod : LolibarMod
     public override void Update() 
     {
         // --- Properties ---
-        BarWidth = Lolibar.Inch_Screen.X  - 2 * BarMargin;
+        BarWidth = Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X - 2 * BarMargin : BarWidth;
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
         // --- Date / Time ---

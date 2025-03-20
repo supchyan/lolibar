@@ -13,7 +13,7 @@ public partial class Lolibar : Window
 {
     // --- Misc ---
     readonly MouseHook          MouseHandler    = new();
-    readonly LolibarPublicMod   PublicMod = new();
+    readonly LolibarPublicMod   PublicMod       = new();
 
     // --- Links to the root containers ---
     public static StackPanel BarLeftContainer   { get; private set; } = new StackPanel();
@@ -139,10 +139,10 @@ public partial class Lolibar : Window
     async void InitializeCycle()
     {
         // --- PreInitialize ---
+        UpdateScreenParameters();
         LolibarModLoader.LoadMods();
         await LolibarAudio.TryToSubscribeStreamEvents();
         await LolibarAudio.TryToSubscribeStreamInfoEvents();
-        UpdateScreenParameters();
 
         // --- Mods PreInitialize ---
         PublicMod.PreInitialize();

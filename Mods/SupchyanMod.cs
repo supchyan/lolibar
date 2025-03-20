@@ -58,7 +58,7 @@ class SupchyanMod : LolibarMod
     #region Body
     public override void PreInitialize()
     {
-        BarUpdateDelay              = 100;
+        BarUpdateDelay              = 120;
         BarHeight                   = 40;
         BarColor                    = LolibarHelper.SetColor(PrimaryColorCode);
         BarContainersColor          = LolibarHelper.SetColor(SecondaryColorCode);
@@ -179,7 +179,7 @@ class SupchyanMod : LolibarMod
     public override void Update() 
     {
         // --- Properties ---
-        BarWidth = Lolibar.Inch_Screen.X  - 2 * BarMargin;
+        BarWidth = Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X  - 2 * BarMargin : BarWidth;
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
         // --- Date ---
@@ -280,14 +280,7 @@ class SupchyanMod : LolibarMod
         {
             return;
         }
-        if (LolibarAudio.IsPlaying())
-        {
-            LolibarAudio.Pause();
-        }
-        else
-        {
-            LolibarAudio.Resume();
-        }
+        LolibarAudio.PlayOrPause();
     }
     void NextStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
