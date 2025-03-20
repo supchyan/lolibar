@@ -171,7 +171,7 @@ class SupchyanMod : LolibarMod
         };
         WorkspacesContainer.Create();
 
-        LolibarVirtualDesktop.InvokeWorkspaceTabsUpdate(
+        LolibarVirtualDesktop.DrawWorkspacesInParent(
             parent:             WorkspacesContainer.SpaceInside,
             showDesktopNames:   true
         );

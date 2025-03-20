@@ -51,11 +51,12 @@ public class LolibarVirtualDesktop
         }
     }
     /// <summary>
-    /// Invokes updates of the Virtual Desktops' tabs in the specified `parent`.
+    /// Invokes drawing/updating logic for the Virtual Desktop lib.
+    /// Calling this, will draw/update all current windows tabs in specified `parent`. 
     /// </summary>
     /// <param name="parent"></param>
     /// <param name="showDesktopNames"></param>
-    public static void InvokeWorkspaceTabsUpdate(StackPanel? parent, bool showDesktopNames)
+    public static void DrawWorkspacesInParent(StackPanel? parent, bool showDesktopNames)
     {
         // Stop doing all logic below, if `error_tab` has been generated
         // or parent is undefined.
@@ -83,7 +84,7 @@ public class LolibarVirtualDesktop
         {
             case WinVer.Unknown:
                 GetWindowsVersion();
-                InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+                DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
             break;
 
             case WinVer.Win10:
@@ -202,7 +203,7 @@ public class LolibarVirtualDesktop
     /// </summary>
     public static void UpdateInitializedDesktops()
     {
-        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     static void CreateDesktop()
     {
@@ -223,7 +224,7 @@ public class LolibarVirtualDesktop
                 MoveToDesktop(VirtualDesktop11_24H2.Desktop.Count - 1);
             break;
         }
-        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     static void MoveToDesktop(int index)
     {
@@ -250,7 +251,7 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(index).MakeVisible();
             break;
         }
-        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     static void RemoveDesktop(int index)
     {
@@ -280,7 +281,7 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(index).Remove();
             break;
         }
-        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     public static void GoToDesktopRight()
     {
@@ -307,7 +308,7 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) + 1).MakeVisible();
             break;
         }
-        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     public static void GoToDesktopLeft()
     {
@@ -334,6 +335,6 @@ public class LolibarVirtualDesktop
                 VirtualDesktop11_24H2.Desktop.FromIndex(VirtualDesktop11_24H2.Desktop.FromDesktop(VirtualDesktop11_24H2.Desktop.Current) - 1).MakeVisible();
             break;
         }
-        InvokeWorkspaceTabsUpdate(InitializedParent, InitializedShowDesktopNames);
+        DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
 }
