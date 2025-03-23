@@ -9,6 +9,7 @@
 		<UseWPF>true</UseWPF>
 		<ApplicationIcon>app_icon.ico</ApplicationIcon>
 		<AssemblyName>lolibar</AssemblyName>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>	
 	<ItemGroup>
 		<PackageReference Include="Ikst.MouseHook" Version="1.0.0" />
@@ -18,5 +19,9 @@
 		<Content Include="Autorun\*">
 		    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+
+		<Content Include="Icons\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 </Project>

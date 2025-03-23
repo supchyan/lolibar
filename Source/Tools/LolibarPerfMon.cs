@@ -19,46 +19,9 @@ public class LolibarPerfMon
     public static PerformanceCounter? Network_Bytes_Sent        { get; private set; }
     public static PerformanceCounter? Network_Bytes_Received    { get; private set; }
     
-    static nint oldhwnd { get; set; }
-
     public static bool IsNetworkCountersInitialized              { get; private set; }
 
-    /// <summary>
-    /// Process ID [0]; Process Name [1]; Process Info (name: id) [2];
-    /// </summary>
-    public static string[] GetForegroundProcessInfo()
-    {
-        var defaults = new string[]
-        {
-            LolibarDefaults.CurProcIdInfo,
-            LolibarDefaults.CurProcNameInfo
-        };
-
-        nint hwnd = LolibarExtern.GetForegroundWindow();
-
-        if (oldhwnd == hwnd) return defaults;
-
-        LolibarExtern.GetWindowThreadProcessId(hwnd, out uint pid);
-
-        // Prevent info update when statusbar gets focus
-        if (pid == Process.GetCurrentProcess().Id) return defaults;
-
-        foreach (var p in Process.GetProcesses())
-        {
-            if (p.Id == pid)
-            {
-                return
-                [
-                    $"{pid}",
-                    $"{p.ProcessName}",
-                ];
-            }
-        }
-
-        oldhwnd = hwnd;
-
-        return new string[2];
-    }
+    
     public static void InitializeNetworkCounters()
     {
         var category = new PerformanceCounterCategory("Network Interface");

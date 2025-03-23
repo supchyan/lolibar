@@ -10,8 +10,8 @@ public partial class LolibarDefaults
     static int  DiskInfoState       = 0;
     static int  NetworkInfoState    = 0;
 
-    public static string CurProcIdInfo      { get; private set; }   = string.Empty;
-    public static string CurProcNameInfo    { get; private set; }   = string.Empty;
+    public static string CurrentApplicationId { get; private set; }   = string.Empty;
+    public static string CurrentApplicationName { get; private set; }   = string.Empty;
 
     #region User
     public static string? GetUserInfo()
@@ -21,17 +21,20 @@ public partial class LolibarDefaults
     #endregion
 
     #region CurProc
-    public static string? GetCurProcInfo()
+    /// <summary>
+    /// Show current selected / running application info in a view like: `proc_name [proc_id]`
+    /// </summary>
+    /// <returns></returns>
+    public static string? GetCurrentApplicationInfo()
     {
-        CurProcIdInfo   = $"{LolibarPerfMon.GetForegroundProcessInfo()[0]}";
-        CurProcNameInfo = $"{LolibarPerfMon.GetForegroundProcessInfo()[1]}";
+        CurrentApplicationId = LolibarProcess.ForegroundProcess.Id.ToString();
+        CurrentApplicationName = LolibarProcess.ForegroundProcess.Name;
 
         var nameAndId = string.Empty;
 
-        if (CurProcNameInfo != string.Empty) nameAndId += $"{CurProcNameInfo} : ";
-        if (CurProcIdInfo   != string.Empty) nameAndId += $"{CurProcIdInfo  }";
+        nameAndId += $"{CurrentApplicationName} [{CurrentApplicationId}]";
 
-        if (nameAndId == string.Empty) return "No process info";
+        if (nameAndId == string.Empty) return "No application running active";
         return nameAndId;
 
     }

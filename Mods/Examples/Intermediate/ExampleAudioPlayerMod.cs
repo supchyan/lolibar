@@ -36,22 +36,18 @@ class ExampleAudioPlayerMod : LolibarMod
         BaseContainer = new()
         {
             Name = "ExampleAudioBaseContainer",
-            // We should to set a parent for this container to draw it,
-            // so in this case, let's choose default center container.
+            // We have to define a parent for this container to draw this inside it.
+            // In this case, let's choose a default center container:
             Parent = Lolibar.BarCenterContainer,
         };
         BaseContainer.Create();
 
-        // Setup local parent component for the containers.
-        // It should be StackPanel, which always is a Child of the BorderComponent,
-        // so let's get it:
-        var parent = BaseContainer.SpaceInside;
-
         PreviousButtonContainer = new()
         {
             Name = "ExampleAudioPreviousButton",
-            // Now we can use BaseContainer as a parent:
-            Parent = parent,
+            // This time we want to draw PreviousButtonContainer inside BaseContainer,
+            // so let's set it's body as a parent:
+            Parent = BaseContainer.GetBody(),
             Icon = PreviousAudioIcon,
             MouseLeftButtonUpEvent = PreviousStreamCallEvent
         };
@@ -60,7 +56,7 @@ class ExampleAudioPlayerMod : LolibarMod
         PlayButtonContainer = new()
         {
             Name = "ExampleAudioPlayButton",
-            Parent = parent,
+            Parent = BaseContainer.GetBody(),
             Icon = PlayAudioIcon, // just a placeholder, we will update it later
             MouseLeftButtonUpEvent = PlayOrPauseStreamCallEvent
         };
@@ -69,7 +65,7 @@ class ExampleAudioPlayerMod : LolibarMod
         NextButtonContainer = new()
         {
             Name = "ExampleAudioNextButton",
-            Parent = parent,
+            Parent = BaseContainer.GetBody(),
             Icon = NextAudioIcon,
             MouseLeftButtonUpEvent = NextStreamCallEvent
         };

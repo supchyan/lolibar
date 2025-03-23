@@ -202,6 +202,8 @@ public class LolibarVirtualDesktop
     /// </summary>
     public static void UpdateInitializedDesktops()
     {
+        if (InitializedParent == null) return;
+
         DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     static void CreateDesktop()

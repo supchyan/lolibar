@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace LolibarApp.Source.Tools;
 
@@ -22,6 +24,29 @@ public static partial class LolibarHelper
     public static string ARGBtoHEX(SolidColorBrush brush)
     {
         return $"#{Convert.ToHexString([brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B]).Replace("-", "")}";
+    }
+    /// <summary>
+    /// Converts `ico` files to image bitmap source.
+    /// </summary>
+    /// <param name="icon"></param>
+    /// <returns></returns>
+    public static BitmapSource ToBitmapSource(this Icon icon)
+    {
+        return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+    }
+    /// <summary>
+    /// Truncates string with "..." at the end. Example: `Hello wo...`
+    /// </summary>
+    /// <param name="length">Max string length.</param>
+    /// <returns></returns>
+    public static string Truncate(this string str, int length)
+    {
+        if (string.IsNullOrEmpty(str))
+        {
+            return str;
+        }
+
+        return str.Length <= length ? str : $"{str[0..length]}...";
     }
 
     /// <summary>

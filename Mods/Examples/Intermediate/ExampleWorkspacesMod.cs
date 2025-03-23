@@ -31,14 +31,14 @@ class ExampleWorkspacesMod : LolibarMod
         };
         WorkspacesContainer.Create();
 
-        // We use `DrawWorkspacesInParent()` to fill WorkspacesContainer with workspaces.
-        // Otherwise, it will be empty.
+        // We use `DrawWorkspacesInParent()` to fill WorkspacesContainer with workspaces,
+        // otherwise, it will be empty.
         // After invoking it for the first time,
         // `DrawWorkspacesInParent` will update itself automatically,
         // so no need to put it into `Update()` hook!
         LolibarVirtualDesktop.DrawWorkspacesInParent(
             // Where we should append workspaces. Their parent container:
-            parent: WorkspacesContainer.SpaceInside,
+            parent: WorkspacesContainer.GetBody(),
             // Append workspaces* (*desktops) with its names, otherwise names will be replaced by indexes.
             // Ah and, if desktop has no name, it will be named its index too.
             showDesktopNames: true

@@ -75,7 +75,7 @@ class ShowcaseMod : LolibarMod
         WorkspacesContainer.Create();
 
         LolibarVirtualDesktop.DrawWorkspacesInParent(
-            parent:             WorkspacesContainer.SpaceInside,
+            parent:             WorkspacesContainer.GetBody(),
             showDesktopNames:   true
         );
 
@@ -83,7 +83,6 @@ class ShowcaseMod : LolibarMod
         {
             Name                    = "DateTimeContainer",
             Parent                  = Lolibar.BarLeftContainer,
-            Text                    = "-",
             SeparatorPosition       = LolibarEnums.SeparatorPosition.Left,
             MouseLeftButtonUpEvent  = OpenCalendarEvent
         };
@@ -96,7 +95,6 @@ class ShowcaseMod : LolibarMod
         {
             Name                    = "AudioInfoContainer",
             Parent                  = Lolibar.BarRightContainer,
-            Text                    = "-",
             HasBackground           = true,
             Color                   = LolibarHelper.SetColor(AltTextColorCode)
         };
@@ -112,7 +110,7 @@ class ShowcaseMod : LolibarMod
         PreviousButtonContainer     = new()
         {
             Name                    = "AudioPreviousButton",
-            Parent                  = AudioContainerParent.SpaceInside,
+            Parent                  = AudioContainerParent.GetBody(),
             Icon                    = PreviousAudioIcon,
             Color                   = LolibarHelper.SetColor(AltTextColorCode),
             MouseLeftButtonUpEvent  = PreviousStreamCallEvent
@@ -122,7 +120,7 @@ class ShowcaseMod : LolibarMod
         PlayButtonContainer         = new()
         {
             Name                    = "AudioPlayButton",
-            Parent                  = AudioContainerParent.SpaceInside,
+            Parent                  = AudioContainerParent.GetBody(),
             Icon                    = PlayAudioIcon,
             Color                   = LolibarHelper.SetColor(AltTextColorCode),
             MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent
@@ -132,7 +130,7 @@ class ShowcaseMod : LolibarMod
         NextButtonContainer         = new()
         {
             Name                    = "AudioNextButton",
-            Parent                  = AudioContainerParent.SpaceInside,
+            Parent                  = AudioContainerParent.GetBody(),
             Icon                    = NextAudioIcon,
             Color                   = LolibarHelper.SetColor(AltTextColorCode),
             MouseLeftButtonUpEvent  = NextStreamCallEvent
@@ -143,7 +141,6 @@ class ShowcaseMod : LolibarMod
         {
             Name                    = "BrailleCodeContainer",
             Parent                  = Lolibar.BarRightContainer,
-            Text                    = "-",
             SeparatorPosition       = LolibarEnums.SeparatorPosition.Left
         };
         BrailleCodeContainer.Create();
@@ -171,15 +168,15 @@ class ShowcaseMod : LolibarMod
             $"{LolibarAudio.StreamInfo?.Title}"             ;
 
         // Smooth opacity animtaion upon audio playback state change
-        if (AudioInfoContainer.SpaceInside != null && OldAudioPlaybackState != LolibarAudio.IsPlaying().GetHashCode())
+        if (AudioInfoContainer.GetBody() != null && OldAudioPlaybackState != LolibarAudio.IsPlaying().GetHashCode())
         {
             if (LolibarAudio.IsPlaying())
             {
-                LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.SpaceInside);
+                LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.GetBody());
             }
             else
             {
-                LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.SpaceInside);
+                LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.GetBody());
             }
             OldAudioPlaybackState = LolibarAudio.IsPlaying().GetHashCode();
         }
@@ -208,7 +205,7 @@ class ShowcaseMod : LolibarMod
     }
     void PlayOrPauseStreamCallEvent(object sender, MouseButtonEventArgs e)
     {
-        if (AudioInfoContainer.SpaceInside == null)
+        if (AudioInfoContainer.GetBody() == null)
         {
             return;
         }
@@ -271,11 +268,11 @@ class ShowcaseMod : LolibarMod
     /// </summary>
     void UseAudioTitleBlinkAnimation()
     {
-        if (AudioInfoContainer.SpaceInside == null) return;
+        if (AudioInfoContainer.GetBody() == null) return;
 
         if (OldAudioTitle != LolibarAudio.StreamInfo?.Title)
         {
-            LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.SpaceInside);
+            LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.GetBody());
             OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;
         }
     }

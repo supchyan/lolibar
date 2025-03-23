@@ -53,7 +53,7 @@ public partial class Lolibar : Window
     float CursorVelocity            { get; set; }
     DateTime OldTime                { get; set; }
 
-    // --- VDesktop update trigger on lolibar's opening ---
+    // --- LolibarVirtualDesktop update trigger on lolibar's opening ---
     bool ShouldManuallyUpdateVirtualDesktops { get; set; }
 
     public Lolibar()
@@ -78,8 +78,7 @@ public partial class Lolibar : Window
         InitializeCycle();
         UpdateCycle();
 
-        UpdateCursorData(); // For cursor velocity calculations
-        UpdateDesktopsData();  // For Dynamic Virtual Desktops Update
+        UpdateSpecial();  // For dynamic libs Update
 
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
@@ -170,19 +169,14 @@ public partial class Lolibar : Window
             LolibarAudio.TryToSubscribeStreamInfoEvents();
         }
     }
-    async void UpdateCursorData()
-    {
-        while (true)
-        {
-            await Task.Delay(10);
-            OldCursorPosition = CursorPosition;
-        }
-    }
-    async void UpdateDesktopsData()
+    async Task UpdateSpecial()
     {
         while (true)
         {
             await Task.Delay(100);
+
+            OldCursorPosition = CursorPosition;
+
             if (ShouldManuallyUpdateVirtualDesktops)
             {
                 LolibarVirtualDesktop.UpdateInitializedDesktops();
