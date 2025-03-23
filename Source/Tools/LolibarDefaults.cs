@@ -173,22 +173,22 @@ public partial class LolibarDefaults
         // Power Icon handling
         if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging))
         {
-            return PowerChargingIcon;
+            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\battery_charge.svg");
         }
         if (GetPowerPercent() >= 80)
         {
-            return PowerHighIcon;
+            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\battery_high.svg");
         }
         if (GetPowerPercent() >= 30)
         {
-            return PowerLowIcon;
+            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\battery_low.svg");
         }
         if (GetPowerPercent() < 30)
         {
-            return PowerCriticalIcon;
+            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\battery_crit.svg");
         }
 
-        return PowerBaseIcon;
+        return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\battery_error.svg");
     }
     #endregion
 

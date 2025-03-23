@@ -12,14 +12,29 @@ namespace LolibarApp.Source.Tools;
 /// </summary>
 public class LolibarContainer
 {
+    /// <summary>
+    /// Name of the container. Beware of dublicate names.
+    /// </summary>
     public string?                  Name                    { get; set; }
+    /// <summary>
+    /// Parent, where this container should be drawn inside.
+    /// </summary>
     public StackPanel?              Parent                  { get; set; }
+    /// <summary>
+    /// Container's icon content, which will be drawn inside.
+    /// </summary>
     public object?                  Icon                    { get; set; }
     /// <summary>
-    /// This is reference to the original `Text` property and cannot be reassiged.
+    /// Reference to the original `Text` property and cannot be reassiged.
     /// </summary>
     public string?                  RefText                 { get; private set; }
+    /// <summary>
+    /// Container's text content, which will be drawn inside.
+    /// </summary>
     public string?                  Text                    { get; set; }
+    /// <summary>
+    /// Container content's color. (Equals `BarContainersColor` by default) 
+    /// </summary>
     public SolidColorBrush?         Color                   { get; set; }           = LolibarMod.BarContainersColor;
     /// <summary>
     /// Set it to `true`, if you want to make this container have a visible background. (False as default)
@@ -44,11 +59,23 @@ public class LolibarContainer
     /// <summary>
     /// Becomes true, after container has been created and placed into the parent.
     /// </summary>
-    public bool     IsCreated       { get; private set; }
-    public LolibarEnums.SeparatorPosition? SeparatorPosition                        { get; set; }
-    public System.Windows.Input.MouseButtonEventHandler? MouseLeftButtonUpEvent     { get; set; }
-    public System.Windows.Input.MouseButtonEventHandler? MouseRightButtonUpEvent    { get; set; }
-    public System.Windows.Input.MouseWheelEventHandler? MouseWheelEvent             { get; set; }
+    public bool                     IsCreated               { get; private set; }
+    /// <summary>
+    /// Position, where container's separator should be drawn. Use `LolibarEnums.SeparatorPosition` Enum to help yourself.
+    /// </summary>
+    public LolibarEnums.SeparatorPosition?                  SeparatorPosition           { get; set; }
+    /// <summary>
+    /// Event invoked on the mouse LEFT key's up.
+    /// </summary>
+    public System.Windows.Input.MouseButtonEventHandler?    MouseLeftButtonUpEvent      { get; set; }
+    /// <summary>
+    /// Event invoked on the mouse RIGHT key's up.
+    /// </summary>
+    public System.Windows.Input.MouseButtonEventHandler?    MouseRightButtonUpEvent     { get; set; }
+    /// <summary>
+    /// Event invoked on the mouse WHEEL state's change (Up or Down spin).
+    /// </summary>
+    public System.Windows.Input.MouseWheelEventHandler?     MouseWheelEvent             { get; set; }
 
     SolidColorBrush BorderBackground()
     {
@@ -72,7 +99,7 @@ public class LolibarContainer
         App.Current.Resources[$"{Name}Color"]               = Color;
         App.Current.Resources[$"{Name}Text"]                = Text;
 
-        App.Current.Resources[$"{Name}ImageIcon"]           = LolibarIcon.ParseICO(@".\Icons\Defaults\Ico\pixel.ico");
+        App.Current.Resources[$"{Name}ImageIcon"]           = LolibarIcon.ParseICO(string.Empty);
         App.Current.Resources[$"{Name}SvgIcon"]             = Geometry.Empty;
 
         SeparatorLeft   = new()

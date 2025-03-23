@@ -38,6 +38,6 @@ class LolibarIcon
             return new Icon(icoLocation).ToBitmapSource();
         }
 
-        return new Icon(@".\Icons\Defaults\Ico\pixel.ico").ToBitmapSource();
+        return new Icon(@".\Icons\Defaults\ico\empty.ico").ToBitmapSource();
     }
 }

@@ -9,8 +9,6 @@ class ExampleLaunchedApplicationsMod : LolibarMod
     string FirefoxPath  = @"C:\Program Files\Mozilla Firefox\firefox.exe";
     string TelegramPath = @"C:\Users\supchyan\AppData\Roaming\Telegram Desktop\telegram.exe";
 
-    LolibarContainer CurrentApplicationContainer    = new();
-
     LolibarContainer ApplicationsContainerParent    = new();
     LolibarContainer FirefoxApplicationContainer    = new();
     LolibarContainer TelegramApplicationContainer   = new();
@@ -18,14 +16,6 @@ class ExampleLaunchedApplicationsMod : LolibarMod
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        // --- Active process monitoring ---
-        CurrentApplicationContainer     = new()
-        {
-            Name                        = "CurrentApplicationContainer",
-            Parent                      = Lolibar.BarRightContainer,
-        };
-        CurrentApplicationContainer.Create();
-
         // --- Apps Shortcuts ---
 
         ApplicationsContainerParent     = new()
@@ -61,9 +51,6 @@ class ExampleLaunchedApplicationsMod : LolibarMod
     }
     public override void Update()
     {
-        CurrentApplicationContainer.Text = LolibarDefaults.GetCurrentApplicationInfo();
-        CurrentApplicationContainer.Update();
-
         // Update all translatable apps (which were in the Initialize() hook)
         LolibarProcess.FetchTranslatableApplications();
     }
