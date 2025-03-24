@@ -4,7 +4,7 @@ using WindowsMediaController;
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
 {
-    static MediaManager Manager = new MediaManager();
+    static readonly MediaManager Manager = new();
     static GlobalSystemMediaTransportControlsSession? Session
     {
         get
