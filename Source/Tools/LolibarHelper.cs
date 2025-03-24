@@ -72,19 +72,22 @@ public static partial class LolibarHelper
     /// Simplifies container's events initialization.
     /// </summary>
     /// <param name="element">Actual container</param>
-    /// <param name="MouseButtonLeftUp">Invokes action on `MouseButtonLeftUp`.</param>
-    /// <param name="MouseButtonRightUp">Invokes action on `MouseButtonRightUp`.</param>
-    public static void SetContainerEvents(
-        this UIElement element, 
+    /// <param name="MouseButtonLeftUpEvent">EVENT called on LEFT mouse button up.</param>
+    /// <param name="MouseButtonRightUpEvent">EVENT called on RIGHT mouse button up.</param>
+    /// <param name="MouseWheelEvent">EVENT called on WHEEL mouse delta changes (mouse wheel `up` or `down` scroll).</param>
+    /// <param name="MouseMiddleButtonUpFunc">FUNCTION called on MIDDLE mouse button up.</param>
+    public static void SetContainerEvents
+    (
+        this UIElement element,
         MouseButtonEventHandler?    MouseButtonLeftUpEvent      = null,
         MouseButtonEventHandler?    MouseButtonRightUpEvent     = null,
         MouseWheelEventHandler?     MouseWheelEvent             = null,
         Func<int>?                  MouseMiddleButtonUpFunc     = null
     )
     {
-        if (MouseButtonLeftUpEvent      != null)    element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
-        if (MouseButtonRightUpEvent     != null)    element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
-        if (MouseWheelEvent             != null)    element.PreviewMouseWheel           += MouseWheelEvent;
+        if (MouseButtonLeftUpEvent      != null) element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
+        if (MouseButtonRightUpEvent     != null) element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
+        if (MouseWheelEvent             != null) element.PreviewMouseWheel           += MouseWheelEvent;
 
         if (MouseMiddleButtonUpFunc     != null)
         {

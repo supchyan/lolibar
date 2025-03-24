@@ -196,14 +196,16 @@ public class LolibarContainer
             TextBlockContainer.Visibility = Visibility.Collapsed;
         }
 
-        if (
+        if 
+        (
             MouseLeftButtonUpEvent      != null ||
             MouseRightButtonUpEvent     != null ||
             MouseWheelEvent             != null ||
             MouseMiddleButtonUpFunc     != null
         )
         {
-            BorderContainer.SetContainerEvents(
+            BorderContainer.SetContainerEvents
+            (
                 MouseLeftButtonUpEvent,
                 MouseRightButtonUpEvent,
                 MouseWheelEvent,
@@ -253,25 +255,25 @@ public class LolibarContainer
 
         if (Text == null)
         {
-            TextBlockContainer.Visibility   = Visibility.Collapsed;
+            TextBlockContainer.Visibility = Visibility.Collapsed;
         }
         else
         {
-            TextBlockContainer.Visibility   = Visibility.Visible;
+            TextBlockContainer.Visibility = Visibility.Visible;
         }
 
         UpdateIconContainersInstance();
 
-        App.Current.Resources[$"{Name}Text"             ]   = Text;
-        App.Current.Resources[$"{Name}Color"            ]   = Color;
-        App.Current.Resources[$"{Name}BorderBackground" ]   = BorderBackground();
+        App.Current.Resources[$"{Name}Text"             ] = Text;
+        App.Current.Resources[$"{Name}Color"            ] = Color;
+        App.Current.Resources[$"{Name}BorderBackground" ] = BorderBackground();
     }
     void UpdateIconContainersInstance()
     {
         if (Icon == null)
         {
-            PathContainer .Visibility   = Visibility.Collapsed;
-            ImageContainer.Visibility   = Visibility.Collapsed;
+            PathContainer .Visibility = Visibility.Collapsed;
+            ImageContainer.Visibility = Visibility.Collapsed;
         }
         else
         {
