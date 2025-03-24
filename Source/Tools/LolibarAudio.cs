@@ -5,6 +5,13 @@ namespace LolibarApp.Source.Tools;
 public class LolibarAudio
 {
     static MediaManager Manager = new MediaManager();
+    static GlobalSystemMediaTransportControlsSession? Session
+    {
+        get
+        {
+            return Manager.GetFocusedSession()?.ControlSession;
+        }
+    }
 
     public static GlobalSystemMediaTransportControlsSessionMediaProperties?     MediaProperties     { get; private set; }
     public static GlobalSystemMediaTransportControlsSessionTimelineProperties?  TimelineProperties  { get; private set; }
@@ -15,11 +22,30 @@ public class LolibarAudio
     /// </summary>
     public static void Start()
     {
-        Manager.OnAnyMediaPropertyChanged      += Manager_OnAnyMediaPropertyChanged;
-        Manager.OnAnyPlaybackStateChanged      += Manager_OnAnyPlaybackStateChanged;
-        Manager.OnAnyTimelinePropertyChanged   += Manager_OnAnyTimelinePropertyChanged;
+        Manager.OnAnySessionClosed              += Manager_OnAnySessionClosed;
+        Manager.OnAnySessionOpened              += Manager_OnAnySessionOpened;
+        Manager.OnAnyMediaPropertyChanged       += Manager_OnAnyMediaPropertyChanged;
+        Manager.OnAnyPlaybackStateChanged       += Manager_OnAnyPlaybackStateChanged;
+        Manager.OnAnyTimelinePropertyChanged    += Manager_OnAnyTimelinePropertyChanged;
 
         Manager.Start();
+    }
+
+    static async void Manager_OnAnySessionOpened(MediaManager.MediaSession mediaSession)
+    {
+        if (Session != null)
+        {
+            MediaProperties     = await Session.TryGetMediaPropertiesAsync();
+            TimelineProperties  = Session.GetTimelineProperties();
+            PlaybackInfo        = Session.GetPlaybackInfo();
+        }
+    }
+
+    static void Manager_OnAnySessionClosed(MediaManager.MediaSession mediaSession)
+    {
+        MediaProperties     = null;
+        TimelineProperties  = null;
+        PlaybackInfo        = null;
     }
     #region Events
     private static void Manager_OnAnyTimelinePropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)
@@ -41,35 +67,41 @@ public class LolibarAudio
     #region Controls
     public static async void PlayOrPause()
     {
-        await Manager.GetFocusedSession()?.ControlSession.TryTogglePlayPauseAsync();
+        if (Session != null)
+            await Session.TryTogglePlayPauseAsync();
     }
     public static async void Play()
     {
-        await Manager.GetFocusedSession()?.ControlSession.TryPlayAsync();
+        if (Session != null)
+            await Session?.TryPlayAsync();
     }
     public static async void Pause()
     {
-        await Manager.GetFocusedSession()?.ControlSession.TryPauseAsync();
+        if (Session != null)
+            await Session?.TryPauseAsync();
     }
     public static async void Stop()
     {
-        await Manager.GetFocusedSession()?.ControlSession.TryStopAsync();
+        if (Session != null)
+            await Session?.TryStopAsync();
     }
     public static async void Next()
     {
-        await Manager.GetFocusedSession()?.ControlSession.TrySkipNextAsync();
+        if (Session != null)
+            await Session?.TrySkipNextAsync();
     }
     public static async void Previous()
     {
-        await Manager.GetFocusedSession()?.ControlSession.TrySkipPreviousAsync();
+        if (Session != null)
+            await Session?.TrySkipPreviousAsync();
     }
     public static bool IsPlaying
     {
         get
         {
-            if (Manager.GetFocusedSession() != null)
+            if (Session != null)
             {
-                return Manager.GetFocusedSession().ControlSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
+                return Session.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
             }
             else
             {
