@@ -28,7 +28,7 @@ class ExampleLaunchedApplicationsMod : LolibarMod
         FirefoxApplicationContainer     = new()
         {
             Name                        = "FirefoxApplicationContainer",
-            Icon                        = LolibarProcess.GetAssociatedIcon(FirefoxPath),
+            Icon                        = LolibarIcon.GetApplicationIcon(FirefoxPath),
             Parent                      = ApplicationsContainerParent.GetBody(),
             MouseLeftButtonUpEvent      = InvokeFirefox_Event
         };
@@ -40,7 +40,7 @@ class ExampleLaunchedApplicationsMod : LolibarMod
         TelegramApplicationContainer    = new()
         {
             Name                        = "TelegramApplicationContainer",
-            Icon                        = LolibarProcess.GetAssociatedIcon(TelegramPath),
+            Icon                        = LolibarIcon.GetApplicationIcon(TelegramPath),
             Parent                      = ApplicationsContainerParent.GetBody(),
             MouseLeftButtonUpEvent      = InvokeTelegram_Event
         };

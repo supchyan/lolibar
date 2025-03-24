@@ -92,15 +92,6 @@ public class LolibarProcess
             Process.Start(applicationPath);
         }
     }
-    /// <summary>
-    /// Attempts to return an Icon object of the specified application, received from it's location.
-    /// </summary>
-    /// <param name="applicationPath">Path to your application.</param>
-    /// <returns></returns>
-    public static Icon? GetAssociatedIcon(string applicationPath)
-    {        
-        return Icon.ExtractAssociatedIcon(applicationPath);
-    }
     static string ProcessNameByPath(string processPath)
     {
         return processPath.Split("\\").Last().Split(".")[0];

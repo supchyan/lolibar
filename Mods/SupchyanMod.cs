@@ -1,6 +1,8 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -24,10 +26,10 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Icons
-    readonly Geometry PlayAudioIcon      = LolibarIcon.ParseSVG(@".\Icons\Mods\supchyan\play.svg");
-    readonly Geometry PauseAudioIcon     = LolibarIcon.ParseSVG(@".\Icons\Mods\supchyan\pause.svg");
-    readonly Geometry PreviousAudioIcon  = LolibarIcon.ParseSVG(@".\Icons\Mods\supchyan\prev.svg");
-    readonly Geometry NextAudioIcon      = LolibarIcon.ParseSVG(@".\Icons\Mods\supchyan\next.svg");
+    readonly Geometry PlayAudioIcon      = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\play.svg");
+    readonly Geometry PauseAudioIcon     = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\pause.svg");
+    readonly Geometry PreviousAudioIcon  = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\prev.svg");
+    readonly Geometry NextAudioIcon      = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\next.svg");
     #endregion
 
     #region Color Codes
@@ -37,11 +39,8 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Containers
-    LolibarContainer TimeContainerParent        = new();
-    LolibarContainer TimeContainer              = new();
-
-    LolibarContainer DateContainerParent        = new();
-    LolibarContainer DateContainer              = new();
+    LolibarContainer DateTimeContainerParent    = new();
+    LolibarContainer DateTimeContainer          = new();
 
     LolibarContainer AudioContainerParent       = new();
     LolibarContainer PreviousButtonContainer    = new();
@@ -64,41 +63,23 @@ class SupchyanMod : LolibarMod
     }
     public override void Initialize()
     {
-        // --- Time ---
-        TimeContainerParent         = new()
+        // --- Date / Time ---
+        DateTimeContainerParent     = new()
         {
-            Name                    = "TimeContainerParent",
+            Name                    = "DateTimeContainerParent",
             Parent                  = Lolibar.BarLeftContainer,
             SeparatorPosition       = LolibarEnums.SeparatorPosition.Right,
         };
-        TimeContainerParent.Create();
+        DateTimeContainerParent.Create();
 
-        TimeContainer               = new()
+        DateTimeContainer = new()
         {
-            Name                    = "TimeContainer",
-            Parent                  = TimeContainerParent.GetBody(),
+            Name                    = "DateTimeContainer",
+            Parent                  = DateTimeContainerParent.GetBody(),
             MouseLeftButtonUpEvent  = OpenCalendarEvent,
             HasBackground           = true,
         };
-        TimeContainer.Create();
-
-        // --- Date ---
-        DateContainerParent         = new()
-        {
-            Name                    = "DateContainerParent",
-            Parent                  = Lolibar.BarLeftContainer,
-            SeparatorPosition       = LolibarEnums.SeparatorPosition.Right,
-        };
-        DateContainerParent.Create();
-
-        DateContainer               = new()
-        {
-            Name                    = "DateContainer",
-            Parent                  = DateContainerParent.GetBody(),
-            MouseLeftButtonUpEvent  = OpenCalendarEvent,
-            HasBackground           = true,
-        };
-        DateContainer.Create();
+        DateTimeContainer.Create();
 
         // --- Power ---
         PowerMonitorContainer       = new()
@@ -173,23 +154,19 @@ class SupchyanMod : LolibarMod
         BarWidth = Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X  - 2 * BarMargin : BarWidth;
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
-        // --- Time ---
-        TimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)}";
-        TimeContainer.Update();
-
         // --- Date / Time ---
-        DateContainer.Text = $"{DateTime.Now.Day}.{String.Format("{0:00}", DateTime.Now.Month)}.{DateTime.Now.Year}";
-        DateContainer.Update();
+        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} ∆ {DateTime.Now.Day}.{String.Format("{0:00}", DateTime.Now.Month)}.{DateTime.Now.Year}";
+        DateTimeContainer.Update();
 
         // --- Audio player ---
-        PlayButtonContainer.Icon = LolibarAudio.IsPlaying() ? PauseAudioIcon : PlayAudioIcon;
+        PlayButtonContainer.Icon = LolibarAudio.IsPlaying ? PauseAudioIcon : PlayAudioIcon;
         PlayButtonContainer.Update();
 
         UseAudioTitleBlinkAnimation();
 
-        var AudioTitle = LolibarAudio.StreamInfo?.Title.Truncate(50) ?? "";
+        var AudioTitle = LolibarAudio.MediaProperties?.Title.Truncate(50) ?? "";
 
-        AudioInfoContainer.Text = LolibarAudio.IsPlaying() ? $"{AudioTitle} {BrailleAudioPlayerAnimation()}" : AudioTitle;
+        AudioInfoContainer.Text = LolibarAudio.IsPlaying ? $"{AudioTitle} {BrailleAudioPlayerAnimation()}" : AudioTitle;
 
         if (AudioTitle == "")
         {
@@ -197,9 +174,9 @@ class SupchyanMod : LolibarMod
         }
 
         // Smooth opacity animtaion upon audio playback state change
-        if (AudioInfoContainer.GetBody() != null && OldAudioPlaybackState != LolibarAudio.IsPlaying().GetHashCode())
+        if (OldAudioPlaybackState != LolibarAudio.IsPlaying.GetHashCode())
         {
-            if (LolibarAudio.IsPlaying())
+            if (LolibarAudio.IsPlaying)
             {
                 LolibarAnimator.BeginIncOpacityAnimation(AudioInfoContainer.GetBody());
             }
@@ -207,7 +184,7 @@ class SupchyanMod : LolibarMod
             {
                 LolibarAnimator.BeginDecOpacityAnimation(AudioInfoContainer.GetBody());
             }
-            OldAudioPlaybackState = LolibarAudio.IsPlaying().GetHashCode();
+            OldAudioPlaybackState = LolibarAudio.IsPlaying.GetHashCode();
         }
 
         AudioInfoContainer.Update();
@@ -329,12 +306,12 @@ class SupchyanMod : LolibarMod
     /// </summary>
     void UseAudioTitleBlinkAnimation()
     {
-        if (AudioInfoContainer.GetBody() == null || LolibarAudio.StreamInfo?.Title == null) return;
+        if (AudioInfoContainer.GetBody() == null || LolibarAudio.MediaProperties?.Title == null) return;
 
-        if (OldAudioTitle != LolibarAudio.StreamInfo?.Title)
+        if (OldAudioTitle != LolibarAudio.MediaProperties?.Title)
         {
             LolibarAnimator.BeginBlinkOpacityAnimation(AudioInfoContainer.GetBody());
-            OldAudioTitle = LolibarAudio.StreamInfo?.Title ?? string.Empty;
+            OldAudioTitle = LolibarAudio.MediaProperties?.Title ?? string.Empty;
         }
     }
     #endregion

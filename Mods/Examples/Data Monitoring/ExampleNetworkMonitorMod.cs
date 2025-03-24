@@ -4,11 +4,11 @@ using LolibarApp.Source.Tools;
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to enable (load) it
 
-//namespace LolibarApp.Mods;
+// namespace LolibarApp.Mods;
 
 class ExampleNetworkMonitorMod : LolibarMod
 {
-    LolibarContainer? NetworkMonitorContainer;
+    LolibarContainer NetworkMonitorContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
@@ -17,8 +17,6 @@ class ExampleNetworkMonitorMod : LolibarMod
         {
             Name = "ExampleNetworkMonitorContainer",
             Parent = Lolibar.BarLeftContainer,
-            Text = LolibarDefaults.GetNetworkInfo(),
-            Icon = LolibarDefaults.GetNetworkIcon(),
             MouseRightButtonUpEvent = SwapNetworkInfoEvent
         };
         NetworkMonitorContainer.Create();

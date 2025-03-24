@@ -1,69 +1,37 @@
-﻿using System.Diagnostics;
-using Windows.Media.Control;
+﻿using Windows.Media.Control;
 
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
 {
-    static async Task<GlobalSystemMediaTransportControlsSessionManager> GetSystemMediaTransportControlsSessionManager() => await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
-    static async Task<GlobalSystemMediaTransportControlsSessionMediaProperties?> GetMediaProperties(GlobalSystemMediaTransportControlsSession? session) => session != null ? await session.TryGetMediaPropertiesAsync() : default;
-
     /// <summary>
-    /// Current audio stream instance. (Returns `null` if nothing is buffered / playing)
+    /// Session Manager.
     /// </summary>
-    public static GlobalSystemMediaTransportControlsSessionManager? Stream { get; private set; }
+    public static GlobalSystemMediaTransportControlsSessionManager?             SessionManager      { get; set; }
     /// <summary>
-    /// Current audio stream info. (Returns `null` if stream doesn't exist or stream's info is unreachable)
+    /// Current Audio Stream Session.
     /// </summary>
-    public static GlobalSystemMediaTransportControlsSessionMediaProperties? StreamInfo { get; private set; }
-
-    public static GlobalSystemMediaTransportControlsSession? CurrentSession
-    {
-        get
-        {
-            return Stream?.GetCurrentSession();
-        }
-    }
+    public static GlobalSystemMediaTransportControlsSession?                    CurrentSession      { get; set; }
+    /// <summary>
+    /// Current audio session media properties (i.e. Title, Author, Description, etc.).
+    /// </summary>
+    public static GlobalSystemMediaTransportControlsSessionMediaProperties?     MediaProperties     { get; set; }
+    public static GlobalSystemMediaTransportControlsSessionTimelineProperties?  TimelineProperties  { get; set; }
+    public static GlobalSystemMediaTransportControlsSessionPlaybackInfo?        PlaybackInfo        { get; set; }
 
     #region Private Methods
-    public static async Task TryToSubscribeStreamEvents()
+    static void UpdateCurrentSession(GlobalSystemMediaTransportControlsSession newSession)
     {
         try
         {
-            Stream = await GetSystemMediaTransportControlsSessionManager();
+            CurrentSession = newSession;
 
-            if (Stream == null) 
-            {
-                StreamInfo = null;
-                return;
-            }
+            CurrentSession.MediaPropertiesChanged       -= CurrentSession_MediaPropertiesChanged;
+            CurrentSession.PlaybackInfoChanged          -= CurrentSession_PlaybackInfoChanged;
+            CurrentSession.TimelinePropertiesChanged    -= CurrentSession_TimelinePropertiesChanged;
 
-            Stream.SessionsChanged -= Stream_SessionsChanged;
-            Stream.SessionsChanged += Stream_SessionsChanged;
-        }
-        catch
-        {
-
-        }
-    }
-    public static async Task TryToSubscribeStreamInfoEvents()
-    {
-        try
-        {
-            if (CurrentSession == null)
-            {
-                StreamInfo = null;
-                return;
-            }
-            else
-            {
-                StreamInfo = await GetMediaProperties(CurrentSession);
-            }
-
-            CurrentSession.PlaybackInfoChanged -= LolibarAudio_PlaybackInfoChanged;
-            CurrentSession.MediaPropertiesChanged -= LolibarAudio_MediaPropertiesChanged;
-
-            CurrentSession.PlaybackInfoChanged += LolibarAudio_PlaybackInfoChanged;
-            CurrentSession.MediaPropertiesChanged += LolibarAudio_MediaPropertiesChanged;
+            CurrentSession.MediaPropertiesChanged       += CurrentSession_MediaPropertiesChanged;
+            CurrentSession.PlaybackInfoChanged          += CurrentSession_PlaybackInfoChanged;
+            CurrentSession.TimelinePropertiesChanged    += CurrentSession_TimelinePropertiesChanged;
         }
         catch
         {
@@ -73,90 +41,79 @@ public class LolibarAudio
     #endregion
 
     #region Events
-    static async void Stream_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args)
+    static void SessionManager_CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, CurrentSessionChangedEventArgs args)
     {
-        await TryToSubscribeStreamEvents();
-        await TryToSubscribeStreamInfoEvents();
+        UpdateCurrentSession(sender.GetCurrentSession());
     }
-    static async void LolibarAudio_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
+    static void CurrentSession_TimelinePropertiesChanged(GlobalSystemMediaTransportControlsSession sender, TimelinePropertiesChangedEventArgs args)
     {
-        if (CurrentSession != null)
-        {
-            StreamInfo = await GetMediaProperties(CurrentSession);
-        }
+        TimelineProperties  = sender.GetTimelineProperties();
     }
-    static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
+    static void CurrentSession_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
     {
-        if (CurrentSession != null)
-        {
-            StreamInfo = await GetMediaProperties(CurrentSession);
-        }
+        PlaybackInfo        = sender.GetPlaybackInfo();
+    }
+    static async void CurrentSession_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
+    {
+        MediaProperties     = await sender.TryGetMediaPropertiesAsync();
     }
     #endregion
 
-    #region Public Methods
+    #region Session Controls
+    /// <summary>
+    /// Starts `LolibarAudio` logic. Already called upon lolibar's launch.
+    /// </summary>
+    public static async void Begin()
+    {
+        SessionManager = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
+        CurrentSession = SessionManager.GetCurrentSession();
+
+        SessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
+        UpdateCurrentSession(CurrentSession);
+    }
     /// <summary>
     /// Attempts to play current audio stream if paused, and pause if opposite.
     /// </summary>
-    public static async void PlayOrPause()
+    public static void PlayOrPause()
     {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TryTogglePlayPauseAsync();
-        }
+        CurrentSession?.TryTogglePlayPauseAsync();
     }
     /// <summary>
     /// Attempts to pause current audio stream.
     /// </summary>
-    public static async void Pause()
+    public static void Pause()
     {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TryPauseAsync();
-        }
+        CurrentSession?.TryPauseAsync();
     }
     /// <summary>
     /// Attempts to start playing / resume current audio stream.
     /// </summary>
-    public static async void Resume()
+    public static void Resume()
     {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TryPlayAsync();
-        }
+        CurrentSession?.TryPlayAsync();
     }
     /// <summary>
     /// Attempts to skip current audio stream and start to play the next one.
     /// </summary>
-    public static async void Next()
+    public static void Next()
     {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TrySkipNextAsync();
-        }
+        CurrentSession?.TrySkipNextAsync();
     }
     /// <summary>
     /// Attempts to return to previous audio stream and start to play it.
     /// </summary>
-    public static async void Previous()
+    public static void Previous()
     {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TrySkipPreviousAsync();
-        }
+        CurrentSession?.TrySkipPreviousAsync();
     }
     /// <summary>
     /// Returns `true`, if current audio stream is playing.
     /// </summary>
-    public static bool IsPlaying()
+    public static bool IsPlaying
     {
-        if (CurrentSession != null)
+        get
         {
-            return CurrentSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
-        }
-        else
-        {
-            return false;
+            return CurrentSession?.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
         }
     }
     #endregion

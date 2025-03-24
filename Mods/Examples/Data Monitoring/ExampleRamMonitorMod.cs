@@ -4,11 +4,11 @@ using LolibarApp.Source.Tools;
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to enable (load) it
 
-//namespace LolibarApp.Mods;
+// namespace LolibarApp.Mods;
 
 class ExampleRamMonitorMod : LolibarMod
 {
-    LolibarContainer? RamMonitorContainer;
+    LolibarContainer RamMonitorContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
@@ -17,8 +17,6 @@ class ExampleRamMonitorMod : LolibarMod
         {
             Name = "ExampleRamMonitorContainer",
             Parent = Lolibar.BarLeftContainer,
-            Text = LolibarDefaults.GetRamInfo(),
-            Icon = LolibarDefaults.GetRamIcon(),
             MouseRightButtonUpEvent = SwapRamInfoEvent
         };
         RamMonitorContainer.Create();

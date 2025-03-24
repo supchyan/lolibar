@@ -4,11 +4,11 @@ using LolibarApp.Source.Tools;
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to enable (load) it
 
-//namespace LolibarApp.Mods;
+// namespace LolibarApp.Mods;
 
 class ExampleDiskMonitorMod : LolibarMod
 {
-    LolibarContainer? DiskMonitorContainer;
+    LolibarContainer DiskMonitorContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
@@ -17,8 +17,6 @@ class ExampleDiskMonitorMod : LolibarMod
         {
             Name = "ExampleDiskMonitorContainer",
             Parent = Lolibar.BarLeftContainer,
-            Text = LolibarDefaults.GetDiskInfo(),
-            Icon = LolibarDefaults.GetDiskIcon(),
             MouseRightButtonUpEvent = SwapDiskInfoEvent
         };
         DiskMonitorContainer.Create();
