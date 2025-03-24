@@ -84,7 +84,7 @@ public partial class Lolibar : Window
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
 
-        LolibarAudio.Begin();
+        LolibarAudio.Start();
 
         SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
     }
