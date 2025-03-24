@@ -41,33 +41,40 @@ public class LolibarAudio
     #region Controls
     public static async void PlayOrPause()
     {
-        await Manager.GetFocusedSession().ControlSession.TryTogglePlayPauseAsync();
+        await Manager.GetFocusedSession()?.ControlSession.TryTogglePlayPauseAsync();
     }
     public static async void Play()
     {
-        await Manager.GetFocusedSession().ControlSession.TryPlayAsync();
+        await Manager.GetFocusedSession()?.ControlSession.TryPlayAsync();
     }
     public static async void Pause()
     {
-        await Manager.GetFocusedSession().ControlSession.TryPauseAsync();
+        await Manager.GetFocusedSession()?.ControlSession.TryPauseAsync();
     }
     public static async void Stop()
     {
-        await Manager.GetFocusedSession().ControlSession.TryStopAsync();
+        await Manager.GetFocusedSession()?.ControlSession.TryStopAsync();
     }
     public static async void Next()
     {
-        await Manager.GetFocusedSession().ControlSession.TrySkipNextAsync();
+        await Manager.GetFocusedSession()?.ControlSession.TrySkipNextAsync();
     }
     public static async void Previous()
     {
-        await Manager.GetFocusedSession().ControlSession.TrySkipPreviousAsync();
+        await Manager.GetFocusedSession()?.ControlSession.TrySkipPreviousAsync();
     }
     public static bool IsPlaying
     {
         get
         {
-            return Manager.GetFocusedSession().ControlSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
+            if (Manager.GetFocusedSession() != null)
+            {
+                return Manager.GetFocusedSession().ControlSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
     #endregion

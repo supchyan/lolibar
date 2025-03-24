@@ -42,10 +42,10 @@ class LolibarIcon
         }
         catch
         {
-            return new Icon(@".\Icons\Defaults\ico\empty.ico").ToBitmapSource();
+            return new Icon($"{LolibarDefaults.ExecutionPath}\\Icons\\Defaults\\ico\\empty.ico").ToBitmapSource();
         }
 
-        return new Icon(@".\Icons\Defaults\ico\empty.ico").ToBitmapSource();
+        return new Icon($"{LolibarDefaults.ExecutionPath}\\Icons\\Defaults\\ico\\empty.ico").ToBitmapSource();
     }
     /// <summary>
     /// Attempts to return an Icon object of the specified application, received from it's location.

@@ -155,7 +155,7 @@ class SupchyanMod : LolibarMod
         BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
         // --- Date / Time ---
-        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} ∆ {DateTime.Now.Day}.{String.Format("{0:00}", DateTime.Now.Month)}.{DateTime.Now.Year}";
+        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)}.{DateTime.Now.Year} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
         DateTimeContainer.Update();
 
         // --- Audio player ---
