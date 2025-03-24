@@ -9,7 +9,10 @@ public class LolibarAudio
     {
         get
         {
-            return Manager.GetFocusedSession()?.ControlSession;
+            if (Manager.IsStarted)
+                return Manager.GetFocusedSession()?.ControlSession;
+            
+            return null;
         }
     }
 
