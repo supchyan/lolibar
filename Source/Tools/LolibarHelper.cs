@@ -67,7 +67,6 @@ public static partial class LolibarHelper
         System.Windows.Forms.Application.Restart();
         System.Windows.Application.Current.Shutdown();
     }
-
     /// <summary>
     /// Simplifies container's events initialization.
     /// </summary>
