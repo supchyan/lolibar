@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -7,6 +8,7 @@ namespace LolibarApp.Source.Tools;
 
 public static partial class LolibarHelper
 {
+    static bool MiddleButtonPressed { get; set; }
     public static int GetWindowsScaling()
     {
         return (int)(100 * Screen.PrimaryScreen?.Bounds.Width ?? 0 / SystemParameters.PrimaryScreenWidth);
@@ -72,11 +74,35 @@ public static partial class LolibarHelper
     /// <param name="element">Actual container</param>
     /// <param name="MouseButtonLeftUp">Invokes action on `MouseButtonLeftUp`.</param>
     /// <param name="MouseButtonRightUp">Invokes action on `MouseButtonRightUp`.</param>
-    public static void SetContainerEvents(this UIElement element, System.Windows.Input.MouseButtonEventHandler? MouseButtonLeftUpEvent = null, System.Windows.Input.MouseButtonEventHandler? MouseButtonRightUpEvent = null, System.Windows.Input.MouseWheelEventHandler? MouseWheelEvent = null)
+    public static void SetContainerEvents(
+        this UIElement element, 
+        MouseButtonEventHandler?    MouseButtonLeftUpEvent      = null,
+        MouseButtonEventHandler?    MouseButtonRightUpEvent     = null,
+        MouseWheelEventHandler?     MouseWheelEvent             = null,
+        Func<int>?                  MouseMiddleButtonUpFunc     = null
+    )
     {
-        if (MouseButtonLeftUpEvent != null )   element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
-        if (MouseButtonRightUpEvent != null)   element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
-        if (MouseWheelEvent != null        )   element.PreviewMouseWheel           += MouseWheelEvent;
+        if (MouseButtonLeftUpEvent      != null)    element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
+        if (MouseButtonRightUpEvent     != null)    element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
+        if (MouseWheelEvent             != null)    element.PreviewMouseWheel           += MouseWheelEvent;
+
+        if (MouseMiddleButtonUpFunc     != null)
+        {
+            element.PreviewMouseDown    += (object sender, MouseButtonEventArgs e) =>
+            {
+                MiddleButtonPressed = Mouse.MiddleButton == MouseButtonState.Pressed;
+            };
+            element.PreviewMouseUp      += (object sender, MouseButtonEventArgs e) =>
+            {
+                if (MiddleButtonPressed)
+                {
+                    MouseMiddleButtonUpFunc();
+                    MiddleButtonPressed = false;
+                }
+            };
+        }
+
+
         element.MouseEnter += LolibarEvents.UI_MouseEnter;
         element.MouseLeave += LolibarEvents.UI_MouseLeave;
     }

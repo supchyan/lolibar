@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Controls;
-using System.IO;
+using System.Windows;
 
 namespace LolibarApp.Source.Tools;
 
@@ -71,11 +71,10 @@ public class LolibarProcess
         }
     }
     /// <summary>
-    /// Try to switch to the selected application window, otherwise start the process,
-    /// if cannot find a main window handler, or belonged process is the background one. 
+    /// Invokes application's instance by specified path / starts a new one,
+    /// if current application isn't running, or running at the background.
     /// </summary>
     /// <param name="applicationPath">App execution path.</param>
-    /// <param name="processName">App process name (usually is the same as executable file name).</param>
     public static void InvokeApplicationByPath (string applicationPath)
     {
         var definedProcesses = Process.GetProcessesByName(GetProcessNameByPath(applicationPath));
@@ -102,6 +101,14 @@ public class LolibarProcess
         {
             Process.Start(applicationPath);
         }
+    }
+    /// <summary>
+    /// Starts a new application instance by specified path.
+    /// </summary>
+    /// <param name="applicationPath">App execution path.</param>
+    public static void StartApplicationByPath(string applicationPath)
+    {
+        Process.Start(applicationPath);
     }
     static string GetProcessNameByPath(string processPath)
     {
@@ -132,7 +139,22 @@ public class LolibarProcess
                     Name = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
                     Icon = LolibarIcon.GetApplicationIcon(TargetPath),
                     Parent = parent,
-                    MouseLeftButtonUpEvent = (object sender, MouseButtonEventArgs e) => { InvokeApplicationByPath(TargetPath); }
+                    MouseRightButtonUpEvent = (object sender,  MouseButtonEventArgs e) =>
+                    { 
+                        /* OPEN CONTEXT MENU */  
+                    },
+                    MouseMiddleButtonUpFunc = () =>  
+                    {
+                        // Starts a new application instance
+                        StartApplicationByPath(TargetPath);
+                        return 0;
+                    },
+                    MouseLeftButtonUpEvent  = (object sender,  MouseButtonEventArgs e) =>
+                    {
+                        // Invokes application instance / starts a new one,
+                        // if specified application isn't running, or running at the background
+                        InvokeApplicationByPath(TargetPath);
+                    }
                 };
                 PinContainer.Create();
 
