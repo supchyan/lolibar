@@ -40,13 +40,16 @@ class SupchyanMod : LolibarMod
     LolibarContainer DateTimeContainerParent    = new();
     LolibarContainer DateTimeContainer          = new();
 
+
+    LolibarContainer PowerMonitorContainer      = new();
+
     LolibarContainer AudioContainerParent       = new();
     LolibarContainer PreviousButtonContainer    = new();
     LolibarContainer PlayButtonContainer        = new();
     LolibarContainer NextButtonContainer        = new();
     LolibarContainer AudioInfoContainer         = new();
 
-    LolibarContainer PowerMonitorContainer      = new();
+    LolibarContainer AppsContainerParent        = new();
 
     LolibarContainer WorkspacesContainer        = new();
     #endregion
@@ -131,6 +134,15 @@ class SupchyanMod : LolibarMod
             Color                   = LolibarColor.FromHEX(TernaryColorCode)
         };
         AudioInfoContainer.Create();
+
+        AppsContainerParent = new()
+        {
+            Name            = "AppsContainerParent",
+            Parent          = Lolibar.BarRightContainer,
+        };
+        AppsContainerParent.Create();
+
+        LolibarProcess.AddPinnedAppsToContainer(AppsContainerParent.GetBody());
 
         // --- Desktop Workspaces (Tabs) ---
         WorkspacesContainer         = new()

@@ -87,20 +87,27 @@ public class LolibarProcess
             if (process.MainWindowHandle != 0)
             {
                 LolibarExtern.SwitchToThisWindow(process.MainWindowHandle, true);
-                LolibarVirtualDesktop.UpdateInitializedDesktops();
             }
             else
             {
-                Process.Start(applicationPath);
+                process = Process.Start(applicationPath);
             }
         }
         else
         {
-            Process.Start(applicationPath);
+            process = Process.Start(applicationPath);
         }
 
-        // Fetch apps' containers
+        // TODO:
+        // This should be called right after window actually started and MainWindow handled.
+        // At this moment, it can be occured before ``MainWindowHandle` became reachable.
         FetchPinnedAppsContainers();
+
+        // TODO:
+        // This should be called right after window actually switched.
+        // At this moment, it can be occured before `SwitchToThisWindow()` finished it's job.
+        // Update workspaces state
+        LolibarVirtualDesktop.UpdateInitializedDesktops();
     }
     /// <summary>
     /// Starts a new application instance by specified path.
