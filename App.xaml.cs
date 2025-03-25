@@ -19,7 +19,7 @@ public partial class App : System.Windows.Application
         DialogResult result = LolibarMessageBox.Show
                 (
                     text: $"{exception.Source}.exe caught an error.\n\nError: {exception.Message}\n{exception.InnerException}\n{exception.StackTrace}\n\nDo you want to restart the application?",
-                    caption: "Lolibar Caution!",
+                    title: "Lolibar Alert",
                     MessageBoxButtons.YesNo
                 );
 

@@ -2,8 +2,8 @@
 
 public class LolibarMessageBox
 {
-    public static DialogResult Show(string text, string caption, MessageBoxButtons buttons)
+    public static DialogResult Show(string text, string title = "Alert", MessageBoxButtons buttons = MessageBoxButtons.OK)
     {
-        return MessageBox.Show(text, caption, buttons);
+        return MessageBox.Show(text, title, buttons);
     }
 }

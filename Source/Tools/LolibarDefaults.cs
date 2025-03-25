@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Windows.Media;
 using System.IO;
+using Windows.Devices.WiFi;
 
 namespace LolibarApp.Source.Tools;
 
@@ -25,7 +26,49 @@ public partial class LolibarDefaults
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".\\";
         }
     }
+    #region Wifi
+    static string? GetWiFiName()
+    {
+        if (LolibarPerfMon.WiFiAdapters == null) return null;
 
+        foreach (var adapter in LolibarPerfMon.WiFiAdapters)
+        {
+            // TODO:
+            // AvailableNetworks[0] here is not a connected network, so this is wrong info.
+            return adapter.NetworkReport.AvailableNetworks[0].Ssid;
+        }
+
+        return null;
+    }
+    static Geometry? GetWiFiIcon()
+    {
+        if (LolibarPerfMon.WiFiAdapters == null) return null;
+
+        foreach (var adapter in LolibarPerfMon.WiFiAdapters)
+        {
+            // TODO:
+            // AvailableNetworks[0] here is not a connected network, so this is wrong info.
+            var signalBars = adapter.NetworkReport.AvailableNetworks[0].SignalBars;
+
+            switch (signalBars)
+            {
+                case 4:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_4.svg");
+
+                case 3:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_3.svg");
+
+                case 2:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_2.svg");
+
+                case 1:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_1.svg");
+            }
+        }
+
+        return null;
+    }
+    #endregion
     #region User
     public static string? GetUserInfo()
     {

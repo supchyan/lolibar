@@ -1,6 +1,10 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.VisualBasic.Devices;
+using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using VirtualDesktop;
+using Windows.Devices.WiFi;
+using Windows.Foundation;
 
 namespace LolibarApp.Source.Tools;
 
@@ -21,6 +25,7 @@ public class LolibarPerfMon
     
     public static bool IsNetworkCountersInitialized             { get; private set; }
 
+    public static IReadOnlyList<WiFiAdapter>? WiFiAdapters { get { return WiFiAdapter.FindAllAdaptersAsync().GetAwaiter().GetResult();  } }
     
     public static void InitializeNetworkCounters()
     {
