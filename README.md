@@ -182,6 +182,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 ## 🌸Special thanks
 - **[VirtualDesktop](https://github.com/MScholtes/VirtualDesktop) by @MScholtes**
 - **[WindowsMediaController](https://github.com/DubyaDude/WindowsMediaController) by @DubyaDude**
+- **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
 ## 🌸At the end...
 <div align=center><img src=https://github.com/user-attachments/assets/791250c1-112e-47e0-8756-284e36194162 /></div>
