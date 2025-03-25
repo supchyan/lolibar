@@ -1,4 +1,7 @@
-﻿namespace LolibarApp;
+﻿using LolibarApp.Source.Tools;
+using System.Windows.Forms;
+
+namespace LolibarApp;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -7,12 +10,26 @@ public partial class App : System.Windows.Application
 {
     App()
     {
-        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        AppDomain.CurrentDomain.UnhandledException  += CurrentDomain_UnhandledException;
     }
 
-    private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         Exception exception = (Exception)e.ExceptionObject;
-        System.Windows.MessageBox.Show($"{exception.Source}.exe caught an error.\n\nError: {exception.Message}\n{exception.InnerException}\n{exception.StackTrace}");
+        DialogResult result = LolibarMessageBox.Show
+                (
+                    text: $"{exception.Source}.exe caught an error.\n\nError: {exception.Message}\n{exception.InnerException}\n{exception.StackTrace}\n\nDo you want to restart the application?",
+                    caption: "Lolibar Caution!",
+                    MessageBoxButtons.YesNo
+                );
+
+        if (result == DialogResult.Yes)
+        {
+            LolibarHelper.RestartApplicationGently();
+        }
+        if (result == DialogResult.No)
+        {
+            LolibarHelper.CloseApplicationGently();
+        }
     }
 }

@@ -40,6 +40,9 @@ class SupchyanMod : LolibarMod
     LolibarContainer DateTimeContainerParent    = new();
     LolibarContainer DateTimeContainer          = new();
 
+    LolibarContainer QuickSettingsContainer     = new();
+    LolibarContainer NotificationsContainer     = new();
+    LolibarContainer EmergencyContainer         = new();
 
     LolibarContainer PowerMonitorContainer      = new();
 
@@ -82,6 +85,38 @@ class SupchyanMod : LolibarMod
             HasBackground           = true,
         };
         DateTimeContainer.Create();
+
+        // --- Quick Settings ---
+        QuickSettingsContainer = new()
+        {
+            Name                    = "QuickSettingsContainer",
+            Parent                  = Lolibar.BarLeftContainer,
+            Icon                    = LolibarIcon.ParseSVG("./supchyan/gear.svg"),
+            MouseLeftButtonUp       = OpenQuickSettingsOverlay
+        };
+        QuickSettingsContainer.Create();
+
+        // --- Notifications ---
+        NotificationsContainer      = new()
+        {
+            Name                    = "NotificationsContainer",
+            Parent                  = Lolibar.BarLeftContainer,
+            Icon                    = LolibarIcon.ParseSVG("./supchyan/notify.svg"),
+            MouseLeftButtonUp       = OpenNotificationsOverlay,
+        };
+        NotificationsContainer.Create();
+
+        // --- Emergency ---
+        EmergencyContainer = new()
+        {
+            Name                    = "EmergencyContainer",
+            Parent                  = Lolibar.BarLeftContainer,
+            Icon                    = LolibarIcon.ParseSVG("./Defaults/cpu.svg"),
+            MouseLeftButtonUp       = RestartLolibar,
+            MouseRightButtonUp      = CloseLolibar,
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Right
+        };
+        EmergencyContainer.Create();
 
         // --- Power ---
         PowerMonitorContainer       = new()
@@ -164,8 +199,10 @@ class SupchyanMod : LolibarMod
             showDesktopNames:   true
         );
     }
-    public override void Update() 
+    public override void Update()
     {
+        LolibarHelper.HideWindowsTaskbar();
+
         // --- Auto resize logic ---
         (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
 
@@ -212,7 +249,7 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Click events
-    // date / time
+    // --- Date / Time ---
     int OpenCalendar(MouseButtonEventArgs e)
     {
         LolibarHelper.KeyDown(Keys.LWin);
@@ -223,7 +260,41 @@ class SupchyanMod : LolibarMod
         return 0;
     }
 
-    // power
+    // --- Quick Settings ---
+    int OpenQuickSettingsOverlay(MouseButtonEventArgs e)
+    {
+        LolibarHelper.KeyDown(Keys.LWin);
+        LolibarHelper.KeyDown(Keys.A);
+        LolibarHelper.KeyUp(Keys.A);
+        LolibarHelper.KeyUp(Keys.LWin);
+
+        return 0;
+    }
+
+    // --- Notifications ---
+    int OpenNotificationsOverlay(MouseButtonEventArgs e)
+    {
+        LolibarHelper.KeyDown(Keys.LWin);
+        LolibarHelper.KeyDown(Keys.N);
+        LolibarHelper.KeyUp(Keys.N);
+        LolibarHelper.KeyUp(Keys.LWin);
+
+        return 0;
+    }
+
+    // --- Emergency ---
+    int RestartLolibar(MouseButtonEventArgs e)
+    {
+        LolibarHelper.RestartApplicationGently();
+        return 0;
+    }
+    int CloseLolibar(MouseButtonEventArgs e)
+    {
+        LolibarHelper.CloseApplicationGently();
+        return 0;
+    }
+
+    // --- Power ---
     int OpenPowerSettings(MouseButtonEventArgs e)
     {
         new Process
@@ -240,7 +311,7 @@ class SupchyanMod : LolibarMod
         return 0;
     }
 
-    // desktop workspaces
+    // --- Desktop Workspaces ---
     int Previous(MouseButtonEventArgs e)
     {
         LolibarAudio.Previous();

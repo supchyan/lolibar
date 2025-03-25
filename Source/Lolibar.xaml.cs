@@ -274,9 +274,11 @@ public partial class Lolibar : Window
     }
     void Lolibar_Closed(object? sender, EventArgs e)
     {
-        // Should dispose tray icon [ but doesn't ]
-        TrayIcon.Icon = null;
-        TrayIcon.Visible = false;
+        LolibarHelper.ShowWindowsTaskbar();
+
+        // Clear tray icon
+        TrayIcon.Icon       = null;
+        TrayIcon.Visible    = false;
         TrayIcon.Dispose();
         System.Windows.Forms.Application.DoEvents();
     }

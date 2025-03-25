@@ -61,6 +61,24 @@ namespace LolibarApp.Source.Tools
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hwnd, LolibarEnums.WindowStateEnum flags);
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parentHandle"></param>
+        /// <param name="childAfter"></param>
+        /// <param name="className"></param>
+        /// <param name="windowTitle"></param>
+        /// <returns></returns>
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int FindWindowEx(int parentHandle, int childAfter, string className, int windowTitle);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int GetDesktopWindow();
+        /// <summary>
         /// Retrieves a handle to the foreground window (the window with which the user is currently working).
         /// The system assigns a slightly higher priority to the thread that creates the foreground window than it does to other threads.
         /// </summary>

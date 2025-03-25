@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Printing;
+using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -178,5 +179,27 @@ public static partial class LolibarHelper
             Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X - 2 * BarMargin : BarWidth,
             (Lolibar.Inch_Screen.X - BarWidth) / 2 > 0 ? (Lolibar.Inch_Screen.X - BarWidth) / 2 : 0
         );
+    }
+    /// <summary>
+    /// Hides vanilla Windows Taskbar (Dockbar / Statusbar / i.e.)
+    /// </summary>
+    public static void HideWindowsTaskbar()
+    {
+        var hwnd                = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+        var startButtonHandle   = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+
+        LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.Hide);
+        LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
+    }
+    /// <summary>
+    /// Shows vanilla Windows Taskbar (Dockbar / Statusbar / i.e.)
+    /// </summary>
+    public static void ShowWindowsTaskbar()
+    {
+        var hwnd                = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+        var startButtonHandle   = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+
+        LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.ShowNormal);
+        LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.ShowNormal);
     }
 }
