@@ -26,10 +26,10 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Icons
-    readonly Geometry PlayAudioIcon      = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\play.svg");
-    readonly Geometry PauseAudioIcon     = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\pause.svg");
-    readonly Geometry PreviousAudioIcon  = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\prev.svg");
-    readonly Geometry NextAudioIcon      = LolibarIcon.ParseSVG($"{LolibarDefaults.ExecutionPath}\\Icons\\Mods\\supchyan\\next.svg");
+    readonly Geometry PlayAudioIcon      = LolibarIcon.ParseSVG("./supchyan/play.svg");
+    readonly Geometry PauseAudioIcon     = LolibarIcon.ParseSVG("./supchyan/pause.svg");
+    readonly Geometry PreviousAudioIcon  = LolibarIcon.ParseSVG("./supchyan/prev.svg");
+    readonly Geometry NextAudioIcon      = LolibarIcon.ParseSVG("./supchyan/next.svg");
     #endregion
 
     #region Color Codes

@@ -19,7 +19,7 @@ public class LolibarPerfMon
     public static PerformanceCounter? Network_Bytes_Sent        { get; private set; }
     public static PerformanceCounter? Network_Bytes_Received    { get; private set; }
     
-    public static bool IsNetworkCountersInitialized              { get; private set; }
+    public static bool IsNetworkCountersInitialized             { get; private set; }
 
     
     public static void InitializeNetworkCounters()

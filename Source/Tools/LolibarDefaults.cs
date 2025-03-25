@@ -53,7 +53,7 @@ public partial class LolibarDefaults
     }
     public static Geometry? GetCurProcIcon()
     {
-        return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\process_sine.svg");
+        return LolibarIcon.ParseSVG("Defaults\\process_sine.svg");
     }
     #endregion
 
@@ -64,7 +64,7 @@ public partial class LolibarDefaults
     }
     public static Geometry? GetCpuIcon()
     {
-        return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\cpu.svg");
+        return LolibarIcon.ParseSVG("Defaults\\cpu.svg");
     }
     #endregion
 
@@ -84,7 +84,7 @@ public partial class LolibarDefaults
     }
     public static Geometry? GetRamIcon()
     {
-        return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\ram.svg");
+        return LolibarIcon.ParseSVG("Defaults\\ram.svg");
     }
     #endregion
 
@@ -116,9 +116,9 @@ public partial class LolibarDefaults
     {
         switch (DiskInfoState)
         {
-            case 0:     return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\disk.svg"        );    // read + write average usage
-            case 1:     return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\disk_read.svg"   );   // only read average usage
-            case 2:     return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\disk_write.svg"  );  // only write average usage
+            case 0:     return LolibarIcon.ParseSVG("Defaults\\disk.svg"      );    // read + write average usage
+            case 1:     return LolibarIcon.ParseSVG("Defaults\\disk_read.svg" );   // only read average usage
+            case 2:     return LolibarIcon.ParseSVG("Defaults\\disk_write.svg");  // only write average usage
             default:    break;
         }
         return null;
@@ -161,9 +161,9 @@ public partial class LolibarDefaults
     {
         switch (NetworkInfoState)
         {
-            case 0:     return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\network.svg"         );    // total kbps usage
-            case 1:     return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\network_send.svg"    );   // sent kbps usage
-            case 2:     return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\network_receive.svg" );  // received kbps usage
+            case 0:     return LolibarIcon.ParseSVG("Defaults\\network.svg"        );    // total kbps usage
+            case 1:     return LolibarIcon.ParseSVG("Defaults\\network_send.svg"   );   // sent kbps usage
+            case 2:     return LolibarIcon.ParseSVG("Defaults\\network_receive.svg");  // received kbps usage
             default:    break;
         }
         return null;
@@ -186,22 +186,22 @@ public partial class LolibarDefaults
         // Power Icon handling
         if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging))
         {
-            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\power_charge.svg");
+            return LolibarIcon.ParseSVG("Defaults\\power_charge.svg");
         }
         if (GetPowerPercent() >= 80)
         {
-            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\power_high.svg");
+            return LolibarIcon.ParseSVG("Defaults\\power_high.svg");
         }
         if (GetPowerPercent() >= 30)
         {
-            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\power_low.svg");
+            return LolibarIcon.ParseSVG("Defaults\\power_low.svg");
         }
         if (GetPowerPercent() < 30)
         {
-            return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\power_crit.svg");
+            return LolibarIcon.ParseSVG("Defaults\\power_crit.svg");
         }
 
-        return LolibarIcon.ParseSVG(@".\Icons\Defaults\svg\power_error.svg");
+        return LolibarIcon.ParseSVG("Defaults\\power_error.svg");
     }
     #endregion
 

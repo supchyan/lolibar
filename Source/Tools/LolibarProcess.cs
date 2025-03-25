@@ -54,14 +54,14 @@ public class LolibarProcess
                 {
                     ShellLinkObject lnk = (ShellLinkObject)item.GetLink;
 
-                    var TargetPath = lnk.Target.Path;
-                    var Arguments = lnk.Arguments;
+                    var TargetPath  = lnk.Target.Path;
+                    var Arguments   = lnk.Arguments;
 
                     while (TargetPath.EndsWith(".lnk") && !string.IsNullOrEmpty(Arguments))
                     {
                         ShellLinkObject linkedLnk = (ShellLinkObject)ShellInstance.NameSpace(TargetPath).Items().Item().GetLink;
-                        TargetPath = linkedLnk.Target.Path;
-                        Arguments = linkedLnk.Arguments;
+                        TargetPath  = linkedLnk.Target.Path;
+                        Arguments   = linkedLnk.Arguments;
                     }
                     TargetPathArr.Add(TargetPath);
                 }
