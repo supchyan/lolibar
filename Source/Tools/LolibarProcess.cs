@@ -87,11 +87,7 @@ public class LolibarProcess
             if (process.MainWindowHandle != 0)
             {
                 LolibarExtern.SwitchToThisWindow(process.MainWindowHandle, true);
-
-                // here a problem, when switching apps between multiple desktops,
-                // desktops instance of LolibarVirtualDesktop doensn't upadte itself.
-                // so here probably we should check whenever SwitchToThisWindow() has finished
-                // to update LolibarVirtualDesktop right after that.
+                LolibarVirtualDesktop.UpdateInitializedDesktops();
             }
             else
             {
@@ -102,6 +98,9 @@ public class LolibarProcess
         {
             Process.Start(applicationPath);
         }
+
+        // Fetch apps' containers
+        FetchPinnedAppsContainers();
     }
     /// <summary>
     /// Starts a new application instance by specified path.
@@ -110,6 +109,9 @@ public class LolibarProcess
     public static void StartApplicationByPath(string applicationPath)
     {
         Process.Start(applicationPath);
+
+        // Fetch apps' containers
+        FetchPinnedAppsContainers();
     }
     static string GetProcessNameByPath(string processPath)
     {
@@ -128,6 +130,9 @@ public class LolibarProcess
     {
         if (parent == null) return;
 
+        // Clear old initialized dict
+        InitializedApps.Clear();
+
         // Clear all children in parent container:
         parent.Children.Clear();
 
@@ -139,12 +144,13 @@ public class LolibarProcess
             try
             {
                 // Create pinned app container:
-                var PinContainer = new LolibarContainer()
+                var PinContainer        = new LolibarContainer()
                 {
-                    Name = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
-                    Icon = LolibarIcon.GetApplicationIcon(TargetPath),
-                    Text = appsTitleLength == 0 ? "" : GetProcessNameByPath(TargetPath).Truncate(appsTitleLength),
-                    Parent = parent,
+                    Name                = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
+                    Icon                = LolibarIcon.GetApplicationIcon(TargetPath),
+                    Text                = appsTitleLength == 0 ? "" : GetProcessNameByPath(TargetPath).Truncate(appsTitleLength),
+                    Parent              = parent,
+
                     MouseRightButtonUp  = (e) =>
                     {
                         /* OPEN CONTEXT MENU */
@@ -178,9 +184,6 @@ public class LolibarProcess
     }
     public static void UpdateInitializedPinnedApps()
     {
-        // Clear old initialized dict
-        InitializedApps.Clear();
-
         AddPinnedAppsToContainer(InitializedParent, InitializedAppsTitleLength);
     }
     public static void FetchPinnedAppsContainers()
@@ -192,11 +195,11 @@ public class LolibarProcess
             if (proc != null)
             {
                 application.Value.HasBackground = proc.MainWindowHandle == LolibarExtern.GetForegroundWindow();
-                application.Value.Text = $"{application.Value.RefText} •";
+                application.Value.Text          = $"{application.Value.RefText} •";
             }
             else
             {
-                application.Value.Text = application.Value.RefText;
+                application.Value.Text          = application.Value.RefText;
             }
 
             application.Value.Update();
