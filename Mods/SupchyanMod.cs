@@ -135,14 +135,18 @@ class SupchyanMod : LolibarMod
         };
         AudioInfoContainer.Create();
 
-        AppsContainerParent = new()
+        AppsContainerParent         = new()
         {
-            Name            = "AppsContainerParent",
-            Parent          = Lolibar.BarRightContainer,
+            Name                    = "AppsContainerParent",
+            Parent                  = Lolibar.BarRightContainer,
         };
         AppsContainerParent.Create();
 
-        LolibarProcess.AddPinnedAppsToContainer(AppsContainerParent.GetBody());
+        LolibarProcess.AddPinnedAppsToContainer
+        (
+            parent:                 AppsContainerParent.GetBody(), 
+            appContainerTitleState: LolibarEnums.AppContainerTitleState.OnlyActive
+        );
 
         // --- Desktop Workspaces (Tabs) ---
         WorkspacesContainer         = new()
@@ -154,7 +158,8 @@ class SupchyanMod : LolibarMod
         };
         WorkspacesContainer.Create();
 
-        LolibarVirtualDesktop.DrawWorkspacesInParent(
+        LolibarVirtualDesktop.DrawWorkspacesInParent
+        (
             parent:             WorkspacesContainer.GetBody(),
             showDesktopNames:   true
         );

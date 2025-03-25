@@ -24,7 +24,12 @@ class ExampleLaunchedApplicationsMod : LolibarMod
 
         // Call this, if you want to clone all your pinned applications
         // into some container:
-        LolibarProcess.AddPinnedAppsToContainer(ExampleAppsContainerParent.GetBody());
+        LolibarProcess.AddPinnedAppsToContainer
+        (
+            parent:                 ExampleAppsContainerParent.GetBody(),           // Parent select
+            appContainerTitleState: LolibarEnums.AppContainerTitleState.OnlyActive, // When you want to see applications' titles (names)
+            appTitleMaxLength:      default                                         // Max title length (when is visible)
+        );
         
         // Now every `pinned to taskbar` application will be drawn inside lolibar.
         // He~ <3

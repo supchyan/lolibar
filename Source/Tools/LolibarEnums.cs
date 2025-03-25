@@ -87,4 +87,10 @@ public class LolibarEnums
         /// </summary>
         GW_HWNDPREV = 3
     }
+    public enum AppContainerTitleState
+    {
+        Always      = 0,
+        OnlyActive  = 1,
+        Never       = 2,
+    }
 }

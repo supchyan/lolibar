@@ -34,9 +34,12 @@ public class LolibarProcess
     /// <summary>
     /// Stores initialized applications' containers and paths to their executable target.
     /// </summary>
-    static Dictionary<string, LolibarContainer> InitializedApps             { get; set; } = [];
-    static StackPanel?                          InitializedParent           { get; set; }
-    static int                                  InitializedAppsTitleLength  { get; set; }
+    static Dictionary<string, LolibarContainer> InitializedApps                     { get; set; } = [];
+    static StackPanel?                          InitializedParent                   { get; set; }
+    static int                                  InitializedAppTitleMaxLength        { get; set; }
+    static LolibarEnums.AppContainerTitleState  InitializedAppContainerTitleState   { get; set; }
+
+    const string AppActiveSymbol = "•";
 
     static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
 
@@ -133,7 +136,7 @@ public class LolibarProcess
     /// Each app has a name, isn't it?
     /// This determines, how long app's name should be drawn in the container.
     /// </param>
-    public static void AddPinnedAppsToContainer(StackPanel? parent, int appsTitleLength = 0)
+    public static void AddPinnedAppsToContainer(StackPanel? parent, LolibarEnums.AppContainerTitleState appContainerTitleState = LolibarEnums.AppContainerTitleState.Never, int appTitleMaxLength = 16)
     {
         if (parent == null) return;
 
@@ -143,8 +146,9 @@ public class LolibarProcess
         // Clear all children in parent container:
         parent.Children.Clear();
 
-        InitializedParent = parent;
-        InitializedAppsTitleLength = appsTitleLength;
+        InitializedParent                   = parent;
+        InitializedAppTitleMaxLength        = appTitleMaxLength;
+        InitializedAppContainerTitleState   = appContainerTitleState;
 
         foreach (var TargetPath in UserPinnedTargetPaths)
         {
@@ -155,7 +159,6 @@ public class LolibarProcess
                 {
                     Name                = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
                     Icon                = LolibarIcon.GetApplicationIcon(TargetPath),
-                    Text                = appsTitleLength == 0 ? "" : GetProcessNameByPath(TargetPath).Truncate(appsTitleLength),
                     Parent              = parent,
 
                     MouseRightButtonUp  = (e) =>
@@ -191,7 +194,7 @@ public class LolibarProcess
     }
     public static void UpdateInitializedPinnedApps()
     {
-        AddPinnedAppsToContainer(InitializedParent, InitializedAppsTitleLength);
+        AddPinnedAppsToContainer(InitializedParent, InitializedAppContainerTitleState, InitializedAppTitleMaxLength);
     }
     public static void FetchPinnedAppsContainers()
     {
@@ -201,12 +204,42 @@ public class LolibarProcess
 
             if (proc != null)
             {
-                application.Value.HasBackground = proc.MainWindowHandle == LolibarExtern.GetForegroundWindow();
-                application.Value.Text          = $"{application.Value.RefText} •";
+                var isActive = proc.MainWindowHandle == LolibarExtern.GetForegroundWindow();
+
+                application.Value.HasBackground = isActive;
+
+                switch (InitializedAppContainerTitleState)
+                {
+                    case LolibarEnums.AppContainerTitleState.Always:
+                        
+                        application.Value.Text = GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength);
+                        break;
+
+                    case LolibarEnums.AppContainerTitleState.OnlyActive:
+
+                        application.Value.Text = isActive ? GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
+                        break;
+
+                    case LolibarEnums.AppContainerTitleState.Never:
+
+                        application.Value.Text = AppActiveSymbol;
+                        break;
+                }
             }
             else
             {
-                application.Value.Text          = application.Value.RefText;
+                switch (InitializedAppContainerTitleState)
+                {
+                    case LolibarEnums.AppContainerTitleState.Always:
+                        
+                        application.Value.Text = GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength);
+                        break;
+
+                    case LolibarEnums.AppContainerTitleState.Never:
+                        
+                        application.Value.Text = null;
+                        break;
+                }
             }
 
             application.Value.Update();

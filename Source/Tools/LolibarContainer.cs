@@ -26,10 +26,6 @@ public class LolibarContainer
     /// </summary>
     public object?                  Icon                        { get; set; }
     /// <summary>
-    /// Reference to the original `Text` property and cannot be reassiged.
-    /// </summary>
-    public string?                  RefText                     { get; private set; }
-    /// <summary>
     /// Container's text content, which will be drawn inside.
     /// </summary>
     public string?                  Text                        { get; set; }
@@ -176,9 +172,6 @@ public class LolibarContainer
         StackPanelContainer.Children.Add(ImageContainer);
 
         UpdateIconContainersInstance();
-
-        // Assiging the reference for the text value, which is won't be reassigned in future.
-        RefText = Text;
 
         TextBlockContainer      = new()
         {
