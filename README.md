@@ -185,7 +185,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
 ## 🌸At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/791250c1-112e-47e0-8756-284e36194162 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/92f30614-2730-4d6d-95eb-a003cc3bf3aa /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
