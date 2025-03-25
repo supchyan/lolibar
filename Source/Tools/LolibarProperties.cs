@@ -1,7 +1,5 @@
-﻿using System.Windows.Media;
-using System.Windows;
-using System.Windows.Controls;
-using LolibarApp.Mods;  
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace LolibarApp.Source.Tools;
 

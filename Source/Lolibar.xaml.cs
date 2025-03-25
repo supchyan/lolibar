@@ -54,7 +54,7 @@ public partial class Lolibar : Window
     static DateTime OldTime                         { get; set; }
 
     // --- LolibarVirtualDesktop update trigger on lolibar's opening ---
-    static bool ShouldManuallyUpdateVirtualDesktops { get; set; }
+    static bool ShouldManuallyUpdateDynamicLibs { get; set; }
 
     public Lolibar()
     {
@@ -172,10 +172,12 @@ public partial class Lolibar : Window
 
             OldCursorPosition = CursorPosition;
 
-            if (ShouldManuallyUpdateVirtualDesktops)
+            if (ShouldManuallyUpdateDynamicLibs)
             {
                 LolibarVirtualDesktop.UpdateInitializedDesktops();
-                ShouldManuallyUpdateVirtualDesktops = false;
+                LolibarProcess.UpdateInitializedPinnedApps();
+                LolibarProcess.FetchPinnedAppsContainers();
+                ShouldManuallyUpdateDynamicLibs = false;
             }
         }
     }
@@ -221,7 +223,7 @@ public partial class Lolibar : Window
             if (!IsHidden)
             {
                 LolibarAnimator.BeginStatusBarShowAnimation(this);
-                ShouldManuallyUpdateVirtualDesktops = true;
+                ShouldManuallyUpdateDynamicLibs = true;
             }
             else
             {

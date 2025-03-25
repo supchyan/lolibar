@@ -1,8 +1,6 @@
 ﻿using Shell32;
 using System.Diagnostics;
-using System.Windows.Input;
 using System.Windows.Controls;
-using System.Windows;
 
 namespace LolibarApp.Source.Tools;
 
@@ -33,12 +31,15 @@ public class LolibarProcess
             }
         }
     }
-    static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
-
     /// <summary>
     /// Stores initialized applications' containers and paths to their executable target.
     /// </summary>
-    static Dictionary<string, LolibarContainer> InitializedApplications { get; set; } = [];
+    static Dictionary<string, LolibarContainer> InitializedApps             { get; set; } = [];
+    static StackPanel?                          InitializedParent           { get; set; }
+    static int                                  InitializedAppsTitleLength  { get; set; }
+
+    static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
+
     static List<string> UserPinnedTargetPaths
     {
         get
@@ -114,20 +115,24 @@ public class LolibarProcess
     {
         return processPath.Split("\\").Last().Split(".")[0];
     }
-    
+
     /// <summary>
     /// Generates interactable apps' containers, which are pinned to windows dockbar.
     /// </summary>
     /// <param name="parent">Target parent container.</param>
-    public static void AddPinnedAppsToContainer(StackPanel? parent)
+    /// <param name="appsTitleLength">
+    /// Each app has a name, isn't it?
+    /// This determines, how long app's name should be drawn in the container.
+    /// </param>
+    public static void AddPinnedAppsToContainer(StackPanel? parent, int appsTitleLength = 0)
     {
         if (parent == null) return;
 
-        // Clear old initialized dict
-        InitializedApplications.Clear();
-
         // Clear all children in parent container:
         parent.Children.Clear();
+
+        InitializedParent = parent;
+        InitializedAppsTitleLength = appsTitleLength;
 
         foreach (var TargetPath in UserPinnedTargetPaths)
         {
@@ -138,10 +143,12 @@ public class LolibarProcess
                 {
                     Name = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
                     Icon = LolibarIcon.GetApplicationIcon(TargetPath),
+                    Text = appsTitleLength == 0 ? "" : GetProcessNameByPath(TargetPath).Truncate(appsTitleLength),
                     Parent = parent,
-                    MouseRightButtonUp = (e) =>
+                    MouseRightButtonUp  = (e) =>
                     {
                         /* OPEN CONTEXT MENU */
+                        // TODO: OpenContextMenu(TargetPath);
                         return 0;
                     },
                     MouseMiddleButtonUp = (e) =>  
@@ -150,7 +157,7 @@ public class LolibarProcess
                         StartApplicationByPath(TargetPath);
                         return 0;
                     },
-                    MouseLeftButtonUp  = (e) =>
+                    MouseLeftButtonUp   = (e) =>
                     {
                         // Invokes application instance / starts a new one,
                         // if specified application isn't running, or running at the background
@@ -161,7 +168,7 @@ public class LolibarProcess
                 PinContainer.Create();
 
                 // Store a child into a initialized dict
-                InitializedApplications.Add(TargetPath, PinContainer);
+                InitializedApps.Add(TargetPath, PinContainer);
             }
             catch
             {
@@ -169,23 +176,29 @@ public class LolibarProcess
             }
         }
     }
-
-    //bad
-    public static void FetchPinnedAppsContainersState()
+    public static void UpdateInitializedPinnedApps()
     {
-        foreach (var application in InitializedApplications)
+        // Clear old initialized dict
+        InitializedApps.Clear();
+
+        AddPinnedAppsToContainer(InitializedParent, InitializedAppsTitleLength);
+    }
+    public static void FetchPinnedAppsContainers()
+    {
+        foreach (var application in InitializedApps)
         {
-            var definedProcesses = Process.GetProcessesByName(GetProcessNameByPath(application.Key));
-            if (definedProcesses.Length > 0)
+            var proc = Process.GetProcesses().Where(p => p.ProcessName == GetProcessNameByPath(application.Key)).ToList().FirstOrDefault();
+
+            if (proc != null)
             {
-                application.Value.HasBackground = definedProcesses[0].MainWindowHandle == LolibarExtern.GetForegroundWindow();
-                application.Value.Text          = $"{application.Value.RefText} •";
+                application.Value.HasBackground = proc.MainWindowHandle == LolibarExtern.GetForegroundWindow();
+                application.Value.Text = $"{application.Value.RefText} •";
             }
             else
             {
-                application.Value.Text          = application.Value.RefText;
+                application.Value.Text = application.Value.RefText;
             }
-            // baad bad
+
             application.Value.Update();
         }
     }

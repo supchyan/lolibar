@@ -23,7 +23,6 @@ class ExampleLaunchedApplicationsMod : LolibarMod
     }
     public override void Update()
     {
-        // Fetch pinned apps to check when you change their's state (oppened / focused / closed / etc.):
-        //LolibarProcess.FetchPinnedAppsContainersState();
+        
     }
 }

@@ -55,7 +55,8 @@ class SupchyanMod : LolibarMod
     public override void PreInitialize()
     {
         BarUpdateDelay              = 120;
-        BarHeight                   = 40;
+        BarHeight                   = 40.0;
+        BarSeparatorHeight          = 14.0;
         BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
         BarContainersColor          = LolibarColor.FromHEX(SecondaryColorCode);
     }
