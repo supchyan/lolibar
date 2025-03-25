@@ -1,8 +1,6 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -58,8 +56,8 @@ class SupchyanMod : LolibarMod
     {
         BarUpdateDelay              = 120;
         BarHeight                   = 40;
-        BarColor                    = LolibarHelper.SetColor(PrimaryColorCode);
-        BarContainersColor          = LolibarHelper.SetColor(SecondaryColorCode);
+        BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
+        BarContainersColor          = LolibarColor.FromHEX(SecondaryColorCode);
     }
     public override void Initialize()
     {
@@ -76,7 +74,7 @@ class SupchyanMod : LolibarMod
         {
             Name                    = "DateTimeContainer",
             Parent                  = DateTimeContainerParent.GetBody(),
-            MouseLeftButtonUpEvent  = OpenCalendarEvent,
+            MouseLeftButtonUp       = OpenCalendar,
             HasBackground           = true,
         };
         DateTimeContainer.Create();
@@ -86,7 +84,7 @@ class SupchyanMod : LolibarMod
         {
             Name                    = "PowerMonitorContainer",
             Parent                  = Lolibar.BarLeftContainer,
-            MouseLeftButtonUpEvent  = OpenPowerSettingsEvent
+            MouseLeftButtonUp       = OpenPowerSettings
         };
         PowerMonitorContainer.Create();
 
@@ -103,7 +101,7 @@ class SupchyanMod : LolibarMod
             Name                    = "AudioPreviousButton",
             Parent                  = AudioContainerParent.GetBody(),
             Icon                    = PreviousAudioIcon,
-            MouseLeftButtonUpEvent  = PreviousStreamCallEvent
+            MouseLeftButtonUp       = Previous,
         };
         PreviousButtonContainer.Create();
 
@@ -111,7 +109,7 @@ class SupchyanMod : LolibarMod
         {
             Name                    = "AudioPlayButton",
             Parent                  = AudioContainerParent.GetBody(),
-            MouseLeftButtonUpEvent  = PlayOrPauseStreamCallEvent,
+            MouseLeftButtonUp       = PlayOrPause,
         };
         PlayButtonContainer.Create();
 
@@ -120,7 +118,7 @@ class SupchyanMod : LolibarMod
             Name                    = "AudioNextButton",
             Parent                  = AudioContainerParent.GetBody(),
             Icon                    = NextAudioIcon,
-            MouseLeftButtonUpEvent  = NextStreamCallEvent
+            MouseLeftButtonUp       = Next,
         };
         NextButtonContainer.Create();
 
@@ -129,7 +127,7 @@ class SupchyanMod : LolibarMod
             Name                    = "AudioInfoContainer",
             Parent                  = Lolibar.BarCenterContainer,
             HasBackground           = true,
-            Color                   = LolibarHelper.SetColor(TernaryColorCode)
+            Color                   = LolibarColor.FromHEX(TernaryColorCode)
         };
         AudioInfoContainer.Create();
 
@@ -139,7 +137,7 @@ class SupchyanMod : LolibarMod
             Name                    = "WorkspacesContainer",
             Parent                  = Lolibar.BarRightContainer,
             SeparatorPosition       = LolibarEnums.SeparatorPosition.Left,
-            MouseWheelEvent         = SwapWorkspacesByMouseWheelEvent
+            MouseWheelDelta         = SwapWorkspacesByMouseWheel
         };
         WorkspacesContainer.Create();
 
@@ -151,8 +149,7 @@ class SupchyanMod : LolibarMod
     public override void Update() 
     {
         // --- Auto resize logic ---
-        BarWidth = Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X  - 2 * BarMargin : BarWidth;
-        BarLeft  = (Lolibar.Inch_Screen.X - BarWidth) / 2;
+        (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
 
         // --- Date / Time ---
         DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)}.{DateTime.Now.Year} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
@@ -196,64 +193,20 @@ class SupchyanMod : LolibarMod
     }
     #endregion
 
-    #region Events
-    //user
-    void OpenUserSettingsEvent(object sender, MouseButtonEventArgs e)
-    {
-        new Process
-        {
-            StartInfo = new()
-            {
-                FileName        = "powershell.exe",
-                Arguments       = "Start-Process ms-settings:accounts",
-                UseShellExecute = false,
-                CreateNoWindow  = true,
-            }
-        }.Start();
-    }
-
+    #region Click events
     // date / time
-    void OpenCalendarEvent(object sender, MouseButtonEventArgs e)
+    int OpenCalendar(MouseButtonEventArgs e)
     {
         LolibarHelper.KeyDown(Keys.LWin);
         LolibarHelper.KeyDown(Keys.C);
         LolibarHelper.KeyUp(Keys.C);
         LolibarHelper.KeyUp(Keys.LWin);
-    }
-    void OpenTimeSettingsEvent(object sender, MouseButtonEventArgs e)
-    {
-        new Process
-        {
-            StartInfo = new()
-            {
-                FileName        = "powershell.exe",
-                Arguments       = "Start-Process ms-settings:dateandtime",
-                UseShellExecute = false,
-                CreateNoWindow  = true,
-            }
-        }.Start();
-    }
 
-    // audio player
-    void PreviousStreamCallEvent(object sender, MouseButtonEventArgs e)
-    {
-        LolibarAudio.Previous();
-    }
-    void PlayOrPauseStreamCallEvent(object sender, MouseButtonEventArgs e)
-    {
-        if (AudioInfoContainer.GetBody() == null)
-        {
-            return;
-        }
-        LolibarAudio.PlayOrPause();
-    }
-    void NextStreamCallEvent(object sender, MouseButtonEventArgs e)
-    {
-        LolibarAudio.Next();
+        return 0;
     }
 
     // power
-    void OpenPowerSettingsEvent(object sender, MouseButtonEventArgs e)
+    int OpenPowerSettings(MouseButtonEventArgs e)
     {
         new Process
         {
@@ -265,10 +218,27 @@ class SupchyanMod : LolibarMod
                 CreateNoWindow  = true,
             }
         }.Start();
+
+        return 0;
     }
 
     // desktop workspaces
-    void SwapWorkspacesByMouseWheelEvent(object sender, MouseWheelEventArgs e)
+    int Previous(MouseButtonEventArgs e)
+    {
+        LolibarAudio.Previous();
+        return 0;
+    }
+    int PlayOrPause(MouseButtonEventArgs e)
+    {
+        LolibarAudio.PlayOrPause();
+        return 0;
+    }
+    int Next(MouseButtonEventArgs e)
+    {
+        LolibarAudio.Next();
+        return 0;
+    }
+    int SwapWorkspacesByMouseWheel(MouseWheelEventArgs e)
     {
         if (e.Delta > 0)
         {
@@ -279,6 +249,8 @@ class SupchyanMod : LolibarMod
         {
             LolibarVirtualDesktop.GoToDesktopRight();
         }
+
+        return 0;
     }
     #endregion
 

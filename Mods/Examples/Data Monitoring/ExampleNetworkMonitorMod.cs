@@ -1,5 +1,6 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
+using System.Windows.Input;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to enable (load) it
@@ -17,7 +18,7 @@ class ExampleNetworkMonitorMod : LolibarMod
         {
             Name = "ExampleNetworkMonitorContainer",
             Parent = Lolibar.BarLeftContainer,
-            MouseRightButtonUpEvent = SwapNetworkInfoEvent
+            MouseRightButtonUp = SwapNetworkInfo,
         };
         NetworkMonitorContainer.Create();
     }
@@ -27,10 +28,10 @@ class ExampleNetworkMonitorMod : LolibarMod
         NetworkMonitorContainer.Icon = LolibarDefaults.GetNetworkIcon();
         NetworkMonitorContainer.Update();
     }
-
-    void SwapNetworkInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    int SwapNetworkInfo(MouseButtonEventArgs e)
     {
         LolibarDefaults.SwapNetworkInfo();
+        return 0;
     }
 }
 

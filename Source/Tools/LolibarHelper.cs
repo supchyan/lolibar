@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Drawing.Printing;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -8,17 +9,12 @@ namespace LolibarApp.Source.Tools;
 
 public static partial class LolibarHelper
 {
+    static bool LeftButtonPressed { get; set; }
+    static bool RightButtonPressed { get; set; }
     static bool MiddleButtonPressed { get; set; }
     public static int GetWindowsScaling()
     {
         return (int)(100 * Screen.PrimaryScreen?.Bounds.Width ?? 0 / SystemParameters.PrimaryScreenWidth);
-    }
-    /// <summary>
-    /// Generates `SolidColorBrush` object, by getting HEX Color value.
-    /// </summary>
-    public static SolidColorBrush SetColor(string color)
-    {
-        return (SolidColorBrush)new BrushConverter().ConvertFrom(color);
     }
     /// <summary>
     /// Converts ARGB Color to HEX one!
@@ -77,36 +73,72 @@ public static partial class LolibarHelper
     /// <param name="MouseMiddleButtonUpFunc">FUNCTION called on MIDDLE mouse button up.</param>
     public static void SetContainerEvents
     (
-        this UIElement element,
-        MouseButtonEventHandler?    MouseButtonLeftUpEvent      = null,
-        MouseButtonEventHandler?    MouseButtonRightUpEvent     = null,
-        MouseWheelEventHandler?     MouseWheelEvent             = null,
-        Func<int>?                  MouseMiddleButtonUpFunc     = null
+        this UIElement container,
+        Func<MouseButtonEventArgs, int>? MouseLeftButtonUp      = null,
+        Func<MouseButtonEventArgs, int>? MouseRightButtonUp     = null,
+        Func<MouseButtonEventArgs, int>? MouseMiddleButtonUp    = null,
+        Func<MouseWheelEventArgs,  int>? MouseWheelDelta        = null
     )
     {
-        if (MouseButtonLeftUpEvent      != null) element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
-        if (MouseButtonRightUpEvent     != null) element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
-        if (MouseWheelEvent             != null) element.PreviewMouseWheel           += MouseWheelEvent;
-
-        if (MouseMiddleButtonUpFunc     != null)
+        // Left button
+        if (MouseLeftButtonUp != null)
         {
-            element.PreviewMouseDown    += (object sender, MouseButtonEventArgs e) =>
+            container.PreviewMouseDown += (object sender, MouseButtonEventArgs e) =>
+            {
+                LeftButtonPressed = Mouse.LeftButton == MouseButtonState.Pressed;
+            };
+            container.PreviewMouseUp += (object sender, MouseButtonEventArgs e) =>
+            {
+                if (LeftButtonPressed)
+                {
+                    MouseLeftButtonUp(e);
+                    LeftButtonPressed = false;
+                }
+            };
+        }
+        // Right button
+        if (MouseRightButtonUp != null)
+        {
+            container.PreviewMouseDown += (object sender, MouseButtonEventArgs e) =>
+            {
+                RightButtonPressed = Mouse.RightButton == MouseButtonState.Pressed;
+            };
+            container.PreviewMouseUp += (object sender, MouseButtonEventArgs e) =>
+            {
+                if (RightButtonPressed)
+                {
+                    MouseRightButtonUp(e);
+                    RightButtonPressed = false;
+                }
+            };
+        }
+        // Middle button
+        if (MouseMiddleButtonUp != null)
+        {
+            container.PreviewMouseDown += (object sender, MouseButtonEventArgs e) =>
             {
                 MiddleButtonPressed = Mouse.MiddleButton == MouseButtonState.Pressed;
             };
-            element.PreviewMouseUp      += (object sender, MouseButtonEventArgs e) =>
+            container.PreviewMouseUp += (object sender, MouseButtonEventArgs e) =>
             {
                 if (MiddleButtonPressed)
                 {
-                    MouseMiddleButtonUpFunc();
+                    MouseMiddleButtonUp(e);
                     MiddleButtonPressed = false;
                 }
             };
         }
+        // Wheel delta
+        if (MouseWheelDelta != null)
+        {
+            container.PreviewMouseWheel += (object sender, MouseWheelEventArgs e) =>
+            {
+                MouseWheelDelta(e);
+            };
+        }
 
-
-        element.MouseEnter += LolibarEvents.UI_MouseEnter;
-        element.MouseLeave += LolibarEvents.UI_MouseLeave;
+        container.MouseEnter += LolibarEvents.UI_MouseEnter;
+        container.MouseLeave += LolibarEvents.UI_MouseLeave;
     }
 
     /// <summary>
@@ -132,5 +164,19 @@ public static partial class LolibarHelper
         LolibarHelper.KeyDown(Keys.Tab);
         LolibarHelper.KeyUp(Keys.Tab);
         LolibarHelper.KeyUp(Keys.LWin);
+    }
+    /// <summary>
+    /// Adjusts Lolibar to the center at the top or bottom of the screen, depends on original location.
+    /// </summary>
+    /// <param name="BarWidth">Modded BarWidth property.</param>
+    /// <param name="BarMargin">Modded BarMargin property.</param>
+    /// <returns></returns>
+    public static (double BarWidth, double BarLeft) OffsetLolibarToCenter(double BarWidth, double BarMargin)
+    {
+        return
+        (
+            Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X - 2 * BarMargin : BarWidth,
+            (Lolibar.Inch_Screen.X - BarWidth) / 2 > 0 ? (Lolibar.Inch_Screen.X - BarWidth) / 2 : 0
+        );
     }
 }

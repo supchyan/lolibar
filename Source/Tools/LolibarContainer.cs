@@ -68,23 +68,23 @@ public class LolibarContainer
     /// <summary>
     /// Event invoked on the mouse LEFT key's up.
     /// </summary>
-    public MouseButtonEventHandler? MouseLeftButtonUpEvent      { get; set; }
+    public Func<MouseButtonEventArgs, int>? MouseLeftButtonUp   { get; set; }
     /// <summary>
     /// Event invoked on the mouse RIGHT key's up.
     /// </summary>
-    public MouseButtonEventHandler? MouseRightButtonUpEvent     { get; set; }
+    public Func<MouseButtonEventArgs, int>? MouseRightButtonUp  { get; set; }
+    /// <summary>
+    /// Event invoked on the mouse MIDDLE key's up.
+    /// </summary>
+    public Func<MouseButtonEventArgs, int>? MouseMiddleButtonUp { get; set; }
     /// <summary>
     /// Event invoked on the mouse WHEEL state's change (Up or Down spin).
     /// </summary>
-    public MouseWheelEventHandler?  MouseWheelEvent             { get; set; }
-    /// <summary>
-    /// Event invoked on the mouse RIGHT key's up.
-    /// </summary>
-    public Func<int>?               MouseMiddleButtonUpFunc     { get; set; }
+    public Func<MouseWheelEventArgs, int>? MouseWheelDelta      { get; set; }
 
     SolidColorBrush BorderBackground()
     {
-        return HasBackground ? LolibarHelper.SetColor($"#30{LolibarHelper.ARGBtoHEX(Color ?? new SolidColorBrush())[3..]}") : LolibarHelper.SetColor("#00000000");
+        return HasBackground ? LolibarColor.FromHEX($"#30{LolibarHelper.ARGBtoHEX(Color ?? new SolidColorBrush())[3..]}") : LolibarColor.FromHEX("#00000000");
     }
 
     public StackPanel GetBody()
@@ -198,18 +198,18 @@ public class LolibarContainer
 
         if 
         (
-            MouseLeftButtonUpEvent      != null ||
-            MouseRightButtonUpEvent     != null ||
-            MouseWheelEvent             != null ||
-            MouseMiddleButtonUpFunc     != null
+            MouseLeftButtonUp       != null ||
+            MouseRightButtonUp      != null ||
+            MouseMiddleButtonUp     != null ||
+            MouseWheelDelta         != null
         )
         {
             BorderContainer.SetContainerEvents
             (
-                MouseLeftButtonUpEvent,
-                MouseRightButtonUpEvent,
-                MouseWheelEvent,
-                MouseMiddleButtonUpFunc
+                MouseLeftButtonUp,
+                MouseRightButtonUp,
+                MouseMiddleButtonUp,
+                MouseWheelDelta
             );
         }
 

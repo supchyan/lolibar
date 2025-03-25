@@ -1,5 +1,6 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
+using System.Windows.Input;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to enable (load) it
@@ -13,11 +14,11 @@ class ExampleDiskMonitorMod : LolibarMod
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        DiskMonitorContainer = new()
+        DiskMonitorContainer    = new()
         {
-            Name = "ExampleDiskMonitorContainer",
-            Parent = Lolibar.BarLeftContainer,
-            MouseRightButtonUpEvent = SwapDiskInfoEvent
+            Name                = "ExampleDiskMonitorContainer",
+            Parent              = Lolibar.BarLeftContainer,
+            MouseRightButtonUp  = SwapDiskInfo,
         };
         DiskMonitorContainer.Create();
     }
@@ -27,8 +28,9 @@ class ExampleDiskMonitorMod : LolibarMod
         DiskMonitorContainer.Icon = LolibarDefaults.GetDiskIcon();
         DiskMonitorContainer.Update();
     }
-    void SwapDiskInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    int SwapDiskInfo(MouseButtonEventArgs e)
     {
-        LolibarDefaults.SwapDiskInfo();
+        LolibarDefaults.SwapDiskInfo(); 
+        return 0;
     }
 }

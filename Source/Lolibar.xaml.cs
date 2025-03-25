@@ -165,7 +165,7 @@ public partial class Lolibar : Window
             PostUpdateRootProperties();
         }
     }
-    async void CheeseUpdateCycle() {
+    async static void CheeseUpdateCycle() {
         while (true)
         {
             await Task.Delay(100);

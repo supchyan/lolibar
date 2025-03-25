@@ -9,39 +9,46 @@ using System.Diagnostics;
 
 class ExampleDateTimeMod : LolibarMod
 {
-    LolibarContainer? DateTimeContainer;
+    LolibarContainer DateTimeContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        DateTimeContainer = new()
+        DateTimeContainer       = new()
         {
-            Name = "ExampleDateTimeContainer",
-            Parent = Lolibar.BarLeftContainer,
-            Text = LolibarDefaults.GetTimeInfo(), // `LolibarDefaults` has method to get current time ...
-            MouseLeftButtonUpEvent = OpenTimeSettingsEvent
+            Name                = "ExampleDateTimeContainer",
+            Parent              = Lolibar.BarLeftContainer,
+            MouseLeftButtonUp   = OpenTimeSettingsEvent
         };
         DateTimeContainer.Create();
     }
     public override void Update()
     {
-        // ... but I want to make my custom datetime container, so let's totally override its content:
-        DateTimeContainer.Text = $"{DateTime.Now.Day} / {DateTime.Now.Month} / {DateTime.Now.Year} {DateTime.Now.DayOfWeek}";
+        // Looks heavy, but it's just a default c# String.Format() method, which is formats time in the way like windows do.
+        // For example:
+        // Instead of: 6.6.25, you will get 06.06.25, which is better, don't you think? The same for time.
+        var date = $"{DateTime.Now.DayOfWeek}, {String.Format("0:00", DateTime.Now.Day)}.{String.Format("0:00", DateTime.Now.Month)}.{DateTime.Now.Year}";
+        
+        var time = $"{String.Format("0:00", DateTime.Now.Hour)}:{String.Format("0:00", DateTime.Now.Minute)}";
+        
+        DateTimeContainer.Text = $"{time} {date}";
         DateTimeContainer.Update();
     }
 
-    void OpenTimeSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    static int OpenTimeSettingsEvent(System.Windows.Input.MouseButtonEventArgs e)
     {
         new Process
         {
-            StartInfo = new()
+            StartInfo               = new()
             {
-                FileName = "powershell.exe",
-                Arguments = "Start-Process ms-settings:dateandtime",
-                UseShellExecute = false,
-                CreateNoWindow = true,
+                FileName            = "powershell.exe",
+                Arguments           = "Start-Process ms-settings:dateandtime",
+                UseShellExecute     = false,
+                CreateNoWindow      = true,
             }
         }.Start();
+
+        return 0;
     }
 }
 

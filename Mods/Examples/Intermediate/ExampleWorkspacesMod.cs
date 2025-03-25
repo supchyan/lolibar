@@ -9,49 +9,46 @@ using System.Windows.Input;
 
 class ExampleWorkspacesMod : LolibarMod
 {
-    // This mod represents power of the `LolibarVirtualDesktop` library.
-    // But to be straight, heavy part of mod is self sufficient,
-    // so all you need is create parent container, where you want to put your tabs,
-    // and just invoke tabs update once in `Initialize()` hook.
-    //
-    // In the end, lolibar will handle windows virtual desktops on time.
+    // This mod represents the power of `LolibarVirtualDesktop` library.
+    // But to be straight, very part of mod is self sufficient,
+    // so all you need is create a parent container, where you want to put your tabs,
+    // and just enable tabs update hook in `Initialize()` hook. (A hook inside a hook, I can't tell.. xd)
 
+    // I want to store all my desktops in the unique container, so let's create one:
     LolibarContainer? WorkspacesContainer;
 
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        // I want to store my tabs in the unique container, so let's create one:
-        WorkspacesContainer = new()
+        // Let's define it's properties:
+        WorkspacesContainer     = new()
         {
-            Name = "ExampleWorkspacesContainer",
-            Parent = Lolibar.BarRightContainer,
-            SeparatorPosition = LolibarEnums.SeparatorPosition.Left,
-            MouseWheelEvent = SwapWorkspacesByMouseWheelEvent // swap workspaces, scrolling above this container
+            Name                = "ExampleWorkspacesContainer",
+            Parent              = Lolibar.BarRightContainer,
+            SeparatorPosition   = LolibarEnums.SeparatorPosition.Left,
+            MouseWheelDelta     = SwapWorkspacesByMouseWheel
         };
         WorkspacesContainer.Create();
 
-        // We use `DrawWorkspacesInParent()` to fill WorkspacesContainer with workspaces,
+        // We use `DrawWorkspacesInParent()` to fill WorkspacesContainer with workspaces (virtual desktops / tabs),
         // otherwise, it will be empty.
-        // After invoking it for the first time,
-        // `DrawWorkspacesInParent` will update itself automatically,
-        // so no need to put it into `Update()` hook!
-        LolibarVirtualDesktop.DrawWorkspacesInParent(
-            // Where we should append workspaces. Their parent container:
+        LolibarVirtualDesktop.DrawWorkspacesInParent
+        (
             parent: WorkspacesContainer.GetBody(),
-            // Append workspaces* (*desktops) with its names, otherwise names will be replaced by indexes.
-            // Ah and, if desktop has no name, it will be named its index too.
-            showDesktopNames: true
+            showDesktopNames: true // Check it to `true`, if you want to draw desktops' names (Desktops with no name will be named as their position index).
         );
 
+        // `DrawWorkspacesInParent` will update itself automatically,
+        // so no need to put it into `Update()` hook!
+
         // Important thing, `LolibarVirtualDesktop` controls last provided container,
-        // so if you want to dublicate your virtual desktops controls for some reason,
+        // so if you want to dublicate your virtual desktops controls in different containers for some reason,
         // it won't work like that.
     }
     public override void Update() { }
 
-    // This event listens mouse wheel. Wheel up swap desktops (workspaces) to left, otherwise to right:
-    void SwapWorkspacesByMouseWheelEvent(object sender, MouseWheelEventArgs e)
+    // This event listens mouse wheel. Wheel delta up (delta > 0) swap desktops (workspaces) to left, otherwise (delta < 0) to right:
+    int SwapWorkspacesByMouseWheel(MouseWheelEventArgs e)
     {
         if (e.Delta > 0)
         {
@@ -62,6 +59,8 @@ class ExampleWorkspacesMod : LolibarMod
         {
             LolibarVirtualDesktop.GoToDesktopRight();
         }
+
+        return 0;
     }
 }
 

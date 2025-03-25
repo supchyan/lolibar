@@ -15,15 +15,15 @@ class ExampleCpuMonitorMod : LolibarMod
     {
         CpuMonitorContainer = new()
         {
-            Name = "ExampleCpuMonitorContainer",
-            Parent = Lolibar.BarLeftContainer,
+            Name            = "ExampleCpuMonitorContainer",
+            Parent          = Lolibar.BarLeftContainer,
         };
         CpuMonitorContainer.Create();
     }
     public override void Update()
     {
         CpuMonitorContainer.Text = LolibarDefaults.GetCpuInfo();
-        CpuMonitorContainer.Icon = LolibarDefaults.GetCpuIcon();
+        CpuMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/cpu.svg");
         CpuMonitorContainer.Update();
     }
 }

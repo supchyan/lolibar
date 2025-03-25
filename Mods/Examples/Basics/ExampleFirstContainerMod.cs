@@ -30,87 +30,80 @@ class ExampleFirstContainerMod : LolibarMod
         MyFirstContainer.Name = "MyCoolContainer";
 
 
-        // Text content. Won't be drawn/shown, if you won't define it.
+        // Text content:
         MyFirstContainer.Text = "Hello world";
 
+        // Icon context.
+        // You can use two icon formats: `svg` and `ico`.
+        // Each icon have to be stored inside specified directory. But which one?
+        // The project has `Icons` directory and `./svg` and `./ico` inside as well.
+        // So put your icons there. After that, you can call them like:
+        MyFirstContainer.Icon = LolibarIcon.ParseSVG("./Examples/example_first_container_icon.svg");
 
-        // Container's icon. Won't be drawn/shown, if you won't define it.
-        MyFirstContainer.Icon = Geometry.Empty;
+        // As you can see, you don't need to write a whole path to the icon.
+        // Calling `ParseSVG()` already moves you inside `./Icons/svg/` directory,
+        // so only path you need to specify - the path from `.../svg/` to your icon location.
 
-        // Let me explain, what Icon stores inside:
-        //
-        // So basically, Icon is `Geometry` class instance, which is sort of SVG icons representation.
-        // So, if you have a svg icon, and you want to use it in the container, you have to do:
-        //
-        // 1. Get it's `data`. Just open svg icon file in text editor and copy its value.
-        // This will be the long odd line of symbols in tag like d="".
-        // That tag is coordinates of icon's verticles, which are useful to draw a svg geometry exactly.
-        //
-        // 2. Paste copied `data` into Icon property like:
-        MyFirstContainer.Icon = Geometry.Parse("M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM7 7.5C7 8.88071 5.88071 10 4.5 10C3.11929 10 2 8.88071 2 7.5C2 6.11929 3.11929 5 4.5 5C5.88071 5 7 6.11929 7 7.5ZM11.5 10C12.8807 10 14 8.88071 14 7.5C14 6.11929 12.8807 5 11.5 5C10.1193 5 9 6.11929 9 7.5C9 8.88071 10.1193 10 11.5 10Z");
+        // [ You can check `./Icons/svg/` folder manually for better understanding ]
 
-        // Geometry.Parse("") get a data string and then tries to parse it as svg image.
-        // So, after pasting your data in Parse(), you will see your icon inside the container!
-        //
-        // Important here. All default icons is relative to 16x16 grid in pixels,
-        // so if you want to make a custom additional icon, draw it as svg in mentioned border restrictions.
+        // The same trick can be released for the ico images in the way like:
+        MyFirstContainer.Icon = LolibarIcon.ParseICO("./Examples/example_first_container_icon.ico");
+
+        // Btw, they are different containers, so defining both type of icons will draw both containers as well.
+        // But you can't draw two `svg` icons or two `ico` icons in the same time.
 
 
         // Let's go forward:
 
-        
+
         // Parent contaienr where your container have to be drawn.
-        // If it's set to `null`, your container won't draw anywhere.
+        // If it's `null`, your container won't be drawn at all.
         MyFirstContainer.Parent = null;
 
-        // Lolibar has 3 default container to draw content inside:
+        // Lolibar has 3 default containers to draw content inside:
         //
         // 1. Lolibar.BarLeftContainer - Left aligned container;
         // 2. Lolibar.BarRightContainer - Right aligned container;
-        // 3. Lolibar.BarCenterContainer - Centered relative to previous both containers, NOT TO SCREEN's center;
+        // 3. Lolibar.BarCenterContainer - Centered relative to previous both containers;
 
-        // Getting this info let's set valid parent:
+        // Getting into info above, let's set valid parent:
         MyFirstContainer.Parent = Lolibar.BarCenterContainer;
-
 
         // This will draw separator line at specified size of the container.
         // It's useful to separate different categories of the containers in statusbar.
         MyFirstContainer.SeparatorPosition = null;
 
-        // Lolibar has Enum for this called LolibarEnums.SeparatorPosition
-        // So let's use it and draw separator lines at `None` sides of the container:
-        MyFirstContainer.SeparatorPosition = LolibarEnums.SeparatorPosition.None;
+        // `LolibarEnums` has Enum called `SeparatorPosition`
+        // So let's use it to select separators' lines position at `Both` sides of the container:
+        MyFirstContainer.SeparatorPosition = LolibarEnums.SeparatorPosition.Both;
 
-
-        // Draws the background of the container.
-        // It's semi-transparent and relatives to `BarContainerColor`
+        // To draw a background behind the container,
+        // you can set `HasBackground` to true.
+        // It's semi-transparent and relatives to `BarContainerColor` property.
         MyFirstContainer.HasBackground = true;
 
-
-        // I mentioned `BarContainerColor`, so what about container's color.
+        // I mentioned `BarContainerColor`, so what about custom container's color.
         MyFirstContainer.Color = default;
 
-        // Well, as a `default` value it equals to `BarContainerColor` property,
-        // so you even can ignore this property, unless you want to create container
-        // with a custom color. In that case, let me show, how to do it:
-        MyFirstContainer.Color = LolibarHelper.SetColor("#ff0000");
+        // Well, a `default` value equal to `BarContainerColor` property.
+        // For custom colors, you can use `LolibarColor` lib:
+        MyFirstContainer.Color = LolibarColor.FromHEX("#ff0000");
 
-        // `#ff0000` here is HEX representation of the RGB Color.
-        // You can use any color you wish.
-
+        // `#ff0000` is HEX representation of RGB Color.
+        // So, you can use any color you want.
 
         // --- Events ---
         //
-        // Container can listen 3 types of events:
+        // Container can listen 4 types of events:
         //
-        // 1. MouseLeftButtonUpEvent - left mouse click to it
-        // 2. MouseRightButtonUpEvent - right mouse click to it
-        // 3. MouseWheelEvent - mouse wheel scrolling (up / down)
+        // 1. MouseLeftButtonUp     - left mouse button up
+        // 2. MouseRightButtonUp    - right mouse button up
+        // 3. MouseMiddleButtonUp   - middle mouse button up
+        // 4. MouseWheelDelta       - mouse wheel scrolling (up or down)
         //
-        // You have to know what are events in C# is, to handle it,
-        // but let me show `MouseLeftButtonUpEvent` as an example:
-        MyFirstContainer.MouseLeftButtonUpEvent = MyLeftMouseEvent;
-
+        // You don't need to register on events, Lolibar does it automatically,
+        // Just tell to Lolibar, what should happen upon event's invoke.
+        MyFirstContainer.MouseLeftButtonUp = MyLeftMouseUpHook;
 
         // Now, when we have got into parameters, let's create our container:
         MyFirstContainer.Create();
@@ -121,21 +114,23 @@ class ExampleFirstContainerMod : LolibarMod
     public override void Update()
     {
         // In `Update()` section you can update container's parameters.
-        // Let's update its text content to something else:
-        MyFirstContainer.Text = DateTime.Now.Millisecond.ToString();
+        // Let's update a text content:
+        MyFirstContainer.Text = DateTime.Now.ToString();
 
-        // Now our text have to be show current time milliseconds.
-
-        // But if we'll compile or app now, this text won't be updated,
-        // so let's call the update method for the container:
+        // ...And we need to update container after changes:
         MyFirstContainer.Update();
 
-        // Now everything have to be fine. Have fun~
+        // `MyFirstContainer` will show current OS time after that.
+
+        // That's it, have fun~
     }
 
     // --- Addition to Events section ---
-    private void MyLeftMouseEvent(object sender, MouseButtonEventArgs e)
+    int MyLeftMouseUpHook(MouseButtonEventArgs e)
     {
         System.Windows.MessageBox.Show("Hello there :)");
+
+        // Because this is Func<int>
+        return 0;
     }
 }

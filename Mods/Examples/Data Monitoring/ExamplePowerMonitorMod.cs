@@ -1,5 +1,6 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
+using System.Windows.Input;
 using System.Diagnostics;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
@@ -9,18 +10,17 @@ using System.Diagnostics;
 
 class ExamplePowerMonitorMod : LolibarMod
 {
-    LolibarContainer? PowerMonitorContainer;
+    LolibarContainer PowerMonitorContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        PowerMonitorContainer = new()
+        PowerMonitorContainer   = new()
         {
-            Name = "ExamplePowerMonitorContainer",
-            Parent = Lolibar.BarRightContainer,
-            Text = LolibarDefaults.GetPowerInfo(),
-            Icon = LolibarDefaults.GetPowerIcon(),
-            MouseLeftButtonUpEvent = OpenPowerSettingsEvent
+            Name                = "ExamplePowerMonitorContainer",
+            Parent              = Lolibar.BarRightContainer,
+            Icon                = LolibarDefaults.GetPowerIcon(),
+            MouseLeftButtonUp   = OpenPowerSettings
         };
         PowerMonitorContainer.Create();
     }
@@ -30,7 +30,7 @@ class ExamplePowerMonitorMod : LolibarMod
         PowerMonitorContainer.Icon = LolibarDefaults.GetPowerIcon();
         PowerMonitorContainer.Update();
     }
-    void OpenPowerSettingsEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    int OpenPowerSettings(MouseButtonEventArgs e)
     {
         new Process
         {
@@ -42,5 +42,7 @@ class ExamplePowerMonitorMod : LolibarMod
                 CreateNoWindow = true,
             }
         }.Start();
+
+        return 0;
     }
 }

@@ -139,21 +139,23 @@ public class LolibarProcess
                     Name = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
                     Icon = LolibarIcon.GetApplicationIcon(TargetPath),
                     Parent = parent,
-                    MouseRightButtonUpEvent = (object sender,  MouseButtonEventArgs e) =>
-                    { 
-                        /* OPEN CONTEXT MENU */  
+                    MouseRightButtonUp = (e) =>
+                    {
+                        /* OPEN CONTEXT MENU */
+                        return 0;
                     },
-                    MouseMiddleButtonUpFunc = () =>  
+                    MouseMiddleButtonUp = (e) =>  
                     {
                         // Starts a new application instance
                         StartApplicationByPath(TargetPath);
                         return 0;
                     },
-                    MouseLeftButtonUpEvent  = (object sender,  MouseButtonEventArgs e) =>
+                    MouseLeftButtonUp  = (e) =>
                     {
                         // Invokes application instance / starts a new one,
                         // if specified application isn't running, or running at the background
                         InvokeApplicationByPath(TargetPath);
+                        return 0;
                     }
                 };
                 PinContainer.Create();

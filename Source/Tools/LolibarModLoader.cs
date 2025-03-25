@@ -24,7 +24,7 @@ public class LolibarModLoader
         foreach (var modtype in modtypes)
         {
             LocalMods.Add((LolibarMod)GetTypeInstance(modtype.FullName));
-            Debug.WriteLine($"[ LOADED ] MOD: {modtype.Name}");
+            Debug.WriteLine($"{modtype.Name} (Loaded)");
         }
     }
     public static void PreInitializeMods()

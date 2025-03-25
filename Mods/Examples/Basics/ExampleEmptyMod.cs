@@ -12,14 +12,11 @@
 // PreInitialize(): for properties override;
 //    Initialize(): for containers initialization;
 //        Update(): for containers update;
-//
-// You can use `Update()` to update properties as well,
-// but keep it in mind, you can't update properties of the already initialized containers,
-// so any changes in `Update()` will be only applied to containers initialized after.
 // 
-// What about statusbar's properties, such as Width / Height ?
-// All properties overrides inside `Update()` will be applied to statusbar immediately.
-// Check `ExampleUpdatablePropertiesMod` to get in there.
+// Check `ExampleUpdatablePropertiesMod` to get into properties override.
+// Check `ExampleFirstContainerMod` to get into containers initialization and update.
+// Check `ExampleUpdatablePropertiesMod` to get into properties override.
+
 
 class ExampleEmptyMod : LolibarMod
 {

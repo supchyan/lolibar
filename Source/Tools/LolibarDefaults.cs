@@ -51,20 +51,12 @@ public partial class LolibarDefaults
         return nameAndId;
 
     }
-    public static Geometry? GetCurProcIcon()
-    {
-        return LolibarIcon.ParseSVG("Defaults\\process_sine.svg");
-    }
     #endregion
 
     #region Cpu
     public static string? GetCpuInfo()
     {
         return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.CPU_Total.NextValue(), 1))}%";
-    }
-    public static Geometry? GetCpuIcon()
-    {
-        return LolibarIcon.ParseSVG("Defaults\\cpu.svg");
     }
     #endregion
 
@@ -186,22 +178,22 @@ public partial class LolibarDefaults
         // Power Icon handling
         if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging))
         {
-            return LolibarIcon.ParseSVG("Defaults\\power_charge.svg");
+            return LolibarIcon.ParseSVG("./Defaults/power_charge.svg");
         }
         if (GetPowerPercent() >= 80)
         {
-            return LolibarIcon.ParseSVG("Defaults\\power_high.svg");
+            return LolibarIcon.ParseSVG("./Defaults/power_high.svg");
         }
         if (GetPowerPercent() >= 30)
         {
-            return LolibarIcon.ParseSVG("Defaults\\power_low.svg");
+            return LolibarIcon.ParseSVG("./Defaults/power_low.svg");
         }
         if (GetPowerPercent() < 30)
         {
-            return LolibarIcon.ParseSVG("Defaults\\power_crit.svg");
+            return LolibarIcon.ParseSVG("./Defaults/power_crit.svg");
         }
 
-        return LolibarIcon.ParseSVG("Defaults\\power_error.svg");
+        return LolibarIcon.ParseSVG("./Defaults/power_error.svg");
     }
     #endregion
 
