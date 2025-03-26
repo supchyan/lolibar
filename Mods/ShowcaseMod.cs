@@ -25,6 +25,13 @@ class ShowcaseMod : LolibarMod
     ];
     #endregion
 
+    #region Icons
+    readonly Geometry PlayAudioIcon = LolibarIcon.ParseSVG("./showcase/play.svg");
+    readonly Geometry PauseAudioIcon = LolibarIcon.ParseSVG("./showcase/pause.svg");
+    readonly Geometry PreviousAudioIcon = LolibarIcon.ParseSVG("./showcase/previous.svg");
+    readonly Geometry NextAudioIcon = LolibarIcon.ParseSVG("./showcase/next.svg");
+    #endregion
+
     #region Color Codes
     const string BaseColorCode = "#0c1013";
     const string TextColorCode = "#f0f4f6";
@@ -104,7 +111,7 @@ class ShowcaseMod : LolibarMod
         {
             Name = "AudioPreviousButton",
             Parent = AudioContainerParent.GetBody(),
-            Icon = LolibarIcon.ParseSVG("./showcase/previous.svg"),
+            Icon = PreviousAudioIcon,
             Color = LolibarColor.FromHEX(AltTextColorCode),
             MouseLeftButtonUp = PreviousStreamCallEvent
         };
@@ -123,7 +130,7 @@ class ShowcaseMod : LolibarMod
         {
             Name = "AudioNextButton",
             Parent = AudioContainerParent.GetBody(),
-            Icon = LolibarIcon.ParseSVG("./showcase/next.svg"),
+            Icon = NextAudioIcon,
             Color = LolibarColor.FromHEX(AltTextColorCode),
             MouseLeftButtonUp = NextStreamCallEvent
         };
@@ -148,7 +155,7 @@ class ShowcaseMod : LolibarMod
         DateTimeContainer.Update();
 
         // --- Audio Player ---
-        PlayButtonContainer.Icon = LolibarAudio.IsPlaying ? LolibarIcon.ParseSVG("./showcase/pause.svg") : LolibarIcon.ParseSVG("./showcase/play.svg");
+        PlayButtonContainer.Icon = LolibarAudio.IsPlaying ? PauseAudioIcon : PlayAudioIcon;
         PlayButtonContainer.Update();
 
         UseAudioTitleBlinkAnimation();
