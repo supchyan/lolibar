@@ -9,27 +9,26 @@ using System.Diagnostics;
 
 class ExampleCurrentProcessMod : LolibarMod
 {
-    LolibarContainer? CurrentProcessContainer;
+    LolibarContainer CurrentProcessContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        CurrentProcessContainer = new()
+        CurrentProcessContainer     = new()
         {
-            Name = "ExampleCurrentProcessContainer",
-            Parent = Lolibar.BarRightContainer,
-            Text = LolibarDefaults.GetCurProcInfo(),
-            Icon = LolibarDefaults.GetCurProcIcon(),
-            MouseLeftButtonUpEvent = OpenTaskManagerEvent,
+            Name                    = "ExampleCurrentProcessContainer",
+            Parent                  = Lolibar.BarRightContainer,
+            Icon                    = LolibarIcon.ParseSVG("./Defaults/process_sine.svg"),
+            MouseLeftButtonUp       = OpenTaskManager,
         };
         CurrentProcessContainer.Create();
     }
     public override void Update()
     {
-        CurrentProcessContainer.Text = LolibarDefaults.GetCurProcInfo();
+        CurrentProcessContainer.Text = LolibarDefaults.GetCurrentApplicationInfo();
         CurrentProcessContainer.Update();
     }
-    void OpenTaskManagerEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    int OpenTaskManager(System.Windows.Input.MouseButtonEventArgs e)
     {
         new Process
         {
@@ -41,5 +40,8 @@ class ExampleCurrentProcessMod : LolibarMod
                 CreateNoWindow = true,
             }
         }.Start();
+
+        return 0;
     }
 }
+

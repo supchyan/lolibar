@@ -323,7 +323,7 @@ namespace VirtualDesktop11_24H2
 			return ivd.GetHashCode();
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{ // compare with object
 			var desk = obj as Desktop;
 			return desk != null && object.ReferenceEquals(this.ivd, desk.ivd);

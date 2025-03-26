@@ -1,162 +1,115 @@
-﻿using System.Diagnostics;
-using Windows.Media.Control;
+﻿using Windows.Media.Control;
+using WindowsMediaController;
 
 namespace LolibarApp.Source.Tools;
 public class LolibarAudio
 {
-    static async Task<GlobalSystemMediaTransportControlsSessionManager> GetSystemMediaTransportControlsSessionManager() => await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
-    static async Task<GlobalSystemMediaTransportControlsSessionMediaProperties?> GetMediaProperties(GlobalSystemMediaTransportControlsSession? session) => session != null ? await session.TryGetMediaPropertiesAsync() : default;
-
-    /// <summary>
-    /// Current audio stream instance. (Returns `null` if nothing is buffered / playing)
-    /// </summary>
-    public static GlobalSystemMediaTransportControlsSessionManager? Stream { get; private set; }
-    /// <summary>
-    /// Current audio stream info. (Returns `null` if stream doesn't exist or stream's info is unreachable)
-    /// </summary>
-    public static GlobalSystemMediaTransportControlsSessionMediaProperties? StreamInfo { get; private set; }
-
-    public static GlobalSystemMediaTransportControlsSession? CurrentSession
+    static readonly MediaManager Manager = new();
+    static GlobalSystemMediaTransportControlsSession? Session
     {
         get
         {
-            return Stream?.GetCurrentSession();
+            if (Manager.IsStarted)
+                return Manager.GetFocusedSession()?.ControlSession;
+            
+            return null;
         }
     }
 
-    #region Private Methods
-    public static async Task TryToSubscribeStreamEvents()
+    public static GlobalSystemMediaTransportControlsSessionMediaProperties?     MediaProperties     { get; private set; }
+    public static GlobalSystemMediaTransportControlsSessionTimelineProperties?  TimelineProperties  { get; private set; }
+    public static GlobalSystemMediaTransportControlsSessionPlaybackInfo?        PlaybackInfo        { get; private set; }
+
+    /// <summary>
+    /// Starts `LolibarAudio` logic. Already called upon lolibar's launch.
+    /// </summary>
+    public static void Start()
     {
-        try
+        Manager.OnAnySessionClosed              += Manager_OnAnySessionClosed;
+        Manager.OnAnySessionOpened              += Manager_OnAnySessionOpened;
+        Manager.OnAnyMediaPropertyChanged       += Manager_OnAnyMediaPropertyChanged;
+        Manager.OnAnyPlaybackStateChanged       += Manager_OnAnyPlaybackStateChanged;
+        Manager.OnAnyTimelinePropertyChanged    += Manager_OnAnyTimelinePropertyChanged;
+
+        Manager.Start();
+    }
+
+    static async void Manager_OnAnySessionOpened(MediaManager.MediaSession mediaSession)
+    {
+        if (Session != null)
         {
-            Stream = await GetSystemMediaTransportControlsSessionManager();
-
-            if (Stream == null) 
-            {
-                StreamInfo = null;
-                return;
-            }
-
-            Stream.SessionsChanged -= Stream_SessionsChanged;
-            Stream.SessionsChanged += Stream_SessionsChanged;
-        }
-        catch
-        {
-
+            MediaProperties     = await Session.TryGetMediaPropertiesAsync();
+            TimelineProperties  = Session.GetTimelineProperties();
+            PlaybackInfo        = Session.GetPlaybackInfo();
         }
     }
-    public static async Task TryToSubscribeStreamInfoEvents()
+
+    static void Manager_OnAnySessionClosed(MediaManager.MediaSession mediaSession)
     {
-        try
+        MediaProperties     = null;
+        TimelineProperties  = null;
+        PlaybackInfo        = null;
+    }
+    #region Events
+    private static void Manager_OnAnyTimelinePropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)
+    {
+        TimelineProperties  = timelineProperties;
+    }
+
+    private static void Manager_OnAnyPlaybackStateChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionPlaybackInfo playbackInfo)
+    {
+        PlaybackInfo        = playbackInfo;
+    }
+
+    private static void Manager_OnAnyMediaPropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionMediaProperties mediaProperties)
+    {
+        MediaProperties     = mediaProperties;
+    }
+    #endregion
+
+    #region Controls
+    public static async void PlayOrPause()
+    {
+        if (Session != null)
+            await Session.TryTogglePlayPauseAsync();
+    }
+    public static async void Play()
+    {
+        if (Session != null)
+            await Session?.TryPlayAsync();
+    }
+    public static async void Pause()
+    {
+        if (Session != null)
+            await Session?.TryPauseAsync();
+    }
+    public static async void Stop()
+    {
+        if (Session != null)
+            await Session?.TryStopAsync();
+    }
+    public static async void Next()
+    {
+        if (Session != null)
+            await Session?.TrySkipNextAsync();
+    }
+    public static async void Previous()
+    {
+        if (Session != null)
+            await Session?.TrySkipPreviousAsync();
+    }
+    public static bool IsPlaying
+    {
+        get
         {
-            if (CurrentSession == null)
+            if (Session != null)
             {
-                StreamInfo = null;
-                return;
+                return Session.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
             }
             else
             {
-                StreamInfo = await GetMediaProperties(CurrentSession);
+                return false;
             }
-
-            CurrentSession.PlaybackInfoChanged -= LolibarAudio_PlaybackInfoChanged;
-            CurrentSession.MediaPropertiesChanged -= LolibarAudio_MediaPropertiesChanged;
-
-            CurrentSession.PlaybackInfoChanged += LolibarAudio_PlaybackInfoChanged;
-            CurrentSession.MediaPropertiesChanged += LolibarAudio_MediaPropertiesChanged;
-        }
-        catch
-        {
-
-        }
-    }
-    #endregion
-
-    #region Events
-    static async void Stream_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args)
-    {
-        await TryToSubscribeStreamEvents();
-        await TryToSubscribeStreamInfoEvents();
-    }
-    static async void LolibarAudio_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
-    {
-        if (CurrentSession != null)
-        {
-            StreamInfo = await GetMediaProperties(CurrentSession);
-        }
-    }
-    static async void LolibarAudio_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
-    {
-        if (CurrentSession != null)
-        {
-            StreamInfo = await GetMediaProperties(CurrentSession);
-        }
-    }
-    #endregion
-
-    #region Public Methods
-    /// <summary>
-    /// Attempts to play current audio stream if paused, and pause if opposite.
-    /// </summary>
-    public static async void PlayOrPause()
-    {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TryTogglePlayPauseAsync();
-        }
-    }
-    /// <summary>
-    /// Attempts to pause current audio stream.
-    /// </summary>
-    public static async void Pause()
-    {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TryPauseAsync();
-        }
-    }
-    /// <summary>
-    /// Attempts to start playing / resume current audio stream.
-    /// </summary>
-    public static async void Resume()
-    {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TryPlayAsync();
-        }
-    }
-    /// <summary>
-    /// Attempts to skip current audio stream and start to play the next one.
-    /// </summary>
-    public static async void Next()
-    {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TrySkipNextAsync();
-        }
-    }
-    /// <summary>
-    /// Attempts to return to previous audio stream and start to play it.
-    /// </summary>
-    public static async void Previous()
-    {
-        if (CurrentSession != null)
-        {
-            await CurrentSession.TrySkipPreviousAsync();
-        }
-    }
-    /// <summary>
-    /// Returns `true`, if current audio stream is playing.
-    /// </summary>
-    public static bool IsPlaying()
-    {
-        if (CurrentSession != null)
-        {
-            return CurrentSession.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
-        }
-        else
-        {
-            return false;
         }
     }
     #endregion

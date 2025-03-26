@@ -1,6 +1,9 @@
 ﻿using Microsoft.VisualBasic.Devices;
+using System.Reflection;
 using System.Security.Principal;
 using System.Windows.Media;
+using System.IO;
+using Windows.Devices.WiFi;
 
 namespace LolibarApp.Source.Tools;
 
@@ -10,9 +13,62 @@ public partial class LolibarDefaults
     static int  DiskInfoState       = 0;
     static int  NetworkInfoState    = 0;
 
-    public static string CurProcIdInfo      { get; private set; }   = string.Empty;
-    public static string CurProcNameInfo    { get; private set; }   = string.Empty;
+    public static string CurrentApplicationId   { get; private set; }   = string.Empty;
+    public static string CurrentApplicationName { get; private set; }   = string.Empty;
 
+    /// <summary>
+    /// Current execution path.
+    /// </summary>
+    public static string ExecutionPath
+    {
+        get
+        {
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".\\";
+        }
+    }
+    #region Wifi
+    static string? GetWiFiName()
+    {
+        if (LolibarPerfMon.WiFiAdapters == null) return null;
+
+        foreach (var adapter in LolibarPerfMon.WiFiAdapters)
+        {
+            // TODO:
+            // AvailableNetworks[0] here is not a connected network, so this is wrong info.
+            return adapter.NetworkReport.AvailableNetworks[0].Ssid;
+        }
+
+        return null;
+    }
+    static Geometry? GetWiFiIcon()
+    {
+        if (LolibarPerfMon.WiFiAdapters == null) return null;
+
+        foreach (var adapter in LolibarPerfMon.WiFiAdapters)
+        {
+            // TODO:
+            // AvailableNetworks[0] here is not a connected network, so this is wrong info.
+            var signalBars = adapter.NetworkReport.AvailableNetworks[0].SignalBars;
+
+            switch (signalBars)
+            {
+                case 4:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_4.svg");
+
+                case 3:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_3.svg");
+
+                case 2:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_2.svg");
+
+                case 1:
+                    return LolibarIcon.ParseSVG("./Defaults/wifi_1.svg");
+            }
+        }
+
+        return null;
+    }
+    #endregion
     #region User
     public static string? GetUserInfo()
     {
@@ -21,23 +77,22 @@ public partial class LolibarDefaults
     #endregion
 
     #region CurProc
-    public static string? GetCurProcInfo()
+    /// <summary>
+    /// Show current selected / running application info in a view like: `proc_name [proc_id]`
+    /// </summary>
+    /// <returns></returns>
+    public static string? GetCurrentApplicationInfo()
     {
-        CurProcIdInfo   = $"{LolibarPerfMon.GetForegroundProcessInfo()[0]}";
-        CurProcNameInfo = $"{LolibarPerfMon.GetForegroundProcessInfo()[1]}";
+        CurrentApplicationId = LolibarProcess.ForegroundProcess.Id.ToString();
+        CurrentApplicationName = LolibarProcess.ForegroundProcess.Name;
 
         var nameAndId = string.Empty;
 
-        if (CurProcNameInfo != string.Empty) nameAndId += $"{CurProcNameInfo} : ";
-        if (CurProcIdInfo   != string.Empty) nameAndId += $"{CurProcIdInfo  }";
+        nameAndId += $"{CurrentApplicationName} [{CurrentApplicationId}]";
 
-        if (nameAndId == string.Empty) return "No process info";
+        if (nameAndId == string.Empty) return "No running application is active";
         return nameAndId;
 
-    }
-    public static Geometry? GetCurProcIcon()
-    {
-        return CurProcBaseIcon;
     }
     #endregion
 
@@ -45,10 +100,6 @@ public partial class LolibarDefaults
     public static string? GetCpuInfo()
     {
         return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.CPU_Total.NextValue(), 1))}%";
-    }
-    public static Geometry? GetCpuIcon()
-    {
-        return CpuBaseIcon;
     }
     #endregion
 
@@ -68,7 +119,7 @@ public partial class LolibarDefaults
     }
     public static Geometry? GetRamIcon()
     {
-        return RamBaseIcon;
+        return LolibarIcon.ParseSVG("Defaults\\ram.svg");
     }
     #endregion
 
@@ -100,9 +151,9 @@ public partial class LolibarDefaults
     {
         switch (DiskInfoState)
         {
-            case 0:     return DiskBaseIcon;    // read + write average usage
-            case 1:     return DiskReadIcon;    // only read average usage
-            case 2:     return DiskWriteIcon;   // only write average usage
+            case 0:     return LolibarIcon.ParseSVG("Defaults\\disk.svg"      );    // read + write average usage
+            case 1:     return LolibarIcon.ParseSVG("Defaults\\disk_read.svg" );   // only read average usage
+            case 2:     return LolibarIcon.ParseSVG("Defaults\\disk_write.svg");  // only write average usage
             default:    break;
         }
         return null;
@@ -145,9 +196,9 @@ public partial class LolibarDefaults
     {
         switch (NetworkInfoState)
         {
-            case 0:     return NetworkBaseIcon;     // total kbps usage
-            case 1:     return NetworkSentIcon;     // sent kbps usage
-            case 2:     return NetworkReceivedIcon; // received kbps usage
+            case 0:     return LolibarIcon.ParseSVG("Defaults\\network.svg"        );    // total kbps usage
+            case 1:     return LolibarIcon.ParseSVG("Defaults\\network_send.svg"   );   // sent kbps usage
+            case 2:     return LolibarIcon.ParseSVG("Defaults\\network_receive.svg");  // received kbps usage
             default:    break;
         }
         return null;
@@ -170,22 +221,22 @@ public partial class LolibarDefaults
         // Power Icon handling
         if (powerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging))
         {
-            return PowerChargingIcon;
+            return LolibarIcon.ParseSVG("./Defaults/power_charge.svg");
         }
         if (GetPowerPercent() >= 80)
         {
-            return PowerHighIcon;
+            return LolibarIcon.ParseSVG("./Defaults/power_high.svg");
         }
         if (GetPowerPercent() >= 30)
         {
-            return PowerLowIcon;
+            return LolibarIcon.ParseSVG("./Defaults/power_low.svg");
         }
         if (GetPowerPercent() < 30)
         {
-            return PowerCriticalIcon;
+            return LolibarIcon.ParseSVG("./Defaults/power_crit.svg");
         }
 
-        return PowerBaseIcon;
+        return LolibarIcon.ParseSVG("./Defaults/power_error.svg");
     }
     #endregion
 

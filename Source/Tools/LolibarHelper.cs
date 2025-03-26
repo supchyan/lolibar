@@ -1,20 +1,21 @@
-﻿using System.Windows;
+﻿using System.Drawing.Printing;
+using System.Reflection.Metadata;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace LolibarApp.Source.Tools;
 
 public static partial class LolibarHelper
 {
+    static bool LeftButtonPressed { get; set; }
+    static bool RightButtonPressed { get; set; }
+    static bool MiddleButtonPressed { get; set; }
     public static int GetWindowsScaling()
     {
         return (int)(100 * Screen.PrimaryScreen?.Bounds.Width ?? 0 / SystemParameters.PrimaryScreenWidth);
-    }
-    /// <summary>
-    /// Generates `SolidColorBrush` object, by getting HEX Color value.
-    /// </summary>
-    public static SolidColorBrush SetColor(string color)
-    {
-        return (SolidColorBrush)new BrushConverter().ConvertFrom(color);
     }
     /// <summary>
     /// Converts ARGB Color to HEX one!
@@ -22,6 +23,29 @@ public static partial class LolibarHelper
     public static string ARGBtoHEX(SolidColorBrush brush)
     {
         return $"#{Convert.ToHexString([brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B]).Replace("-", "")}";
+    }
+    /// <summary>
+    /// Converts `ico` files to image bitmap source.
+    /// </summary>
+    /// <param name="icon"></param>
+    /// <returns></returns>
+    public static BitmapSource ToBitmapSource(this Icon icon)
+    {
+        return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+    }
+    /// <summary>
+    /// Truncates string with "..." at the end. Example: `Hello wo...`
+    /// </summary>
+    /// <param name="length">Max string length.</param>
+    /// <returns></returns>
+    public static string Truncate(this string str, int length)
+    {
+        if (string.IsNullOrEmpty(str))
+        {
+            return str;
+        }
+
+        return str.Length <= length ? str : $"{str[0..length]}...";
     }
 
     /// <summary>
@@ -40,20 +64,82 @@ public static partial class LolibarHelper
         System.Windows.Forms.Application.Restart();
         System.Windows.Application.Current.Shutdown();
     }
-
     /// <summary>
     /// Simplifies container's events initialization.
     /// </summary>
     /// <param name="element">Actual container</param>
-    /// <param name="MouseButtonLeftUp">Invokes action on `MouseButtonLeftUp`.</param>
-    /// <param name="MouseButtonRightUp">Invokes action on `MouseButtonRightUp`.</param>
-    public static void SetContainerEvents(this UIElement element, System.Windows.Input.MouseButtonEventHandler? MouseButtonLeftUpEvent = null, System.Windows.Input.MouseButtonEventHandler? MouseButtonRightUpEvent = null, System.Windows.Input.MouseWheelEventHandler? MouseWheelEvent = null)
+    /// <param name="MouseButtonLeftUpEvent">EVENT called on LEFT mouse button up.</param>
+    /// <param name="MouseButtonRightUpEvent">EVENT called on RIGHT mouse button up.</param>
+    /// <param name="MouseWheelEvent">EVENT called on WHEEL mouse delta changes (mouse wheel `up` or `down` scroll).</param>
+    /// <param name="MouseMiddleButtonUpFunc">FUNCTION called on MIDDLE mouse button up.</param>
+    public static void SetContainerEvents
+    (
+        this UIElement container,
+        Func<MouseButtonEventArgs, int>? MouseLeftButtonUp      = null,
+        Func<MouseButtonEventArgs, int>? MouseRightButtonUp     = null,
+        Func<MouseButtonEventArgs, int>? MouseMiddleButtonUp    = null,
+        Func<MouseWheelEventArgs,  int>? MouseWheelDelta        = null
+    )
     {
-        if (MouseButtonLeftUpEvent != null )   element.PreviewMouseLeftButtonUp    += MouseButtonLeftUpEvent;
-        if (MouseButtonRightUpEvent != null)   element.PreviewMouseRightButtonUp   += MouseButtonRightUpEvent;
-        if (MouseWheelEvent != null        )   element.PreviewMouseWheel           += MouseWheelEvent;
-        element.MouseEnter += LolibarEvents.UI_MouseEnter;
-        element.MouseLeave += LolibarEvents.UI_MouseLeave;
+        // Left button
+        if (MouseLeftButtonUp != null)
+        {
+            container.PreviewMouseDown += (object sender, MouseButtonEventArgs e) =>
+            {
+                LeftButtonPressed = Mouse.LeftButton == MouseButtonState.Pressed;
+            };
+            container.PreviewMouseUp += (object sender, MouseButtonEventArgs e) =>
+            {
+                if (LeftButtonPressed)
+                {
+                    MouseLeftButtonUp(e);
+                    LeftButtonPressed = false;
+                }
+            };
+        }
+        // Right button
+        if (MouseRightButtonUp != null)
+        {
+            container.PreviewMouseDown += (object sender, MouseButtonEventArgs e) =>
+            {
+                RightButtonPressed = Mouse.RightButton == MouseButtonState.Pressed;
+            };
+            container.PreviewMouseUp += (object sender, MouseButtonEventArgs e) =>
+            {
+                if (RightButtonPressed)
+                {
+                    MouseRightButtonUp(e);
+                    RightButtonPressed = false;
+                }
+            };
+        }
+        // Middle button
+        if (MouseMiddleButtonUp != null)
+        {
+            container.PreviewMouseDown += (object sender, MouseButtonEventArgs e) =>
+            {
+                MiddleButtonPressed = Mouse.MiddleButton == MouseButtonState.Pressed;
+            };
+            container.PreviewMouseUp += (object sender, MouseButtonEventArgs e) =>
+            {
+                if (MiddleButtonPressed)
+                {
+                    MouseMiddleButtonUp(e);
+                    MiddleButtonPressed = false;
+                }
+            };
+        }
+        // Wheel delta
+        if (MouseWheelDelta != null)
+        {
+            container.PreviewMouseWheel += (object sender, MouseWheelEventArgs e) =>
+            {
+                MouseWheelDelta(e);
+            };
+        }
+
+        container.MouseEnter += LolibarEvents.UI_MouseEnter;
+        container.MouseLeave += LolibarEvents.UI_MouseLeave;
     }
 
     /// <summary>
@@ -79,5 +165,41 @@ public static partial class LolibarHelper
         LolibarHelper.KeyDown(Keys.Tab);
         LolibarHelper.KeyUp(Keys.Tab);
         LolibarHelper.KeyUp(Keys.LWin);
+    }
+    /// <summary>
+    /// Adjusts Lolibar to the center at the top or bottom of the screen, depends on original location.
+    /// </summary>
+    /// <param name="BarWidth">Modded BarWidth property.</param>
+    /// <param name="BarMargin">Modded BarMargin property.</param>
+    /// <returns></returns>
+    public static (double BarWidth, double BarLeft) OffsetLolibarToCenter(double BarWidth, double BarMargin)
+    {
+        return
+        (
+            Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X - 2 * BarMargin : BarWidth,
+            (Lolibar.Inch_Screen.X - BarWidth) / 2 > 0 ? (Lolibar.Inch_Screen.X - BarWidth) / 2 : 0
+        );
+    }
+    /// <summary>
+    /// Hides vanilla Windows Taskbar (Dockbar / Statusbar / i.e.)
+    /// </summary>
+    public static void HideWindowsTaskbar()
+    {
+        var hwnd                = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+        var startButtonHandle   = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+
+        LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.Hide);
+        LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
+    }
+    /// <summary>
+    /// Shows vanilla Windows Taskbar (Dockbar / Statusbar / i.e.)
+    /// </summary>
+    public static void ShowWindowsTaskbar()
+    {
+        var hwnd                = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+        var startButtonHandle   = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+
+        LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.ShowNormal);
+        LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.ShowNormal);
     }
 }

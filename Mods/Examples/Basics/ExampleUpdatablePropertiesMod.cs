@@ -8,10 +8,10 @@ using LolibarApp.Source.Tools;
 
 class ExampleUpdatablePropertiesMod : LolibarMod
 {
-    // How to resize lolibar when screen resolution has changed?
+    // How to resize lolibar when the screen resolution has changed?
     //
-    // Lolibar libraries has Vector2 called `Lolibar.Inch_Screen`,
-    // which stores current screen resolution in Inches.
+    // Lolibar lib has a Vector2 called `Lolibar.Inch_Screen`,
+    // that store current screen resolution in Inches.
     // Feel free to use it!
     public override void PreInitialize() { }
     public override void Initialize() { }
@@ -23,5 +23,7 @@ class ExampleUpdatablePropertiesMod : LolibarMod
         // Then change statusbar position depends on current Width.
         // In this example, I center it horizontally:
         BarLeft = (Lolibar.Inch_Screen.X - BarWidth) / 2;
+
+        // Should I add an auto-centering method in the future...?
     }
 }

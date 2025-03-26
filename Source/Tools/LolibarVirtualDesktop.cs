@@ -175,22 +175,14 @@ public class LolibarVirtualDesktop
                 Parent = parent,
                 Text = showDesktopNames ? desktopName : $"{index + 1}",
                 HasBackground = hasBackground,
-                MouseLeftButtonUpEvent = new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
-                    MoveToDesktop(index);
-                }),
-                MouseRightButtonUpEvent = new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) => {
-                    RemoveDesktop(index);
-                })
+                MouseLeftButtonUp  = (e) => { MoveToDesktop(index); return 0; },
+                MouseRightButtonUp = (e) => { RemoveDesktop(index); return 0; },
             };
 
             // Create a new desktop on current tab's left click
             if (i == currentDesktopIndex)
             {
-                tab.MouseLeftButtonUpEvent = 
-                    new System.Windows.Input.MouseButtonEventHandler((object sender, System.Windows.Input.MouseButtonEventArgs e) =>
-                    {
-                        CreateDesktop();
-                    });
+                tab.MouseLeftButtonUp = (e) => { CreateDesktop(); return 0; };
             }
 
             // Add tab to a parent component
@@ -202,6 +194,8 @@ public class LolibarVirtualDesktop
     /// </summary>
     public static void UpdateInitializedDesktops()
     {
+        if (InitializedParent == null) return;
+
         DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     static void CreateDesktop()

@@ -1,25 +1,24 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
+using System.Windows.Input;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
 // You can uncomment namespace to enable (load) it
 
-//namespace LolibarApp.Mods;
+// namespace LolibarApp.Mods;
 
 class ExampleRamMonitorMod : LolibarMod
 {
-    LolibarContainer? RamMonitorContainer;
+    LolibarContainer RamMonitorContainer = new();
 
     public override void PreInitialize() { }
     public override void Initialize()
     {
-        RamMonitorContainer = new()
+        RamMonitorContainer     = new()
         {
-            Name = "ExampleRamMonitorContainer",
-            Parent = Lolibar.BarLeftContainer,
-            Text = LolibarDefaults.GetRamInfo(),
-            Icon = LolibarDefaults.GetRamIcon(),
-            MouseRightButtonUpEvent = SwapRamInfoEvent
+            Name                = "ExampleRamMonitorContainer",
+            Parent              = Lolibar.BarLeftContainer,
+            MouseRightButtonUp  = SwapRamInfo,
         };
         RamMonitorContainer.Create();
     }
@@ -29,10 +28,10 @@ class ExampleRamMonitorMod : LolibarMod
         RamMonitorContainer.Icon = LolibarDefaults.GetRamIcon();
         RamMonitorContainer.Update();
     }
-
-    void SwapRamInfoEvent(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    int SwapRamInfo(MouseButtonEventArgs e)
     {
         LolibarDefaults.SwapRamInfo();
+        return 0;
     }
 }
 

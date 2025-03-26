@@ -12,57 +12,57 @@ namespace LolibarApp.Source;
 public partial class Lolibar : Window
 {
     // --- Misc ---
-    readonly MouseHook          MouseHandler    = new();
-    readonly LolibarPublicMod   PublicMod       = new();
+    MouseHook               MouseHandler            { get; set; } = new();
+    LolibarPublicMod        PublicMod               { get; set; } = new();
 
     // --- Links to the root containers ---
-    public static StackPanel BarLeftContainer   { get; private set; } = new StackPanel();
-    public static StackPanel BarCenterContainer { get; private set; } = new StackPanel();
-    public static StackPanel BarRightContainer  { get; private set; } = new StackPanel();
+    public static StackPanel BarLeftContainer       { get; private set; } = new StackPanel();
+    public static StackPanel BarCenterContainer     { get; private set; } = new StackPanel();
+    public static StackPanel BarRightContainer      { get; private set; } = new StackPanel();
 
     // --- Screen calculation properties ---
-    public static Vector2 Inch_Screen           { get; private set; }
-    public static Vector2 ScreenSize            { get; private set; }
+    public static Vector2 Inch_Screen               { get; private set; }
+    public static Vector2 ScreenSize                { get; private set; }
 
-    public static double StatusBarVisiblePosY   { get; private set; }
-    public static double StatusBarHidePosY      { get; private set; }
+    public static double StatusBarVisiblePosY       { get; private set; }
+    public static double StatusBarHidePosY          { get; private set; }
 
 
     // --- Drawing triggers ---
-    bool IsHidden                               { get; set; }
-    bool OldIsHidden                            { get; set; }
+    bool IsHidden                                   { get; set; }
+    bool OldIsHidden                                { get; set; }
 
     // Null window to prevent lolibar's appearing inside alt+tab menu
     readonly Window nullWin = new()
     {
-        Visibility = Visibility.Hidden,
-        WindowStyle = WindowStyle.ToolWindow,
-        ShowInTaskbar = false,
-        Width = 0, Height = 0,
-        Left = -100 // to open the null_window outside of the screen 
+        Visibility          = Visibility.Hidden,
+        WindowStyle         = WindowStyle.ToolWindow,
+        ShowInTaskbar       = false,
+        Width               = 0,
+        Height              = 0,
+        Left                = -100 // to open the null_window outside of the screen 
     };
 
     // Trigger to prevent different job before...
     // ...application's window actually rendered
-    bool IsRendered                 { get; set; }
+    bool            IsRendered                      { get; set; }
 
     // --- Cursor velocity calculation ---
-    Task CursorCoordsListenerTask   { get; set; }
-    Vector2 OldCursorPosition       { get; set; }
-    Vector2 CursorPosition          { get; set; }
-    float CursorVelocity            { get; set; }
-    DateTime OldTime                { get; set; }
+    static Vector2  OldCursorPosition               { get; set; }
+    static Vector2  CursorPosition                  { get; set; }
+    static float    CursorVelocity                  { get; set; }
+    static DateTime OldTime                         { get; set; }
 
-    // --- VDesktop update trigger on lolibar's opening ---
-    bool ShouldManuallyUpdateVirtualDesktops { get; set; }
+    // --- LolibarVirtualDesktop update trigger on lolibar's opening ---
+    static bool ShouldManuallyUpdateDynamicLibs { get; set; }
 
     public Lolibar()
     {
         InitializeComponent();
 
-        ContentRendered += Lolibar_ContentRendered;
-        Closing         += Lolibar_Closing;
-        Closed          += Lolibar_Closed;
+        ContentRendered     += Lolibar_ContentRendered;
+        Closing             += Lolibar_Closing;
+        Closed              += Lolibar_Closed;
 
         // --- Moves lolibar into the null window ---
         nullWin.Show();
@@ -78,22 +78,23 @@ public partial class Lolibar : Window
         InitializeCycle();
         UpdateCycle();
 
-        UpdateCursorData(); // For cursor velocity calculations
-        UpdateDesktopsData();  // For Dynamic Virtual Desktops Update
+        CheeseUpdateCycle();  // For dynamic libs Update
 
         // Should be below Initialize and Update calls, because it has Resources[] dependency
         MouseHandler.MouseMove += MouseHandler_MouseMove;
         MouseHandler.Start();
 
+        LolibarAudio.Start();
+
         SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
     }
 
-    private void SystemParameters_StaticPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    void SystemParameters_StaticPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         UpdateScreenParameters();
     }
 
-    void UpdateScreenParameters()
+    static void UpdateScreenParameters()
     {
         // These applies to your primary screen, so statusbar will be drawn in it only.
         Inch_Screen = new((float)SystemParameters.PrimaryScreenWidth, (float)SystemParameters.PrimaryScreenHeight);
@@ -136,13 +137,11 @@ public partial class Lolibar : Window
     }
 
     #region Lifecycle
-    async void InitializeCycle()
+    void InitializeCycle()
     {
         // --- PreInitialize ---
         UpdateScreenParameters();
         LolibarModLoader.LoadMods();
-        await LolibarAudio.TryToSubscribeStreamEvents();
-        await LolibarAudio.TryToSubscribeStreamInfoEvents();
 
         // --- Mods PreInitialize ---
         PublicMod.PreInitialize();
@@ -164,29 +163,21 @@ public partial class Lolibar : Window
 
             // --- PostUpdate ---
             PostUpdateRootProperties();
-
-            // --- async Audio Events Resubscribe --- (Junky, but works)
-            LolibarAudio.TryToSubscribeStreamEvents();
-            LolibarAudio.TryToSubscribeStreamInfoEvents();
         }
     }
-    async void UpdateCursorData()
-    {
-        while (true)
-        {
-            await Task.Delay(10);
-            OldCursorPosition = CursorPosition;
-        }
-    }
-    async void UpdateDesktopsData()
-    {
+    async static void CheeseUpdateCycle() {
         while (true)
         {
             await Task.Delay(100);
-            if (ShouldManuallyUpdateVirtualDesktops)
+
+            OldCursorPosition = CursorPosition;
+
+            if (ShouldManuallyUpdateDynamicLibs)
             {
                 LolibarVirtualDesktop.UpdateInitializedDesktops();
-                ShouldManuallyUpdateVirtualDesktops = false;
+                LolibarProcess.UpdateInitializedPinnedApps();
+                LolibarProcess.FetchPinnedAppsContainers();
+                ShouldManuallyUpdateDynamicLibs = false;
             }
         }
     }
@@ -232,7 +223,7 @@ public partial class Lolibar : Window
             if (!IsHidden)
             {
                 LolibarAnimator.BeginStatusBarShowAnimation(this);
-                ShouldManuallyUpdateVirtualDesktops = true;
+                ShouldManuallyUpdateDynamicLibs = true;
             }
             else
             {
@@ -283,9 +274,11 @@ public partial class Lolibar : Window
     }
     void Lolibar_Closed(object? sender, EventArgs e)
     {
-        // Should dispose tray icon [ but doesn't ]
-        TrayIcon.Icon = null;
-        TrayIcon.Visible = false;
+        LolibarHelper.ShowWindowsTaskbar();
+
+        // Clear tray icon
+        TrayIcon.Icon       = null;
+        TrayIcon.Visible    = false;
         TrayIcon.Dispose();
         System.Windows.Forms.Application.DoEvents();
     }

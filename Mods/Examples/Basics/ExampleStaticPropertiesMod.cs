@@ -17,8 +17,8 @@ class ExampleStaticPropertiesMod : LolibarMod
     {
         BarUpdateDelay      = 250;
         BarHeight           = 36;
-        BarColor            = LolibarHelper.SetColor("#2a3247");
-        BarContainersColor  = LolibarHelper.SetColor("#6f85bd");
+        BarColor            = LolibarColor.FromHEX("#2a3247");
+        BarContainersColor  = LolibarColor.FromHEX("#6f85bd");
         BarMargin           = 10;
         BarCornerRadius     = new CornerRadius(16);
     }

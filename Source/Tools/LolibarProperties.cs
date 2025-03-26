@@ -1,7 +1,5 @@
-﻿using System.Windows.Media;
-using System.Windows;
-using System.Windows.Controls;
-using LolibarApp.Mods;  
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace LolibarApp.Source.Tools;
 
@@ -92,11 +90,11 @@ public abstract partial class LolibarProperties
     /// <summary>
     /// Lolibar's main color.
     /// </summary>
-    public static SolidColorBrush BarColor { get; set; } = LolibarHelper.SetColor("#38393c");
+    public static SolidColorBrush BarColor { get; set; } = LolibarColor.FromHEX("#38393c");
     /// <summary>
     /// Lolibar's elements color. (Icons / Text / etc.)
     /// </summary>
-    public static SolidColorBrush BarContainersColor { get; set; } = LolibarHelper.SetColor("#dddddd");
+    public static SolidColorBrush BarContainersColor { get; set; } = LolibarColor.FromHEX("#dddddd");
 
     /// <summary>
     /// Lolibar's border radius property.
