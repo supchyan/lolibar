@@ -12,17 +12,18 @@ class ExampleHideWindowsTaskbarMod : LolibarMod
     public override void Update()
     {
         // So... What is taskbar in a nutshell?
-        // Taskbar is a `window`, part of some default Windows software,
-        // that you can manually hide, getting it's `WindowHandle`.
-        // What's window handle? Microsoft wiki will explain it better. (C# hWnd Reference)
+        // Taskbar is a `window`, which is a part of some default Windows software.
+        // You can manually hide it completely, getting it's `WindowHandle`.
+        // What's `WindowHandle`? Microsoft wiki will explain it better.
+        // (See Windows HWND Reference)
 
-        // Lolibar has taskbar hide implementation, that you can call right under your mod.
+        // Lolibar has a taskbar hide implementation, that you can enable in your mod.
 
         // Just call this in `Update()`:
         LolibarHelper.HideWindowsTaskbar();
 
-        // Update() call is important, because taskbar window like to show itself automatically,
-        // so we want to close it right after :d
+        // Update() call is important, because taskbar window likes to show itself automatically,
+        // so we want to close it right after that will :d
 
         // DON'T WORRY, YOUR OS WILL BE FINE!
 
