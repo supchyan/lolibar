@@ -1,8 +1,7 @@
 <div align=center><img src=https://github.com/user-attachments/assets/8acf0034-5860-440f-a814-02f5cabfa94e width=200 height=auto /></div>
 <br>
-<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs><img src=https://github.com/user-attachments/assets/b01b9b95-d8d6-4293-b5f2-324dea26af9f /></a></div>
-<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/ShowcaseMod.cs><img src=https://github.com/user-attachments/assets/07662aad-f4d6-4f20-9a34-6a0ab7aca995 /></a></div>
-
+<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs><img src=https://github.com/user-attachments/assets/8725e6b2-27fa-4194-83e2-8846aa1b70f3 /></a></div>
+<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/ShowcaseMod.cs><img src=https://github.com/user-attachments/assets/da0fd0f4-fd2b-4b34-b6da-06e0d16438b8 /></a></div>
 
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
 
@@ -180,12 +179,13 @@ To build 'n run `Lolibar` project, you need to select preferred profile at the t
 Inspired enough to start modding? Then, get into **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section to learn more about Lolibar's capabilities. As I mentioned before, **[Examples](https://github.com/supchyan/lolibar/tree/master/Mods/Examples)** section is **great start point** in your modding journey. Especially **[Basics](https://github.com/supchyan/lolibar/tree/master/Mods/Examples/Basics)** section. Good luck!
 
 ## 🌸Special thanks
+- **[MouseHook](https://github.com/ikst/Ikst.MouseHook) by @ikst**
 - **[VirtualDesktop](https://github.com/MScholtes/VirtualDesktop) by @MScholtes**
 - **[WindowsMediaController](https://github.com/DubyaDude/WindowsMediaController) by @DubyaDude**
 - **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
 ## 🌸At the end...
-<div align=center><img src=https://github.com/user-attachments/assets/92f30614-2730-4d6d-95eb-a003cc3bf3aa /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/29801ca4-a6a7-4924-acc6-eafe5c656964 /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
