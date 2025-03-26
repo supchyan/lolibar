@@ -44,4 +44,3 @@ class ExampleHideWindowsTaskbarMod : LolibarMod
         // when lolibar hides it completely. That's, how windows works ha...
     }
 }
-// LolibarHelper.HideWindowsTaskbar();
