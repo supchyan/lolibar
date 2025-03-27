@@ -127,6 +127,11 @@ public class LolibarProcess
     {
         return processPath.Split("\\").Last().Split(".")[0];
     }
+    static string? GetProcessWindowTitleByPath(string processPath)
+    {
+        Process[]? procs = Process.GetProcessesByName(GetProcessNameByPath(processPath));
+        return procs[0]?.MainWindowTitle;
+    }
 
     /// <summary>
     /// Generates interactable apps' containers, which are pinned to windows dockbar.
@@ -200,7 +205,7 @@ public class LolibarProcess
     {
         foreach (var application in InitializedApps)
         {
-            var proc = Process.GetProcesses().Where(p => p.ProcessName == GetProcessNameByPath(application.Key)).ToList().FirstOrDefault();
+            var proc = Process.GetProcessesByName(GetProcessNameByPath(application.Key)).ToList().FirstOrDefault();
 
             if (proc != null)
             {
@@ -212,12 +217,12 @@ public class LolibarProcess
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
                         
-                        application.Value.Text = GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength);
+                        application.Value.Text = GetProcessWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength);
                         break;
 
                     case LolibarEnums.AppContainerTitleState.OnlyActive:
 
-                        application.Value.Text = isActive ? GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
+                        application.Value.Text = isActive ? GetProcessWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
                         break;
 
                     case LolibarEnums.AppContainerTitleState.Never:
