@@ -1,8 +1,10 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Input;
 using System.Windows.Media;
+using Windows.Globalization;
 
 namespace LolibarApp.Mods;
 
@@ -47,14 +49,17 @@ class SupchyanMod : LolibarMod
 
     LolibarContainer AppsContainerP             = new();
 
-    LolibarContainer PowerMonitorContainer      = new();
-
     LolibarContainer AudioContainerP            = new();
     LolibarContainer PreviousButtonContainer    = new();
     LolibarContainer PlayButtonContainer        = new();
     LolibarContainer NextButtonContainer        = new();
     LolibarContainer AudioInfoContainer         = new();
+
     
+    LolibarContainer PowerMonitorContainer      = new();
+    LolibarContainer LanguageContainerP         = new();
+    LolibarContainer LanguageContainer          = new();
+
     LolibarContainer WorkspacesContainer        = new();
 
     LolibarContainer NotificationsContainerP    = new();
@@ -172,7 +177,7 @@ class SupchyanMod : LolibarMod
             Color                   = LolibarColor.FromHEX(TernaryColorCode)
         };
         AudioInfoContainer.Create();
-        
+
         // --- Power ---
         PowerMonitorContainer       = new()
         {
@@ -181,6 +186,21 @@ class SupchyanMod : LolibarMod
             MouseLeftButtonUp       = OpenPowerSettings,
         };
         PowerMonitorContainer.Create();
+        
+        // --- Language ---
+        LanguageContainerP          = new()
+        {
+            Name                    = "LanguageContainerP",
+            Parent                  = Lolibar.BarRightContainer,
+        };
+        LanguageContainerP.Create();
+        LanguageContainer           = new()
+        {
+            Name                    = "LanguageContainer",
+            Parent                  = LanguageContainerP.GetBody(),
+            HasBackground           = true
+        };
+        LanguageContainer.Create();
 
         // --- Desktop Workspaces (Tabs) ---
         WorkspacesContainer         = new()
@@ -278,6 +298,10 @@ class SupchyanMod : LolibarMod
         }
 
         AudioInfoContainer.Update();
+
+        // --- Language ---
+        LanguageContainer.Text = LolibarDefaults.CurrentInputLanguage;
+        LanguageContainer.Update();
 
         // --- Power ---
         PowerMonitorContainer.Text = LolibarDefaults.GetPowerInfo();

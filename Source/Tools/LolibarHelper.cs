@@ -38,14 +38,14 @@ public static partial class LolibarHelper
     /// </summary>
     /// <param name="length">Max string length.</param>
     /// <returns></returns>
-    public static string Truncate(this string str, int length)
+    public static string Truncate(this string str, int length, bool drawDots = true)
     {
         if (string.IsNullOrEmpty(str))
         {
             return str;
         }
-
-        return str.Length <= length ? str : $"{str[0..length]}...";
+        var dots = drawDots ? "..." : string.Empty;
+        return str.Length <= length ? str : $"{str[0..length]}{dots}";
     }
 
     /// <summary>

@@ -137,7 +137,8 @@ public class LolibarProcess
     /// Generates interactable apps' containers, which are pinned to windows dockbar.
     /// </summary>
     /// <param name="parent">Target parent container.</param>
-    /// <param name="appsTitleLength">
+    /// <param name="appContainerTitleState">Whenever apps' titles have to be drawn.</param>
+    /// <param name="appTitleMaxLength">
     /// Each app has a name, isn't it?
     /// This determines, how long app's name should be drawn in the container.
     /// </param>
@@ -240,8 +241,13 @@ public class LolibarProcess
                         application.Value.Text = GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength);
                         break;
 
-                    case LolibarEnums.AppContainerTitleState.Never:
+                    case LolibarEnums.AppContainerTitleState.OnlyActive:
                         
+                        application.Value.Text = null;
+                        break;
+
+                    case LolibarEnums.AppContainerTitleState.Never:
+
                         application.Value.Text = null;
                         break;
                 }

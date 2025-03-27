@@ -3,21 +3,36 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Windows.Media;
 using System.IO;
-using Windows.Devices.WiFi;
 
 namespace LolibarApp.Source.Tools;
 
-public partial class LolibarDefaults
+public class LolibarDefaults
 {
     static bool ShowRamInPercent    = true;
     static int  DiskInfoState       = 0;
     static int  NetworkInfoState    = 0;
 
-    public static string CurrentApplicationId   { get; private set; }   = string.Empty;
-    public static string CurrentApplicationName { get; private set; }   = string.Empty;
+    /// <summary>
+    /// Returns focusted application ID.
+    /// </summary>
+    public static string  CurrentApplicationId   { get; private set; }   = string.Empty;
+    /// <summary>
+    /// Returns focusted application process name.
+    /// </summary>
+    public static string  CurrentApplicationName { get; private set; }   = string.Empty;
+    /// <summary>
+    /// [NIGHTLY FEATURE] Returns current input language. [Works only, when lolibar is focusted]
+    /// </summary>
+    public static string? CurrentInputLanguage
+    {
+        get
+        {
+            return InputLanguage.CurrentInputLanguage.LayoutName.Truncate(2, false);
+        }
+    }
 
     /// <summary>
-    /// Current execution path.
+    /// Current lolibar's execution path.
     /// </summary>
     public static string ExecutionPath
     {
@@ -26,50 +41,54 @@ public partial class LolibarDefaults
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".\\";
         }
     }
-    #region Wifi
-    static string? GetWiFiName()
-    {
-        if (LolibarPerfMon.WiFiAdapters == null) return null;
+    #region WiFi
+    //static string? GetWiFiName()
+    //{
+    //    if (LolibarPerfMon.WiFiAdapters == null) return null;
 
-        foreach (var adapter in LolibarPerfMon.WiFiAdapters)
-        {
-            // TODO:
-            // AvailableNetworks[0] here is not a connected network, so this is wrong info.
-            return adapter.NetworkReport.AvailableNetworks[0].Ssid;
-        }
+    //    foreach (var adapter in LolibarPerfMon.WiFiAdapters)
+    //    {
+    //        // TODO:
+    //        // AvailableNetworks[0] here is not a connected network, so this is wrong info.
+    //        return adapter.NetworkReport.AvailableNetworks[0].Ssid;
+    //    }
 
-        return null;
-    }
-    static Geometry? GetWiFiIcon()
-    {
-        if (LolibarPerfMon.WiFiAdapters == null) return null;
+    //    return null;
+    //}
+    //static Geometry? GetWiFiIcon()
+    //{
+    //    if (LolibarPerfMon.WiFiAdapters == null) return null;
 
-        foreach (var adapter in LolibarPerfMon.WiFiAdapters)
-        {
-            // TODO:
-            // AvailableNetworks[0] here is not a connected network, so this is wrong info.
-            var signalBars = adapter.NetworkReport.AvailableNetworks[0].SignalBars;
+    //    foreach (var adapter in LolibarPerfMon.WiFiAdapters)
+    //    {
+    //        // TODO:
+    //        // AvailableNetworks[0] here is not a connected network, so this is wrong info.
+    //        var signalBars = adapter.NetworkReport.AvailableNetworks[0].SignalBars;
 
-            switch (signalBars)
-            {
-                case 4:
-                    return LolibarIcon.ParseSVG("./Defaults/wifi_4.svg");
+    //        switch (signalBars)
+    //        {
+    //            case 4:
+    //                return LolibarIcon.ParseSVG("./Defaults/wifi_4.svg");
 
-                case 3:
-                    return LolibarIcon.ParseSVG("./Defaults/wifi_3.svg");
+    //            case 3:
+    //                return LolibarIcon.ParseSVG("./Defaults/wifi_3.svg");
 
-                case 2:
-                    return LolibarIcon.ParseSVG("./Defaults/wifi_2.svg");
+    //            case 2:
+    //                return LolibarIcon.ParseSVG("./Defaults/wifi_2.svg");
 
-                case 1:
-                    return LolibarIcon.ParseSVG("./Defaults/wifi_1.svg");
-            }
-        }
+    //            case 1:
+    //                return LolibarIcon.ParseSVG("./Defaults/wifi_1.svg");
+    //        }
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
     #endregion
     #region User
+    /// <summary>
+    /// Current Windows account username.
+    /// </summary>
+    /// <returns>Your account username.</returns>
     public static string? GetUserInfo()
     {
         return $"{WindowsIdentity.GetCurrent().Name.Split('\\')[1]}";
@@ -97,6 +116,10 @@ public partial class LolibarDefaults
     #endregion
 
     #region Cpu
+    /// <summary>
+    /// CPU Info.
+    /// </summary>
+    /// <returns>Current total CPU load in percent.</returns>
     public static string? GetCpuInfo()
     {
         return $"{String.Format("{0:0.0}", Math.Round(LolibarPerfMon.CPU_Total.NextValue(), 1))}%";
@@ -104,10 +127,17 @@ public partial class LolibarDefaults
     #endregion
 
     #region Ram
+    /// <summary>
+    /// Swaps RAM load info. Get info with `GetRamInfo()`.
+    /// </summary>
     public static void SwapRamInfo()
     {
         ShowRamInPercent = !ShowRamInPercent;
     }
+    /// <summary>
+    /// RAM Info.
+    /// </summary>
+    /// <returns>Current total RAM load in percent / Gbytes. Swap it with `SwapRamInfo()`.</returns>
     public static string? GetRamInfo()
     {
         var computerInfo            = new ComputerInfo();
@@ -124,11 +154,18 @@ public partial class LolibarDefaults
     #endregion
 
     #region Disk
+    /// <summary>
+    /// Swaps disk info. Get info with `GetDiskInfo()`.
+    /// </summary>
     public static void SwapDiskInfo()
     {
         if (DiskInfoState < 2) DiskInfoState++;
         else DiskInfoState = 0;
     }
+    /// <summary>
+    /// Disk load info. (Total / Read / Write)
+    /// </summary>
+    /// <returns>Disk load info in percent. Can be swaped via `SwapDiskInfo`.</returns>
     public static string? GetDiskInfo()
     {
         switch (DiskInfoState)
@@ -161,11 +198,18 @@ public partial class LolibarDefaults
     #endregion
 
     #region Network
+    /// <summary>
+    /// Swaps Network info. Get info with `GetNetworkInfo()`.
+    /// </summary>
     public static void SwapNetworkInfo()
     {
         if (NetworkInfoState < 2) NetworkInfoState++;
         else NetworkInfoState = 0;
     }
+    /// <summary>
+    /// Network info (Total / Sent / Received).
+    /// </summary>
+    /// <returns>Network info in percent. Can be swaped via `SwapNetworkInfo`.</returns>
     public static string? GetNetworkInfo()
     {
         if (!LolibarPerfMon.IsNetworkCountersInitialized)
@@ -210,6 +254,10 @@ public partial class LolibarDefaults
     {
         return Math.Round(100.0 * SystemInformation.PowerStatus.BatteryLifePercent);
     }
+    /// <summary>
+    /// Power (Battery) info.
+    /// </summary>
+    /// <returns>Current battery status in percent.</returns>
     public static string? GetPowerInfo()
     {
         return $"{GetPowerPercent()}%";
@@ -237,13 +285,6 @@ public partial class LolibarDefaults
         }
 
         return LolibarIcon.ParseSVG("./Defaults/power_error.svg");
-    }
-    #endregion
-
-    #region Time
-    public static string? GetTimeInfo()
-    {
-        return $"{DateTime.Now}";
     }
     #endregion
 }
