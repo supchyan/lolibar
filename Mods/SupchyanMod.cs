@@ -24,10 +24,12 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Icons
-    readonly Geometry PlayAudioIcon      = LolibarIcon.ParseSVG("./supchyan/play.svg");
-    readonly Geometry PauseAudioIcon     = LolibarIcon.ParseSVG("./supchyan/pause.svg");
-    readonly Geometry PreviousAudioIcon  = LolibarIcon.ParseSVG("./supchyan/prev.svg");
-    readonly Geometry NextAudioIcon      = LolibarIcon.ParseSVG("./supchyan/next.svg");
+    readonly Geometry GearIcon          = LolibarIcon.ParseSVG("./supchyan/gear.svg");
+    readonly Geometry WinIcon           = LolibarIcon.ParseSVG("./supchyan/apps.svg");
+    readonly Geometry PlayAudioIcon     = LolibarIcon.ParseSVG("./supchyan/play.svg");
+    readonly Geometry PauseAudioIcon    = LolibarIcon.ParseSVG("./supchyan/pause.svg");
+    readonly Geometry PreviousAudioIcon = LolibarIcon.ParseSVG("./supchyan/prev.svg");
+    readonly Geometry NextAudioIcon     = LolibarIcon.ParseSVG("./supchyan/next.svg");
     #endregion
 
     #region Color Codes
@@ -37,6 +39,9 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Containers
+    LolibarContainer WinContainerP              = new();
+    LolibarContainer WinContainer               = new();
+
     LolibarContainer DateTimeContainerP         = new();
     LolibarContainer DateTimeContainer          = new();
 
@@ -75,8 +80,27 @@ class SupchyanMod : LolibarMod
     }
     public override void Initialize()
     {
+        // --- Win ---
+        WinContainerP               = new()
+        {
+            Name                    = "WinContainerP",
+            Parent                  = Lolibar.BarLeftContainer,
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Right,
+        };
+        WinContainerP.Create();
+
+        WinContainer                = new()
+        {
+            Name                    = "WinContainer",
+            Parent                  = WinContainerP.GetBody(),
+            Icon                    = WinIcon,
+            MouseLeftButtonUp       = OpenAppsMenu,
+            HasBackground           = true,
+        };
+        WinContainer.Create();
+
         // --- Date / Time ---
-        DateTimeContainerP     = new()
+        DateTimeContainerP          = new()
         {
             Name                    = "DateTimeContainerParent",
             Parent                  = Lolibar.BarLeftContainer,
@@ -201,7 +225,7 @@ class SupchyanMod : LolibarMod
         {
             Name                    = "QuickSettingsContainer",
             Parent                  = QuickSettingsContainerP.GetBody(),
-            Icon                    = LolibarIcon.ParseSVG("./supchyan/gear.svg"),
+            Icon                    = GearIcon,
             MouseLeftButtonUp       = OpenQuickSettingsOverlay,
             HasBackground           = true,
         };
@@ -263,6 +287,14 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Click events
+    // --- Win ---
+    int OpenAppsMenu(MouseButtonEventArgs e)
+    {
+        LolibarHelper.KeyDown(Keys.LWin);
+        LolibarHelper.KeyUp(Keys.LWin);
+
+        return 0;
+    }
     // --- Date / Time ---
     int OpenCalendar(MouseButtonEventArgs e)
     {

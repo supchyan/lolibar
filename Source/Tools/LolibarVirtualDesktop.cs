@@ -169,14 +169,14 @@ public class LolibarVirtualDesktop
                     break;
             }
 
-            LolibarContainer tab = new()
+            LolibarContainer tab    = new()
             {
-                Name = $"WorkspaceTab{index + 1}",
-                Parent = parent,
-                Text = showDesktopNames ? desktopName : $"{index + 1}",
-                HasBackground = hasBackground,
-                MouseLeftButtonUp  = (e) => { MoveToDesktop(index); return 0; },
-                MouseRightButtonUp = (e) => { RemoveDesktop(index); return 0; },
+                Name                = $"WorkspaceTab{index + 1}",
+                Parent              = parent,
+                Text                = showDesktopNames ? desktopName : $"{index + 1}",
+                HasBackground       = hasBackground,
+                MouseLeftButtonUp   = (e) => { MoveToDesktop(index); return 0; },
+                MouseMiddleButtonUp = (e) => { RemoveDesktop(index); return 0; },
             };
 
             // Create a new desktop on current tab's left click
