@@ -184,7 +184,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[WindowsMediaController](https://github.com/DubyaDude/WindowsMediaController) by @DubyaDude**
 - **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
-## 🌸At the end...
+## 🌸In the end...
 <div align=center><img src=https://github.com/user-attachments/assets/29801ca4-a6a7-4924-acc6-eafe5c656964 /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
