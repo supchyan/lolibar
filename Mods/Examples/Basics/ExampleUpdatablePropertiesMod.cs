@@ -24,6 +24,7 @@ class ExampleUpdatablePropertiesMod : LolibarMod
         // In this example, I center it horizontally:
         BarLeft = (Lolibar.Inch_Screen.X - BarWidth) / 2;
 
-        // Should I add an auto-centering method in the future...?
+        // Alternatively, you can simplify calculations above with this line:
+        (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
     }
 }
