@@ -15,7 +15,7 @@ This project is the **toolkit** set for modders, which allow to create statusbar
 - **[ironbar](https://github.com/JakeStanger/ironbar) (Linux, Rust)**
 
 ## 🌸Average PC Usage
-<div align=center><img src=https://github.com/user-attachments/assets/1deb7840-e859-4944-8464-441ff86af89c width=800 height=auto /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/18f4fe8c-3f8b-4540-bd77-5175a0243b87 width=800 height=auto /></div>
 
 ## 🌸Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022+`. Moreover, to build this project, you have to install `.NET 8.0 SDK`. Alternatively, you can use other `.NET SDK` versions as well, but `master` branch targets to `.NET 8.0`, so any issues with different SDK versions you have to solve locally.
