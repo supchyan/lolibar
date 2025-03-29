@@ -45,7 +45,7 @@ As you can see, this code looks familiar with any other mod body. You can handle
 
 ## 🌸Your First mod
 > [!TIP]
-> All mods is highly recommended to be stored in **[Mods](https://github.com/supchyan/lolibar/tree/master/Mods/)** folder.
+> It's highly recommended to store all mods inside **[Mods](https://github.com/supchyan/lolibar/tree/master/Mods/)** folder.
 
 The first step of your modding journey - **create a mod class**. Let me explain basics on pseudo `MyFirstMod.cs` example:
 ```cs
