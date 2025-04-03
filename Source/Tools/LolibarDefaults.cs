@@ -29,9 +29,16 @@ public class LolibarDefaults
         get
         {
             // https://stackoverflow.com/questions/26617159/hook-detect-windows-language-change-even-when-app-not-focused
-            var layout = LolibarExtern.GetKeyboardLayout((uint)LolibarExtern.GetWindowThreadProcessId(LolibarExtern.GetForegroundWindow(), out uint _));
-            var currentCulture = new CultureInfo((short)layout.ToInt64());
-            return currentCulture.NativeName;
+            var layout = LolibarExtern.GetKeyboardLayout(LolibarExtern.GetWindowThreadProcessId(LolibarExtern.GetForegroundWindow(), out uint _));
+            try
+            {
+                return new CultureInfo((short)layout.ToInt64()).NativeName;
+            }
+            catch
+            {
+
+            }
+            return "Unknown";
         }
     }
 

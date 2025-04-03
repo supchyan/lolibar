@@ -23,7 +23,7 @@ namespace LolibarApp.Source.Tools
         /// <param name="lpdwProcessId">A pointer to a variable that receives the process identifier. If this parameter is not NULL, GetWindowThreadProcessId copies the identifier of the process to the variable; otherwise, it does not. If the function fails, the value of the variable is unchanged.</param>
         /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern int GetWindowThreadProcessId(nint hwnd, out uint lpdwProcessId);
+        public static extern uint GetWindowThreadProcessId(nint hwnd, out uint lpdwProcessId);
         /// <summary>
         /// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire screen.
         /// You can use the returned handle in subsequent GDI functions to draw in the DC.
