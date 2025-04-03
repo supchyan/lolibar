@@ -166,12 +166,23 @@ namespace LolibarApp.Source.Tools
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsWindowVisible(IntPtr hWnd);
         /// <summary>
-        /// 
+        /// Switches focus to the specified window and brings it to the foreground.
         /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="fAltTab"></param>
+        /// <param name="hWnd">A handle to the window.</param>
+        /// <param name="fAltTab">
+        /// A TRUE for this parameter indicates 
+        /// that the window is being switched to using the Alt/Ctl+Tab key sequence. 
+        /// This parameter should be FALSE otherwise.
+        /// </param>
 
         [DllImport("User32.dll", SetLastError = true)]
         public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
+        /// <summary>
+        /// Retrieves the active input locale identifier (formerly called the keyboard layout).
+        /// </summary>
+        /// <param name="idThread">The identifier of the thread to query, or 0 for the current thread.</param>
+        /// <returns></returns>
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr GetKeyboardLayout(uint idThread);
     }
 }

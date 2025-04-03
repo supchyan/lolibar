@@ -23,18 +23,18 @@ public class LolibarEnums
     }
     public enum WindowStateEnum
     {
-        Hide = 0,
-        ShowNormal = 1,
-        ShowMinimized = 2,
-        ShowMaximized = 3,
-        ShowNormalNoActivate = 4,
-        Show = 5,
-        Minimize = 6,
-        ShowMinNoActivate = 7,
-        ShowNoActivate = 8,
-        Restore = 9,
-        ShowDefault = 10,
-        ForceMinimized = 11
+        Hide,
+        ShowNormal,
+        ShowMinimized,
+        ShowMaximized,
+        ShowNormalNoActivate,
+        Show,
+        Minimize,
+        ShowMinNoActivate,
+        ShowNoActivate,
+        Restore,
+        ShowDefault,
+        ForceMinimized
     };
     /// <summary>
     /// LolibarExtern.GetWindow(hWnd, uCmd) -> `uCmd` enum helper
@@ -89,8 +89,8 @@ public class LolibarEnums
     }
     public enum AppContainerTitleState
     {
-        Always      = 0,
-        OnlyActive  = 1,
-        Never       = 2,
+        Always,
+        OnlyActive,
+        Never,
     }
 }

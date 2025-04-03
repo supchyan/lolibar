@@ -14,22 +14,14 @@ class ShowcaseMod : LolibarMod
     string OldAudioTitle = string.Empty;
     int OldAudioPlaybackState = -1;
     byte BrailleCodeAnimationFrame = 0;
-    readonly string[] BrailleCodeAnimationFrames =
-    [
-        "⠋",
-        "⠙",
-        "⠸",
-        "⠴",
-        "⠦",
-        "⠇",
-    ];
+    readonly string[] BrailleCodeAnimationFrames = [ "⠋", "⠙", "⠸", "⠴", "⠦", "⠇" ];
     #endregion
 
     #region Icons
-    readonly Geometry PlayAudioIcon = LolibarIcon.ParseSVG("./showcase/play.svg");
-    readonly Geometry PauseAudioIcon = LolibarIcon.ParseSVG("./showcase/pause.svg");
-    readonly Geometry PreviousAudioIcon = LolibarIcon.ParseSVG("./showcase/previous.svg");
-    readonly Geometry NextAudioIcon = LolibarIcon.ParseSVG("./showcase/next.svg");
+    readonly Geometry PlayAudioIcon = LolibarIcon.ParseSVG("./Defaults/play.svg");
+    readonly Geometry PauseAudioIcon = LolibarIcon.ParseSVG("./Defaults/pause.svg");
+    readonly Geometry PreviousAudioIcon = LolibarIcon.ParseSVG("./Defaults/previous.svg");
+    readonly Geometry NextAudioIcon = LolibarIcon.ParseSVG("./Defaults/next.svg");
     #endregion
 
     #region Color Codes

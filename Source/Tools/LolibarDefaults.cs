@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Windows.Media;
 using System.IO;
+using System.Globalization;
+using System.Windows.Input;
 
 namespace LolibarApp.Source.Tools;
 
@@ -11,7 +13,6 @@ public class LolibarDefaults
     static bool ShowRamInPercent    = true;
     static int  DiskInfoState       = 0;
     static int  NetworkInfoState    = 0;
-
     /// <summary>
     /// Returns focusted application ID.
     /// </summary>
@@ -21,13 +22,16 @@ public class LolibarDefaults
     /// </summary>
     public static string  CurrentApplicationName { get; private set; }   = string.Empty;
     /// <summary>
-    /// [NIGHTLY FEATURE] Returns current input language. [Works only, when lolibar is focusted]
+    /// Returns current input language.
     /// </summary>
     public static string? CurrentInputLanguage
     {
         get
         {
-            return InputLanguage.CurrentInputLanguage.LayoutName.Truncate(2, false);
+            // https://stackoverflow.com/questions/26617159/hook-detect-windows-language-change-even-when-app-not-focused
+            var layout = LolibarExtern.GetKeyboardLayout((uint)LolibarExtern.GetWindowThreadProcessId(LolibarExtern.GetForegroundWindow(), out uint _));
+            var currentCulture = new CultureInfo((short)layout.ToInt64());
+            return currentCulture.NativeName;
         }
     }
 
