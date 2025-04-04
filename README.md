@@ -1,6 +1,6 @@
 <div align=center><img src=https://github.com/user-attachments/assets/8acf0034-5860-440f-a814-02f5cabfa94e width=200 height=auto /></div>
 <br>
-<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs><img src=https://github.com/user-attachments/assets/8725e6b2-27fa-4194-83e2-8846aa1b70f3 /></a></div>
+<div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs><img src=https://github.com/user-attachments/assets/75502b2d-9aad-4435-a072-f3184fd15e3d3 /></a></div>
 <div align=center><a href=https://github.com/supchyan/lolibar/blob/master/Mods/ShowcaseMod.cs><img src=https://github.com/user-attachments/assets/da0fd0f4-fd2b-4b34-b6da-06e0d16438b8 /></a></div>
 
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
@@ -185,7 +185,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
 ## 🌸In the end...
-<div align=center><img src=https://github.com/user-attachments/assets/29801ca4-a6a7-4924-acc6-eafe5c656964 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/3ff50d3e-bcb1-44e8-88e2-56a1c8e0b03c /></div>
 
 ##### <div align=center>😎My lolibar's <a href=https://github.com/supchyan/lolibar/blob/master/Mods/SupchyanMod.cs>mod</a> showcase</div>
 
