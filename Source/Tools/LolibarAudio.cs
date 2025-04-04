@@ -102,7 +102,7 @@ public class LolibarAudio
     {
         get
         {
-            if (Session != null)
+            if (Session != null && Session.GetPlaybackInfo() != null)
             {
                 return Session.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
             }
