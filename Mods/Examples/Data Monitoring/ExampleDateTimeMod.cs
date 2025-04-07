@@ -26,7 +26,7 @@ class ExampleDateTimeMod : LolibarMod
     {
         // Looks heavy, but it's just a default c# String.Format() method, which is formats time in the way like windows do.
         // For example:
-        // Instead of: 6.6.25, you will get 06.06.25, which is better, don't you think? The same for time.
+        // Instead of: 6.6.2025, you will get 06.06.2025, which is better, don't you think? The same for time.
         var date = $"{DateTime.Now.DayOfWeek}, {String.Format("0:00", DateTime.Now.Day)}.{String.Format("0:00", DateTime.Now.Month)}.{DateTime.Now.Year}";
         
         var time = $"{String.Format("0:00", DateTime.Now.Hour)}:{String.Format("0:00", DateTime.Now.Minute)}";

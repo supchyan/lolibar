@@ -19,17 +19,21 @@ class ExamplePowerMonitorMod : LolibarMod
         {
             Name                = "ExamplePowerMonitorContainer",
             Parent              = Lolibar.BarRightContainer,
-            Icon                = LolibarDefaults.GetPowerIcon(),
             MouseLeftButtonUp   = OpenPowerSettings
         };
         PowerMonitorContainer.Create();
     }
     public override void Update()
     {
-        PowerMonitorContainer.Text = LolibarDefaults.GetPowerInfo();
-        PowerMonitorContainer.Icon = LolibarDefaults.GetPowerIcon();
+        // Power info in percent:
+        PowerMonitorContainer.Text = LolibarStats.PowerInPercent;
+
+        // This "smart" icon changes upon battery state swap (critical / low / charging / etc.).
+        PowerMonitorContainer.Icon = LolibarStats.SmartPowerIcon;
+
         PowerMonitorContainer.Update();
     }
+    // Open Windows power settings event just for fun:
     int OpenPowerSettings(MouseButtonEventArgs e)
     {
         new Process

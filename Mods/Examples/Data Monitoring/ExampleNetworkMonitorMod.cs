@@ -18,20 +18,24 @@ class ExampleNetworkMonitorMod : LolibarMod
         {
             Name = "ExampleNetworkMonitorContainer",
             Parent = Lolibar.BarLeftContainer,
-            MouseRightButtonUp = SwapNetworkInfo,
         };
         NetworkMonitorContainer.Create();
     }
     public override void Update()
     {
-        NetworkMonitorContainer.Text = LolibarDefaults.GetNetworkInfo();
-        NetworkMonitorContainer.Icon = LolibarDefaults.GetNetworkIcon();
+        // Total network usage info:
+        NetworkMonitorContainer.Text = LolibarStats.NetworkBytesTotal;
+        NetworkMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/network.svg");
+
+        // And of course, you can get separated info in a way like:
+
+        // NetworkMonitorContainer.Text = LolibarDefaults.NetworkBytesSent;
+        // NetworkMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/network_sent.svg");
+
+        // NetworkMonitorContainer.Text = LolibarDefaults.NetworkBytesReceived;
+        // NetworkMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/network_received.svg");
+
         NetworkMonitorContainer.Update();
-    }
-    int SwapNetworkInfo(MouseButtonEventArgs e)
-    {
-        LolibarDefaults.SwapNetworkInfo();
-        return 0;
     }
 }
 

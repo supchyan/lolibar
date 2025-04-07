@@ -22,7 +22,7 @@ class ExampleCpuMonitorMod : LolibarMod
     }
     public override void Update()
     {
-        CpuMonitorContainer.Text = LolibarDefaults.GetCpuInfo();
+        CpuMonitorContainer.Text = LolibarStats.CpuTotalInPercent;
         CpuMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/cpu.svg");
         CpuMonitorContainer.Update();
     }

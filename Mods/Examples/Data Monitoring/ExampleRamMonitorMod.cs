@@ -18,20 +18,19 @@ class ExampleRamMonitorMod : LolibarMod
         {
             Name                = "ExampleRamMonitorContainer",
             Parent              = Lolibar.BarLeftContainer,
-            MouseRightButtonUp  = SwapRamInfo,
         };
         RamMonitorContainer.Create();
     }
     public override void Update()
     {
-        RamMonitorContainer.Text = LolibarDefaults.GetRamInfo();
-        RamMonitorContainer.Icon = LolibarDefaults.GetRamIcon();
+        // Total RAM usage in percent:
+        RamMonitorContainer.Text = LolibarStats.RamUsedInPercent;
+
+        // Total RAM usage in Gigabytes:
+        RamMonitorContainer.Text = LolibarStats.RamUsedInGigabytes;
+
+
         RamMonitorContainer.Update();
-    }
-    int SwapRamInfo(MouseButtonEventArgs e)
-    {
-        LolibarDefaults.SwapRamInfo();
-        return 0;
     }
 }
 

@@ -4,13 +4,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 // This mod is outside of the Mods namespace, so it won't be loaded
-// You can uncomment namespace to enable (load) it
+// You can uncomment `namespace` to enable (load) it
 
 //namespace LolibarApp.Mods;
 
 class ShowcaseMod : LolibarMod
 {
-    #region Anime Stuff
+    #region Anime Barille Stuff
     string OldAudioTitle = string.Empty;
     int OldAudioPlaybackState = -1;
     byte BrailleCodeAnimationFrame = 0;
@@ -18,10 +18,10 @@ class ShowcaseMod : LolibarMod
     #endregion
 
     #region Icons
-    readonly Geometry PlayAudioIcon = LolibarIcon.ParseSVG("./Defaults/play.svg");
-    readonly Geometry PauseAudioIcon = LolibarIcon.ParseSVG("./Defaults/pause.svg");
-    readonly Geometry PreviousAudioIcon = LolibarIcon.ParseSVG("./Defaults/previous.svg");
-    readonly Geometry NextAudioIcon = LolibarIcon.ParseSVG("./Defaults/next.svg");
+    readonly Geometry PlayAudioIcon = LolibarIcon.ParseSVG("./Defaults/audio_play.svg");
+    readonly Geometry PauseAudioIcon = LolibarIcon.ParseSVG("./Defaults/audio_pause.svg");
+    readonly Geometry PreviousAudioIcon = LolibarIcon.ParseSVG("./Defaults/audio_rewind.svg");
+    readonly Geometry NextAudioIcon = LolibarIcon.ParseSVG("./Defaults/audio_next.svg");
     #endregion
 
     #region Color Codes
@@ -54,7 +54,7 @@ class ShowcaseMod : LolibarMod
     }
     public override void Initialize()
     {
-        // --- Left Side ---
+        // --- --- Left Side
 
         // --- Desktop Workspaces (Tabs) ---
         WorkspacesContainer = new()
@@ -80,7 +80,7 @@ class ShowcaseMod : LolibarMod
         };
         DateTimeContainer.Create();
 
-        // --- Right Side ---
+        // --- --- Right Side
 
         // --- Audio Player ---
         AudioInfoContainer = new()
@@ -138,9 +138,8 @@ class ShowcaseMod : LolibarMod
     }
     public override void Update()
     {
-        // --- Properties ---
-        BarWidth = Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X - 2 * BarMargin : BarWidth;
-        BarLeft = (Lolibar.Inch_Screen.X - BarWidth) / 2;
+        // --- Auto resize logic ---
+        (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
 
         // --- Date / Time ---
         DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)} / {DateTime.Now.DayOfWeek}, {DateTime.Now.Day} {DateTime.Now.ToString("MMMM")} {DateTime.Now.Year}";
@@ -216,14 +215,6 @@ class ShowcaseMod : LolibarMod
     int NextStreamCallEvent(MouseButtonEventArgs e)
     {
         LolibarAudio.Next();
-
-        return 0;
-    }
-
-    // RAM
-    int SwapRamDisplayEvent(MouseButtonEventArgs e)
-    {
-        LolibarDefaults.SwapRamInfo();
 
         return 0;
     }

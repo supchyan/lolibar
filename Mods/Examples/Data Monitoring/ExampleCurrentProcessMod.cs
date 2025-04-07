@@ -18,14 +18,14 @@ class ExampleCurrentProcessMod : LolibarMod
         {
             Name                    = "ExampleCurrentProcessContainer",
             Parent                  = Lolibar.BarRightContainer,
-            Icon                    = LolibarIcon.ParseSVG("./Defaults/process_sine.svg"),
+            Icon                    = LolibarIcon.ParseSVG("./Defaults/sine.svg"),
             MouseLeftButtonUp       = OpenTaskManager,
         };
         CurrentProcessContainer.Create();
     }
     public override void Update()
     {
-        CurrentProcessContainer.Text = LolibarDefaults.GetCurrentApplicationInfo();
+        CurrentProcessContainer.Text = $"{LolibarStats.CurrentApplicationName} / {LolibarStats.CurrentApplicationId}";
         CurrentProcessContainer.Update();
     }
     int OpenTaskManager(System.Windows.Input.MouseButtonEventArgs e)

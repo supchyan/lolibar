@@ -3,7 +3,6 @@ using LolibarApp.Source.Tools;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows;
 
 namespace LolibarApp.Mods;
 
@@ -27,18 +26,12 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode               = "#080c0e";
-    const string SecondaryColorCode             = "#328087";
-    const string TernaryColorCode               = "#f24646";
+    const string PrimaryColorCode               = "#10111a";
+    const string SecondaryColorCode             = "#8b96cc";
+    const string TernaryColorCode               = "#c696cc";
     #endregion
 
     #region Containers
-    LolibarContainer WinContainerP              = new();
-    LolibarContainer WinContainer               = new();
-
-    LolibarContainer DateTimeContainerP         = new();
-    LolibarContainer DateTimeContainer          = new();
-
     LolibarContainer AppsContainerP             = new();
 
     LolibarContainer AudioContainerP            = new();
@@ -48,6 +41,7 @@ class SupchyanMod : LolibarMod
 
     LolibarContainer AudioInfoContainer         = new();
 
+    LolibarContainer DateTimeContainer          = new();
     LolibarContainer PowerMonitorContainer      = new();
     LolibarContainer LanguageContainer          = new();
 
@@ -76,44 +70,7 @@ class SupchyanMod : LolibarMod
     }
     public override void Initialize()
     {
-        // --- Win ---
-        WinContainerP               = new()
-        {
-            Name                    = "WinContainerP",
-            Parent                  = Lolibar.BarLeftContainer,
-            SeparatorPosition       = LolibarEnums.SeparatorPosition.Right,
-        };
-        WinContainerP.Create();
-
-        WinContainer                = new()
-        {
-            Name                    = "WinContainer",
-            Parent                  = WinContainerP.GetBody(),
-            Icon                    = AppsIcon,
-            MouseLeftButtonUp       = OpenAppsMenu,
-            HasBackground           = true,
-        };
-        WinContainer.Create();
-
-        // --- Date / Time ---
-        DateTimeContainerP          = new()
-        {
-            Name                    = "DateTimeContainerParent",
-            Parent                  = Lolibar.BarLeftContainer,
-            SeparatorPosition       = LolibarEnums.SeparatorPosition.Right,
-        };
-        DateTimeContainerP.Create();
-
-        DateTimeContainer           = new()
-        {
-            Name                    = "DateTimeContainer",
-            Parent                  = DateTimeContainerP.GetBody(),
-            MouseLeftButtonUp       = OpenCalendar,
-            HasBackground           = true,
-        };
-        DateTimeContainer.Create();
-
-        AppsContainerP         = new()
+        AppsContainerP              = new()
         {
             Name                    = "AppsContainerParent",
             Parent                  = Lolibar.BarLeftContainer,
@@ -172,24 +129,33 @@ class SupchyanMod : LolibarMod
         };
         NextButtonContainer.Create();
 
+        // --- Date / Time ---
+        DateTimeContainer           = new()
+        {
+            Name                    = "DateTimeContainer",
+            Parent                  = Lolibar.BarRightContainer,
+            MouseLeftButtonUp       = OpenCalendar,
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Both
+        };
+        DateTimeContainer.Create();
+
+        // --- Language ---
+        LanguageContainer           = new()
+        {
+            Name                    = "LanguageContainer",
+            Parent                  = Lolibar.BarRightContainer,
+            SeparatorPosition       = LolibarEnums.SeparatorPosition.Right
+        };
+        LanguageContainer.Create();
+
         // --- Power ---
         PowerMonitorContainer       = new()
         {
             Name                    = "PowerMonitorContainer",
             Parent                  = Lolibar.BarRightContainer,
             MouseLeftButtonUp       = OpenPowerSettings,
-            SeparatorPosition       = LolibarEnums.SeparatorPosition.Left
         };
         PowerMonitorContainer.Create();
-
-        // --- Language ---
-        LanguageContainer           = new()
-        {
-            Name                    = "LanguageContainer",
-            Icon                    = LolibarIcon.ParseSVG("./supchyan/pen.svg"),
-            Parent                  = Lolibar.BarRightContainer,
-        };
-        LanguageContainer.Create();
 
         // --- Desktop Workspaces (Tabs) ---
         WorkspacesContainer         = new()
@@ -252,7 +218,7 @@ class SupchyanMod : LolibarMod
         (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
 
         // --- Date / Time ---
-        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)}.{DateTime.Now.Year} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
+        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
         DateTimeContainer.Update();
 
         // --- Audio player ---
@@ -287,12 +253,11 @@ class SupchyanMod : LolibarMod
         AudioInfoContainer.Update();
 
         // --- Power ---
-        PowerMonitorContainer.Text = LolibarDefaults.GetPowerInfo();
-        PowerMonitorContainer.Icon = LolibarDefaults.GetPowerIcon();
+        PowerMonitorContainer.Text = LolibarStats.IsBatteryCharging ? $"⚡️{LolibarStats.PowerInPercent}" : LolibarStats.PowerInPercent;
         PowerMonitorContainer.Update();
 
         // --- Language ---
-        LanguageContainer.Text = LolibarDefaults.CurrentInputLanguage?.Split(" (")[0];
+        LanguageContainer.Text = LolibarStats.CurrentInputLanguage?.Split(" (")[0].ToUpper()[..3];
         LanguageContainer.Update();
     }
     #endregion

@@ -18,19 +18,22 @@ class ExampleDiskMonitorMod : LolibarMod
         {
             Name                = "ExampleDiskMonitorContainer",
             Parent              = Lolibar.BarLeftContainer,
-            MouseRightButtonUp  = SwapDiskInfo,
         };
         DiskMonitorContainer.Create();
     }
     public override void Update()
     {
-        DiskMonitorContainer.Text = LolibarDefaults.GetDiskInfo();
-        DiskMonitorContainer.Icon = LolibarDefaults.GetDiskIcon();
+        // Total disk info:
+        DiskMonitorContainer.Text = LolibarStats.DiskTotalInPercent;
+        DiskMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/disk.svg");
+
+        // You can get read / write info as well:
+        // DiskMonitorContainer.Text = LolibarDefaults.DiskReadInPercent;
+        // DiskMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/disk_read.svg");
+
+        // DiskMonitorContainer.Text = LolibarDefaults.DiskWriteInPercent;
+        // DiskMonitorContainer.Icon = LolibarIcon.ParseSVG("./Defaults/disk_write.svg");
+
         DiskMonitorContainer.Update();
-    }
-    int SwapDiskInfo(MouseButtonEventArgs e)
-    {
-        LolibarDefaults.SwapDiskInfo(); 
-        return 0;
     }
 }

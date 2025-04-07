@@ -13,14 +13,14 @@ static class LolibarIcon
     {
         get
         {
-            return $"{LolibarDefaults.ExecutionPath}\\Icons\\ico\\";
+            return $"{LolibarStats.ExecutionPath}\\Icons\\ico\\";
         }
     }
     static string SvgIconsFolderPath
     {
         get
         {
-            return $"{LolibarDefaults.ExecutionPath}\\Icons\\svg\\";
+            return $"{LolibarStats.ExecutionPath}\\Icons\\svg\\";
         }
     }
     /// <summary>
