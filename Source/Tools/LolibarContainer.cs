@@ -147,6 +147,8 @@ public class LolibarContainer
         // Svg icon container
         PathContainer           = new()
         {
+            Width               = 14,
+            Height              = 14,
             Stretch             = Stretch.Uniform,
             Margin              = LolibarMod.BarContainersContentMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,

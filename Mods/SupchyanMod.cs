@@ -17,7 +17,6 @@ class SupchyanMod : LolibarMod
 
     #region Icons
     readonly Geometry GearIcon                  = LolibarIcon.ParseSVG("./Defaults/gear.svg");
-    readonly Geometry AppsIcon                  = LolibarIcon.ParseSVG("./Defaults/apps.svg");
     readonly Geometry BellIcon                  = LolibarIcon.ParseSVG("./Defaults/bell.svg");
     readonly Geometry PlayAudioIcon             = LolibarIcon.ParseSVG("./Defaults/audio_play.svg");
     readonly Geometry PauseAudioIcon            = LolibarIcon.ParseSVG("./Defaults/audio_pause.svg");
@@ -26,13 +25,14 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode               = "#10111a";
-    const string SecondaryColorCode             = "#8b96cc";
-    const string TernaryColorCode               = "#c696cc";
+    const string PrimaryColorCode               = "#0d0d13";
+    const string SecondaryColorCode             = "#573a91";
+    const string TernaryColorCode               = "#406158";
     #endregion
 
     #region Containers
-    LolibarContainer AppsContainerP             = new();
+    LolibarContainer WorkspacesContainer        = new();
+
 
     LolibarContainer AudioContainerP            = new();
     LolibarContainer PreviousButtonContainer    = new();
@@ -41,11 +41,13 @@ class SupchyanMod : LolibarMod
 
     LolibarContainer AudioInfoContainer         = new();
 
-    LolibarContainer DateTimeContainer          = new();
-    LolibarContainer PowerMonitorContainer      = new();
-    LolibarContainer LanguageContainer          = new();
+    LolibarContainer AppsContainerP             = new();
 
-    LolibarContainer WorkspacesContainer        = new();
+    LolibarContainer DateTimeContainer          = new();
+    LolibarContainer LanguageContainer          = new();
+    
+    LolibarContainer PowerMonitorContainerP     = new();
+    LolibarContainer PowerMonitorContainer      = new();
 
     LolibarContainer NotificationsContainerP    = new();
     LolibarContainer NotificationsContainer     = new();
@@ -62,18 +64,81 @@ class SupchyanMod : LolibarMod
         BarHeight                   = 40.0;
 
         BarSeparatorHeight          = 14.0;
-        BarSeparatorWidth           = 2.0;
-        BarSeparatorRadius          = 0.0;
+        BarSeparatorWidth           = 3.0;
+        BarSeparatorRadius          = 1.5;
 
         BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
         BarContainersColor          = LolibarColor.FromHEX(SecondaryColorCode);
     }
     public override void Initialize()
     {
+        // --- Desktop Workspaces (Tabs) ---
+        WorkspacesContainer = new()
+        {
+            Name = "WorkspacesContainer",
+            Parent = Lolibar.BarLeftContainer,
+            MouseWheelDelta = SwapWorkspacesByMouseWheel,
+            SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
+        };
+        WorkspacesContainer.Create();
+
+        LolibarVirtualDesktop.DrawWorkspacesInParent
+        (
+            parent: WorkspacesContainer.GetBody(),
+            showDesktopNames: true
+        );
+
+        // --- Audio Player ---
+        AudioContainerP = new()
+        {
+            Name = "AudioContainerParent",
+            Parent = Lolibar.BarLeftContainer,
+        };
+        AudioContainerP.Create();
+
+        AudioInfoContainer = new()
+        {
+            Name = "AudioInfoContainer",
+            Parent = AudioContainerP.GetBody(),
+            HasBackground = true,
+            Color = LolibarColor.FromHEX(TernaryColorCode)
+        };
+        AudioInfoContainer.Create();
+
+        PreviousButtonContainer = new()
+        {
+            Name = "AudioPreviousButton",
+            Parent = AudioContainerP.GetBody(),
+            Icon = PreviousAudioIcon,
+            MouseLeftButtonUp = Previous,
+            Color = LolibarColor.FromHEX(TernaryColorCode)
+        };
+        PreviousButtonContainer.Create();
+
+        PlayButtonContainer = new()
+        {
+            Name = "AudioPlayButton",
+            Parent = AudioContainerP.GetBody(),
+            MouseLeftButtonUp = PlayOrPause,
+            Color = LolibarColor.FromHEX(TernaryColorCode)
+        };
+        PlayButtonContainer.Create();
+
+        NextButtonContainer = new()
+        {
+            Name = "AudioNextButton",
+            Parent = AudioContainerP.GetBody(),
+            Icon = NextAudioIcon,
+            MouseLeftButtonUp = Next,
+            Color = LolibarColor.FromHEX(TernaryColorCode)
+        };
+        NextButtonContainer.Create();
+
+        // --- Pinned Apps ---
         AppsContainerP              = new()
         {
             Name                    = "AppsContainerParent",
-            Parent                  = Lolibar.BarLeftContainer,
+            Parent                  = Lolibar.BarRightContainer,
         };
         AppsContainerP.Create();
 
@@ -82,52 +147,6 @@ class SupchyanMod : LolibarMod
             parent: AppsContainerP.GetBody(),
             appContainerTitleState: LolibarEnums.AppContainerTitleState.OnlyActive
         );
-
-        // --- Audio Player ---
-        AudioContainerP             = new()
-        {
-            Name                    = "AudioContainerParent",
-            Parent                  = Lolibar.BarRightContainer,
-        };
-        AudioContainerP.Create();
-
-        AudioInfoContainer          = new()
-        {
-            Name                    = "AudioInfoContainer",
-            Parent                  = AudioContainerP.GetBody(),
-            HasBackground           = true,
-            Color                   = LolibarColor.FromHEX(TernaryColorCode)
-        };
-        AudioInfoContainer.Create();
-
-        PreviousButtonContainer     = new()
-        {
-            Name                    = "AudioPreviousButton",
-            Parent                  = AudioContainerP.GetBody(),
-            Icon                    = PreviousAudioIcon,
-            MouseLeftButtonUp       = Previous,
-            Color                   = LolibarColor.FromHEX(TernaryColorCode)
-        };
-        PreviousButtonContainer.Create();
-
-        PlayButtonContainer         = new()
-        {
-            Name                    = "AudioPlayButton",
-            Parent                  = AudioContainerP.GetBody(),
-            MouseLeftButtonUp       = PlayOrPause,
-            Color                   = LolibarColor.FromHEX(TernaryColorCode)
-        };
-        PlayButtonContainer.Create();
-
-        NextButtonContainer         = new()
-        {
-            Name                    = "AudioNextButton",
-            Parent                  = AudioContainerP.GetBody(),
-            Icon                    = NextAudioIcon,
-            MouseLeftButtonUp       = Next,
-            Color                   = LolibarColor.FromHEX(TernaryColorCode)
-        };
-        NextButtonContainer.Create();
 
         // --- Date / Time ---
         DateTimeContainer           = new()
@@ -149,23 +168,22 @@ class SupchyanMod : LolibarMod
         LanguageContainer.Create();
 
         // --- Power ---
+        PowerMonitorContainerP = new()
+        {
+            Name = "PowerMonitorContainerParent",
+            Parent = Lolibar.BarRightContainer,
+            SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
+        };
+        PowerMonitorContainerP.Create();
+
         PowerMonitorContainer       = new()
         {
             Name                    = "PowerMonitorContainer",
-            Parent                  = Lolibar.BarRightContainer,
+            Parent                  = PowerMonitorContainerP.GetBody(),
             MouseLeftButtonUp       = OpenPowerSettings,
+            HasBackground           = true,
         };
         PowerMonitorContainer.Create();
-
-        // --- Desktop Workspaces (Tabs) ---
-        WorkspacesContainer         = new()
-        {
-            Name                    = "WorkspacesContainer",
-            Parent                  = Lolibar.BarRightContainer,
-            MouseWheelDelta         = SwapWorkspacesByMouseWheel,
-            SeparatorPosition       = LolibarEnums.SeparatorPosition.Both,
-        };
-        WorkspacesContainer.Create();
 
         // --- Notifications ---
         NotificationsContainerP     = new()
@@ -203,23 +221,14 @@ class SupchyanMod : LolibarMod
             HasBackground           = true,
         };
         QuickSettingsContainer.Create();
-
-        LolibarVirtualDesktop.DrawWorkspacesInParent
-        (
-            parent:             WorkspacesContainer.GetBody(),
-            showDesktopNames:   true
-        );
     }
     public override void Update()
     {
+        // Hide windows taskbar calls [ better to be in Update() hook ]
         LolibarHelper.HideWindowsTaskbar();
 
         // --- Auto resize logic ---
         (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
-
-        // --- Date / Time ---
-        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
-        DateTimeContainer.Update();
 
         // --- Audio player ---
         PlayButtonContainer.Icon = LolibarAudio.IsPlaying ? PauseAudioIcon : PlayAudioIcon;
@@ -252,13 +261,18 @@ class SupchyanMod : LolibarMod
 
         AudioInfoContainer.Update();
 
-        // --- Power ---
-        PowerMonitorContainer.Text = LolibarStats.IsBatteryCharging ? $"⚡️{LolibarStats.PowerInPercent}" : LolibarStats.PowerInPercent;
-        PowerMonitorContainer.Update();
+        // --- Date / Time ---
+        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
+        DateTimeContainer.Update();
 
         // --- Language ---
         LanguageContainer.Text = LolibarStats.CurrentInputLanguage?.Split(" (")[0].ToUpper()[..3];
         LanguageContainer.Update();
+
+        // --- Power ---
+        //PowerMonitorContainer.Text = LolibarStats.IsBatteryCharging ? $"⚡️{LolibarStats.PowerInPercent}" : LolibarStats.PowerInPercent;
+        PowerMonitorContainer.Icon = LolibarStats.SmartPowerIcon;
+        PowerMonitorContainer.Update();
     }
     #endregion
 
