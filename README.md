@@ -20,6 +20,9 @@ This project is the **toolkit** for modders, which allows you to create statusba
 ## 🌸Average PC Usage
 <div align=center><img src=https://github.com/user-attachments/assets/18f4fe8c-3f8b-4540-bd77-5175a0243b87 width=800 height=auto /></div>
 
+## 🌸CLI Support
+<div align=center><img src=https://github.com/user-attachments/assets/42455c86-3d04-492e-97c8-b10eba824318 width=800 height=auto /></div>
+
 ## 🌸Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022+`. Moreover, to build this project, you have to install `.NET 8.0 SDK`. Alternatively, you can use other `.NET SDK` versions as well, but `stable` branch targets to `.NET 8.0`, so any issues with different SDK versions you have to solve locally.
 
