@@ -1,10 +1,13 @@
-﻿using System.Drawing.Printing;
-using System.Reflection.Metadata;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using IWshRuntimeLibrary;
 
 namespace LolibarApp.Source.Tools;
 
@@ -201,5 +204,39 @@ public static partial class LolibarHelper
 
         LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.ShowNormal);
         LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.ShowNormal);
+    }
+    public static void DoLocalLolibarDirCreationJob()
+    {
+        var execPath            = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var localLolibarPath    = $"C:\\Users\\{LolibarStats.UserInfo}\\.lolibar";
+        var cmdFileRefPath      = $"{execPath}\\Scripts\\lolibar.cmd";
+        var cmdFilePath         = $"C:\\Users\\{LolibarStats.UserInfo}\\.lolibar\\lolibar.cmd";
+        var lnkFilePath         = $"C:\\Users\\{LolibarStats.UserInfo}\\.lolibar\\bar.lnk";
+        var enviromentValue     = System.Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
+
+        
+
+        if (!Directory.Exists(localLolibarPath))
+        {
+            Directory.CreateDirectory(localLolibarPath);
+        }
+        if (!System.IO.File.Exists(cmdFilePath))
+        {
+            System.IO.File.Copy(cmdFileRefPath, cmdFilePath);
+        }
+        if (!System.IO.File.Exists(lnkFilePath))
+        {
+            WshShell shell          = new();
+            IWshShortcut shortcut   = (IWshShortcut)shell.CreateShortcut(lnkFilePath);
+
+            shortcut.TargetPath     = $"{execPath}\\lolibar.exe";
+            shortcut.IconLocation   = $"{execPath}\\lolibar.exe";
+
+            shortcut.Save();
+        }
+        if (enviromentValue != null && !enviromentValue.Contains(localLolibarPath))
+        {
+            System.Environment.SetEnvironmentVariable("Path", $"{enviromentValue}{localLolibarPath};", EnvironmentVariableTarget.User);
+        }
     }
 }

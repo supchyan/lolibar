@@ -149,6 +149,9 @@ public class LolibarStats
     //}
     #endregion
     #region User
+    /// <summary>
+    /// Logged in Username (you!)
+    /// </summary>
     public static string? UserInfo
     {
         get

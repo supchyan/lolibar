@@ -86,6 +86,9 @@ public partial class Lolibar : Window
 
         LolibarAudio.Start();
 
+        // Create .lolibar folder in user directory
+        LolibarHelper.DoLocalLolibarDirCreationJob();
+
         SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
     }
 
