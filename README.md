@@ -5,11 +5,6 @@
         <img src=https://github.com/user-attachments/assets/8d31e15e-dc9a-498f-b2f1-159d0a4ddcbf />
     </a>
 </div>
-<div align=center>
-    <a href=https://github.com/supchyan/lolibar/blob/stable/Mods/ShowcaseMod.cs>
-        <img src=https://github.com/user-attachments/assets/da0fd0f4-fd2b-4b34-b6da-06e0d16438b8 />
-    </a>
-</div>
 
 #### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
 
