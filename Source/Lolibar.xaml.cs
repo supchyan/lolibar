@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Numerics;
 using System.IO;
+using System.Windows.Input;
 
 namespace LolibarApp.Source;
 
@@ -61,7 +62,6 @@ public partial class Lolibar : Window
         InitializeComponent();
 
         ContentRendered     += Lolibar_ContentRendered;
-        Closing             += Lolibar_Closing;
         Closed              += Lolibar_Closed;
 
         // --- Moves lolibar into the null window ---
@@ -265,13 +265,6 @@ public partial class Lolibar : Window
     {
         IsRendered = true;
     }
-    void Lolibar_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
-    {
-        if (System.Windows.Forms.Control.ModifierKeys.HasFlag(Keys.Alt))
-        {
-            e.Cancel = true;
-        }
-    }
     void Lolibar_Closed(object? sender, EventArgs e)
     {
         LolibarHelper.ShowWindowsTaskbar();
@@ -362,6 +355,24 @@ public partial class Lolibar : Window
     static void OnExitSelected(object? sender, EventArgs e)
     {
         LolibarHelper.CloseApplicationGently();
+    }
+    #endregion
+
+    #region Overrides
+    // Protects lolibar from being closed by some keybindings
+    protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e)
+    {
+        if (
+            (Keyboard.Modifiers == ModifierKeys.Alt && e.SystemKey == Key.Space) ||
+            (Keyboard.Modifiers == ModifierKeys.Alt && e.SystemKey == Key.F4)
+            )
+        {
+            e.Handled = true;
+        }
+        else
+        {
+            base.OnKeyDown(e);
+        }
     }
     #endregion
 }
