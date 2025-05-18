@@ -277,14 +277,6 @@ class SupchyanMod : LolibarMod
     #endregion
 
     #region Click events
-    // --- Win ---
-    int OpenAppsMenu(MouseButtonEventArgs e)
-    {
-        LolibarHelper.KeyDown(Keys.LWin);
-        LolibarHelper.KeyUp(Keys.LWin);
-
-        return 0;
-    }
     // --- Date / Time ---
     int OpenCalendar(MouseButtonEventArgs e)
     {
