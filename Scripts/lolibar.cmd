@@ -17,11 +17,14 @@ if "%1"=="/s" (
     goto :eof
 )
 
-echo lolibar cli usage:
-echo /h      - Shows this message,
-echo /k      - Terminates all lolibar.exe processes,
-echo /r      - Restarts lolibar.exe process,
-echo /s      - Starts lolibar.exe process
+echo.
+echo Lolibar cli usage:
+echo    lolibar [/k ^| /r ^| /s]
+echo.
+echo Options:
+echo    /k      Terminates all lolibar.exe processes,
+echo    /r      Restarts lolibar.exe process,
+echo    /s      Starts lolibar.exe process
 goto :eof
 
 :KillLolibar
