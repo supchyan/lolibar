@@ -6,16 +6,19 @@
     </a>
 </div>
 
-#### <div align=center>lolibar | statusbar for Windows [ 10, 11 ] | C#</div>
+#### <div align=center>lolibar | statusbar lib for Windows [ 10, 11 ] | C#</div>
 
 ## 🌸Introduction
-This project is the **toolkit** for modders, which allows you to create statusbars for Windows. There is **NO** ready-to-use executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to get one, you can build it, using source! This is a dotnet project, so there is no complicated stuff in building procedure. Following a guide below will help you to get into it ASAP.
+This project is the **toolkit lib** for modders, which allows you to create statusbars for Windows. There is **NO** ready-to-use executable on **[Releases](https://github.com/supchyan/lolibar/releases)** page, so if you want to get one, you can build it, using source! This is a dotnet project, so there is no complicated stuff in building procedure. Following a guide below will help you to get into it ASAP.
 
 ## 🌸Similar Projects
 - **[yasb](https://github.com/da-rth/yasb) (Cross platform, Python)**
 - **[polybar](https://github.com/polybar/polybar) (Linux, C++)**
 - **[eww](https://github.com/elkowar/eww) (Linux, Rust)**
 - **[ironbar](https://github.com/JakeStanger/ironbar) (Linux, Rust)**
+
+## 🌸Contact me
+If you have any questions or suggestions, you can always ping me on my **[Discord server](https://discord.gg/dGF8p9UGyM)**! I'll be glad to help you and improve my project.
 
 ## 🌸Average PC Usage
 <div align=center><img src=https://github.com/user-attachments/assets/18f4fe8c-3f8b-4540-bd77-5175a0243b87 width=800 height=auto /></div>
