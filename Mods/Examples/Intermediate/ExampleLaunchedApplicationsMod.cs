@@ -17,7 +17,6 @@ class ExampleLaunchedApplicationsMod : LolibarMod
         // Set it up
         ExampleAppsContainerParent = new()
         {
-            Name                    = "ExampleAppsContainerParent",
             Parent                  = Lolibar.BarRightContainer,
         };
         ExampleAppsContainerParent.Create();

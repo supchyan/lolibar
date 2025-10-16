@@ -79,7 +79,7 @@ public class LolibarProcess
     /// if current application isn't running, or running at the background.
     /// </summary>
     /// <param name="applicationPath">App execution path.</param>
-    public static void InvokeApplicationByPath (string applicationPath)
+    public static void InvokeApplicationByPath(string applicationPath)
     {
         var definedProcesses = Process.GetProcessesByName(GetProcessNameByPath(applicationPath));
 
@@ -127,7 +127,7 @@ public class LolibarProcess
     {
         return processPath.Split("\\").Last().Split(".")[0];
     }
-    static string? GetProcessWindowTitleByPath(string processPath)
+    static string? GetProcessMainWindowTitleByPath(string processPath)
     {
         Process[]? procs = Process.GetProcessesByName(GetProcessNameByPath(processPath));
         return procs[0]?.MainWindowTitle;
@@ -163,14 +163,14 @@ public class LolibarProcess
                 // Create pinned app container:
                 var PinContainer        = new LolibarContainer()
                 {
-                    Name                = $"{GetProcessNameByPath(TargetPath)}ApplicationContainer",
                     Icon                = LolibarIcon.GetApplicationIcon(TargetPath),
                     Parent              = parent,
+                    LeftMarginOffset   = 5.0,
+                    RightMarginOffset  = 5.0,
 
                     MouseRightButtonUp  = (e) =>
                     {
-                        /* OPEN CONTEXT MENU */
-                        // TODO: OpenContextMenu(TargetPath);
+                        GenerateContextMenu(TargetPath);
                         return 0;
                     },
                     MouseMiddleButtonUp = (e) =>  
@@ -198,6 +198,49 @@ public class LolibarProcess
             }
         }
     }
+    static void GenerateContextMenu(string TargetPath)
+    {
+        /* OPEN CONTEXT MENU */
+        LolibarContextMenu hwndContextMenu = new()
+        {
+            ChildMargin = 10
+        };
+
+        hwndContextMenu.Children.Add(new()
+        {
+            Text = GetProcessNameByPath(TargetPath),
+            Icon = LolibarIcon.GetApplicationIcon(TargetPath),
+            MouseLeftButtonUp = (e) =>
+            {
+                InvokeApplicationByPath(TargetPath);
+                hwndContextMenu.Close();
+                return 0;
+            }
+        });
+
+        Process[]? procs = null;
+
+        procs = Process.GetProcessesByName(GetProcessNameByPath(TargetPath));
+
+        foreach (var proc in procs)
+        {
+            if (proc.MainWindowTitle == "") continue;
+
+            hwndContextMenu.Children.Add(new()
+            {
+                Text = proc.MainWindowTitle.Truncate(24), // only MainWindowHandle has a name, lame ;v;
+                Icon = LolibarIcon.GetApplicationIcon(TargetPath),
+                HasBackground = true,
+                MouseLeftButtonUp = (e) =>
+                {
+                    LolibarExtern.SwitchToThisWindow(proc.MainWindowHandle, true);
+                    hwndContextMenu.Close();
+                    return 0;
+                }
+            });
+        }
+        hwndContextMenu.Create();
+    }
     public static void UpdateInitializedPinnedApps()
     {
         AddPinnedAppsToContainer(InitializedParent, InitializedAppContainerTitleState, InitializedAppTitleMaxLength);
@@ -218,12 +261,12 @@ public class LolibarProcess
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
                         
-                        application.Value.Text = GetProcessWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength);
+                        application.Value.Text = GetProcessMainWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength);
                         break;
 
                     case LolibarEnums.AppContainerTitleState.OnlyActive:
 
-                        application.Value.Text = isActive ? GetProcessWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
+                        application.Value.Text = isActive ? GetProcessMainWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
                         break;
 
                     case LolibarEnums.AppContainerTitleState.Never:

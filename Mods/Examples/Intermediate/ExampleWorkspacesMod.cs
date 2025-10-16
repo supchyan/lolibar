@@ -23,7 +23,6 @@ class ExampleWorkspacesMod : LolibarMod
         // Let's define it's properties:
         WorkspacesContainer     = new()
         {
-            Name                = "ExampleWorkspacesContainer",
             Parent              = Lolibar.BarRightContainer,
             SeparatorPosition   = LolibarEnums.SeparatorPosition.Left,
             MouseWheelDelta     = SwapWorkspacesByMouseWheel

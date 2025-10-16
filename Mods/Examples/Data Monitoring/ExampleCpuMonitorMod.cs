@@ -15,7 +15,6 @@ class ExampleCpuMonitorMod : LolibarMod
     {
         CpuMonitorContainer = new()
         {
-            Name            = "ExampleCpuMonitorContainer",
             Parent          = Lolibar.BarLeftContainer,
         };
         CpuMonitorContainer.Create();

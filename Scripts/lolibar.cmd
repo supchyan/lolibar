@@ -29,7 +29,7 @@ goto :eof
 
 :KillLolibar
 :loop
-taskkill /im "lolibar.exe" >NUL 2>&1 && (
+taskkill /T /F /IM "lolibar.exe" >NUL 2>&1 && (
     goto :loop
 ) || (
     goto :eof

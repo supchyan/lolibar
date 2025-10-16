@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text;
 using static LolibarApp.Source.Tools.LolibarExtern;
 
 namespace LolibarApp.Source.Tools
@@ -41,6 +42,34 @@ namespace LolibarApp.Source.Tools
         /// <returns></returns>
         [DllImport("gdi32.dll",  SetLastError = true)]
         public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+        /// <summary>
+        /// Retrieves the length, in characters, of the specified window's title bar text (if the window has a title bar). 
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern int GetWindowTextLength(IntPtr hWnd);
+        /// <summary>
+        /// Copies the text of the specified window's title bar (if it has one) into a buffer. 
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="lpString"></param>
+        /// <param name="nMaxCount"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+        public delegate bool EnumWindowsProc(IntPtr windowHandle, IntPtr lParam);
+
+        [DllImport("user32")]
+        public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumChildWindows(IntPtr hWndStart, EnumWindowsProc callback, IntPtr lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam, uint fuFlags, uint uTimeout, out IntPtr lpdwResult);
+
         /// <summary>
         /// Retrieves a handle to the top-level window whose class name and window name match the specified strings.
         /// This function does not search child windows.
@@ -175,7 +204,7 @@ namespace LolibarApp.Source.Tools
         /// This parameter should be FALSE otherwise.
         /// </param>
 
-        [DllImport("User32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
         /// <summary>
         /// Retrieves the active input locale identifier (formerly called the keyboard layout).
@@ -184,5 +213,27 @@ namespace LolibarApp.Source.Tools
         /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr GetKeyboardLayout(uint idThread);
+
+        /// <summary>
+        /// Retrieves information about the specified window. 
+        /// The function also retrieves the 32-bit (DWORD) value at the specified offset into the extra window memory. 
+        /// </summary>
+        /// <param name="hwnd"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
+
+        /// <summary>
+        /// Changes an attribute of the specified window. 
+        /// The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
+        /// </summary>
+        /// <param name="hwnd"></param>
+        /// <param name="index"></param>
+        /// <param name="newStyle"></param>
+        /// <returns></returns>
+
+        [DllImport("user32.dll")]
+        public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
     }
 }

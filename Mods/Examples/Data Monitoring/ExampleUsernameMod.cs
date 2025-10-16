@@ -15,7 +15,6 @@ class ExampleUsernameMod : LolibarMod
     {
         var ExampleUsernameContainer    = new LolibarContainer()
         {
-            Name                        = "ExampleUsernameContainer",
             Parent                      = Lolibar.BarLeftContainer,
             Text                        = LolibarStats.UserInfo, // your OS username
             MouseLeftButtonUp           = OpenUserSettings, // let's add a `leftclick` mouse event to this container

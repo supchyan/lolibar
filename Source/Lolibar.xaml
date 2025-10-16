@@ -17,6 +17,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         
+        Top="-1000"
+        
         Opacity="0" d:Opacity="1"
         
         d:DesignHeight="41.56"
@@ -25,8 +27,7 @@
         
         IsTabStop="False"
         UseLayoutRounding="True" Background="{x:Null}" Foreground="{x:Null}">
-    <Grid Name="RootGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Border Name="Bar" Width="{Binding ActualWidth, ElementName=Root, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Root, Mode=OneWay}">
+        <Border Name="Bar" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -54,5 +55,4 @@
 
             </Grid>
         </Border>
-    </Grid>
 </Window>

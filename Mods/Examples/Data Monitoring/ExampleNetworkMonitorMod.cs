@@ -16,7 +16,6 @@ class ExampleNetworkMonitorMod : LolibarMod
     {
         NetworkMonitorContainer = new()
         {
-            Name = "ExampleNetworkMonitorContainer",
             Parent = Lolibar.BarLeftContainer,
         };
         NetworkMonitorContainer.Create();

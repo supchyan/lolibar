@@ -1,13 +1,14 @@
-﻿using System.Windows;
-using Ikst.MouseHook;
-using LolibarApp.Source.Tools;
-using System.Windows.Controls;
-using System.Diagnostics;
-using System.Reflection;
-using System.Numerics;
-using System.IO;
-using System.Windows.Input;
+﻿using Ikst.MouseHook;
 using IWshRuntimeLibrary;
+using LolibarApp.Source.Tools;
+using System.Diagnostics;
+using System.IO;
+using System.Numerics;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media.Effects;
 
 namespace LolibarApp.Source;
 
@@ -26,16 +27,39 @@ public partial class Lolibar : Window
     public static Vector2 Inch_Screen               { get; private set; }
     public static Vector2 ScreenSize                { get; private set; }
 
-    public static double StatusBarVisiblePosY       { get; private set; }
-    public static double StatusBarHidePosY          { get; private set; }
+    // --- Lolibar drop shadow effect ---
+    static DropShadowEffect DropShadow { get; set; } = new();
+
+    /// <summary>
+    /// Returns screen mouse position, when mouse is over lolibar.
+    /// </summary>
+    public static System.Windows.Point InWindowScreenMousePosition { get; private set; }
 
 
     // --- Drawing triggers ---
-    bool IsHidden                                   { get; set; }
-    bool OldIsHidden                                { get; set; }
+    bool IsHidden       { get; set; }
+    bool OldIsHidden    { get; set; }
 
-    // Null window to prevent lolibar's appearing inside alt+tab menu
-    readonly Window nullWin = new()
+    /// <summary>
+    /// DANGEROUS PARAMETER! RECOMMENDED TO AVOID IT! 
+    /// Add value if Lolibar need to be shown regardless of default conditions. 
+    /// Empty list means, nothing prevents lolibar from hiding under default conditions.
+    /// </summary>
+    public static List<byte> HideInterruptions { get; set; } = new();
+
+    public static double GetStatusBarVisiblePosY(Window wnd)
+    {
+        return !LolibarMod.BarSnapToTop ? Inch_Screen.Y - wnd.Height : 0;
+    }
+    public static double GetStatusBarHidePosY(Window wnd)
+    {
+        return !LolibarMod.BarSnapToTop ? Inch_Screen.Y : -wnd.Height;
+    }
+
+    /// <summary>
+    /// Null window to prevent other windows appearing inside Alt+Tab UI
+    /// </summary>
+    static readonly Window NullWindow = new()
     {
         Visibility          = Visibility.Hidden,
         WindowStyle         = WindowStyle.ToolWindow,
@@ -44,16 +68,26 @@ public partial class Lolibar : Window
         Height              = 0,
         Left                = -100 // to open the null_window outside of the screen 
     };
+    /// <summary>
+    /// Prevents some window being drawn in Alt+Tab UI
+    /// </summary>
+    /// <param name="wnd"></param>
+    public static void HideFromAltTab(Window wnd)
+    {
+        wnd.Owner = GetWindow(NullWindow);
+    }
 
-    // Trigger to prevent different job before...
-    // ...application's window actually rendered
-    bool            IsRendered                      { get; set; }
+    // --- Cursor params ---
+    public static bool MouseLeftDown    { get; private set; }
+    public static bool MouseRightDown   { get; private set; }
 
-    // --- Cursor velocity calculation ---
-    static Vector2  OldCursorPosition               { get; set; }
-    static Vector2  CursorPosition                  { get; set; }
-    static float    CursorVelocity                  { get; set; }
-    static DateTime OldTime                         { get; set; }
+    /// <summary>
+    /// Cursor screen position in pixels.
+    /// </summary>
+    public static Vector2   CursorPosition          { get; private set; }
+    static Vector2          OldCursorPosition       { get; set; }
+    static float            CursorVelocity          { get; set; }
+    static DateTime         OldTime                 { get; set; }
 
     // --- LolibarVirtualDesktop update trigger on lolibar's opening ---
     static bool ShouldManuallyUpdateDynamicLibs { get; set; }
@@ -62,12 +96,13 @@ public partial class Lolibar : Window
     {
         InitializeComponent();
 
-        ContentRendered     += Lolibar_ContentRendered;
-        Closed              += Lolibar_Closed;
+        Closed += Lolibar_Closed;
+
+        // Show null window
+        NullWindow.Show();
 
         // --- Moves lolibar into the null window ---
-        nullWin.Show();
-        Owner = GetWindow(nullWin);
+        HideFromAltTab(this);
 
         // --- Writes main containers into accessable types ---
         BarCenterContainer  = _BarCenterContainer;
@@ -77,12 +112,20 @@ public partial class Lolibar : Window
         // ---
 
         InitializeCycle();
+        VanillaTaskBarLurker();
         UpdateCycle();
 
         CheeseUpdateCycle();  // For dynamic libs Update
 
         // Should be below Initialize and Update calls, because it has Resources[] dependency
-        MouseHandler.MouseMove += MouseHandler_MouseMove;
+        MouseHandler.MouseMove      += MouseHandler_MouseMove;
+
+        MouseHandler.LeftButtonUp   += MouseHandler_LeftButtonUp;
+        MouseHandler.LeftButtonDown += MouseHandler_LeftButtonDown;
+
+        MouseHandler.RightButtonUp      += MouseHandler_RightButtonUp;
+        MouseHandler.RightButtonDown    += MouseHandler_RightButtonDown;
+
         MouseHandler.Start();
 
         LolibarAudio.Start();
@@ -91,6 +134,25 @@ public partial class Lolibar : Window
         CreateLolibarCliEnvironment();
 
         SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
+    }
+
+    void MouseHandler_RightButtonDown(MouseHook.MSLLHOOKSTRUCT mouseStruct)
+    {
+        MouseRightDown = false;
+    }
+    void MouseHandler_RightButtonUp(MouseHook.MSLLHOOKSTRUCT mouseStruct)
+    {
+        MouseRightDown = true;
+    }
+
+    void MouseHandler_LeftButtonDown(MouseHook.MSLLHOOKSTRUCT mouseStruct)
+    {
+        MouseLeftDown = true;
+    }
+
+    void MouseHandler_LeftButtonUp(MouseHook.MSLLHOOKSTRUCT mouseStruct)
+    {
+        MouseLeftDown = false;
     }
 
     void SystemParameters_StaticPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -104,38 +166,49 @@ public partial class Lolibar : Window
         Inch_Screen = new((float)SystemParameters.PrimaryScreenWidth, (float)SystemParameters.PrimaryScreenHeight);
         ScreenSize  = new(LolibarExtern.GetDeviceCaps(LolibarExtern.GetDC(IntPtr.Zero), 118), LolibarExtern.GetDeviceCaps(LolibarExtern.GetDC(IntPtr.Zero), 117));
     }
-    static void PreUpdateSnapping()
-    {
-        if (!LolibarMod.BarSnapToTop)
-        {
-            StatusBarVisiblePosY = Inch_Screen.Y - LolibarMod.BarHeight - LolibarMod.BarMargin;
-            StatusBarHidePosY    = Inch_Screen.Y;
-        }
-        else
-        {
-            StatusBarVisiblePosY = LolibarMod.BarMargin;
-            StatusBarHidePosY    = -LolibarMod.BarHeight - LolibarMod.BarMargin;
-        }
-    }
 
     /// <summary>
     /// Updates root properties.
     /// </summary>
     void PostUpdateRootProperties()
     {
-        Width               = LolibarMod.BarWidth;
+        Width               = Inch_Screen.X;
         Height              = LolibarMod.BarHeight;
 
-        Left                = LolibarMod.BarLeft;
-        
         FontSize            = LolibarMod.BarFontSize;
 
-        RootGrid.Opacity    = LolibarMod.BarOpacity;
+        DropShadow.ShadowDepth    = 0;
+        DropShadow.Opacity        = 1;
+        DropShadow.BlurRadius     = LolibarMod.BarShadowBlurRadius;
+        DropShadow.Color          = LolibarMod.BarShadowColor.Color;
 
         Bar.Background      = LolibarMod.BarColor;
-        Bar.CornerRadius    = LolibarMod.BarCornerRadius;
         Bar.BorderThickness = LolibarMod.BarStrokeThickness;
-        Bar.BorderBrush     = LolibarMod.BarContainersColor;
+        Bar.BorderBrush     = LolibarMod.BarStrokeColor;
+        Bar.CornerRadius    = LolibarMod.BarCornerRadius;
+
+        Bar.Width = LolibarMod.BarWidth == -1 ? // -1 for fit to screen width
+            Inch_Screen.X - LolibarMod.BarMargin.Left - LolibarMod.BarMargin.Right :
+            LolibarMod.BarWidth - LolibarMod.BarMargin.Left - LolibarMod.BarMargin.Right;
+
+        Bar.Height = LolibarMod.BarHeight - LolibarMod.BarMargin.Top - LolibarMod.BarMargin.Bottom;
+
+        if (LolibarMod.BarScreenPosition == LolibarEnums.BarScreenPosition.Left)
+        {
+            Bar.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            Left = LolibarMod.BarMargin.Left; // margins fix
+        }
+
+        if (LolibarMod.BarScreenPosition == LolibarEnums.BarScreenPosition.Center)
+        {
+            Bar.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+        }
+
+        if (LolibarMod.BarScreenPosition == LolibarEnums.BarScreenPosition.Right)
+        {
+            Bar.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            Left = -LolibarMod.BarMargin.Left; // margins fix
+        }
 
         _BarLeftContainer.Margin = _BarCenterContainer.Margin = _BarRightContainer.Margin = LolibarMod.BarContainerMargin;
     }
@@ -152,15 +225,22 @@ public partial class Lolibar : Window
 
         // --- Mods Initialize --
         PublicMod.Initialize();
+
+        // Add shadow effect to main bar
+        Bar.Effect = DropShadow;
+
+        // On initialize hook this parameter is -100 to prevent null window from spawning in visible screen area.
+        // Remove the old -100 value.
+        Left = 0;
+
+        // Move lolibar to proper hidden position
+        Top = GetStatusBarHidePosY(this);
     }
     async void UpdateCycle()
     {
         while (true)
         {
             await Task.Delay(LolibarMod.BarUpdateDelay);
-
-            // --- PreUpdate ---
-            PreUpdateSnapping();
 
             // --- Update ---
             PublicMod.Update();
@@ -185,89 +265,115 @@ public partial class Lolibar : Window
             }
         }
     }
+    /// <summary>
+    /// Hides vanilla windows taskbar if BarHideVanillaTaskBar flag enabled
+    /// </summary>
+    async static void VanillaTaskBarLurker()
+    {
+        while (true)
+        {
+            if (LolibarMod.BarHideVanillaTaskBar)
+            {
+                // Primary monitor
+                var hwnd = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+                // Secondary monitor(s)
+                var hwndSecondary = LolibarExtern.FindWindow("Shell_SecondaryTrayWnd", "");
+                var startButtonHandle = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+
+                LolibarExtern.ShowWindow(hwnd, LolibarEnums.WindowStateEnum.Hide);
+                LolibarExtern.ShowWindow(hwndSecondary, LolibarEnums.WindowStateEnum.Hide);
+                LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
+            }
+
+            await Task.Delay(1);
+        }
+    }
     #endregion
 
     #region Events
     void MouseHandler_MouseMove(MouseHook.MSLLHOOKSTRUCT mouseStruct)
     {
-        if (!IsRendered) return;
-
-        bool ShowTrigger, HideTrigger, IsCursorInDesktopsMenuPosition;
-
-        bool IsMouseMinY = mouseStruct.pt.y <= 0;
-        bool IsMouseMaxY = mouseStruct.pt.y >= ScreenSize.Y;
-
-        bool IsMouseMinX = mouseStruct.pt.x <= 0;
-        bool IsMouseMaxX = mouseStruct.pt.x >= ScreenSize.X;
-
-        var BarVisibleY = LolibarMod.BarHeight + 2 * LolibarMod.BarMargin;
-
-        if (!LolibarMod.BarSnapToTop)
+        try
         {
-            ShowTrigger = (IsMouseMinX || IsMouseMaxX) && IsMouseMaxY;
-            HideTrigger = mouseStruct.pt.y < ScreenSize.Y - BarVisibleY;
-        }
-        else
-        {
-            ShowTrigger = (IsMouseMinX || IsMouseMaxX) && IsMouseMinY;
-            HideTrigger = mouseStruct.pt.y > BarVisibleY;
-        }
+            InWindowScreenMousePosition = PointToScreen(Mouse.GetPosition(this));
 
-        if (ShowTrigger)
-        {
-            IsHidden = false;
-        }
-        else if (HideTrigger)
-        {
-            IsHidden = true;
-        }
+            bool ShowTrigger, HideTrigger, IsCursorInDesktopsMenuPosition;
 
-        if (OldIsHidden != IsHidden)
-        {
-            if (!IsHidden)
+            bool IsMouseMinY = mouseStruct.pt.y <= 0;
+            bool IsMouseMaxY = mouseStruct.pt.y >= ScreenSize.Y;
+
+            bool IsMouseMinX = mouseStruct.pt.x <= 0;
+            bool IsMouseMaxX = mouseStruct.pt.x >= ScreenSize.X;
+
+            var BarVisibleY = 2 * Bar.ActualHeight + Bar.Margin.Top + Bar.Margin.Bottom;
+
+            if (!LolibarMod.BarSnapToTop)
             {
-                LolibarAnimator.BeginStatusBarShowAnimation(this);
-                ShouldManuallyUpdateDynamicLibs = true;
+                ShowTrigger = ((IsMouseMinX || IsMouseMaxX) && IsMouseMaxY) || HideInterruptions.Count > 0;
+                HideTrigger = mouseStruct.pt.y < ScreenSize.Y - BarVisibleY && HideInterruptions.Count == 0;
             }
             else
             {
-                LolibarAnimator.BeginStatusBarHideAnimation(this);
+                ShowTrigger = ((IsMouseMinX || IsMouseMaxX) && IsMouseMinY) || HideInterruptions.Count > 0;
+                HideTrigger = mouseStruct.pt.y > BarVisibleY && HideInterruptions.Count == 0;
             }
-            OldIsHidden = IsHidden;
-        }
 
-        // Logic for opening all apps and desktops view (WIN + TAB)
-        if (LolibarMod.BarCornersInvokesDesktopsMenu)
-        {
-            IsCursorInDesktopsMenuPosition =
-                    (LolibarMod.BarTargetCorner == LolibarEnums.BarTargetCorner.Left ? IsMouseMinX : IsMouseMaxX) &&
-                    (!LolibarMod.BarSnapToTop ? IsMouseMaxY : IsMouseMinY);
+            if (ShowTrigger)
+            {
+                IsHidden = false;
+            }
+            else if (HideTrigger)
+            {
+                IsHidden = true;
+            }
+
+            if (OldIsHidden != IsHidden)
+            {
+                if (!IsHidden)
+                {
+                    LolibarAnimator.Core.ShowLolibar(this);
+                    ShouldManuallyUpdateDynamicLibs = true;
+                }
+                else
+                {
+                    LolibarAnimator.Core.HideLolibar(this);
+                }
+                OldIsHidden = IsHidden;
+            }
 
             CursorPosition = new Vector2(mouseStruct.pt.x, mouseStruct.pt.y);
 
-            // Prevents CursorPosition get out of bounds values:
-            if (CursorPosition.X <= -1f) CursorPosition = new Vector2(-1f, CursorPosition.Y);
-            if (CursorPosition.Y <= -1f) CursorPosition = new Vector2(CursorPosition.X, -1f);
-
-            if (CursorPosition.X >= ScreenSize.X) CursorPosition = new Vector2(ScreenSize.X, CursorPosition.Y);
-            if (CursorPosition.Y >= ScreenSize.Y) CursorPosition = new Vector2(CursorPosition.X, ScreenSize.Y);
-            //
-
-            CursorVelocity = (OldCursorPosition - CursorPosition).Length();
-            
-            if (IsCursorInDesktopsMenuPosition && CursorVelocity >= 2f && (DateTime.Now - OldTime).Milliseconds > 500)
+            // Logic for opening all apps and desktops view (WIN + TAB)
+            if (LolibarMod.BarCornersInvokesDesktopsMenu)
             {
-                LolibarHelper.OpenWindowsDesktopsUI();
+                IsCursorInDesktopsMenuPosition =
+                        (LolibarMod.BarTargetCorner == LolibarEnums.BarTargetCorner.Left ? IsMouseMinX : IsMouseMaxX) &&
+                        (!LolibarMod.BarSnapToTop ? IsMouseMaxY : IsMouseMinY);
 
-                // Prevnts multiple calls of the statement above
-                // Also prevents possible WIN+TAB spam, which is breaks Windows OS (lol)
-                OldTime = DateTime.Now;
+                // Prevents CursorPosition get out of bounds values:
+                if (CursorPosition.X <= -1f) CursorPosition = new Vector2(-1f, CursorPosition.Y);
+                if (CursorPosition.Y <= -1f) CursorPosition = new Vector2(CursorPosition.X, -1f);
+
+                if (CursorPosition.X >= ScreenSize.X) CursorPosition = new Vector2(ScreenSize.X, CursorPosition.Y);
+                if (CursorPosition.Y >= ScreenSize.Y) CursorPosition = new Vector2(CursorPosition.X, ScreenSize.Y);
+                //
+
+                CursorVelocity = (OldCursorPosition - CursorPosition).Length();
+
+                if (IsCursorInDesktopsMenuPosition && CursorVelocity >= 2f && (DateTime.Now - OldTime).Milliseconds > 500)
+                {
+                    LolibarHelper.OpenWindowsDesktopsUI();
+
+                    // Prevnts multiple calls of the statement above
+                    // Also prevents possible WIN+TAB spam, which is breaks Windows OS (lol)
+                    OldTime = DateTime.Now;
+                }
             }
         }
-    }
-    void Lolibar_ContentRendered(object? sender, EventArgs e)
-    {
-        IsRendered = true;
+        catch
+        {
+            // Can't reach mouse handler server...
+        }
     }
     void Lolibar_Closed(object? sender, EventArgs e)
     {
@@ -282,10 +388,10 @@ public partial class Lolibar : Window
     #endregion
 
     #region Tray [ Notify Icon ]
-    readonly static ToolStripMenuItem AutorunTrayItem = new(AutorunTrayItemContent(), null, OnAutorunSelected);
-    readonly static ToolStripMenuItem RestartTrayItem = new("Restart", null, OnRestartSelected);
-    readonly static ToolStripMenuItem GitHubTrayItem = new("GitHub", null, OnGitHubSelected);
-    readonly static ToolStripMenuItem CloseTrayItem = new("Close Lolibar", null, OnExitSelected);
+    readonly static ToolStripMenuItem AutorunTrayItem   = new(AutorunTrayItemContent(), null, OnAutorunSelected);
+    readonly static ToolStripMenuItem RestartTrayItem   = new("Restart", null, OnRestartSelected);
+    readonly static ToolStripMenuItem GitHubTrayItem    = new("GitHub", null, OnGitHubSelected);
+    readonly static ToolStripMenuItem CloseTrayItem     = new("Close Lolibar", null, OnExitSelected);
 
     readonly static NotifyIcon TrayIcon = new()
     {
@@ -385,7 +491,7 @@ public partial class Lolibar : Window
     /// Creates .lolibar folder in the $User directory + Sets environment var. (Path) according to this user.
     /// Grants access to lolibar via cli, using `lolibar`.
     /// </summary>
-    void CreateLolibarCliEnvironment()
+    static void CreateLolibarCliEnvironment()
     {
         var execPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var localLolibarPath = $"C:\\Users\\{LolibarStats.UserInfo}\\.lolibar";
@@ -394,24 +500,32 @@ public partial class Lolibar : Window
         var lnkFilePath = $"C:\\Users\\{LolibarStats.UserInfo}\\.lolibar\\lolibar.lnk";
         var enviromentValue = System.Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
 
+        // Create `.lolibar` folder in user directory if not exist
         if (!Directory.Exists(localLolibarPath))
         {
             Directory.CreateDirectory(localLolibarPath);
         }
-        if (!System.IO.File.Exists(cmdFilePath))
-        {
-            System.IO.File.Copy(cmdFileRefPath, cmdFilePath);
-        }
-        if (!System.IO.File.Exists(lnkFilePath))
-        {
-            WshShell shell = new();
-            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(lnkFilePath);
 
-            shortcut.TargetPath = $"{execPath}\\lolibar.exe";
-            shortcut.IconLocation = $"{execPath}\\lolibar.exe";
+        // Remove old .cmd file 
+        try { System.IO.File.Delete(cmdFilePath); }
+        catch { /* File is not exist */ }
+        // Copy a new one
+        System.IO.File.Copy(cmdFileRefPath, cmdFilePath);
 
-            shortcut.Save();
-        }
+        // Remove old .lnk file 
+        try { System.IO.File.Delete(lnkFilePath); }
+        catch { /* File is not exist */ }
+        
+        // Create new .lnk file 
+        WshShell shell = new();
+        IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(lnkFilePath);
+
+        shortcut.TargetPath = $"{execPath}\\lolibar.exe";
+        shortcut.IconLocation = $"{execPath}\\lolibar.exe";
+
+        shortcut.Save();
+
+        // Add `.lolibar` folder to PATH
         if (enviromentValue != null && !enviromentValue.Contains(localLolibarPath))
         {
             System.Environment.SetEnvironmentVariable("Path", $"{enviromentValue}{localLolibarPath};", EnvironmentVariableTarget.User);

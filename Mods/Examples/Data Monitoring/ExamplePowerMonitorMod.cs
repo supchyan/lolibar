@@ -17,7 +17,6 @@ class ExamplePowerMonitorMod : LolibarMod
     {
         PowerMonitorContainer   = new()
         {
-            Name                = "ExamplePowerMonitorContainer",
             Parent              = Lolibar.BarRightContainer,
             MouseLeftButtonUp   = OpenPowerSettings
         };

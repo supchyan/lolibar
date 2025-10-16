@@ -16,7 +16,6 @@ class ExampleCurrentProcessMod : LolibarMod
     {
         CurrentProcessContainer     = new()
         {
-            Name                    = "ExampleCurrentProcessContainer",
             Parent                  = Lolibar.BarRightContainer,
             Icon                    = LolibarIcon.ParseSVG("./Defaults/sine.svg"),
             MouseLeftButtonUp       = OpenTaskManager,

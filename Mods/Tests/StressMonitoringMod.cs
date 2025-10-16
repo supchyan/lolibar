@@ -1,41 +1,33 @@
 ﻿using LolibarApp.Source;
 using LolibarApp.Source.Tools;
 
-// Stress Test mod, which shows all of diagnostics data, monitored by `LolibarStats` class.
-
-// This mod is outside of the Mods namespace, so it won't be loaded
-// You can uncomment namespace to enable (load) it
+// TESTING FEATURES, DON'T TRY TO IMPLEMENT IT IN YOUR MOD
 //namespace LolibarApp.Mods;
 
 class StressMonitoringMod : LolibarMod
 {
     LolibarContainer CPU_Container = new() 
     {
-        Name = "CPU_Container",
         Parent = Lolibar.BarCenterContainer,
         SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
     };
     LolibarContainer RAM_Container = new()
     {
-        Name = "RAM_Container",
         Parent = Lolibar.BarCenterContainer,
         SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
     };
     LolibarContainer DISK_Container = new()
     {
-        Name = "DISK_Container",
         Parent = Lolibar.BarCenterContainer,
         SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
     };
     LolibarContainer NETWORK_Container = new()
     {
-        Name = "NETWORK_Container",
         Parent = Lolibar.BarCenterContainer,
         SeparatorPosition = LolibarEnums.SeparatorPosition.Right,
     };
     LolibarContainer CPROC_Container = new()
     {
-        Name = "CPROC_Container",
         Parent = Lolibar.BarCenterContainer,
     };
 
@@ -51,7 +43,7 @@ class StressMonitoringMod : LolibarMod
     }
     public override void Update()
     {
-        (BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
+        //(BarWidth, BarLeft) = LolibarHelper.OffsetLolibarToCenter(BarWidth, BarMargin);
 
         CPU_Container.Text = LolibarStats.CpuTotalInPercent;
         RAM_Container.Text = LolibarStats.RamUsedInPercent;

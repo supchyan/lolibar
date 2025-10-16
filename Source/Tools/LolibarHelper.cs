@@ -1,19 +1,20 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using IWshRuntimeLibrary;
 
 namespace LolibarApp.Source.Tools;
 
-public static partial class LolibarHelper
+public static class LolibarHelper
 {
-    static bool LeftButtonPressed { get; set; }
-    static bool RightButtonPressed { get; set; }
+    static bool LeftButtonPressed   { get; set; }
+    static bool RightButtonPressed  { get; set; }
     static bool MiddleButtonPressed { get; set; }
+    /// <summary>
+    /// Returns current System Primary Monitor "UI Scale". (i.e. that one in Display Settings: 100%-500%)
+    /// </summary>
+    /// <returns></returns>
     public static int GetWindowsScaling()
     {
         return (int)(100 * Screen.PrimaryScreen?.Bounds.Width ?? 0 / SystemParameters.PrimaryScreenWidth);
@@ -158,7 +159,7 @@ public static partial class LolibarHelper
         LolibarExtern.keybd_event((byte)vKey, 0, 0x0002, 0);
     }
     /// <summary>
-    /// Simulates WIN + TAB HotKey.
+    /// Simulates WIN + TAB keybind.
     /// </summary>
     public static void OpenWindowsDesktopsUI()
     {
@@ -168,30 +169,16 @@ public static partial class LolibarHelper
         LolibarHelper.KeyUp(Keys.LWin);
     }
     /// <summary>
-    /// Adjusts Lolibar to the center at the top or bottom of the screen, depends on original location.
+    /// Hides vanilla Windows Taskbar (Dockbar / Statusbar / i.e.) [DEPRECATED]
     /// </summary>
-    /// <param name="BarWidth">Modded BarWidth property.</param>
-    /// <param name="BarMargin">Modded BarMargin property.</param>
-    /// <returns></returns>
-    public static (double BarWidth, double BarLeft) OffsetLolibarToCenter(double BarWidth, double BarMargin)
-    {
-        return
-        (
-            Lolibar.Inch_Screen.X > 2 * BarMargin ? Lolibar.Inch_Screen.X - 2 * BarMargin : BarWidth,
-            (Lolibar.Inch_Screen.X - BarWidth) / 2 > 0 ? (Lolibar.Inch_Screen.X - BarWidth) / 2 : 0
-        );
-    }
-    /// <summary>
-    /// Hides vanilla Windows Taskbar (Dockbar / Statusbar / i.e.)
-    /// </summary>
-    public static void HideWindowsTaskbar()
-    {
-        var hwnd                = LolibarExtern.FindWindow("Shell_TrayWnd", "");
-        var startButtonHandle   = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+    //public static void HideWindowsTaskbar()
+    //{
+    //    var hwnd                = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+    //    var startButtonHandle   = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
 
-        LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.Hide);
-        LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
-    }
+    //    LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.Hide);
+    //    LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
+    //}
     /// <summary>
     /// Shows vanilla Windows Taskbar (Dockbar / Statusbar / i.e.)
     /// </summary>
@@ -202,5 +189,27 @@ public static partial class LolibarHelper
 
         LolibarExtern.ShowWindow(hwnd,              LolibarEnums.WindowStateEnum.ShowNormal);
         LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.ShowNormal);
+    }
+    /// <summary>
+    /// Returns randomly generated string of specified length.
+    /// </summary>
+    /// <param name="length">Result string length</param>
+    /// <returns></returns>
+    public static string GetRandomString(int length)
+    {
+        string result = "";
+        for (int i = 0; i < length; i++)
+        {
+            result += Convert.ToChar(new Random().Next(65, 91));
+        }
+        return result;
+    }
+    public static void SetWindowExTransparent(IntPtr hWnd)
+    {
+        const int WS_EX_TRANSPARENT = 0x00000020;
+        const int GWL_EXSTYLE = (-20);
+
+        var extendedStyle = LolibarExtern.GetWindowLong(hWnd, GWL_EXSTYLE);
+        _ = LolibarExtern.SetWindowLong(hWnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT);
     }
 }

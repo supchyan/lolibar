@@ -7,40 +7,40 @@
 
 class ExampleHideWindowsTaskbarMod : LolibarMod
 {
-    public override void PreInitialize() { }
-    public override void Initialize() { }
-    public override void Update()
+    public override void PreInitialize() 
     {
+        // IMPORTANT!
+        // This trick works bad on Windows 11 24H2 patch.
+        // So if you face visual glitches with trick below,
+        // I can recommend you to find third-party software,
+        // which modifies explorer.exe and "softlocks" vanilla taskbar.
+        // Lolibar doesn't do this due OS stability issues.
+
         // So... What is taskbar in a nutshell?
         // Taskbar is a `window`, which is a part of some default Windows software.
         // You can manually hide it completely, getting it's `WindowHandle`.
         // What's `WindowHandle`? Microsoft wiki will explain it better.
         // (See Windows HWND Reference)
 
-        // Lolibar has a taskbar hide implementation, that you can enable in your mod.
+        // But you can do just this:
+        BarHideVanillaTaskBar = true;
 
-        // Just call this in `Update()`:
-        LolibarHelper.HideWindowsTaskbar();
-
-        // Update() call is important, because taskbar window likes to show itself automatically,
-        // so we want to close it right after that will :d
-
-        // DON'T WORRY, YOUR OS WILL BE FINE!
-
-        // Taskbar will return in a normal state
-        // after small amount of time when lolibar has closed.
+        // Vanilla taskbar will return in a normal state
+        // on first update right after lolibar close.
 
         // Potential FAQ:
         //
         // Q:
-        // I've hidden taskbar with a method above. But I see an odd transparent bar,
+        // I've hidden taskbar with a flag above. But I see an odd transparent bar,
         // witch prevent my applications to draw in fullscreen. What's the problem?
         //
         // A:
         // Before hiding a default windows taskbar, make sure,
         // you enabled `Automatically hide Taskbar` in Windows Taskbar settings.
-        // That option won't hide taskbar completely,
-        // but this option will remove mentioned "transparent" bar,
+        // `Automatically hide Taskbar` option won't hide taskbar completely,
+        // but will remove mentioned "transparent" bar,
         // when lolibar hides it completely. That's, how windows works ha...
     }
+    public override void Initialize() { }
+    public override void Update() { }
 }

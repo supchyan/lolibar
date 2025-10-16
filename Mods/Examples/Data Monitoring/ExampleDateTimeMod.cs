@@ -16,7 +16,6 @@ class ExampleDateTimeMod : LolibarMod
     {
         DateTimeContainer       = new()
         {
-            Name                = "ExampleDateTimeContainer",
             Parent              = Lolibar.BarLeftContainer,
             MouseLeftButtonUp   = OpenTimeSettingsEvent
         };

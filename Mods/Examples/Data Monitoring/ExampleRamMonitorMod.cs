@@ -16,7 +16,6 @@ class ExampleRamMonitorMod : LolibarMod
     {
         RamMonitorContainer     = new()
         {
-            Name                = "ExampleRamMonitorContainer",
             Parent              = Lolibar.BarLeftContainer,
         };
         RamMonitorContainer.Create();

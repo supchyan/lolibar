@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Windows.Media.Control;
 
 namespace LolibarApp.Source.Tools;
 
@@ -11,11 +10,11 @@ public class LolibarEvents
         // --- changes cursor type ---
         sender.GetType().GetProperty("Cursor")?.SetValue(sender, System.Windows.Input.Cursors.Hand);
 
-        LolibarAnimator.BeginDecOpacityAnimation((UIElement)sender);
+        LolibarAnimator.Common.DecreaseTransparency((UIElement)sender);
     }
     public static void UI_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
     {
-        LolibarAnimator.BeginIncOpacityAnimation((UIElement)sender);
+        LolibarAnimator.Common.IncreaseTransparency((UIElement)sender);
     }
 
     public static void SwapWorkspacesByWheelEvent(object sender, MouseWheelEventArgs e)

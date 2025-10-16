@@ -32,15 +32,15 @@ public class LolibarVirtualDesktop
         {
             try
             {
-                int testInt = VirtualDesktop11.Desktop.Count;
-                WindowsVersion = WinVer.Win11;
+                int testInt = VirtualDesktop11_24H2.Desktop.Count;
+                WindowsVersion = WinVer.Win11_24H2;
             }
             catch
             {
                 try
                 {
-                    int testInt = VirtualDesktop11_24H2.Desktop.Count;
-                    WindowsVersion = WinVer.Win11_24H2;
+                    int testInt = VirtualDesktop11.Desktop.Count;
+                    WindowsVersion = WinVer.Win11;
                 }
                 catch
                 {
@@ -125,7 +125,6 @@ public class LolibarVirtualDesktop
 
         new LolibarContainer()
         {
-            Name = $"WorkspaceErrorTab",
             Parent = parent,
             Text = "unsupported",
             HasBackground = true
@@ -171,10 +170,11 @@ public class LolibarVirtualDesktop
 
             LolibarContainer tab    = new()
             {
-                Name                = $"WorkspaceTab{index + 1}",
                 Parent              = parent,
                 Text                = showDesktopNames ? desktopName : $"{index + 1}",
                 HasBackground       = hasBackground,
+                LeftMarginOffset    = 5.0,
+                RightMarginOffset   = 5.0,
                 MouseLeftButtonUp   = (e) => { MoveToDesktop(index); return 0; },
                 MouseMiddleButtonUp = (e) => { RemoveDesktop(index); return 0; },
             };

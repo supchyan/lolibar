@@ -34,14 +34,12 @@ class ExampleAudioPlayerMod : LolibarMod
     {
         BaseContainer           = new()
         {
-            Name                = "ExampleAudioBaseContainer",
             Parent              = Lolibar.BarCenterContainer,
         };
         BaseContainer.Create();
 
         PreviousButtonContainer = new()
         {
-            Name                = "ExampleAudioPreviousButton",
             Parent              = BaseContainer.GetBody(), // Use BaseContainer as a parent here
             Icon                = LolibarIcon.ParseSVG("./Examples/ExampleAudioPlayerMod/previous.svg"),
             MouseLeftButtonUp   = Previous
@@ -50,7 +48,6 @@ class ExampleAudioPlayerMod : LolibarMod
 
         PlayButtonContainer = new()
         {
-            Name = "ExampleAudioPlayButton",
             Parent = BaseContainer.GetBody(),
             MouseLeftButtonUp = PlayOrPause
         };
@@ -58,7 +55,6 @@ class ExampleAudioPlayerMod : LolibarMod
 
         NextButtonContainer = new()
         {
-            Name = "ExampleAudioNextButton",
             Parent = BaseContainer.GetBody(),
             Icon = LolibarIcon.ParseSVG("./Examples/ExampleAudioPlayerMod/next.svg"),
             MouseLeftButtonUp = Next
@@ -67,7 +63,6 @@ class ExampleAudioPlayerMod : LolibarMod
 
         AudioInfoContainer = new()
         {
-            Name = "ExampleAudioInfoContainer",
             // I don't want to mix controls and the audio info,
             // so let's set a default center container as a parent for this one:
             Parent = Lolibar.BarCenterContainer,

@@ -24,12 +24,6 @@ class ExampleFirstContainerMod : LolibarMod
     {
         // Now, let's setup our container with explanations:
 
-
-        // Container's name. You have to set it up,
-        // unless you want to overlap its resources with other containers.
-        MyFirstContainer.Name = "MyCoolContainer";
-
-
         // Text content:
         MyFirstContainer.Text = "Hello world";
 

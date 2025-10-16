@@ -2,6 +2,12 @@
 
 public class LolibarEnums
 {
+    public enum BarScreenPosition
+    {
+        Left,
+        Center,
+        Right
+    }
     public enum SeparatorPosition { 
         None,
         Left, 

@@ -16,7 +16,6 @@ class ExampleDiskMonitorMod : LolibarMod
     {
         DiskMonitorContainer    = new()
         {
-            Name                = "ExampleDiskMonitorContainer",
             Parent              = Lolibar.BarLeftContainer,
         };
         DiskMonitorContainer.Create();

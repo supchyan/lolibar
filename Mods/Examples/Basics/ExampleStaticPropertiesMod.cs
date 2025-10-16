@@ -19,7 +19,7 @@ class ExampleStaticPropertiesMod : LolibarMod
         BarHeight           = 36;
         BarColor            = LolibarColor.FromHEX("#2a3247");
         BarContainersColor  = LolibarColor.FromHEX("#6f85bd");
-        BarMargin           = 10;
+        BarMargin           = new Thickness(10);
         BarCornerRadius     = new CornerRadius(16);
     }
     public override void Initialize() { } // It have to be used for containers initialization only!

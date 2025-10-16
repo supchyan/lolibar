@@ -71,7 +71,25 @@ public class LolibarAudio
     public static async void PlayOrPause()
     {
         if (Session != null)
-            await Session.TryTogglePlayPauseAsync();
+        {
+            var result = false;
+
+            if (Session.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing)
+            {
+                result = await Session.TryPauseAsync();
+            }
+            else
+            {
+                result = await Session.TryPlayAsync();
+            }
+
+            // try different hook, if previous didn't invoke status swap
+            if (!result)
+            {
+                await Session.TryTogglePlayPauseAsync();
+            }
+        }
+           
     }
     public static async void Play()
     {

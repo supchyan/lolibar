@@ -16,7 +16,7 @@ public class LolibarContainer
     /// <summary>
     /// Name of the container. Beware of dublicate names.
     /// </summary>
-    public string?                  Name                        { get; set; }
+    string?                         Name                        { get; set; }
     /// <summary>
     /// Parent, where this container should be drawn inside.
     /// </summary>
@@ -37,13 +37,20 @@ public class LolibarContainer
     /// Set it to `true`, if you want to make this container have a visible background. (False as default)
     /// </summary>
     public bool                     HasBackground               { get; set; }
+    /// <summary>
+    /// Adjusts left margin value. (Adds to current left margin this value) (0.0 by default)
+    /// </summary>
+    public double                   LeftMarginOffset            { get; set; }       = 0.0;
+    /// <summary>
+    /// Adjusts right margin value. (Adds to current right margin this value) (0.0 by default)
+    /// </summary>
+    public double                   RightMarginOffset           { get; set; }       = 0.0;
 
     // Left separator belongs to container
     System.Windows.Shapes.Rectangle SeparatorLeft               { get; set; }       = new();
     // Right separator belongs to container
     System.Windows.Shapes.Rectangle SeparatorRight              { get; set; }       = new();
-
-    // Main container, contains whole UI layout
+    // Root node of container
     Border                          BorderContainer             { get; set; }       = new();
     // UI body, which contains all components of the current container.
     StackPanel                      StackPanelContainer         { get; set; }       = new();
@@ -54,9 +61,9 @@ public class LolibarContainer
     // Ico/Jpg/Png... icon container. Won't be drawn, if typeof(Icon) isn't `Image`
     System.Windows.Controls.Image   ImageContainer              { get; set; }       = new();
     /// <summary>
-    /// Becomes true, after container has been created and placed into the parent.
+    /// Becomes true, after container has been initialized.
     /// </summary>
-    public bool                     IsCreated                   { get; private set; }
+    public bool                     IsInitialized               { get; private set; }
     /// <summary>
     /// Position, where container's separator should be drawn. Use `LolibarEnums.SeparatorPosition` Enum to help yourself.
     /// </summary>
@@ -87,21 +94,142 @@ public class LolibarContainer
     {
         return StackPanelContainer;
     }
+    /// <summary>
+    /// LolibarContainer root node by itself.
+    /// </summary>
+    public Border GetRoot()
+    {
+        return BorderContainer;
+    }
+    /// <summary>
+    /// Initializes container content. Don't use it if you want to add your container in lolibar layout. Use `Create()` method instead.
+    /// </summary>
+    public void Initialize()
+    {
+        // Skip initialtization if completed before
+        if (IsInitialized) return;
 
+        Name = LolibarHelper.GetRandomString(32);
+
+        App.Current.Resources[$"{Name}BorderBackground"] = BorderBackground();
+        App.Current.Resources[$"{Name}Color"] = Color;
+        App.Current.Resources[$"{Name}Text"] = Text;
+
+        App.Current.Resources[$"{Name}ImageIcon"] = LolibarIcon.ParseICO(string.Empty);
+        App.Current.Resources[$"{Name}SvgIcon"] = Geometry.Empty;
+
+        BorderContainer = new()
+        {
+            Name    = Name,
+            Margin  = new Thickness(
+                                    LolibarMod.BarContainerMargin.Left + LeftMarginOffset,
+                                    LolibarMod.BarContainerMargin.Top,
+                                    LolibarMod.BarContainerMargin.Right + RightMarginOffset,
+                                    LolibarMod.BarContainerMargin.Bottom
+                                ),
+            CornerRadius        = LolibarMod.BarContainersCornerRadius,
+            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center
+        };
+
+        BorderContainer.SetResourceReference(Border.BackgroundProperty, $"{Name}BorderBackground");
+
+        StackPanelContainer = new()
+        {
+            Name                = $"{Name}StackPanel",
+            Orientation         = System.Windows.Controls.Orientation.Horizontal,
+            Margin              = LolibarMod.BarContainerInnerMargin,
+            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center
+        };
+
+        BorderContainer.Child = StackPanelContainer;
+
+        // Svg icon container
+        PathContainer           = new()
+        {
+            Width               = 14,
+            Height              = 14,
+            MinWidth            = 0,
+            MinHeight           = 0,
+            Stretch             = Stretch.Uniform,
+            Margin              = LolibarMod.BarContainersContentMargin,
+            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center
+        };
+        PathContainer.SetResourceReference(Path.DataProperty, $"{Name}SvgIcon");
+        PathContainer.SetResourceReference(Path.FillProperty, $"{Name}Color");
+
+        StackPanelContainer.Children.Add(PathContainer);
+
+        // ico / png / etc ... icon container
+        ImageContainer          = new()
+        {
+            Stretch             = Stretch.Uniform,
+            Width               = 14,
+            Height              = 14,
+            MinWidth            = 0,
+            MinHeight           = 0,
+            Margin              = LolibarMod.BarContainersContentMargin,
+            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center
+        };
+        ImageContainer.SetResourceReference(System.Windows.Controls.Image.SourceProperty, $"{Name}ImageIcon");
+
+        StackPanelContainer.Children.Add(ImageContainer);
+
+        UpdateIconContainersInstance();
+
+        TextBlockContainer = new()
+        {
+            MinWidth            = 0,
+            MinHeight           = 0,
+            TextWrapping        = TextWrapping.Wrap,
+            Margin              = LolibarMod.BarContainersContentMargin,
+            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center,
+            // FontWeight       = FontWeight.FromOpenTypeWeight(600) // it fits bad with mononoki font, but would be cool to add as 'BoldText = true' property ;v;
+        };
+        TextBlockContainer.SetResourceReference(TextBlock.TextProperty, $"{Name}Text");
+        TextBlockContainer.SetResourceReference(TextBlock.ForegroundProperty, $"{Name}Color");
+
+        StackPanelContainer.Children.Add(TextBlockContainer);
+
+        if (Text == null)
+        {
+            TextBlockContainer.Visibility = Visibility.Collapsed;
+        }
+
+        if
+        (
+            MouseLeftButtonUp       != null ||
+            MouseRightButtonUp      != null ||
+            MouseMiddleButtonUp     != null ||
+            MouseWheelDelta         != null
+        )
+        {
+            BorderContainer.SetContainerEvents
+            (
+                MouseLeftButtonUp,
+                MouseRightButtonUp,
+                MouseMiddleButtonUp,
+                MouseWheelDelta
+            );
+        }
+
+        // Say this container is initialized
+        IsInitialized = true;
+    }
+    /// <summary>
+    /// Initializes and adds container to the Parent container.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"></exception>
     public void Create()
     {
-        if (Name   == null || Name == string.Empty) throw new ArgumentNullException("name");
         if (Parent == null) return;
 
         bool drawLeftSeparator  = SeparatorPosition == LolibarEnums.SeparatorPosition.Left  || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;
         bool drawRightSeparator = SeparatorPosition == LolibarEnums.SeparatorPosition.Right || SeparatorPosition == LolibarEnums.SeparatorPosition.Both;
-        
-        App.Current.Resources[$"{Name}BorderBackground"]    = BorderBackground();
-        App.Current.Resources[$"{Name}Color"]               = Color;
-        App.Current.Resources[$"{Name}Text"]                = Text;
-
-        App.Current.Resources[$"{Name}ImageIcon"]           = LolibarIcon.ParseICO(string.Empty);
-        App.Current.Resources[$"{Name}SvgIcon"]             = Geometry.Empty;
 
         SeparatorLeft   = new()
         {
@@ -123,105 +251,21 @@ public class LolibarContainer
         };
         SeparatorRight.SetResourceReference(System.Windows.Shapes.Rectangle.FillProperty, $"{Name}Color");
 
-        BorderContainer         = new()
-        {
-            Name                = Name,
-            Margin              = LolibarMod.BarContainerMargin,
-            CornerRadius        = LolibarMod.BarContainersCornerRadius,
-            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
-        };
-        BorderContainer.SetResourceReference(Border.BackgroundProperty, $"{Name}BorderBackground");
-
-        StackPanelContainer     = new()
-        {
-            Name                = $"{Name}StackPanel",
-            Orientation         = System.Windows.Controls.Orientation.Horizontal,
-            Margin              = LolibarMod.BarContainerInnerMargin,
-            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
-        };
-
-        BorderContainer.Child = StackPanelContainer;
-
-        // Svg icon container
-        PathContainer           = new()
-        {
-            Width               = 14,
-            Height              = 14,
-            Stretch             = Stretch.Uniform,
-            Margin              = LolibarMod.BarContainersContentMargin,
-            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
-        };
-        PathContainer.SetResourceReference(Path.DataProperty, $"{Name}SvgIcon");
-        PathContainer.SetResourceReference(Path.FillProperty, $"{Name}Color");
-
-        StackPanelContainer.Children.Add(PathContainer);
-
-        // ico / png / etc ... icon container
-        ImageContainer          = new()
-        {
-            Stretch             = Stretch.Uniform,
-            Width               = 14,
-            Height              = 14,
-            Margin              = LolibarMod.BarContainersContentMargin,
-            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
-        };
-        ImageContainer.SetResourceReference(System.Windows.Controls.Image.SourceProperty, $"{Name}ImageIcon");
-
-        StackPanelContainer.Children.Add(ImageContainer);
-
-        UpdateIconContainersInstance();
-
-        TextBlockContainer      = new()
-        {
-            Margin              = LolibarMod.BarContainersContentMargin,
-            HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
-        };
-        TextBlockContainer.SetResourceReference(TextBlock.TextProperty,         $"{Name}Text" );
-        TextBlockContainer.SetResourceReference(TextBlock.ForegroundProperty,   $"{Name}Color");
-
-        StackPanelContainer.Children.Add(TextBlockContainer);
-
-        if (Text == null)
-        {
-            TextBlockContainer.Visibility = Visibility.Collapsed;
-        }
-
-        if 
-        (
-            MouseLeftButtonUp       != null ||
-            MouseRightButtonUp      != null ||
-            MouseMiddleButtonUp     != null ||
-            MouseWheelDelta         != null
-        )
-        {
-            BorderContainer.SetContainerEvents
-            (
-                MouseLeftButtonUp,
-                MouseRightButtonUp,
-                MouseMiddleButtonUp,
-                MouseWheelDelta
-            );
-        }
-
-        Thickness separatorMargin = LolibarMod.BarContainerMargin;
+        // Initialize rest of container
+        Initialize();
 
         // Adds an optional left separator
         if (drawLeftSeparator)
         {
-            StackPanel TmpStackPanel = new()
+            StackPanel _ = new()
             {
-                Margin              = separatorMargin,
+                Margin              = LolibarMod.BarContainerMargin,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
 
-            TmpStackPanel.Children.Add(SeparatorLeft);
-            Parent.Children.Add(TmpStackPanel);
+            _.Children.Add(SeparatorLeft);
+            Parent.Children.Add(_);
         }
 
         // Adds a new child
@@ -230,23 +274,21 @@ public class LolibarContainer
         // Adds an optional right separator
         if (drawRightSeparator)
         {
-            StackPanel TmpStackPanel = new()
+            StackPanel _ = new()
             {
-                Margin              = separatorMargin,
+                Margin              = LolibarMod.BarContainerMargin,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment   = System.Windows.VerticalAlignment.Center
             };
 
-            TmpStackPanel.Children.Add(SeparatorRight);
-            Parent.Children.Add(TmpStackPanel);
+            _.Children.Add(SeparatorRight);
+            Parent.Children.Add(_);
         }
-
-        IsCreated = true;
     }
 
     public void Update()
     {
-        if (!IsCreated) return;
+        if (!IsInitialized) return;
 
         if (Text == null)
         {
