@@ -11,8 +11,8 @@ class ExampleStaticPropertiesMod : LolibarMod
     // So, what about modifying lolibar's theme?
     // It's simple, but you have to understand 2 important things:
     //
-    // 1. DON'T: modify preperties in `Initialize()` hook!
-    // 2.    DO: modify preperties in `Update()` or `PreInitialize()` hook:
+    // 1. DON'T: modify properties in `Initialize()` hook!
+    // 2.    DO: modify properties in `Update()` or `PreInitialize()` hook:
     public override void PreInitialize()
     {
         BarUpdateDelay      = 250;
