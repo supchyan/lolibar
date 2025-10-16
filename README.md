@@ -39,7 +39,7 @@ C:\Users\supchyan>
 ```
 
 ## 🌸Pre-requirements
-All modding operations is highly recommended to do in `Visual Studio 2022+`. Moreover, to build this project, you have to install `.NET 8.0 SDK`. Alternatively, you can use other `.NET SDK` versions as well, but `stable` branch targets to `.NET 8.0`, so any issues with different SDK versions you have to solve locally.
+All modding operations is highly recommended to do in `Visual Studio 2022+`. Moreover, to build this project, you have to install `.NET 9.0 SDK`. Alternatively, you can use other `.NET SDK` versions as well, but `stable` branch targets to `.NET 9.0`, so any issues with different SDK versions you have to solve locally.
 
 ## 🌸Modding Basics
 Have you ever tried to write mods for video games? So, this toolkit provide the same vibe:
@@ -122,7 +122,6 @@ public override void Initialize()
 {
     LolibarContainer HelloContainer = new()
     {
-        Name          = "HelloContainer",
         Parent        = Lolibar.BarCenterContainer,
         Text          = "Hello!",
         HasBackground = true
@@ -137,7 +136,6 @@ public override void Initialize()
 </br>
 
 Here we can see a new object instance, that has a couple of local properties inside. Let me explain about those, which certain example has:
-* `Name` - Initial container name. Uses for automatic resources initialization;
 * `Parent` - Any other container, where **your container** should be placed;
 * `Text` - Text content of the container;
 * `HasBackground` - Trigger to draw border around the container. It's semi-transparent and fits well with the whole statusbar theme.
@@ -170,7 +168,6 @@ class MyFirstMod : LolibarMod
     {
         HelloContainer     = new()
         {
-            Name           = "HelloContainer",
             Parent         = Lolibar.BarCenterContainer,
             Text           = "Hello!",
             HasBackground  = true
@@ -208,7 +205,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 ## 🌸In the end...
 <div align=center><img src=https://github.com/user-attachments/assets/45892f0a-de8f-4b44-86d4-a00e00b6421f /></div>
 
-##### <div align=center>🐳My lolibar [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/SupchyanMod.cs) showcase. Oh, also a [wallpaper](https://danbooru.donmai.us/posts/8407306) source!</div>
+##### <div align=center>🐳My lolibar [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs) showcase. Oh, also a [wallpaper](https://danbooru.donmai.us/posts/8407306) source!</div>
 
 ---
 ##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
