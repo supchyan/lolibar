@@ -6,7 +6,7 @@ using LolibarApp.Source;
 
 //namespace LolibarApp.Mods;
 
-class ExampleLaunchedApplicationsMod : LolibarMod
+class ExamplePinnedAppsMod : LolibarMod
 {
     // This mod example illustrates `LolibarProcess` capabilities.
     // It close to what windows taskbar does with pinned apps.
