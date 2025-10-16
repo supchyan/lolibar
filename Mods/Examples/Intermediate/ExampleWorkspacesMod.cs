@@ -11,10 +11,10 @@ class ExampleWorkspacesMod : LolibarMod
 {
     // This mod represents the power of `LolibarVirtualDesktop` library.
     // But to be straight, very part of mod is self sufficient,
-    // so all you need is create a parent container, where you want to put your tabs,
-    // and just enable tabs update hook in `Initialize()` hook. (A hook inside a hook, I can't tell.. xd)
+    // so all you need is create a parent container, where you want to put your tabs (desktops),
+    // and just invoke self-update method in your mod's `Initialize()` hook.
 
-    // I want to store all my desktops in the unique container, so let's create one:
+    // We want to store all desktops in the unique container, so let's create one:
     LolibarContainer? WorkspacesContainer;
 
     public override void PreInitialize() { }
@@ -29,24 +29,24 @@ class ExampleWorkspacesMod : LolibarMod
         };
         WorkspacesContainer.Create();
 
-        // We use `DrawWorkspacesInParent()` to fill WorkspacesContainer with workspaces (virtual desktops / tabs),
+        // We use `DrawWorkspacesInParent()` to fill `WorkspacesContainer` with workspaces (i.e. virtual desktops / tabs),
         // otherwise, it will be empty.
         LolibarVirtualDesktop.DrawWorkspacesInParent
         (
-            parent: WorkspacesContainer.GetBody(),
-            showDesktopNames: true // Check it to `true`, if you want to draw desktops' names (Desktops with no name will be named as their position index).
+            parent: WorkspacesContainer.GetBody(), // Get body of our container to use as place where spawn tabs
+            showDesktopNames: true // Check it to `true`, if you want to draw desktops' names. (Desktops with no name will be named as their position index, i.e. 1, 2, 3...)
         );
 
         // `DrawWorkspacesInParent` will update itself automatically,
-        // so no need to put it into `Update()` hook!
+        // so no need to put it into `Update()` hook
 
         // Important thing, `LolibarVirtualDesktop` controls last provided container,
         // so if you want to dublicate your virtual desktops controls in different containers for some reason,
-        // it won't work like that.
+        // it won't work like that. Don't do it.
     }
     public override void Update() { }
 
-    // This event listens mouse wheel. Wheel delta up (delta > 0) swap desktops (workspaces) to left, otherwise (delta < 0) to right:
+    // This event listens mouse wheel. Wheel delta up (delta > 0) swap workspaces to previous one, otherwise (delta < 0) to the next one:
     int SwapWorkspacesByMouseWheel(MouseWheelEventArgs e)
     {
         if (e.Delta > 0)
