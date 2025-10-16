@@ -1,8 +1,8 @@
 <div align=center><img src=https://github.com/user-attachments/assets/8acf0034-5860-440f-a814-02f5cabfa94e width=200 height=auto /></div>
 <br>
 <div align=center>
-    <a href=https://github.com/supchyan/lolibar/blob/stable/Mods/SupchyanMod.cs>
-        <img src=https://github.com/user-attachments/assets/8d31e15e-dc9a-498f-b2f1-159d0a4ddcbf />
+    <a href=https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs>
+        <img src=https://github.com/user-attachments/assets/f5c386a2-85d6-49d5-b06a-c00751293b9d />
     </a>
 </div>
 
