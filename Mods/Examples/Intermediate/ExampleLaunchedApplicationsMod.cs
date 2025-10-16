@@ -6,7 +6,7 @@ using LolibarApp.Source;
 class ExampleLaunchedApplicationsMod : LolibarMod
 {
     // This mod example illustrates `LolibarProcess` capabilities.
-    // If you want to simulate Windows Dockbar process handling, use this mod as a reference for your one!
+    // It close to what windows taskbar does with pinned apps.
 
     // Create some parent for applications:
     LolibarContainer ExampleAppsContainerParent = new();
@@ -17,7 +17,7 @@ class ExampleLaunchedApplicationsMod : LolibarMod
         // Set it up
         ExampleAppsContainerParent = new()
         {
-            Parent                  = Lolibar.BarRightContainer,
+            Parent = Lolibar.BarRightContainer,
         };
         ExampleAppsContainerParent.Create();
 
@@ -26,12 +26,19 @@ class ExampleLaunchedApplicationsMod : LolibarMod
         LolibarProcess.AddPinnedAppsToContainer
         (
             parent:                 ExampleAppsContainerParent.GetBody(),           // Parent select
-            appContainerTitleState: LolibarEnums.AppContainerTitleState.OnlyActive, // When you want to see applications' titles (names)
+            appContainerTitleState: LolibarEnums.AppContainerTitleState.OnlyActive, // When you want to see apps' titles (names)
             appTitleMaxLength:      default                                         // Max title length (when is visible)
         );
         
         // Now every `pinned to taskbar` application will be drawn inside lolibar.
-        // He~ <3
+
+        // At this moment it has several restrictions.
+        // First, you can handle only MainWindow of some process, 
+        // so if you have multiple browser windows opened as an example, 
+        // you can only operate with the active one using lolibar.
+
+        // Second, if your pinned app .ink file has script included, it won't run. (Discord .ink as an example)
+        // I know about second issue and working on it's solution, so I'll remove this message after fix.
     }
     public override void Update()
     {
