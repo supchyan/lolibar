@@ -18,7 +18,7 @@ This project is the **toolkit lib** for modders, which allows you to create stat
 - **[ironbar](https://github.com/JakeStanger/ironbar) (Linux, Rust)**
 
 ## 🌸Contact me
-If you have any questions or suggestions, you can always ping me on my **[Discord server](https://discord.gg/dGF8p9UGyM)**! I'll be glad to help you and improve my project.
+If you have any questions or suggestions, you can always ping me on my **[Discord](https://discord.gg/dGF8p9UGyM)** server! I'll be glad to help you and improve my project.
 
 ## 🌸Average PC Usage
 <div align=center><img src=https://github.com/user-attachments/assets/18f4fe8c-3f8b-4540-bd77-5175a0243b87 width=800 height=auto /></div>
@@ -217,4 +217,4 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 ##### <div align=center>🐳 Maintainer showcase [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs). Oh, also a [wallpaper](https://wallhaven.cc/w/jxjz9p) source!</div>
 
 ---
-##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
+##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) server!</div>
