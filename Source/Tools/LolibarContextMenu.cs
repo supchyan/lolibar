@@ -27,16 +27,6 @@ public class LolibarContextMenu
     /// </summary>
     public List<LolibarContainer> Children { get; set; } = new();
 
-    ///// <summary>
-    ///// Set to false, it you want to prevent context menu from closing after mouse left clicked somewhere. (True by default)
-    ///// </summary>
-    //public bool CloseOnMouseLeftClicked { get; set; } = true;
-
-    ///// <summary>
-    ///// Set to false, it you want to prevent context menu from closing after mouse right clicked somewhere. (True by default)
-    ///// </summary>
-    //public bool CloseOnMouseRightClicked { get; set; } = true;
-
     /// <summary>
     /// Context menu orientation. (Vertical by default)
     /// </summary>
