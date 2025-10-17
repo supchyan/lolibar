@@ -2,7 +2,7 @@
 <br>
 <div align=center>
     <a href=https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs>
-        <img src=https://github.com/user-attachments/assets/f5c386a2-85d6-49d5-b06a-c00751293b9d />
+        <img src=https://github.com/user-attachments/assets/4a1ddb13-ca64-4af6-b396-ce5a1ee9aa15 />
     </a>
 </div>
 
@@ -37,6 +37,15 @@ Options:
 
 C:\Users\supchyan>
 ```
+
+## 🌸Customizable context menus and toast messages
+<div align=center>
+    <img width="345" height="auto" alt="2" src="https://github.com/user-attachments/assets/cc239c59-7f02-4947-ae90-4df4c7810130" /><br>
+    <div align=center>
+        <img width="213" height="59" alt="3" src="https://github.com/user-attachments/assets/295d77f2-c20c-48d9-a656-7b3a7a30164e" />
+        <img width="auto" height="59" alt="4" src="https://github.com/user-attachments/assets/a5ef1f5b-4ff5-4794-9d89-419ff81fff63" />
+    </div>
+</div>
 
 ## 🌸Pre-requirements
 All modding operations is highly recommended to do in `Visual Studio 2022+`. Moreover, to build this project, you have to install `.NET 9.0 SDK`. Alternatively, you can use other `.NET SDK` versions as well, but `stable` branch targets to `.NET 9.0`, so any issues with different SDK versions you have to solve locally.
@@ -203,9 +212,9 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
 ## 🌸In the end...
-<div align=center><img src=https://github.com/user-attachments/assets/45892f0a-de8f-4b44-86d4-a00e00b6421f /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/c15741a6-c0e5-48ff-9dc0-fb2b8b580fc7 /></div>
 
-##### <div align=center>🐳My lolibar [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs) showcase. Oh, also a [wallpaper](https://danbooru.donmai.us/posts/8407306) source!</div>
+##### <div align=center>🐳 Maintainer showcase [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs). Oh, also a [wallpaper](https://wallhaven.cc/w/jxjz9p) source!</div>
 
 ---
 ##### <div align=center> ☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) Server!</div>
