@@ -27,15 +27,16 @@ public class LolibarContextMenu
     /// </summary>
     public List<LolibarContainer> Children { get; set; } = new();
 
-    /// <summary>
-    /// Set to false, it you want to prevent context menu from closing after mouse left clicked somewhere. (True by default)
-    /// </summary>
-    public bool CloseOnMouseLeftClicked { get; set; } = true;
+    ///// <summary>
+    ///// Set to false, it you want to prevent context menu from closing after mouse left clicked somewhere. (True by default)
+    ///// </summary>
+    //public bool CloseOnMouseLeftClicked { get; set; } = true;
 
-    /// <summary>
-    /// Set to false, it you want to prevent context menu from closing after mouse right clicked somewhere. (True by default)
-    /// </summary>
-    public bool CloseOnMouseRightClicked { get; set; } = true;
+    ///// <summary>
+    ///// Set to false, it you want to prevent context menu from closing after mouse right clicked somewhere. (True by default)
+    ///// </summary>
+    //public bool CloseOnMouseRightClicked { get; set; } = true;
+
     /// <summary>
     /// Context menu orientation. (Vertical by default)
     /// </summary>
@@ -44,6 +45,8 @@ public class LolibarContextMenu
     /// True if context menu window is already closing
     /// </summary>
     bool IsClosing { get; set; }
+
+    bool MouseEntered { get; set; }
 
     /// <summary>
     /// Closes context menu if shown.
@@ -95,6 +98,7 @@ public class LolibarContextMenu
         };
 
         ContextMenuWnd.MouseLeave   += ContextMenu_MouseLeave;
+        ContextMenuWnd.MouseEnter += ContextMenu_MouseEnter;
 
         // set menu orientation (vertical / horizontal)
         var StackPanelContainer = new StackPanel()
@@ -167,16 +171,11 @@ public class LolibarContextMenu
             StackPanelContainer.Children.Add(child.GetRoot());
         }
 
-        if (CloseOnMouseRightClicked)
-        {
-            // Close this menu, when mouse right clicked somewhere
-            CloseOnRightMouseClick();
-        }
-        if (CloseOnMouseLeftClicked)
-        {
-            // Close this menu, when mouse left clicked somewhere
-            CloseOnLeftMouseClick();
-        }
+        // Close this menu, when mouse right clicked somewhere
+        CloseOnRightMouseClick();
+
+        // Close this menu, when mouse left clicked somewhere
+        CloseOnLeftMouseClick();
 
         // Prevent context menu window appearing in Alt+Tab UI
         Lolibar.HideFromAltTab(ContextMenuWnd);
@@ -206,6 +205,11 @@ public class LolibarContextMenu
         LolibarAnimator.ContextMenu.Show(ContextMenuWnd);
     }
 
+    void ContextMenu_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        MouseEntered = true;
+    }
+
     void ContextMenu_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
     {
         Close();
@@ -221,6 +225,11 @@ public class LolibarContextMenu
         {
             await Task.Delay(100);
         }
+        if (MouseEntered)
+        {
+            CloseOnRightMouseClick();
+            return;
+        }
         Close();
     }
     async void CloseOnLeftMouseClick()
@@ -233,7 +242,7 @@ public class LolibarContextMenu
         {
             await Task.Delay(100);
         }
-        if (ContextMenuWnd.IsFocused)
+        if (MouseEntered)
         {
             CloseOnLeftMouseClick();
             return;

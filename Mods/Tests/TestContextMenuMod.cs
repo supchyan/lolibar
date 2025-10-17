@@ -29,7 +29,6 @@ class TestContextMenuMod : LolibarMod
         LolibarContextMenu test = new()
         {
             ChildMargin = 10,
-            CloseOnMouseRightClicked = false,
             Orientation = System.Windows.Controls.Orientation.Vertical,
 
             Children = new()

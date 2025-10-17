@@ -427,7 +427,6 @@ class MaintainerShowcaseMod : LolibarMod
         LolibarContextMenu menu = new()
         {
             Orientation = System.Windows.Controls.Orientation.Horizontal,
-            CloseOnMouseLeftClicked = false,
         };
 
         // Children as LolibarContainers
