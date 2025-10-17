@@ -1,6 +1,8 @@
 ﻿using Shell32;
 using System.Diagnostics;
+using System.Text;
 using System.Windows.Controls;
+using System.Windows.Forms;
 
 namespace LolibarApp.Source.Tools;
 
@@ -34,7 +36,7 @@ public class LolibarProcess
     /// <summary>
     /// Stores initialized applications' containers and paths to their executable target.
     /// </summary>
-    static Dictionary<string, LolibarContainer> InitializedApps                     { get; set; } = [];
+    static Dictionary<ShellLinkObject, LolibarContainer> InitializedApps            { get; set; } = new();
     static StackPanel?                          InitializedParent                   { get; set; }
     static int                                  InitializedAppTitleMaxLength        { get; set; }
     static LolibarEnums.AppContainerTitleState  InitializedAppContainerTitleState   { get; set; }
@@ -43,11 +45,11 @@ public class LolibarProcess
 
     static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
 
-    static List<string> UserPinnedTargetPaths
+    static List<ShellLinkObject> UserPinnedTargetLinks
     {
         get
         {
-            List<string> TargetPathArr = [];
+            List<ShellLinkObject> TargetLinks = new();
 
             var ShellInstance       = new Shell();
             Folder UserPinnedFolder = ShellInstance.NameSpace(PinnedAppsPath);
@@ -57,31 +59,42 @@ public class LolibarProcess
                 if (item.IsLink)
                 {
                     ShellLinkObject lnk = (ShellLinkObject)item.GetLink;
-
-                    var TargetPath  = lnk.Target.Path;
-                    var Arguments   = lnk.Arguments;
-
-                    while (TargetPath.EndsWith(".lnk") && !string.IsNullOrEmpty(Arguments))
+                    // Skip URL type shortcuts, which don't end up with .exe, like P5R: steam://rungameid/1687950
+                    if (lnk.Path.EndsWith(".exe"))
                     {
-                        ShellLinkObject linkedLnk = (ShellLinkObject)ShellInstance.NameSpace(TargetPath).Items().Item().GetLink;
-                        TargetPath  = linkedLnk.Target.Path;
-                        Arguments   = linkedLnk.Arguments;
+                        TargetLinks.Add(lnk);
                     }
-                    TargetPathArr.Add(TargetPath);
                 }
             }
 
-            return TargetPathArr;
+            return TargetLinks;
         }
+    }
+    /// <summary>
+    /// Returns probable process name to be invoked / fetched by Process.GetProcessesByName() for example.
+    /// </summary>
+    /// <param name="TargetLink"></param>
+    /// <returns></returns>
+    static string GetProcessName(ShellLinkObject TargetLink)
+    {
+        // discord issue, may not work for different type of windows shortcuts
+        var probableName = TargetLink.Target.Name;
+        // the cause of issue is: ...\Discord\Update.exe --processStart Discord.exe,
+        // where --processStart calls different binary to execute after update.exe did a trick,
+        // so we handle this and try to invoke discord.exe binary instead of update.exe
+        if (TargetLink.Arguments.Contains(".exe"))
+        {
+            probableName = TargetLink.Arguments.Split(" ").Last((e) => e.Contains(".exe")).Replace(".exe", "");
+        }
+        return probableName;
     }
     /// <summary>
     /// Invokes application's instance by specified path / starts a new one,
     /// if current application isn't running, or running at the background.
     /// </summary>
-    /// <param name="applicationPath">App execution path.</param>
-    public static void InvokeApplicationByPath(string applicationPath)
+    public static void InvokeApplicationByPath(ShellLinkObject TargetLink)
     {
-        var definedProcesses = Process.GetProcessesByName(GetProcessNameByPath(applicationPath));
+        var definedProcesses = Process.GetProcessesByName(GetProcessName(TargetLink));
 
         var process = definedProcesses.Length > 0 ? definedProcesses[0] : null;
 
@@ -93,43 +106,52 @@ public class LolibarProcess
             }
             else
             {
-                process = Process.Start(applicationPath);
+                // invoke existing process
+                if (process.MainModule != null)
+                {
+                    Process.Start(process.MainModule.FileName);
+                }
             }
         }
         else
         {
-            process = Process.Start(applicationPath);
+            // start new process using shortcut path and arguments
+            process = new Process()
+            {
+                StartInfo =
+                {
+                    FileName    = "cmd",
+                    Arguments   = $"/C call \"{TargetLink.Path}\" {TargetLink.Arguments}",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            };
+            process.Start();
         }
 
-        // TODO:
-        // This should be called right after window actually started and MainWindow handled.
-        // At this moment, it can be occured before ``MainWindowHandle` became reachable.
-        FetchPinnedAppsContainers();
-
-        // TODO:
-        // This should be called right after window actually switched.
-        // At this moment, it can be occured before `SwitchToThisWindow()` finished it's job.
-        // Update workspaces state
-        LolibarVirtualDesktop.UpdateInitializedDesktops();
+        FetchPinnedAppsLogicDelayed(process);
     }
     /// <summary>
     /// Starts a new application instance by specified path.
     /// </summary>
     /// <param name="applicationPath">App execution path.</param>
-    public static void StartApplicationByPath(string applicationPath)
+    public static void StartApplicationByPath(ShellLinkObject TargetLink)
     {
-        Process.Start(applicationPath);
+        new Process()
+        {
+            StartInfo =
+                {
+                    FileName    = "cmd",
+                    Arguments   = $"/C call \"{TargetLink.Path}\" {TargetLink.Arguments}",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+        }.Start();
 
         // Fetch apps' containers
         FetchPinnedAppsContainers();
     }
-    static string GetProcessNameByPath(string processPath)
+    static string? GetProcessMainWindowTitle(ShellLinkObject TargetLink)
     {
-        return processPath.Split("\\").Last().Split(".")[0];
-    }
-    static string? GetProcessMainWindowTitleByPath(string processPath)
-    {
-        Process[]? procs = Process.GetProcessesByName(GetProcessNameByPath(processPath));
+        Process[]? procs = Process.GetProcessesByName(GetProcessName(TargetLink));
         return procs[0]?.MainWindowTitle;
     }
 
@@ -156,49 +178,50 @@ public class LolibarProcess
         InitializedAppTitleMaxLength        = appTitleMaxLength;
         InitializedAppContainerTitleState   = appContainerTitleState;
 
-        foreach (var TargetPath in UserPinnedTargetPaths)
+        foreach(var TargetLink in UserPinnedTargetLinks)
         {
-            try
+            TargetLink.GetIconLocation(out string pbs);
+
+            // Icon can be embedded into .exe file, so predict it
+            if (pbs == "")
             {
-                // Create pinned app container:
-                var PinContainer        = new LolibarContainer()
+                pbs = TargetLink.Target.Path;
+            }
+
+            // Create pinned app container:
+            var PinContainer        = new LolibarContainer()
+            {
+                Icon                = LolibarIcon.GetApplicationIcon(pbs),
+                Parent              = parent,
+                LeftMarginOffset   = 5.0,
+                RightMarginOffset  = 5.0,
+
+                MouseRightButtonUp  = (e) =>
                 {
-                    Icon                = LolibarIcon.GetApplicationIcon(TargetPath),
-                    Parent              = parent,
-                    LeftMarginOffset   = 5.0,
-                    RightMarginOffset  = 5.0,
+                    GenerateContextMenu(TargetLink);
+                    return 0;
+                },
+                MouseMiddleButtonUp = (e) =>  
+                {
+                    // Starts a new application instance
+                    StartApplicationByPath(TargetLink);
+                    return 0;
+                },
+                MouseLeftButtonUp   = (e) =>
+                {
+                    // Invokes application instance / starts a new one,
+                    // if specified application isn't running, or running at the background
+                    InvokeApplicationByPath(TargetLink);
+                    return 0;
+                }
+            };
+            PinContainer.Create();
 
-                    MouseRightButtonUp  = (e) =>
-                    {
-                        GenerateContextMenu(TargetPath);
-                        return 0;
-                    },
-                    MouseMiddleButtonUp = (e) =>  
-                    {
-                        // Starts a new application instance
-                        StartApplicationByPath(TargetPath);
-                        return 0;
-                    },
-                    MouseLeftButtonUp   = (e) =>
-                    {
-                        // Invokes application instance / starts a new one,
-                        // if specified application isn't running, or running at the background
-                        InvokeApplicationByPath(TargetPath);
-                        return 0;
-                    }
-                };
-                PinContainer.Create();
-
-                // Store a child into a initialized dict
-                InitializedApps.Add(TargetPath, PinContainer);
-            }
-            catch
-            {
-                continue;
-            }
+            // Store a child into a initialized dict
+            InitializedApps.Add(TargetLink, PinContainer);
         }
     }
-    static void GenerateContextMenu(string TargetPath)
+    static void GenerateContextMenu(ShellLinkObject TargetLink)
     {
         /* OPEN CONTEXT MENU */
         LolibarContextMenu hwndContextMenu = new()
@@ -206,13 +229,22 @@ public class LolibarProcess
             ChildMargin = 10
         };
 
+        TargetLink.GetIconLocation(out string pbs);
+
+        // Icon can be embedded into .exe file, so predict it
+        if (pbs == "")
+        {
+            pbs = TargetLink.Path;
+        }
+
+        // Add interactable menu header
         hwndContextMenu.Children.Add(new()
         {
-            Text = GetProcessNameByPath(TargetPath),
-            Icon = LolibarIcon.GetApplicationIcon(TargetPath),
+            Text = TargetLink.Target.Name,
+            Icon = LolibarIcon.GetApplicationIcon(pbs),
             MouseLeftButtonUp = (e) =>
             {
-                InvokeApplicationByPath(TargetPath);
+                InvokeApplicationByPath(TargetLink);
                 hwndContextMenu.Close();
                 return 0;
             }
@@ -220,7 +252,7 @@ public class LolibarProcess
 
         Process[]? procs = null;
 
-        procs = Process.GetProcessesByName(GetProcessNameByPath(TargetPath));
+        procs = Process.GetProcessesByName(GetProcessName(TargetLink));
 
         foreach (var proc in procs)
         {
@@ -229,7 +261,7 @@ public class LolibarProcess
             hwndContextMenu.Children.Add(new()
             {
                 Text = proc.MainWindowTitle.Truncate(24), // only MainWindowHandle has a name, lame ;v;
-                Icon = LolibarIcon.GetApplicationIcon(TargetPath),
+                Icon = LolibarIcon.GetApplicationIcon(pbs),
                 HasBackground = true,
                 MouseLeftButtonUp = (e) =>
                 {
@@ -245,33 +277,54 @@ public class LolibarProcess
     {
         AddPinnedAppsToContainer(InitializedParent, InitializedAppContainerTitleState, InitializedAppTitleMaxLength);
     }
+    /// <summary>
+    /// Updates state of pinned apps containers in lolibar + updates virtual desktops if initialized.
+    /// Desktops updates, because opnening app window may cause redirect to the different desktop,
+    /// so we need to update their state in lolibar as well.
+    /// This method awaits before MainWindowHandle actually appeared and then does fetch logic.
+    /// This method has 5s await time before fetch forcibly.
+    /// </summary>
+    /// <param name="proc"></param>
+    static async void FetchPinnedAppsLogicDelayed(Process proc)
+    {
+        var time = DateTime.Now.Ticks + 5000 * 10000; // 5s
+
+        // wait for 5s, before fetch or fetch after window appeared
+        while (proc.MainWindowHandle == 0 && time > DateTime.Now.Ticks)
+        {
+            await Task.Delay(1);
+        }
+
+        FetchPinnedAppsContainers();
+        LolibarVirtualDesktop.UpdateInitializedDesktops();
+    }
     public static void FetchPinnedAppsContainers()
     {
-        foreach (var application in InitializedApps)
+        foreach ((var TargetLink, var Container) in InitializedApps)
         {
-            var proc = Process.GetProcessesByName(GetProcessNameByPath(application.Key)).ToList().FirstOrDefault();
+            var proc = Process.GetProcessesByName(GetProcessName(TargetLink)).ToList().FirstOrDefault();
 
             if (proc != null)
             {
                 var isActive = proc.MainWindowHandle == LolibarExtern.GetForegroundWindow();
 
-                application.Value.HasBackground = isActive;
+                Container.HasBackground = isActive;
 
                 switch (InitializedAppContainerTitleState)
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
                         
-                        application.Value.Text = GetProcessMainWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength);
+                        Container.Text = GetProcessMainWindowTitle(TargetLink)?.Truncate(InitializedAppTitleMaxLength);
                         break;
 
                     case LolibarEnums.AppContainerTitleState.OnlyActive:
 
-                        application.Value.Text = isActive ? GetProcessMainWindowTitleByPath(application.Key)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
+                        Container.Text = isActive ? GetProcessMainWindowTitle(TargetLink)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
                         break;
 
                     case LolibarEnums.AppContainerTitleState.Never:
 
-                        application.Value.Text = AppActiveSymbol;
+                        Container.Text = AppActiveSymbol;
                         break;
                 }
             }
@@ -281,22 +334,22 @@ public class LolibarProcess
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
                         
-                        application.Value.Text = GetProcessNameByPath(application.Key).Truncate(InitializedAppTitleMaxLength);
+                        Container.Text = TargetLink.Target.Name.Truncate(InitializedAppTitleMaxLength);
                         break;
 
                     case LolibarEnums.AppContainerTitleState.OnlyActive:
                         
-                        application.Value.Text = null;
+                        Container.Text = null;
                         break;
 
                     case LolibarEnums.AppContainerTitleState.Never:
 
-                        application.Value.Text = null;
+                        Container.Text = null;
                         break;
                 }
             }
 
-            application.Value.Update();
+            Container.Update();
         }
     }
 }

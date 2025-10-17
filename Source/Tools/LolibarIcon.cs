@@ -70,11 +70,20 @@ static class LolibarIcon
     /// <summary>
     /// Attempts to return an Icon object of the specified application, received from it's location.
     /// </summary>
-    /// <param name="applicationPath">Path to your application.</param>
+    /// <param name="appPath">Path to your application.</param>
     /// <returns></returns>
-    public static Icon? GetApplicationIcon(string applicationPath)
+    public static object? GetApplicationIcon(string appPath)
     {
-        return Icon.ExtractAssociatedIcon(applicationPath);
+        try
+        {
+            Icon? icon = null;
+            icon = Icon.ExtractAssociatedIcon(appPath);
+            return icon;
+        }
+        catch
+        {
+            return ParseSVG("./Defaults/apps.svg");
+        }
     }
     /// <summary>
     /// Converts input path into proper format, by tuncating first ".\" or "\".
