@@ -32,11 +32,13 @@ public class LolibarContextMenu
     /// </summary>
     public System.Windows.Controls.Orientation Orientation { get; set; } = System.Windows.Controls.Orientation.Vertical;
     /// <summary>
-    /// True if context menu window is already closing
+    /// True if context menu window is already closing.
     /// </summary>
-    bool IsClosing { get; set; }
-
-    bool MouseEntered { get; set; }
+    bool IsAlreadyClosing       { get; set; }
+    /// <summary>
+    /// True after mouse entered context menu.
+    /// </summary>
+    bool MouseEntered           { get; set; }
 
     /// <summary>
     /// Closes context menu if shown.
@@ -44,13 +46,13 @@ public class LolibarContextMenu
     public void Close()
     {
         // Prevent close dublicate
-        if (IsClosing) return;
+        if (IsAlreadyClosing) return;
 
         LolibarAnimator.ContextMenu.Hide(ContextMenuWnd);
         // Remove lolbar hide interruption to make hiding logic behave normally
         Lolibar.HideInterruptions.Remove(0);
-        
-        IsClosing = true;
+
+        IsAlreadyClosing = true;
     }
     public void Create()
     {
@@ -88,7 +90,7 @@ public class LolibarContextMenu
         };
 
         ContextMenuWnd.MouseLeave   += ContextMenu_MouseLeave;
-        ContextMenuWnd.MouseEnter += ContextMenu_MouseEnter;
+        ContextMenuWnd.MouseEnter   += ContextMenu_MouseEnter;
 
         // set menu orientation (vertical / horizontal)
         var StackPanelContainer = new StackPanel()
@@ -185,11 +187,15 @@ public class LolibarContextMenu
             ContextMenuWnd.Top = Lolibar.Inch_Screen.Y - LolibarMod.BarHeight - ContextMenuWnd.Height;
         }
 
-        ContextMenuWnd.Left = Lolibar.CursorPosition.X / scaleOffset - ContextMenuWnd.Width;
+        ContextMenuWnd.Left = Lolibar.CursorPosition.X / scaleOffset - ContextMenuWnd.Width / 2;
 
         if (ContextMenuWnd.Left < 0)
         {
             ContextMenuWnd.Left = LolibarMod.BarMargin.Left;
+        }
+        if (ContextMenuWnd.Left > Lolibar.Inch_Screen.X - ContextMenuWnd.Width)
+        {
+            ContextMenuWnd.Left = Lolibar.Inch_Screen.X - ContextMenuWnd.Width;
         }
 
         LolibarAnimator.ContextMenu.Show(ContextMenuWnd);

@@ -79,7 +79,7 @@ class MaintainerShowcaseMod : LolibarMod
         BarStrokeThickness          = new Thickness(1);
 
         BarHideVanillaTaskBar       = true;
-        BarSnapToTop                = false;
+        BarSnapToTop                = true;
     }
     public override void Initialize()
     {
