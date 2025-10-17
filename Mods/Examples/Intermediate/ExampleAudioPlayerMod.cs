@@ -26,8 +26,8 @@ class ExampleAudioPlayerMod : LolibarMod
     LolibarContainer? AudioInfoContainer        = new();
 
     // Define these icons, we need it later:
-    Geometry playIcon   = LolibarIcon.ParseSVG("./Examples/ExampleAudioPlayerMod/play.svg");
-    Geometry pauseIcon  = LolibarIcon.ParseSVG("./Examples/ExampleAudioPlayerMod/pause.svg");
+    Geometry playIcon   = LolibarIcon.ParseSVG("./Defaults/audio_play.svg");
+    Geometry pauseIcon  = LolibarIcon.ParseSVG("./Defaults/audio_pause.svg");
 
     public override void PreInitialize() { }
     public override void Initialize()
@@ -41,7 +41,7 @@ class ExampleAudioPlayerMod : LolibarMod
         PreviousButtonContainer = new()
         {
             Parent              = BaseContainer.GetBody(), // Use BaseContainer as a parent here
-            Icon                = LolibarIcon.ParseSVG("./Examples/ExampleAudioPlayerMod/previous.svg"),
+            Icon                = LolibarIcon.ParseSVG("./Defaults/audio_rewind.svg"),
             MouseLeftButtonUp   = Previous
         };
         PreviousButtonContainer.Create();
@@ -56,7 +56,7 @@ class ExampleAudioPlayerMod : LolibarMod
         NextButtonContainer = new()
         {
             Parent = BaseContainer.GetBody(),
-            Icon = LolibarIcon.ParseSVG("./Examples/ExampleAudioPlayerMod/next.svg"),
+            Icon = LolibarIcon.ParseSVG("./Defaults/audio_next.svg"),
             MouseLeftButtonUp = Next
         };
         NextButtonContainer.Create();

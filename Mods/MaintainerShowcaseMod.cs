@@ -23,6 +23,7 @@ class MaintainerShowcaseMod : LolibarMod
     readonly Geometry AudioPauseIcon    = LolibarIcon.ParseSVG("./Defaults/audio_pause.svg");
     readonly Geometry AudioRewindIcon   = LolibarIcon.ParseSVG("./Defaults/audio_rewind.svg");
     readonly Geometry AudioNextIcon     = LolibarIcon.ParseSVG("./Defaults/audio_next.svg");
+    readonly Geometry AudioSpinnerIcon  = LolibarIcon.ParseSVG("./Defaults/spinner.svg");
     #endregion
 
     #region Color Codes
@@ -40,6 +41,7 @@ class MaintainerShowcaseMod : LolibarMod
     LolibarContainer AudioContainerP            = new();
     LolibarContainer AudioContainer             = new();
     LolibarContainer AudioSwitchButtonContainer = new();
+    LolibarContainer AudioVolumeContainer       = new();
 
     LolibarContainer AppsContainer              = new();
 
@@ -396,6 +398,26 @@ class MaintainerShowcaseMod : LolibarMod
         LolibarAudio.Next();
         return 0;
     }
+    int ModifyVolume(MouseWheelEventArgs e)
+    {
+        if (e.Delta > 0)
+        {
+            LolibarHelper.KeyDown(Keys.VolumeUp);
+            LolibarHelper.KeyUp(Keys.VolumeUp);
+
+            AudioVolumeContainer.IconAngle += 20;
+            AudioVolumeContainer.Update();
+        }
+        if (e.Delta < 0)
+        {
+            LolibarHelper.KeyDown(Keys.VolumeDown);
+            LolibarHelper.KeyUp(Keys.VolumeDown);
+
+            AudioVolumeContainer.IconAngle -= 20;
+            AudioVolumeContainer.Update();
+        }
+        return 0;
+    }
     int SwapWorkspacesByMouseWheel(MouseWheelEventArgs e)
     {
         // If mouse wheel scrolls down, go to next desktop if possible
@@ -429,16 +451,7 @@ class MaintainerShowcaseMod : LolibarMod
             Orientation = System.Windows.Controls.Orientation.Horizontal,
         };
 
-        // Children as LolibarContainers
-        menu.Children.Add(new()
-        {
-            Icon = AudioRewindIcon,
-            HasBackground = true,
-            MouseLeftButtonUp = Previous,
-        });
-
-
-        // This container will be updatable in Update() hook, so initialize it globally
+        // Initialize updatable audio context menu containers
         AudioSwitchButtonContainer = new()
         {
             Icon = AudioPauseIcon,
@@ -446,6 +459,22 @@ class MaintainerShowcaseMod : LolibarMod
             MouseLeftButtonUp = PlayOrPause
         };
         AudioSwitchButtonContainer.Initialize();
+
+        AudioVolumeContainer = new()
+        {
+            Icon = AudioSpinnerIcon,
+            HasBackground = true,
+            MouseWheelDelta = ModifyVolume
+        };
+        AudioSwitchButtonContainer.Initialize();
+
+        // Children as LolibarContainers
+        menu.Children.Add(new()
+        {
+            Icon = AudioRewindIcon,
+            HasBackground = true,
+            MouseLeftButtonUp = Previous,
+        });
 
         menu.Children.Add(
             AudioSwitchButtonContainer
@@ -457,6 +486,10 @@ class MaintainerShowcaseMod : LolibarMod
             HasBackground = true,
             MouseLeftButtonUp = Next
         });
+
+        menu.Children.Add(
+            AudioVolumeContainer
+        );
 
         // Show menu
         menu.Create();

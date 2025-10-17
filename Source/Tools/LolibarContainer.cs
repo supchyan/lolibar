@@ -26,6 +26,10 @@ public class LolibarContainer
     /// </summary>
     public object?                  Icon                        { get; set; }
     /// <summary>
+    /// Icon angle in degrees. (0 by default)
+    /// </summary>
+    public double                   IconAngle                   { get; set; }       = 0.0;
+    /// <summary>
     /// Container's text content, which will be drawn inside.
     /// </summary>
     public string?                  Text                        { get; set; }
@@ -155,10 +159,11 @@ public class LolibarContainer
             Stretch             = Stretch.Uniform,
             Margin              = LolibarMod.BarContainersContentMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center,
         };
         PathContainer.SetResourceReference(Path.DataProperty, $"{Name}SvgIcon");
         PathContainer.SetResourceReference(Path.FillProperty, $"{Name}Color");
+        PathContainer.SetResourceReference(Path.RenderTransformProperty, $"{Name}PathRenderTransform");
 
         StackPanelContainer.Children.Add(PathContainer);
 
@@ -172,9 +177,10 @@ public class LolibarContainer
             MinHeight           = 0,
             Margin              = LolibarMod.BarContainersContentMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-            VerticalAlignment   = System.Windows.VerticalAlignment.Center
+            VerticalAlignment   = System.Windows.VerticalAlignment.Center,
         };
         ImageContainer.SetResourceReference(System.Windows.Controls.Image.SourceProperty, $"{Name}ImageIcon");
+        ImageContainer.SetResourceReference(Path.RenderTransformProperty, $"{Name}ImageRenderTransform");
 
         StackPanelContainer.Children.Add(ImageContainer);
 
@@ -301,9 +307,11 @@ public class LolibarContainer
 
         UpdateIconContainersInstance();
 
-        App.Current.Resources[$"{Name}Text"             ] = Text;
-        App.Current.Resources[$"{Name}Color"            ] = Color;
-        App.Current.Resources[$"{Name}BorderBackground" ] = BorderBackground();
+        App.Current.Resources[$"{Name}Text"            ]    = Text;
+        App.Current.Resources[$"{Name}Color"           ]    = Color;
+        App.Current.Resources[$"{Name}BorderBackground"]    = BorderBackground();
+        App.Current.Resources[$"{Name}PathRenderTransform"] = new RotateTransform(IconAngle, 0.5 * LolibarMod.BarIconSize, 0.5 * LolibarMod.BarIconSize);
+        App.Current.Resources[$"{Name}IcoRenderTransform" ] = new RotateTransform(IconAngle, 0.5 * LolibarMod.BarIconSize, 0.5 * LolibarMod.BarIconSize);
     }
     void UpdateIconContainersInstance()
     {
