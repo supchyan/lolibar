@@ -1,5 +1,6 @@
 ﻿using Shell32;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -224,10 +225,7 @@ public class LolibarProcess
     static void GenerateContextMenu(ShellLinkObject TargetLink)
     {
         /* OPEN CONTEXT MENU */
-        LolibarContextMenu hwndContextMenu = new()
-        {
-            ChildMargin = 10
-        };
+        LolibarContextMenu hwndContextMenu = new();
 
         TargetLink.GetIconLocation(out string pbs);
 
@@ -245,7 +243,6 @@ public class LolibarProcess
             MouseLeftButtonUp = (e) =>
             {
                 InvokeApplicationByPath(TargetLink);
-                hwndContextMenu.Close();
                 return 0;
             }
         });
@@ -266,12 +263,33 @@ public class LolibarProcess
                 MouseLeftButtonUp = (e) =>
                 {
                     LolibarExtern.SwitchToThisWindow(proc.MainWindowHandle, true);
-                    hwndContextMenu.Close();
                     return 0;
                 }
             });
         }
+
+        // Add Unpin option
+        hwndContextMenu.Children.Add(new()
+        {
+            Text = "Unpin",
+            Icon = LolibarIcon.ParseSVG("./Defaults/unpin.svg"),
+            MouseLeftButtonUp = (e) =>
+            {
+                UnpinApp(TargetLink);
+                return 0;
+            }
+        });
         hwndContextMenu.Create();
+    }
+    static void UnpinApp(ShellLinkObject TargetLink)
+    {
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        try
+        {
+            File.Delete($"{appData}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\{GetProcessName(TargetLink)}.lnk");
+            UpdateInitializedPinnedApps();
+        }
+        catch { /* No such file */ }
     }
     public static void UpdateInitializedPinnedApps()
     {

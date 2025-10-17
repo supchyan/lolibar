@@ -148,8 +148,8 @@ public class LolibarContainer
         // Svg icon container
         PathContainer           = new()
         {
-            Width               = 14,
-            Height              = 14,
+            Width               = LolibarMod.BarIconSize,
+            Height              = LolibarMod.BarIconSize,
             MinWidth            = 0,
             MinHeight           = 0,
             Stretch             = Stretch.Uniform,
@@ -166,8 +166,8 @@ public class LolibarContainer
         ImageContainer          = new()
         {
             Stretch             = Stretch.Uniform,
-            Width               = 14,
-            Height              = 14,
+            Width               = LolibarMod.BarIconSize,
+            Height              = LolibarMod.BarIconSize,
             MinWidth            = 0,
             MinHeight           = 0,
             Margin              = LolibarMod.BarContainersContentMargin,

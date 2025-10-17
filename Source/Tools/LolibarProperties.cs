@@ -14,6 +14,10 @@ public abstract partial class LolibarProperties
     /// </summary>
     public static double BarShadowBlurRadius { get; set; } = 8.0;
     /// <summary>
+    /// Defulat margin between children in context menu. (10.0 by default)
+    /// </summary>
+    public static double BarContextMenuChildMargin { get; set; } = 10.0;
+    /// <summary>
     /// Align lolibar with some screen point. (Center by default)
     /// </summary>
     public static LolibarEnums.BarScreenPosition BarScreenPosition { get; set; } = LolibarEnums.BarScreenPosition.Center;
@@ -53,11 +57,11 @@ public abstract partial class LolibarProperties
     /// </summary>
     public static double BarHeight { get; set; } = 60.0;
     /// <summary>
-    /// Lolibar's font size property.
+    /// Lolibar's font size. (12.0 by default)
     /// </summary>
     public static double BarFontSize { get; set; } = 12.0;
     /// <summary>
-    /// Lolibar's icon size property.
+    /// Lolibar's icon size. (16.0 by default)
     /// </summary>
     public static double BarIconSize { get; set; } = 16.0;
     /// <summary>

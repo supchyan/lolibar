@@ -12,9 +12,9 @@ public class LolibarContextMenu
     Window              ContextMenuWnd      { get; set; }           = new();
 
     /// <summary>
-    /// Context menu child margin. (Affects left, top, right, bottom at once)
+    /// Context menu child margin. (Affects left, top, right, bottom at once) (BarContextMenuChildMargin by default)
     /// </summary>
-    public double       ChildMargin         { get; set; }
+    public double       ChildMargin         { get; set; } = LolibarMod.BarContextMenuChildMargin;
 
     /// <summary>
     /// Margin offset will be increased by children left/right margin offsets 

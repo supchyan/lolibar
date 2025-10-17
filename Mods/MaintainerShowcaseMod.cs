@@ -3,6 +3,7 @@ using LolibarApp.Source.Tools;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
+using System.Diagnostics;
 
 namespace LolibarApp.Mods;
 
@@ -16,15 +17,19 @@ class MaintainerShowcaseMod : LolibarMod
     #endregion
 
     #region Icons
-    readonly Geometry GearIcon = LolibarIcon.ParseSVG("./Defaults/gear.svg");
-    readonly Geometry BellIcon = LolibarIcon.ParseSVG("./Defaults/bell.svg");
+    readonly Geometry GearIcon          = LolibarIcon.ParseSVG("./Defaults/gear.svg");
+    readonly Geometry BellIcon          = LolibarIcon.ParseSVG("./Defaults/bell.svg");
+    readonly Geometry AudioPlayIcon     = LolibarIcon.ParseSVG("./Defaults/audio_play.svg");
+    readonly Geometry AudioPauseIcon    = LolibarIcon.ParseSVG("./Defaults/audio_pause.svg");
+    readonly Geometry AudioRewindIcon   = LolibarIcon.ParseSVG("./Defaults/audio_rewind.svg");
+    readonly Geometry AudioNextIcon     = LolibarIcon.ParseSVG("./Defaults/audio_next.svg");
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode       = "#bc171c13"; // semi-transparent
-    const string SecondaryColorCode     = "#ff535d60";
-    const string SecondaryColorCodeT    = "#55535d60"; // semi-transparent
-    const string TernaryColorCode       = "#ffe95016";
+    const string PrimaryColorCode       = "#bc1b1c1f"; // semi-transparent
+    const string SecondaryColorCode     = "#ffcbd6ea";
+    const string SecondaryColorCodeT    = "#55cbd6ea"; // semi-transparent
+    const string TernaryColorCode       = "#ffe6524c";
     #endregion
 
     #region Containers
@@ -62,6 +67,8 @@ class MaintainerShowcaseMod : LolibarMod
         BarSeparatorHeight          = 14.0;
         BarSeparatorWidth           = 3.0;
         BarSeparatorRadius          = 1.5;
+        BarContextMenuChildMargin   = 10.0;
+        BarFontSize                 = 13;
 
         BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
         BarContainersColor          = LolibarColor.FromHEX(SecondaryColorCode);
@@ -169,7 +176,8 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Parent                  = Lolibar.BarRightContainer,
             Icon                    = GearIcon,
-            MouseLeftButtonUp       = OpenQuickSettingsOverlay,
+            MouseLeftButtonUp       = OpenQuickSettingsUI,
+            MouseRightButtonUp      = OpenQuickSettingsContextMenu,
             HasBackground           = true,
             RightMarginOffset       = 10.0
         };
@@ -215,9 +223,7 @@ class MaintainerShowcaseMod : LolibarMod
         AudioContainer.Update();
 
         // Change audio switch container icon when audio stream switches its state
-        AudioSwitchButtonContainer.Icon = LolibarAudio.IsPlaying ?
-            LolibarIcon.ParseSVG("./Defaults/audio_pause.svg") :
-            LolibarIcon.ParseSVG("./Defaults/audio_play.svg");
+        AudioSwitchButtonContainer.Icon = LolibarAudio.IsPlaying ? AudioPauseIcon : AudioPlayIcon;
 
         // Update changes
         AudioSwitchButtonContainer.Update();
@@ -269,7 +275,7 @@ class MaintainerShowcaseMod : LolibarMod
 
     #region Click events
     // --- Quick Settings ---
-    int OpenQuickSettingsOverlay(MouseButtonEventArgs e)
+    int OpenQuickSettingsUI(MouseButtonEventArgs e)
     {
         // Built-in hotkey to open settings overlay in windows
         LolibarHelper.KeyDown(Keys.LWin);
@@ -279,6 +285,50 @@ class MaintainerShowcaseMod : LolibarMod
 
         return 0;
     }
+    int OpenQuickSettingsContextMenu(MouseButtonEventArgs e)
+    {
+        // Create context menu
+        LolibarContextMenu menu = new();
+
+        // Add children as LolibarContainers
+        menu.Children.Add(new()
+        {
+            Text = $"Lolibar Menu",
+            Icon = LolibarIcon.GetApplicationIcon(Process.GetCurrentProcess().MainModule?.FileName ?? ""),
+        });
+
+        menu.Children.Add(new()
+        {
+            Text = $"Restart Lolibar",
+            HasBackground = true,
+
+            MouseLeftButtonUp = RestartLolibar
+        });
+
+        menu.Children.Add(new()
+        {
+            Text = $"Close Lolibar",
+            HasBackground = true,
+
+            MouseLeftButtonUp = CloseLolibar
+        });
+
+        // Create (show) menu
+        menu.Create();
+
+        return 0;
+    }
+    int CloseLolibar(MouseButtonEventArgs e)
+    {
+        LolibarHelper.CloseApplicationGently(); 
+        return 0;
+    }
+    int RestartLolibar(MouseButtonEventArgs e)
+    {
+        LolibarHelper.RestartApplicationGently();
+        return 0;
+    }
+
 
     // --- Notifications ---
     int OpenNotificationsOverlay(MouseButtonEventArgs e)
@@ -296,10 +346,7 @@ class MaintainerShowcaseMod : LolibarMod
     int OpenPowerContextMenu(MouseButtonEventArgs e)
     {
         // Create context menu
-        LolibarContextMenu menu = new()
-        {
-            ChildMargin = 10,
-        };
+        LolibarContextMenu menu = new();
 
         // Add children as LolibarContainers
         menu.Children.Add(new()
@@ -311,7 +358,7 @@ class MaintainerShowcaseMod : LolibarMod
         menu.Children.Add(new()
         {
             Text = $"Open settings",
-            Icon = LolibarIcon.ParseSVG("./Defaults/gear.svg"),
+            Icon = GearIcon,
             HasBackground = true,
 
             MouseLeftButtonUp = OpenPowerSettings
@@ -379,7 +426,6 @@ class MaintainerShowcaseMod : LolibarMod
         // Context menu class body
         LolibarContextMenu menu = new()
         {
-            ChildMargin = 10,
             Orientation = System.Windows.Controls.Orientation.Horizontal,
             CloseOnMouseLeftClicked = false,
         };
@@ -387,7 +433,7 @@ class MaintainerShowcaseMod : LolibarMod
         // Children as LolibarContainers
         menu.Children.Add(new()
         {
-            Icon = LolibarIcon.ParseSVG("./Defaults/audio_rewind.svg"),
+            Icon = AudioRewindIcon,
             HasBackground = true,
             MouseLeftButtonUp = Previous,
         });
@@ -396,7 +442,7 @@ class MaintainerShowcaseMod : LolibarMod
         // This container will be updatable in Update() hook, so initialize it globally
         AudioSwitchButtonContainer = new()
         {
-            Icon = LolibarIcon.ParseSVG("./Defaults/audio_pause.svg"),
+            Icon = AudioPauseIcon,
             HasBackground = true,
             MouseLeftButtonUp = PlayOrPause
         };
@@ -408,7 +454,7 @@ class MaintainerShowcaseMod : LolibarMod
 
         menu.Children.Add(new()
         {
-            Icon = LolibarIcon.ParseSVG("./Defaults/audio_next.svg"),
+            Icon = AudioNextIcon,
             HasBackground = true,
             MouseLeftButtonUp = Next
         });

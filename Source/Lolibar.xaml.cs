@@ -91,12 +91,14 @@ public partial class Lolibar : Window
 
     // --- LolibarVirtualDesktop update trigger on lolibar's opening ---
     static bool ShouldManuallyUpdateDynamicLibs { get; set; }
+    static bool IsClosing { get; set; }
 
     public Lolibar()
     {
         InitializeComponent();
 
         Closed += Lolibar_Closed;
+        Closing += Lolibar_Closing;
 
         // Show null window
         NullWindow.Show();
@@ -134,6 +136,11 @@ public partial class Lolibar : Window
         CreateLolibarCliEnvironment();
 
         SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
+    }
+
+    void Lolibar_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+    {
+        IsClosing = true;
     }
 
     void MouseHandler_RightButtonDown(MouseHook.MSLLHOOKSTRUCT mouseStruct)
@@ -270,23 +277,26 @@ public partial class Lolibar : Window
     /// </summary>
     async static void VanillaTaskBarLurker()
     {
-        while (true)
-        {
-            if (LolibarMod.BarHideVanillaTaskBar)
-            {
-                // Primary monitor
-                var hwnd = LolibarExtern.FindWindow("Shell_TrayWnd", "");
-                // Secondary monitor(s)
-                var hwndSecondary = LolibarExtern.FindWindow("Shell_SecondaryTrayWnd", "");
-                var startButtonHandle = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+        if (!LolibarMod.BarHideVanillaTaskBar) return;
 
-                LolibarExtern.ShowWindow(hwnd, LolibarEnums.WindowStateEnum.Hide);
-                LolibarExtern.ShowWindow(hwndSecondary, LolibarEnums.WindowStateEnum.Hide);
-                LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
-            }
+        // Primary monitor
+        var hwnd = LolibarExtern.FindWindow("Shell_TrayWnd", "");
+        // Secondary monitor(s)
+        var hwndSecondary = LolibarExtern.FindWindow("Shell_SecondaryTrayWnd", "");
+        var startButtonHandle = LolibarExtern.FindWindowEx(LolibarExtern.GetDesktopWindow(), 0, "button", 0);
+
+        while (!IsClosing)
+        {
+            LolibarExtern.ShowWindow(hwnd, LolibarEnums.WindowStateEnum.Hide);
+            LolibarExtern.ShowWindow(hwndSecondary, LolibarEnums.WindowStateEnum.Hide);
+            LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Hide);
 
             await Task.Delay(1);
         }
+
+        LolibarExtern.ShowWindow(hwnd, LolibarEnums.WindowStateEnum.Show);
+        LolibarExtern.ShowWindow(hwndSecondary, LolibarEnums.WindowStateEnum.Show);
+        LolibarExtern.ShowWindow(startButtonHandle, LolibarEnums.WindowStateEnum.Show);
     }
     #endregion
 
