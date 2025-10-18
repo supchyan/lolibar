@@ -266,7 +266,6 @@ public partial class Lolibar : Window
             if (ShouldManuallyUpdateDynamicLibs)
             {
                 LolibarVirtualDesktop.UpdateInitializedDesktops();
-                LolibarProcess.UpdateInitializedPinnedApps();
                 LolibarProcess.FetchPinnedAppsContainers();
                 ShouldManuallyUpdateDynamicLibs = false;
             }

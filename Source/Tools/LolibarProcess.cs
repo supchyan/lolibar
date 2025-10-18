@@ -1,9 +1,9 @@
 ﻿using Shell32;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace LolibarApp.Source.Tools;
 
@@ -45,7 +45,8 @@ public class LolibarProcess
     const string AppActiveSymbol = "●";
 
     static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
-
+    static bool IsPinnedAppsUpdated { get; set; }
+    static FileSystemWatcher? PinnedAppsWatcher { get; set; }
     static List<ShellLinkObject> UserPinnedTargetLinks
     {
         get
@@ -167,7 +168,13 @@ public class LolibarProcess
     /// </param>
     public static void AddPinnedAppsToContainer(StackPanel? parent, LolibarEnums.AppContainerTitleState appContainerTitleState = LolibarEnums.AppContainerTitleState.Never, int appTitleMaxLength = 16)
     {
-        if (parent == null) return;
+        if (parent == null || IsPinnedAppsUpdated) return;
+
+        // Enable .lnk files watcher for pinned apps
+        if (PinnedAppsWatcher == null)
+        {
+            EnablePinnedAppsWatcher();
+        }
 
         // Clear old initialized dict
         InitializedApps.Clear();
@@ -220,7 +227,11 @@ public class LolibarProcess
 
             // Store a child into a initialized dict
             InitializedApps.Add(TargetLink, PinContainer);
+            LolibarAnimator.Common.Appear(PinContainer.GetRoot());
         }
+        FetchPinnedAppsContainers();
+
+        IsPinnedAppsUpdated = true;
     }
     static void GenerateContextMenu(ShellLinkObject TargetLink)
     {
@@ -276,6 +287,7 @@ public class LolibarProcess
             MouseLeftButtonUp = (e) =>
             {
                 UnpinApp(TargetLink);
+                hwndContextMenu.Close();
                 return 0;
             }
         });
@@ -286,14 +298,9 @@ public class LolibarProcess
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         try
         {
-            File.Delete($"{appData}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\{GetProcessName(TargetLink)}.lnk");
-            UpdateInitializedPinnedApps();
+            File.Delete($"{PinnedAppsPath}\\{GetProcessName(TargetLink)}.lnk");
         }
         catch { /* No such file */ }
-    }
-    public static void UpdateInitializedPinnedApps()
-    {
-        AddPinnedAppsToContainer(InitializedParent, InitializedAppContainerTitleState, InitializedAppTitleMaxLength);
     }
     /// <summary>
     /// Updates state of pinned apps containers in lolibar + updates virtual desktops if initialized.
@@ -369,5 +376,32 @@ public class LolibarProcess
 
             Container.Update();
         }
+    }
+    static async void EnablePinnedAppsWatcher()
+    {
+        PinnedAppsWatcher = new FileSystemWatcher()
+        {
+            Path                = PinnedAppsPath,
+            Filter              = "*.*",
+            EnableRaisingEvents = true,
+        };
+
+        PinnedAppsWatcher.Deleted += OnPinnedAppsEvent;
+        PinnedAppsWatcher.Created += OnPinnedAppsEvent;
+
+        while (true)
+        {
+            if (!IsPinnedAppsUpdated)
+            {
+                // Readds all containers
+                AddPinnedAppsToContainer(InitializedParent, InitializedAppContainerTitleState, InitializedAppTitleMaxLength);
+            }
+            await Task.Delay(10);
+        }
+    }
+
+    static void OnPinnedAppsEvent(object sender, FileSystemEventArgs e)
+    {
+        IsPinnedAppsUpdated = false;
     }
 }

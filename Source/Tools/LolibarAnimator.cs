@@ -5,8 +5,10 @@ namespace LolibarApp.Source.Tools;
 
 partial class LolibarAnimator
 {
-    static readonly Duration duration           = new(TimeSpan.FromSeconds(0.22));
-    static readonly Duration elementDuration    = new(TimeSpan.FromSeconds(0.12));
+    public const double TIME_QUICK = 0.12;
+    public const double TIME_LONG = 0.22;
+    static readonly Duration duration           = new(TimeSpan.FromSeconds(TIME_LONG));
+    static readonly Duration elementDuration    = new(TimeSpan.FromSeconds(TIME_QUICK));
     static readonly CubicEase easingFunction    = new() { EasingMode = EasingMode.EaseInOut };
 
     public class ContextMenu : Window
@@ -204,5 +206,21 @@ partial class LolibarAnimator
             Storyboard.SetTargetProperty(Animation, new PropertyPath(OpacityProperty));
             SB.Begin((FrameworkElement)_);
         }
+        public static void Appear(UIElement _)
+        {
+            Storyboard SB = new();
+            var Animation = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = elementDuration,
+                EasingFunction = easingFunction,
+            };
+            SB.Children.Add(Animation);
+            Storyboard.SetTarget(Animation, _);
+            Storyboard.SetTargetProperty(Animation, new PropertyPath(OpacityProperty));
+            SB.Begin((FrameworkElement)_);
+        }
+        
     }
 }
