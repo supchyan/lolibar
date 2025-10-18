@@ -419,7 +419,7 @@ public partial class Lolibar : Window
             }
         }
     };
-    static bool IsAutorunPathExist()
+    public static bool IsAutorunPathExist()
     {
         var PathExists = Path.Exists("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\lolibar.lnk");
         
@@ -452,13 +452,17 @@ public partial class Lolibar : Window
         TrayIcon.ContextMenuStrip?.Items.Remove(CloseTrayItem);
         TrayIcon.ContextMenuStrip?.Items.Add(CloseTrayItem);
     } 
-    private static void OnAutorunSelected(object? sender, EventArgs e)
+    static void OnAutorunSelected(object? sender, EventArgs e)
     {
-        Process proc = new();
-        proc.StartInfo.FileName = @"Autorun\autorun.exe";
-        proc.StartInfo.UseShellExecute = true;
-        proc.Start();
-        proc.WaitForExit();
+        new Process()
+        {
+            StartInfo =
+            {
+                FileName = @"Autorun\autorun.exe",
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            },
+        }.Start();
 
         UpdateTrayItems();
     }

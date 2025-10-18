@@ -128,7 +128,7 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Parent                  = AudioContainerP.GetBody(),
             HasBackground           = true,
-            MouseLeftButtonUp       = PlayOrPause,
+            MouseLeftButtonUp       = AudioPlayOrPause,
             MouseMiddleButtonUp     = ShowCurrentPlayingAudioToast,
             MouseRightButtonUp      = OpenAudioContextMenu,
             Color                   = LolibarColor.FromHEX(TernaryColorCode)
@@ -293,25 +293,35 @@ class MaintainerShowcaseMod : LolibarMod
         LolibarContextMenu menu = new();
 
         // Add children as LolibarContainers
+
+        // Context menu "title"
         menu.Children.Add(new()
         {
             Text = $"Lolibar Menu",
             Icon = LolibarIcon.GetApplicationIcon(Process.GetCurrentProcess().MainModule?.FileName ?? ""),
         });
 
+        // Lolibar autorun switcher
+        menu.Children.Add(new()
+        {
+            Text = Lolibar.IsAutorunPathExist() ? "Autorun (On)" : "Autorun (Off)",
+            HasBackground = true,
+            MouseLeftButtonUp = ToggleLolibarAutorun
+        });
+
+        // Lolibar restart button
         menu.Children.Add(new()
         {
             Text = $"Restart Lolibar",
             HasBackground = true,
-
             MouseLeftButtonUp = RestartLolibar
         });
 
+        // Lolibar "gentle" close button
         menu.Children.Add(new()
         {
             Text = $"Close Lolibar",
             HasBackground = true,
-
             MouseLeftButtonUp = CloseLolibar
         });
 
@@ -320,6 +330,21 @@ class MaintainerShowcaseMod : LolibarMod
 
         return 0;
     }
+
+    int ToggleLolibarAutorun(MouseButtonEventArgs args)
+    {
+        new Process()
+        {
+            StartInfo =
+            {
+                FileName = @"Autorun\autorun.exe",
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            },
+        }.Start();
+        return 0;
+    }
+
     int CloseLolibar(MouseButtonEventArgs e)
     {
         LolibarHelper.CloseApplicationGently(); 
@@ -380,25 +405,25 @@ class MaintainerShowcaseMod : LolibarMod
     }
 
     // --- Desktop Workspaces ---
-    int Previous(MouseButtonEventArgs e)
+    int AudioPrevious(MouseButtonEventArgs e)
     {
         // Go to previous audio
         LolibarAudio.Previous();
         return 0;
     }
-    int PlayOrPause(MouseButtonEventArgs e)
+    int AudioPlayOrPause(MouseButtonEventArgs e)
     {
         // Play or Pause current audio
         LolibarAudio.PlayOrPause();
         return 0;
     }
-    int Next(MouseButtonEventArgs e)
+    int AudioNext(MouseButtonEventArgs e)
     {
         // Go to next audio
         LolibarAudio.Next();
         return 0;
     }
-    int ModifyVolume(MouseWheelEventArgs e)
+    int AudioModifyVolume(MouseWheelEventArgs e)
     {
         if (e.Delta > 0)
         {
@@ -456,7 +481,7 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Icon = AudioPauseIcon,
             HasBackground = true,
-            MouseLeftButtonUp = PlayOrPause
+            MouseLeftButtonUp = AudioPlayOrPause
         };
         AudioSwitchButtonContainer.Initialize();
 
@@ -464,7 +489,7 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Icon = AudioSpinnerIcon,
             HasBackground = true,
-            MouseWheelDelta = ModifyVolume
+            MouseWheelDelta = AudioModifyVolume
         };
         AudioSwitchButtonContainer.Initialize();
 
@@ -473,7 +498,7 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Icon = AudioRewindIcon,
             HasBackground = true,
-            MouseLeftButtonUp = Previous,
+            MouseLeftButtonUp = AudioPrevious,
         });
 
         menu.Children.Add(
@@ -484,7 +509,7 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Icon = AudioNextIcon,
             HasBackground = true,
-            MouseLeftButtonUp = Next
+            MouseLeftButtonUp = AudioNext
         });
 
         menu.Children.Add(
