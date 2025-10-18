@@ -17,12 +17,6 @@ public class LolibarContextMenu
     public double       ChildMargin         { get; set; } = LolibarMod.BarContextMenuChildMargin;
 
     /// <summary>
-    /// Margin offset will be increased by children left/right margin offsets 
-    /// to properly calculate width of context menu in horizontal orientation.
-    /// </summary>
-    //double              MarginOffset        { get; set; }
-
-    /// <summary>
     /// List of context menu children. Add your clickable or not containers to here, which will be shown on context menu.
     /// </summary>
     public List<LolibarContainer> Children { get; set; } = new();
@@ -84,9 +78,6 @@ public class LolibarContextMenu
             IsTabStop           = false,
 
             Background          = LolibarColor.FromHEX("#00000000"),
-
-            FontSize            = LolibarMod.BarFontSize,
-            FontFamily          = (System.Windows.Media.FontFamily)App.Current.Resources["mononoki"]
         };
 
         ContextMenuWnd.MouseLeave   += ContextMenu_MouseLeave;

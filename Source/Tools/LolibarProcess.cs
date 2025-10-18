@@ -42,7 +42,7 @@ public class LolibarProcess
     static int                                  InitializedAppTitleMaxLength        { get; set; }
     static LolibarEnums.AppContainerTitleState  InitializedAppContainerTitleState   { get; set; }
 
-    const string AppActiveSymbol = "•";
+    const string AppActiveSymbol = "●";
 
     static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
 

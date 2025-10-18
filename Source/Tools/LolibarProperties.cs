@@ -4,7 +4,15 @@ using System.Windows.Media;
 namespace LolibarApp.Source.Tools;
 
 public abstract partial class LolibarProperties
-{ 
+{
+    /// <summary>
+    /// Font family. You need to specify a proper "Font name" here. Also, you need to insall your font before use here.
+    /// </summary>
+    public static string    BarFontFamily   { get; set; } = "Arial";
+    /// <summary>
+    /// Font weight.
+    /// </summary>
+    public static int       BarFontWeight   { get; set; } = 400;
     /// <summary>
     /// Shadow color. Use ARGB hex to make it transparent. (#80000000 by default)
     /// </summary>
@@ -57,9 +65,9 @@ public abstract partial class LolibarProperties
     /// </summary>
     public static double BarHeight { get; set; } = 60.0;
     /// <summary>
-    /// Lolibar's font size. (12.0 by default)
+    /// Lolibar's font size. (12 by default)
     /// </summary>
-    public static double BarFontSize { get; set; } = 12.0;
+    public static int BarFontSize { get; set; } = 12;
     /// <summary>
     /// Lolibar's icon size. (16.0 by default)
     /// </summary>

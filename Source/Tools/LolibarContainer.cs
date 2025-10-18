@@ -34,11 +34,24 @@ public class LolibarContainer
     /// </summary>
     public string?                  Text                        { get; set; }
     /// <summary>
-    /// Container content's color. (Equals `BarContainersColor` by default) 
+    /// Font family. You need to put your font into lolibar's `Fonts` folder, then install it.
+    /// After that, you can put your font name inside FontFamily property here. (Equals to `BarFontFamily` by default)
+    /// </summary>
+    public string?                  FontFamily                  { get; set; }       = LolibarMod.BarFontFamily;
+    /// <summary>
+    /// Font weight. (Equals to `BarFontWeight` by default)
+    /// </summary>
+    public int                      FontWeight                  { get; set; } = LolibarMod.BarFontWeight;
+    /// <summary>
+    ///Font Size. (Equals to `BarFontSize` by default)
+    /// </summary>
+    public int                      FontSize                    { get; set; }       = LolibarMod.BarFontSize;
+    /// <summary>
+    /// Content's color. Background will be semi-transparent when text and icon will be painted in this Color. (Equals to `BarContainersColor` by default) 
     /// </summary>
     public SolidColorBrush?         Color                       { get; set; }       = LolibarMod.BarContainersColor;
     /// <summary>
-    /// Set it to `true`, if you want to make this container have a visible background. (False as default)
+    /// Set it to `true`, if you want to make this container have a visible background. (False by default)
     /// </summary>
     public bool                     HasBackground               { get; set; }
     /// <summary>
@@ -64,10 +77,7 @@ public class LolibarContainer
     Path                            PathContainer               { get; set; }       = new();
     // Ico/Jpg/Png... icon container. Won't be drawn, if typeof(Icon) isn't `Image`
     System.Windows.Controls.Image   ImageContainer              { get; set; }       = new();
-    /// <summary>
-    /// Becomes true, after container has been initialized.
-    /// </summary>
-    public bool                     IsInitialized               { get; private set; }
+    
     /// <summary>
     /// Position, where container's separator should be drawn. Use `LolibarEnums.SeparatorPosition` Enum to help yourself.
     /// </summary>
@@ -88,12 +98,19 @@ public class LolibarContainer
     /// Event invoked on the mouse WHEEL state's change (Up or Down spin).
     /// </summary>
     public Func<MouseWheelEventArgs, int>? MouseWheelDelta      { get; set; }
+    bool _IsInitialized                                         { get; set; }
 
     SolidColorBrush BorderBackground()
     {
         return HasBackground ? LolibarColor.FromHEX($"#30{LolibarHelper.ARGBtoHEX(Color ?? new SolidColorBrush())[3..]}") : LolibarColor.FromHEX("#00000000");
     }
-
+    /// <summary>
+    /// Becomes true, after container has been initialized.
+    /// </summary>
+    public bool IsInitialized()
+    {
+        return _IsInitialized;
+    }
     public StackPanel GetBody()
     {
         return StackPanelContainer;
@@ -111,7 +128,7 @@ public class LolibarContainer
     public void Initialize()
     {
         // Skip initialtization if completed before
-        if (IsInitialized) return;
+        if (IsInitialized()) return;
 
         Name = LolibarHelper.GetRandomString(32);
 
@@ -186,6 +203,7 @@ public class LolibarContainer
 
         UpdateIconContainersInstance();
 
+
         TextBlockContainer = new()
         {
             MinWidth            = 0,
@@ -194,7 +212,9 @@ public class LolibarContainer
             Margin              = LolibarMod.BarContainersContentMargin,
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
             VerticalAlignment   = System.Windows.VerticalAlignment.Center,
-            // FontWeight       = FontWeight.FromOpenTypeWeight(600) // it fits bad with mononoki font, but would be cool to add as 'BoldText = true' property ;v;
+            FontFamily          = new System.Windows.Media.FontFamily(new Uri("pack://application:,,,/"), $"Fonts/#{FontFamily}"),
+            FontSize            = FontSize,
+            FontWeight          = System.Windows.FontWeight.FromOpenTypeWeight(FontWeight)
         };
         TextBlockContainer.SetResourceReference(TextBlock.TextProperty, $"{Name}Text");
         TextBlockContainer.SetResourceReference(TextBlock.ForegroundProperty, $"{Name}Color");
@@ -224,7 +244,7 @@ public class LolibarContainer
         }
 
         // Say this container is initialized
-        IsInitialized = true;
+        _IsInitialized = true;
     }
     /// <summary>
     /// Initializes and adds container to the Parent container.
@@ -294,7 +314,7 @@ public class LolibarContainer
 
     public void Update()
     {
-        if (!IsInitialized) return;
+        if (!IsInitialized()) return;
 
         if (Text == null)
         {

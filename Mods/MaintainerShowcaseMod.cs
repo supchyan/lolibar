@@ -70,6 +70,8 @@ class MaintainerShowcaseMod : LolibarMod
         BarSeparatorWidth           = 3.0;
         BarSeparatorRadius          = 1.5;
         BarContextMenuChildMargin   = 10.0;
+
+        BarFontFamily               = "mononoki";
         BarFontSize                 = 13;
 
         BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
@@ -249,10 +251,10 @@ class MaintainerShowcaseMod : LolibarMod
                 // Show new language info as a toast 
                 LolibarToast currentLanguageToast = new()
                 {
-                    Text      = currentLanguage,
-                    FontSize  = 18,
-                    IsBold    = true,
-                    ShowTime  = 1000, // 1s
+                    Text        = currentLanguage,
+                    FontSize    = 18,
+                    ShowTime    = 1000, // 1s
+                    FontWeight  = 600
                 };
                 currentLanguageToast.Create();
             }
@@ -509,7 +511,7 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Icon = AudioNextIcon,
             HasBackground = true,
-            MouseLeftButtonUp = AudioNext
+            MouseLeftButtonUp = AudioNext,
         });
 
         menu.Children.Add(
@@ -528,10 +530,9 @@ class MaintainerShowcaseMod : LolibarMod
         // Show current audio info as toast or placeholder, if no audio is playing
         new LolibarToast()
         {
-            FontSize    = 18,
-            IsBold      = false,
+            FontSize    = 17,
             Text        = audioTitle == "" ? "No active audio detected" : $"Now Playing: {audioTitle.Truncate(128)}",
-            ShowTime    = 2000
+            ShowTime    = 2000,
         }.Create();
 
         return 0;

@@ -11,45 +11,40 @@ namespace LolibarApp.Source.Tools;
 /// </summary>
 public class LolibarToast
 {
-    Window          ToastWnd        { get; set; }   = new();
+    Window          ToastWnd    { get; set; }   = new();
     /// <summary>
-    /// Toast font size. (BarFontSize by default)
+    /// Container's text content, which will be drawn inside.
     /// </summary>
-    public double   FontSize        { get; set; } = LolibarMod.BarFontSize;
+    public string?  Text        { get; set; }
     /// <summary>
-    /// True when toast text is bold. (false by default)
+    /// Font family. You need to put your font into lolibar's `Fonts` folder, then install it.
+    /// After that, you can put your font name inside FontFamily property here. (Equals to `BarFontFamily` by default)
     /// </summary>
-    public bool     IsBold          { get; set; } = false;
+    public string?  FontFamily  { get; set; } = LolibarMod.BarFontFamily;
     /// <summary>
-    /// Toast width.
+    /// Font weight. (Equals to `BarFontWeight` by default)
     /// </summary>
-    public double   Width           { get; set; }   = 120;
+    public int      FontWeight  { get; set; } = LolibarMod.BarFontWeight;
     /// <summary>
-    /// Toast height.
+    /// Font Size. (Equals to `BarFontSize` by default)
     /// </summary>
-    public double   Height          { get; set; }   = 40;
-    /// <summary>
-    /// Toast content.
-    /// </summary>
-    public string   Text            { get; set; }   = "";
+    public int      FontSize    { get; set; } = LolibarMod.BarFontSize;
     /// <summary>
     /// Time in milliseconds toast will be shown.
     /// </summary>
-    public double   ShowTime        { get; set; }   = 220;
+    public double   ShowTime    { get; set; } = 220;
     /// <summary>
-    /// Toast background color. (BarColor by default)
+    /// Toast text color. (Equals to `BarContainersColor` by default)
     /// </summary>
-    public SolidColorBrush Color    { get; set; }   = LolibarMod.BarColor;
+    public SolidColorBrush TextColor        { get; set; } = LolibarMod.BarContainersColor;
     /// <summary>
-    /// Toast text color. (BarContainersColor by default)
+    /// Toast background color. (Equals to `BarColor` by default)
     /// </summary>
-    public SolidColorBrush TextColor { get; set; } = LolibarMod.BarContainersColor;
+    public SolidColorBrush BackgroundColor  { get; set; } = LolibarMod.BarColor;
     /// <summary>
-    /// Toast drop shadow color. (BarShadowColor by default)
+    /// Toast drop shadow color. (Equals to `BarShadowColor` by default)
     /// </summary>
     public SolidColorBrush ShadowColor { get; set; } = LolibarMod.BarShadowColor;
-
-    TextBlock TextBlockContainer { get; set; }
 
     public void Create()
     {
@@ -80,17 +75,18 @@ public class LolibarToast
             Background = LolibarColor.FromHEX("#00000000"),
 
             FontSize    = LolibarMod.BarFontSize,
-            FontFamily  = (System.Windows.Media.FontFamily)App.Current.Resources["mononoki"],
+            //FontFamily  = (System.Windows.Media.FontFamily)App.Current.Resources["mononoki"],
         };
         // Register event to set window transparent for mouse events
         ToastWnd.SourceInitialized += ToastWnd_SourceInitialized;
 
-        TextBlockContainer = new TextBlock()
+        var TextBlockContainer = new TextBlock()
         {
             Text                = Text,
             TextWrapping        = TextWrapping.Wrap,
             FontSize            = FontSize,
-            FontWeight          = IsBold ? FontWeights.Bold : FontWeights.Normal,
+            FontFamily          = new System.Windows.Media.FontFamily(new Uri("pack://application:,,,/"), $"Fonts/#{FontFamily}"),
+            FontWeight          = System.Windows.FontWeight.FromOpenTypeWeight(FontWeight),
             Margin              = LolibarMod.BarContainersContentMargin,
             Padding             = new Thickness(2 * LolibarMod.BarShadowBlurRadius),
             HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
@@ -108,13 +104,12 @@ public class LolibarToast
 
         var BorderContainer = new Border()
         {
-            Background      = Color, // LolibarColor.FromHEX("#ffffff");
+            Background      = BackgroundColor, // LolibarColor.FromHEX("#ffffff");
             BorderThickness = LolibarMod.BarStrokeThickness,
             BorderBrush     = LolibarMod.BarStrokeColor,
             CornerRadius    = LolibarMod.BarCornerRadius,
             Effect          = DropShadowEffect,
-
-            Margin = new Thickness(LolibarMod.BarShadowBlurRadius),
+            Margin          = new Thickness(LolibarMod.BarShadowBlurRadius),
         };
 
         BorderContainer.Child   = TextBlockContainer;

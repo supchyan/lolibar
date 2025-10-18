@@ -23,7 +23,6 @@
         
         d:DesignHeight="41.56"
         d:DesignWidth="1000.026"
-        FontFamily="{DynamicResource mononoki}"
         
         IsTabStop="False"
         UseLayoutRounding="True" Background="{x:Null}" Foreground="{x:Null}">

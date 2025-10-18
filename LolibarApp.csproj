@@ -15,8 +15,7 @@
 		<PackageReference Include="Dubya.WindowsMediaController" Version="2.5.5" />
 		<PackageReference Include="Ikst.MouseHook" Version="1.0.0" />
 		<PackageReference Include="Interop.IWshRuntimeLibrary" Version="1.0.1" />
-		<Resource Include="Fonts\mononoki.ttf"></Resource>
-	</ItemGroup>	
+	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Autorun\*">
 		    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -24,8 +23,10 @@
 		<Content Include="Scripts\*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-
 		<Content Include="Icons\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Fonts\*">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
