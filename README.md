@@ -212,7 +212,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 - **[The best music covers I've ever heard](https://www.youtube.com/@vallyexe) by @vally.exe**
 
 ## 🌸In the end...
-<div align=center><img src=https://github.com/user-attachments/assets/c15741a6-c0e5-48ff-9dc0-fb2b8b580fc7 /></div>
+<div align=center><img src=https://github.com/user-attachments/assets/d65abe93-e491-4038-b024-5b0390c26ddf /></div>
 
 ##### <div align=center>🐳 Maintainer showcase [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs). Oh, also a [wallpaper](https://wallhaven.cc/w/jxjz9p) source!</div>
 
