@@ -2,7 +2,7 @@
 <br>
 <div align=center>
     <a href=https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs>
-        <img src=https://github.com/user-attachments/assets/4a1ddb13-ca64-4af6-b396-ce5a1ee9aa15 />
+        <img src=https://github.com/user-attachments/assets/1536e5e4-4888-4350-a165-b9332de24881 />
     </a>
 </div>
 
