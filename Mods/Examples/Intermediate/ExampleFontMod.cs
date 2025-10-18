@@ -36,6 +36,8 @@ class ExampleFontMod : LolibarMod
 
             // Set parent to spawn it in there:
             Parent = Lolibar.BarCenterContainer
+
+            // If you installed this font, you may see vintage unreadable font in lolibar container!
         };
         fontContainer.Create();
     } 
