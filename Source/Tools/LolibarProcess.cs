@@ -37,7 +37,7 @@ public class LolibarProcess
     /// <summary>
     /// Stores initialized applications' containers and paths to their executable target.
     /// </summary>
-    static Dictionary<ShellLinkObject, LolibarContainer> InitializedApps            { get; set; } = new();
+    static Dictionary<LolibarContainer, Dictionary<ShellLinkObject, string>> InitializedApps            { get; set; } = new();
     static StackPanel?                          InitializedParent                   { get; set; }
     static int                                  InitializedAppTitleMaxLength        { get; set; }
     static LolibarEnums.AppContainerTitleState  InitializedAppContainerTitleState   { get; set; }
@@ -47,11 +47,14 @@ public class LolibarProcess
     static string PinnedAppsPath { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar";
     static bool IsPinnedAppsUpdated { get; set; }
     static FileSystemWatcher? PinnedAppsWatcher { get; set; }
-    static List<ShellLinkObject> UserPinnedTargetLinks
+    /// <summary>
+    /// Key = lnk object, Value = lnk file name.
+    /// </summary>
+    static Dictionary<ShellLinkObject, string> UserPinned
     {
         get
         {
-            List<ShellLinkObject> TargetLinks = new();
+            Dictionary<ShellLinkObject, string> _UserPinned = new();
 
             var ShellInstance       = new Shell();
             Folder UserPinnedFolder = ShellInstance.NameSpace(PinnedAppsPath);
@@ -64,12 +67,12 @@ public class LolibarProcess
                     // Skip URL type shortcuts, which don't end up with .exe, like P5R: steam://rungameid/1687950
                     if (lnk.Path.EndsWith(".exe"))
                     {
-                        TargetLinks.Add(lnk);
+                        _UserPinned.Add(lnk, item.Name);
                     }
                 }
             }
 
-            return TargetLinks;
+            return _UserPinned;
         }
     }
     /// <summary>
@@ -186,14 +189,14 @@ public class LolibarProcess
         InitializedAppTitleMaxLength        = appTitleMaxLength;
         InitializedAppContainerTitleState   = appContainerTitleState;
 
-        foreach(var TargetLink in UserPinnedTargetLinks)
+        foreach((var UP_Link, var UP_Name) in UserPinned)
         {
-            TargetLink.GetIconLocation(out string pbs);
+            UP_Link.GetIconLocation(out string pbs);
 
             // Icon can be embedded into .exe file, so predict it
             if (pbs == "")
             {
-                pbs = TargetLink.Target.Path;
+                pbs = UP_Link.Target.Path;
             }
 
             // Create pinned app container:
@@ -206,61 +209,65 @@ public class LolibarProcess
 
                 MouseRightButtonUp  = (e) =>
                 {
-                    GenerateContextMenu(TargetLink);
+                    GenerateContextMenu(UP_Link, UP_Name);
                     return 0;
                 },
                 MouseMiddleButtonUp = (e) =>  
                 {
                     // Starts a new application instance
-                    StartApplicationByPath(TargetLink);
+                    StartApplicationByPath(UP_Link);
                     return 0;
                 },
                 MouseLeftButtonUp   = (e) =>
                 {
                     // Invokes application instance / starts a new one,
                     // if specified application isn't running, or running at the background
-                    InvokeApplicationByPath(TargetLink);
+                    InvokeApplicationByPath(UP_Link);
                     return 0;
                 }
             };
             PinContainer.Create();
 
+            Dictionary<ShellLinkObject, string> dict = new();
+            dict.Add(UP_Link, UP_Name);
+
             // Store a child into a initialized dict
-            InitializedApps.Add(TargetLink, PinContainer);
+            InitializedApps.Add(PinContainer, dict);
+
             LolibarAnimator.Common.Appear(PinContainer.GetRoot());
         }
         FetchPinnedAppsContainers();
 
         IsPinnedAppsUpdated = true;
     }
-    static void GenerateContextMenu(ShellLinkObject TargetLink)
+    static void GenerateContextMenu(ShellLinkObject UP_Link, string UP_Name)
     {
         /* OPEN CONTEXT MENU */
         LolibarContextMenu hwndContextMenu = new();
 
-        TargetLink.GetIconLocation(out string pbs);
+        UP_Link.GetIconLocation(out string pbs);
 
         // Icon can be embedded into .exe file, so predict it
         if (pbs == "")
         {
-            pbs = TargetLink.Path;
+            pbs = UP_Link.Path;
         }
 
         // Add interactable menu header
         hwndContextMenu.Children.Add(new()
         {
-            Text = TargetLink.Target.Name,
+            Text = UP_Name,
             Icon = LolibarIcon.GetApplicationIcon(pbs),
             MouseLeftButtonUp = (e) =>
             {
-                InvokeApplicationByPath(TargetLink);
+                InvokeApplicationByPath(UP_Link);
                 return 0;
             }
         });
 
         Process[]? procs = null;
 
-        procs = Process.GetProcessesByName(GetProcessName(TargetLink));
+        procs = Process.GetProcessesByName(GetProcessName(UP_Link));
 
         foreach (var proc in procs)
         {
@@ -286,19 +293,19 @@ public class LolibarProcess
             Icon = LolibarIcon.ParseSVG("./Defaults/unpin.svg"),
             MouseLeftButtonUp = (e) =>
             {
-                UnpinApp(TargetLink);
+                UnpinApp(UP_Name);
                 hwndContextMenu.Close();
                 return 0;
             }
         });
         hwndContextMenu.Create();
     }
-    static void UnpinApp(ShellLinkObject TargetLink)
+    static void UnpinApp(string UP_Name)
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         try
         {
-            File.Delete($"{PinnedAppsPath}\\{GetProcessName(TargetLink)}.lnk");
+            File.Delete($"{PinnedAppsPath}\\{UP_Name}.lnk");
         }
         catch { /* No such file */ }
     }
@@ -325,9 +332,12 @@ public class LolibarProcess
     }
     public static void FetchPinnedAppsContainers()
     {
-        foreach ((var TargetLink, var Container) in InitializedApps)
+        foreach ((var Container, var UP) in InitializedApps)
         {
-            var proc = Process.GetProcessesByName(GetProcessName(TargetLink)).ToList().FirstOrDefault();
+            var UP_Link = UP.Keys.First();
+            var UP_Name = UP.Values.First();
+
+            var proc = Process.GetProcessesByName(GetProcessName(UP_Link)).ToList().FirstOrDefault();
 
             if (proc != null)
             {
@@ -339,12 +349,12 @@ public class LolibarProcess
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
                         
-                        Container.Text = GetProcessMainWindowTitle(TargetLink)?.Truncate(InitializedAppTitleMaxLength);
+                        Container.Text = GetProcessMainWindowTitle(UP_Link)?.Truncate(InitializedAppTitleMaxLength);
                         break;
 
                     case LolibarEnums.AppContainerTitleState.OnlyActive:
 
-                        Container.Text = isActive ? GetProcessMainWindowTitle(TargetLink)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
+                        Container.Text = isActive ? GetProcessMainWindowTitle(UP_Link)?.Truncate(InitializedAppTitleMaxLength) : AppActiveSymbol;
                         break;
 
                     case LolibarEnums.AppContainerTitleState.Never:
@@ -359,7 +369,7 @@ public class LolibarProcess
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
                         
-                        Container.Text = TargetLink.Target.Name.Truncate(InitializedAppTitleMaxLength);
+                        Container.Text = UP_Name.Truncate(InitializedAppTitleMaxLength);
                         break;
 
                     case LolibarEnums.AppContainerTitleState.OnlyActive:

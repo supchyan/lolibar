@@ -120,11 +120,11 @@ public abstract partial class LolibarProperties
     public static SolidColorBrush BarContainersColor { get; set; } = LolibarColor.FromHEX("#dddddd");
 
     /// <summary>
-    /// Lolibar's border radius property. (new CornerRadius(6.0) by default)
+    /// Lolibar's border radius property. (new CornerRadius(8.0) by default)
     /// </summary>
     public static CornerRadius BarCornerRadius { get; set; } = new CornerRadius(8.0);
     /// <summary>
-    /// Cornder radius of the elements containers.
+    /// Cornder radius of the elements containers. (new CornerRadius(3.0) by default)
     /// </summary>
     public static CornerRadius BarContainersCornerRadius { get; set; } = new CornerRadius(3.0);
 }
