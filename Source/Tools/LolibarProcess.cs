@@ -365,6 +365,8 @@ public class LolibarProcess
             }
             else
             {
+                Container.HasBackground = false;
+
                 switch (InitializedAppContainerTitleState)
                 {
                     case LolibarEnums.AppContainerTitleState.Always:
