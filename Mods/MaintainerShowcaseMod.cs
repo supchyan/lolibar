@@ -486,10 +486,6 @@ class MaintainerShowcaseMod : LolibarMod
         return 0;
     }
 
-    void Elapsed(object? sender, ElapsedEventArgs e)
-    {
-    }
-
     int OpenAudioContextMenu(MouseButtonEventArgs args)
     {
         var audioTitle = LolibarAudio.MediaProperties?.Title ?? "";

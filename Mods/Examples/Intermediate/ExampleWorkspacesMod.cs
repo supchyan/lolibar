@@ -85,6 +85,10 @@ class ExampleWorkspacesMod : LolibarMod
             // LolibarHelper.KeyUp(Keys.Right);
         }
 
+        // If you use a hotkeys swap,
+        // you need to update desktops container manually:
+        // LolibarVirtualDesktop.UpdateInitializedDesktops();
+
         return 0;
     }
 }
