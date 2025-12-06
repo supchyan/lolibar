@@ -192,10 +192,11 @@ public class LolibarVirtualDesktop
     /// <summary>
     /// Manually updates initialized Virtual Dekstops in some initialized parent.
     /// </summary>
-    public static void UpdateInitializedDesktops()
+    public static async void UpdateInitializedDesktops()
     {
         if (InitializedParent == null) return;
 
+        await Task.Delay(500);
         DrawWorkspacesInParent(InitializedParent, InitializedShowDesktopNames);
     }
     static void CreateDesktop()

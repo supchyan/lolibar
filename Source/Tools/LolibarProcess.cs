@@ -1,8 +1,6 @@
 ﻿using Shell32;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace LolibarApp.Source.Tools;
@@ -204,8 +202,8 @@ public class LolibarProcess
             {
                 Icon                = LolibarIcon.GetApplicationIcon(pbs),
                 Parent              = parent,
-                LeftMarginOffset   = 5.0,
-                RightMarginOffset  = 5.0,
+                LeftMarginOffset    = 5.0,
+                RightMarginOffset   = 5.0,
 
                 MouseRightButtonUp  = (e) =>
                 {
@@ -408,7 +406,7 @@ public class LolibarProcess
                 // Readds all containers
                 AddPinnedAppsToContainer(InitializedParent, InitializedAppContainerTitleState, InitializedAppTitleMaxLength);
             }
-            await Task.Delay(10);
+            await Task.Delay(100);
         }
     }
 

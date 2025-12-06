@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
 using System.Diagnostics;
+using System.Timers;
 
 namespace LolibarApp.Mods;
 
@@ -71,7 +72,7 @@ class MaintainerShowcaseMod : LolibarMod
         BarSeparatorRadius          = 1.5;
         BarContextMenuChildMargin   = 10.0;
 
-        BarFontFamily               = "mononoki";
+        BarFontFamily               = "Rubik";
         BarFontSize                 = 13;
 
         BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
@@ -450,17 +451,45 @@ class MaintainerShowcaseMod : LolibarMod
         // If mouse wheel scrolls down, go to next desktop if possible
         if (e.Delta > 0)
         {
-            LolibarVirtualDesktop.GoToDesktopLeft();
+            // !!! This glitchy on Win 11 !!!
+            // LolibarVirtualDesktop.GoToDesktopLeft();
+            // ...
+            // So use hotkeys instead
+            LolibarHelper.KeyDown(Keys.LControlKey);
+            LolibarHelper.KeyDown(Keys.LWin);
+            LolibarHelper.KeyDown(Keys.Left);
+
+            LolibarHelper.KeyUp(Keys.LControlKey);
+            LolibarHelper.KeyUp(Keys.LWin);
+            LolibarHelper.KeyUp(Keys.Left);
         }
 
         // If mouse wheel scrolls up, go to previous desktop if possible
         if (e.Delta < 0)
         {
-            LolibarVirtualDesktop.GoToDesktopRight();
+            // !!! This glitchy on Win 11 !!!
+            // LolibarVirtualDesktop.GoToDesktopRight();
+            // ...
+            // So use hotkeys instead
+            LolibarHelper.KeyDown(Keys.LControlKey);
+            LolibarHelper.KeyDown(Keys.LWin);
+            LolibarHelper.KeyDown(Keys.Right);
+
+            LolibarHelper.KeyUp(Keys.LControlKey);
+            LolibarHelper.KeyUp(Keys.LWin);
+            LolibarHelper.KeyUp(Keys.Right);
         }
+
+        // Update desktops manually
+        LolibarVirtualDesktop.UpdateInitializedDesktops();
 
         return 0;
     }
+
+    void Elapsed(object? sender, ElapsedEventArgs e)
+    {
+    }
+
     int OpenAudioContextMenu(MouseButtonEventArgs args)
     {
         var audioTitle = LolibarAudio.MediaProperties?.Title ?? "";

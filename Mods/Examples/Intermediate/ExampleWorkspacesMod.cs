@@ -51,12 +51,38 @@ class ExampleWorkspacesMod : LolibarMod
     {
         if (e.Delta > 0)
         {
-            LolibarVirtualDesktop.GoToDesktopLeft();
+            LolibarVirtualDesktop.GoToDesktopLeft(); // Glitchy on Win 11
+
+            // On Windows 11 you can use desktop swap
+            // by emulating several hotkey (LCtrl + LWin + Left)
+
+            // Down
+            // LolibarHelper.KeyDown(Keys.LControlKey);
+            // LolibarHelper.KeyDown(Keys.LWin);
+            // LolibarHelper.KeyDown(Keys.Left);
+
+            // Up
+            // LolibarHelper.KeyUp(Keys.LControlKey);
+            // LolibarHelper.KeyUp(Keys.LWin);
+            // LolibarHelper.KeyUp(Keys.Left);
         }
 
         if (e.Delta < 0)
         {
-            LolibarVirtualDesktop.GoToDesktopRight();
+            LolibarVirtualDesktop.GoToDesktopRight(); // Glitchy on Win 11
+
+            // On Windows 11 you can use desktop swap
+            // by emulating several hotkey (LCtrl + LWin + Right)
+            
+            // Down
+            // LolibarHelper.KeyDown(Keys.LControlKey);
+            // LolibarHelper.KeyDown(Keys.LWin);
+            // LolibarHelper.KeyDown(Keys.Right);
+
+            // Up
+            // LolibarHelper.KeyUp(Keys.LControlKey);
+            // LolibarHelper.KeyUp(Keys.LWin);
+            // LolibarHelper.KeyUp(Keys.Right);
         }
 
         return 0;
