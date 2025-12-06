@@ -17,9 +17,12 @@ class ExampleHideWindowsTaskbarMod : LolibarMod
         // Lolibar doesn't do this due OS stability issues.
         // ...
         // I can suggest to use Windhawk software with `Windows 11 Taskbar Styler` mod.
-        // In mod settings you can modify visibility of vanilla taskbar's root node like:
-        // Target: Windows.UI.Xaml.Controls.Grid
-        // Styles: Visibility=Collapsed
+        // In mod settings you can modify opacity of vanilla taskbar's nodes like:
+        // Target: Taskbar.TaskbarFrame
+        // Styles: Opacity=0
+        // and
+        // Target: SystemTray.SystemTrayFrame
+        // Styles: Opacity=0
         // It should hide vanilla taskbar permanently.
 
         // So... What is taskbar in a nutshell?
