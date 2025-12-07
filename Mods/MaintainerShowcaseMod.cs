@@ -480,8 +480,9 @@ class MaintainerShowcaseMod : LolibarMod
             LolibarHelper.KeyUp(Keys.Right);
         }
 
-        // Update desktops manually
-        LolibarVirtualDesktop.UpdateInitializedDesktops();
+        // Update stuff manually
+        LolibarVirtualDesktop.UpdateInitializedDesktops(500);
+        LolibarProcess.FetchPinnedAppsContainers(500);
 
         return 0;
     }

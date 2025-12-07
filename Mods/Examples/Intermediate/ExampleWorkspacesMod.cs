@@ -51,43 +51,49 @@ class ExampleWorkspacesMod : LolibarMod
     {
         if (e.Delta > 0)
         {
-            LolibarVirtualDesktop.GoToDesktopLeft(); // Glitchy on Win 11
+            // You can use this call to swap to left,
+            // but it's glitchy on Win 11
+            // LolibarVirtualDesktop.GoToDesktopLeft();
 
             // On Windows 11 you can use desktop swap
             // by emulating several hotkey (LCtrl + LWin + Left)
 
             // Down
-            // LolibarHelper.KeyDown(Keys.LControlKey);
-            // LolibarHelper.KeyDown(Keys.LWin);
-            // LolibarHelper.KeyDown(Keys.Left);
+            LolibarHelper.KeyDown(Keys.LControlKey);
+            LolibarHelper.KeyDown(Keys.LWin);
+            LolibarHelper.KeyDown(Keys.Left);
 
             // Up
-            // LolibarHelper.KeyUp(Keys.LControlKey);
-            // LolibarHelper.KeyUp(Keys.LWin);
-            // LolibarHelper.KeyUp(Keys.Left);
+            LolibarHelper.KeyUp(Keys.LControlKey);
+            LolibarHelper.KeyUp(Keys.LWin);
+            LolibarHelper.KeyUp(Keys.Left);
         }
 
         if (e.Delta < 0)
         {
-            LolibarVirtualDesktop.GoToDesktopRight(); // Glitchy on Win 11
+            // You can use this call to swap to right,
+            // but it's glitchy on Win 11
+            // LolibarVirtualDesktop.GoToDesktopRight();
 
             // On Windows 11 you can use desktop swap
             // by emulating several hotkey (LCtrl + LWin + Right)
-            
+
             // Down
-            // LolibarHelper.KeyDown(Keys.LControlKey);
-            // LolibarHelper.KeyDown(Keys.LWin);
-            // LolibarHelper.KeyDown(Keys.Right);
+            LolibarHelper.KeyDown(Keys.LControlKey);
+            LolibarHelper.KeyDown(Keys.LWin);
+            LolibarHelper.KeyDown(Keys.Right);
 
             // Up
-            // LolibarHelper.KeyUp(Keys.LControlKey);
-            // LolibarHelper.KeyUp(Keys.LWin);
-            // LolibarHelper.KeyUp(Keys.Right);
+            LolibarHelper.KeyUp(Keys.LControlKey);
+            LolibarHelper.KeyUp(Keys.LWin);
+            LolibarHelper.KeyUp(Keys.Right);
         }
 
         // If you use a hotkeys swap,
         // you need to update desktops container manually:
-        // LolibarVirtualDesktop.UpdateInitializedDesktops();
+        LolibarVirtualDesktop.UpdateInitializedDesktops(500);
+        // as well as pinned apps, if you use them:
+        LolibarProcess.FetchPinnedAppsContainers(500);
 
         return 0;
     }

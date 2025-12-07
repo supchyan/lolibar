@@ -328,8 +328,9 @@ public class LolibarProcess
         FetchPinnedAppsContainers();
         LolibarVirtualDesktop.UpdateInitializedDesktops();
     }
-    public static void FetchPinnedAppsContainers()
+    public static async void FetchPinnedAppsContainers(int delay = 0)
     {
+        await Task.Delay(delay);
         foreach ((var Container, var UP) in InitializedApps)
         {
             var UP_Link = UP.Keys.First();
