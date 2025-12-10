@@ -257,7 +257,7 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 ## 🌸In the end...
 <div align=center>
     <a href="#">
-        <img src="https://github.com/user-attachments/assets/77cfc1ec-5dfd-4cb9-92a7-9b703c5dab05" />
+        <img src="https://github.com/user-attachments/assets/4d6bfb09-7d87-481b-9a25-b9eada67ebc7" />
     </a>
 </div>
 
