@@ -235,8 +235,8 @@ class MaintainerShowcaseMod : LolibarMod
 
         // --- Date / Time ---
         //
-        // Use String.Format("{0:00}") to convert '9:13' into '09:13' for example
-        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)})";
+        // Use String.Format("{0:00}") to convert '9:13:7' into '09:13:07' for example
+        DateTimeContainer.Text = $"{String.Format("{0:00}", DateTime.Now.Day)}.{String.Format("{0:00}", DateTime.Now.Month)} ({String.Format("{0:00}", DateTime.Now.Hour)}:{String.Format("{0:00}", DateTime.Now.Minute)}:{String.Format("{0:00}", DateTime.Now.Second)})";
         DateTimeContainer.Update();
 
         // --- Language ---
