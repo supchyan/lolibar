@@ -28,10 +28,10 @@ class MaintainerShowcaseMod : LolibarMod
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode       = "#bc1b1c1f"; // semi-transparent
-    const string SecondaryColorCode     = "#ffcbd6ea";
-    const string SecondaryColorCodeT    = "#55cbd6ea"; // semi-transparent
-    const string TernaryColorCode       = "#ffe6524c";
+    const string PrimaryColorCode       = "#bc153253"; // semi-transparent
+    const string SecondaryColorCode     = "#fff2e1ea";
+    const string SecondaryColorCodeT    = "#55f2e1ea"; // semi-transparent
+    const string TernaryColorCode       = "#ff8e8aad";
     #endregion
 
     #region Containers
@@ -72,7 +72,7 @@ class MaintainerShowcaseMod : LolibarMod
         BarSeparatorRadius          = 1.5;
         BarContextMenuChildMargin   = 10.0;
 
-        BarFontFamily               = "Rubik";
+        BarFontFamily               = "mononoki";
         BarFontSize                 = 13;
 
         BarColor                    = LolibarColor.FromHEX(PrimaryColorCode);
