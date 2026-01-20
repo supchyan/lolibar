@@ -27,10 +27,10 @@ class MaintainerShowcaseMod : LolibarMod
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode       = "#bc153253"; // semi-transparent
-    const string SecondaryColorCode     = "#fff2e1ea";
-    const string SecondaryColorCodeT    = "#55f2e1ea"; // semi-transparent
-    const string TernaryColorCode       = "#ff8e8aad";
+    const string PrimaryColorCode       = "#bc26262e"; // semi-transparent
+    const string SecondaryColorCode     = "#ffbebee6";
+    const string SecondaryColorCodeT    = "#55bebee6"; // semi-transparent
+    const string TernaryColorCode       = "#fff26575";
     #endregion
 
     #region Containers
