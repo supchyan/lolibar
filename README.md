@@ -257,11 +257,12 @@ Inspired enough to start modding? Then, get into **[Examples](https://github.com
 ## 🌸In the end...
 <div align=center>
     <a href="#">
-        <img src="https://github.com/user-attachments/assets/4d6bfb09-7d87-481b-9a25-b9eada67ebc7" />
+        <img src="https://github.com/user-attachments/assets/df9342c3-517f-4bf0-a9cb-cc3b3be6441c" />
     </a>
 </div>
 
-##### <div align=center>🐳 Maintainer showcase [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs). Oh, also a [wallpaper](https://wallhaven.cc/w/jeeokp) source!</div>
+##### <div align=center>🐳 Maintainer showcase [mod](https://github.com/supchyan/lolibar/blob/stable/Mods/MaintainerShowcaseMod.cs). Oh, also a [wallpaper](https://wallhaven.cc/w/jewvzy) source!</div>
 
 ---
+
 ##### <div align=center>☕Have any questions or suggestions? Feel free to contact me on my [Discord](https://discord.gg/dGF8p9UGyM) server!</div>
