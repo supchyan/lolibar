@@ -27,10 +27,11 @@ class MaintainerShowcaseMod : LolibarMod
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode       = "#bc26262e"; // semi-transparent
-    const string SecondaryColorCode     = "#ffbebee6";
-    const string SecondaryColorCodeT    = "#55bebee6"; // semi-transparent
-    const string TernaryColorCode       = "#fff26575";
+    const string PrimaryColorCode       = "#bc231e2e"; // semi-transparent
+    const string SecondaryColorCode     = "#ffb374a2";
+    const string SecondaryColorCodeT    = "#559c658d"; // semi-transparent
+    const string TernaryColorCode       = "#ff72d2c5";
+    const string PowerMonitorColor      = "#ffcf906b";
     #endregion
 
     #region Containers
@@ -158,8 +159,10 @@ class MaintainerShowcaseMod : LolibarMod
         {
             Parent                  = Lolibar.BarRightContainer,
             MouseRightButtonUp      = OpenPowerContextMenu,
+            MouseLeftButtonUp       = ShowPowerToast,
             HasBackground           = true,
-            LeftMarginOffset        = 14.0
+            LeftMarginOffset        = 14.0,
+            Color                   = LolibarColor.FromHEX(PowerMonitorColor)
         };
         PowerMonitorContainer.Create();
 
@@ -270,6 +273,7 @@ class MaintainerShowcaseMod : LolibarMod
         //
         // Power in percent returns something like '15%'
         PowerMonitorContainer.Text = $"{LolibarStats.PowerInPercent}";
+
         // SmartPowerIcon changes its visuals as battery current power level
         PowerMonitorContainer.Icon = LolibarStats.SmartPowerIcon;
 
@@ -405,6 +409,22 @@ class MaintainerShowcaseMod : LolibarMod
 
         return 0;
     }
+    int ShowPowerToast(MouseButtonEventArgs e)
+    {
+        new LolibarToast()
+        {
+            FontSize = 17,
+            Text = LolibarStats.IsBatteryCharging ?         // if battery flags contains "Charging"
+                "Battery Status: Charging..." :             // print a charging message
+                (LolibarStats.PowerInPercent == "100%" ?    // otherwise: check if it's 100%,
+                    "Battery Status: Full" :                // so print charged message;
+                    "Battery Status: Depleting..."          // depleting message otherwise.
+                ),
+            ShowTime = 2000,
+        }.Create();
+
+        return 0;
+    }
 
     // --- Desktop Workspaces ---
     int AudioPrevious(MouseButtonEventArgs e)
@@ -450,10 +470,10 @@ class MaintainerShowcaseMod : LolibarMod
         // If mouse wheel scrolls down, go to next desktop if possible
         if (e.Delta > 0)
         {
-            // !!! This glitchy on Win 11 !!!
+            // !!! This one is glitchy on Windows 11 !!!
             // LolibarVirtualDesktop.GoToDesktopLeft();
-            // ...
-            // So use hotkeys instead
+
+            // So use hotkeys trick instead
             LolibarHelper.KeyDown(Keys.LControlKey);
             LolibarHelper.KeyDown(Keys.LWin);
             LolibarHelper.KeyDown(Keys.Left);
@@ -466,10 +486,10 @@ class MaintainerShowcaseMod : LolibarMod
         // If mouse wheel scrolls up, go to previous desktop if possible
         if (e.Delta < 0)
         {
-            // !!! This glitchy on Win 11 !!!
+            // !!! This one is glitchy on Windows 11 !!!
             // LolibarVirtualDesktop.GoToDesktopRight();
-            // ...
-            // So use hotkeys instead
+
+            // So use hotkeys trick instead
             LolibarHelper.KeyDown(Keys.LControlKey);
             LolibarHelper.KeyDown(Keys.LWin);
             LolibarHelper.KeyDown(Keys.Right);
