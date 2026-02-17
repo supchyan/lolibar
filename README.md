@@ -204,7 +204,10 @@ class MyFirstMod : LolibarMod
     // I made this container as external var to get access to it under different hooks.
     LolibarContainer HelloContainer;
 
-    public override void PreInitialize() { }
+    public override void PreInitialize()
+    {
+        BarUpdateDelay = 1000; // define 1s delay for everything in `Update()` hook
+    }
     public override void Initialize()
     {
         HelloContainer     = new()
@@ -217,12 +220,13 @@ class MyFirstMod : LolibarMod
     }
     public override void Update() 
     {
-        HelloContainer.Text = DateTime.Now.ToString();   // Change instance's text content ...
-        HelloContainer.Update();                         // ... And update it in resources
+        HelloContainer.Text = DateTime.Now.ToString();   // change instance's text content
+        HelloContainer.Update();                         // update changes right after
 
-        // Now, text inside the `HelloContainer` shows current OS time each `BarUpdateDelay`.
+        // Now, text inside the `HelloContainer` shows current OS time with a 1s delay.
     }
 }
+
 // Simple enough, isn't it? 🐳
 ```
 
