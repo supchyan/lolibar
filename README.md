@@ -202,7 +202,7 @@ namespace LolibarApp.Mods;
 class MyFirstMod : LolibarMod
 {
     // I made this container as external var to get access to it under different hooks.
-    LolibarContainer HelloContainer;
+    LolibarContainer HelloContainer = new();
 
     public override void PreInitialize()
     {
