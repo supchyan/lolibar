@@ -80,11 +80,12 @@ class ExampleFirstContainerMod : LolibarMod
         MyFirstContainer.Color = default;
 
         // Well, a `default` value equal to `BarContainerColor` property.
-        // For custom colors, you can use `LolibarColor` lib:
+        // For custom colors, you can use `LolibarColor` class:
         MyFirstContainer.Color = LolibarColor.FromHEX("#ff0000");
 
-        // `#ff0000` is HEX representation of RGB Color.
-        // So, you can use any color you want.
+        // `#ff0000` is a HEX representation of an RGB Color.
+        // Additionally, you can use ARGB color codes like `#55ff0000`
+        // to make colors semi-transparent.
 
         // --- Events ---
         //

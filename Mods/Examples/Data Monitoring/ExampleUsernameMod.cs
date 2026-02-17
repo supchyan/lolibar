@@ -22,6 +22,7 @@ class ExampleUsernameMod : LolibarMod
         ExampleUsernameContainer.Create();
     }
     public override void Update() { }
+
     int OpenUserSettings(MouseButtonEventArgs e)
     {
         new Process

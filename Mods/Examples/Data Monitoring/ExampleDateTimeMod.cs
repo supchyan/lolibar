@@ -23,7 +23,7 @@ class ExampleDateTimeMod : LolibarMod
     }
     public override void Update()
     {
-        // Looks heavy, but it's just a default c# String.Format() method, which is formats time in the way like windows do.
+        // Looks heavy, but it's just a default c# String.Format() method, which is formats time in the way like windows does.
         // For example:
         // Instead of: 6.6.2025, you will get 06.06.2025, which is better, don't you think? The same for time.
         var date = $"{DateTime.Now.DayOfWeek}, {String.Format("0:00", DateTime.Now.Day)}.{String.Format("0:00", DateTime.Now.Month)}.{DateTime.Now.Year}";
