@@ -27,11 +27,11 @@ class MaintainerShowcaseMod : LolibarMod
     #endregion
 
     #region Color Codes
-    const string PrimaryColorCode       = "#bc231e2e"; // semi-transparent
-    const string SecondaryColorCode     = "#ffb374a2";
-    const string SecondaryColorCodeT    = "#559c658d"; // semi-transparent
-    const string TernaryColorCode       = "#ff72d2c5";
-    const string PowerMonitorColor      = "#ffcf906b";
+    const string PrimaryColorCode       = "#bc424153"; // semi-transparent
+    const string SecondaryColorCode     = "#ffcccccc";
+    const string SecondaryColorCodeT    = "#55cccccc"; // semi-transparent
+    const string TernaryColorCode       = "#ffabbcda";
+    const string PowerMonitorColor      = "#ffe7d8b1";
     #endregion
 
     #region Containers
@@ -82,7 +82,7 @@ class MaintainerShowcaseMod : LolibarMod
         BarStrokeThickness          = new Thickness(1);
 
         BarHideVanillaTaskBar       = true;
-        BarSnapToTop                = true;
+        BarSnapToTop                = false;
     }
     public override void Initialize()
     {
@@ -315,6 +315,14 @@ class MaintainerShowcaseMod : LolibarMod
             MouseLeftButtonUp = ToggleLolibarAutorun
         });
 
+        // Taskbar items directory
+        menu.Children.Add(new()
+        {
+            Text = $"Open Taskbar Folder",
+            HasBackground = true,
+            MouseLeftButtonUp = OpenTaskbarFolder
+        });
+
         // Lolibar restart button
         menu.Children.Add(new()
         {
@@ -348,6 +356,22 @@ class MaintainerShowcaseMod : LolibarMod
                 WindowStyle = ProcessWindowStyle.Hidden
             },
         }.Start();
+
+        return 0;
+    }
+    int OpenTaskbarFolder(MouseButtonEventArgs e)
+    {
+        new Process()
+        {
+            StartInfo =
+            {
+                FileName = @"cmd.exe",
+                Arguments = "/C \"explorer.exe %AppData%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\"",
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            },
+        }.Start();
+
         return 0;
     }
 
